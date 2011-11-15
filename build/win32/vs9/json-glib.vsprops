@@ -8,7 +8,7 @@
 	>
 	<Tool
 		Name="VCCLCompilerTool"
-		AdditionalIncludeDirectories="..\..\..;..\..\..\json-glib;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\lib\glib-2.0\include"
+		AdditionalIncludeDirectories="..\..\..;..\..\..\json-glib;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\lib\glib-2.0\include"
 		PreprocessorDefinitions="HAVE_CONFIG_H;G_DISABLE_DEPRECATED"
 		ForcedIncludeFiles="msvc_recommended_pragmas.h"
 	/>
