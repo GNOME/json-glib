@@ -306,7 +306,7 @@ json_node_get_array (JsonNode *node)
 }
 
 /**
- * json_node_dup_array
+ * json_node_dup_array:
  * @node: a #JsonNode
  *
  * Retrieves the #JsonArray stored inside a #JsonNode and returns it
