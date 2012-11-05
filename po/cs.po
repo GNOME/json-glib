@@ -64,8 +64,8 @@ msgstr "Data JSON jsou prázdná"
 
 #: ../json-glib/json-parser.c:810
 #, c-format
-msgid "%s:%d:%d: Parse error: %s"
-msgstr "%s:%d:%d: Chyba zpracování: %s"
+msgid "%s:%d: Parse error: %s"
+msgstr "%s:%d: Chyba zpracování: %s"
 
 #: ../json-glib/json-path.c:375
 msgid "Only one root node is allowed in a JSONPath expression"
@@ -150,6 +150,18 @@ msgstr "Aktuální pozice obsahuje „%s“ a ne objekt"
 msgid "The current position holds a '%s' and not a value"
 msgstr "Aktuální pozice obsahuje „%s“ a ne hodnotu"
 
-#: ../json-glib/json-reader.c:949
+#: ../json-glib/json-reader.c:873
+msgid "The current position does not hold an integer type"
+msgstr "Aktuální pozice neobsahuje typ celé číslo"
+
+#: ../json-glib/json-reader.c:918
+msgid "The current position does not hold a floating point type"
+msgstr "Aktuální pozice neobsahuje typ desetinné číslo"
+
+#: ../json-glib/json-reader.c:963
 msgid "The current position does not hold a string type"
 msgstr "Aktuální pozice neobsahuje typ řetězec"
+
+#: ../json-glib/json-reader.c:1008
+msgid "The current position does not hold a boolean type"
+msgstr "Aktuální pozice neobsahuje typ pravdivostní hodnota"
