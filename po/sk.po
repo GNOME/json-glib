@@ -64,10 +64,10 @@ msgid "JSON data is empty"
 msgstr "Dáta JSON sú prázdne"
 
 #: ../json-glib/json-parser.c:821
-#, fuzzy, c-format
+#, c-format
 #| msgid "%s:%d:%d: Parse error: %s"
 msgid "%s:%d: Parse error: %s"
-msgstr "%s:%d:%d: Chyba analýzy: %s"
+msgstr "%s:%d: Chyba analýzy: %s"
 
 #: ../json-glib/json-path.c:380
 msgid "Only one root node is allowed in a JSONPath expression"
