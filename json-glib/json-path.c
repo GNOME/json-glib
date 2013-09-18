@@ -358,6 +358,8 @@ json_path_compile (JsonPath    *path,
   PathNode *root = NULL;
   GList *nodes, *l;
 
+  g_return_val_if_fail (expression != NULL, FALSE);
+
   p = expression;
 
   while (*p != '\0')
