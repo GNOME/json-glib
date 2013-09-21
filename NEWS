@@ -1,3 +1,7 @@
+Overview of changes for 0.16.2
+==============================
+• Use the -Bsymbolic-functions linker flag when available
+
 Overview of changes for 0.16.0
 ==============================
 • Fixes for building with VisualStudio. [Chun-wei Fan]
