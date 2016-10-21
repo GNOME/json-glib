@@ -102,8 +102,7 @@ struct _JsonObject
 {
   GHashTable *members;
 
-  /* the members of the object, ordered in reverse */
-  GList *members_ordered;
+  GQueue members_ordered;
 
   guint immutable_hash;  /* valid iff immutable */
   volatile gint ref_count;
