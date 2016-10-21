@@ -487,6 +487,15 @@ json_object_get_members (JsonObject *object)
   return g_list_copy (object->members_ordered.head);
 }
 
+
+GQueue *
+json_object_get_members_internal (JsonObject *object)
+{
+  g_return_val_if_fail (object != NULL, NULL);
+
+  return &object->members_ordered;
+}
+
 /**
  * json_object_get_values:
  * @object: a #JsonObject

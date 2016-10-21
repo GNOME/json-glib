@@ -124,6 +124,9 @@ G_GNUC_INTERNAL
 const gchar *   json_value_type_get_name        (JsonValueType    value_type);
 
 G_GNUC_INTERNAL
+GQueue *        json_object_get_members_internal (JsonObject     *object);
+
+G_GNUC_INTERNAL
 GType           json_value_type                 (const JsonValue *value);
 
 G_GNUC_INTERNAL
