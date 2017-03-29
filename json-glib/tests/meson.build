@@ -41,7 +41,7 @@ foreach t: tests
                          python3,
                          gen_installed_test,
                          '--testdir=@0@'.format(installed_test_dir),
-                         '--testname=@0@.test'.format(t),
+                         '--testname=@0@'.format(t),
                          '--outdir=@OUTDIR@',
                          '--outfile=@0@.test'.format(t),
                        ],
