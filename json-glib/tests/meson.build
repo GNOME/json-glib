@@ -22,14 +22,6 @@ test_data = [
   'stream-load.json',
 ]
 
-foreach d: test_data
-  copy = 'from shutil import copyfile; copyfile("@0@", "@1@")'.format(d, join_paths(meson.current_build_dir(), d))
-  cp = run_command(python3, '-c', copy)
-  if cp.returncode() != 0
-    error('Could not copy file: ' + cp.stderr())
-  endif
-endforeach
-
 installed_test_dir = join_paths(json_libexecdir, 'installed-tests', 'json-glib-1.0')
 
 install_data(test_data, install_dir: installed_test_dir)
@@ -54,5 +46,10 @@ foreach t: tests
                    install_dir: installed_test_dir,
                    dependencies: [ json_glib_dep, ])
 
-  test(t, exe, args: [ '--tap', '-k' ])
+  test(t, exe,
+       args: [ '--tap', '-k' ],
+       env: [
+         'G_TEST_SRCDIR=@0@'.format(meson.current_source_dir()),
+         'G_TEST_BUILDDIR=@0@'.format(meson.current_build_dir()),
+       ])
 endforeach
