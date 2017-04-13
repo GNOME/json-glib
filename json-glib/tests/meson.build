@@ -15,9 +15,6 @@ tests = [
   'serialize-full',
 ]
 
-python3 = import('python3').find_python()
-gen_installed_test = join_paths(meson.current_source_dir(), 'gen-installed-test.py')
-
 test_data = [
   'stream-load.json',
 ]

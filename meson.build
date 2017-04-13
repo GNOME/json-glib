@@ -149,6 +149,9 @@ gnome = import('gnome')
 gir = find_program('g-ir-scanner', required: false)
 build_gir = gir.found() and not meson.is_cross_build() and not get_option('disable_introspection')
 
+python3 = import('python3').find_python()
+gen_installed_test = files('build-aux/gen-installed-test.py')
+
 subdir('json-glib')
 
 subdir('po')
