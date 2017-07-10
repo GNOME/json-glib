@@ -7,29 +7,23 @@ project('json-glib', 'c', version: '1.3.1',
         ],
         meson_version: '>= 0.40.1')
 
-
-# Versionning
+# Versioning
 json_version = meson.project_version()
 version_arr = json_version.split('.')
 json_version_major = version_arr[0].to_int()
 json_version_minor = version_arr[1].to_int()
 json_version_micro = version_arr[2].to_int()
 
-apiversion = '1.0'
+json_interface_age = json_version_minor.is_even() ? json_version_micro : 0
+json_binary_age = 100 * json_version_minor + json_version_micro
+json_api_version = '1.0'
 
-if json_version_minor.is_odd()
-  json_interface_age = 0
-else
-  json_interface_age = json_version_micro
-endif
+json_api_name = '@0@-@1@'.format(meson.project_name(), json_api_version)
+json_gettext_domain = json_api_name
 
-# maintaining compatibility with the previous libtool versioning
-# current = minor * 100 + micro - interface
-# revision = interface
+# Maintain compatibility with the old soname versioning
 soversion = 0
-current = json_version_minor * 100 + json_version_micro - json_interface_age
-revision = json_interface_age
-libversion = '@0@.@1@.@2@'.format(soversion, current, revision)
+libversion = '@0@.@1@.@2@'.format(soversion, json_binary_age - json_interface_age, json_interface_age)
 
 # Paths
 json_includedir = join_paths(get_option('prefix'), get_option('includedir'))
@@ -58,7 +52,8 @@ foreach h: check_headers
     cdata.set(h.get(1), 1)
   endif
 endforeach
-cdata.set_quoted('GETTEXT_PACKAGE', 'json-glib-1.0')
+
+cdata.set_quoted('GETTEXT_PACKAGE', json_gettext_domain)
 
 if cc.get_id() == 'msvc'
   # Compiler options taken from msvc_recommended_pragmas.h

@@ -1,4 +1,4 @@
-install_header_subdir = 'json-glib-1.0/json-glib'
+install_header_subdir = join_paths(json_api_name, 'json-glib')
 install_header_dir = join_paths(json_includedir, install_header_subdir)
 
 configure_file(output: 'config.h', configuration: cdata)
@@ -73,7 +73,7 @@ if host_system == 'darwin'
   common_ldflags += [ '-compatibility_version=1', '-current_version=1.0', ]
 endif
 
-json_lib = library('json-glib-1.0',
+json_lib = library(json_api_name,
                    source_c + json_glib_enums,
                    version: libversion,
                    soversion: soversion,
@@ -86,10 +86,10 @@ json_lib = library('json-glib-1.0',
 pkgg = import('pkgconfig')
 
 pkgg.generate(libraries: [ json_lib ],
-              subdirs: 'json-glib-@0@'.format(apiversion),
+              subdirs: json_api_name,
               version: json_version,
               name: 'JSON-GLib',
-              filebase: 'json-glib-@0@'.format(apiversion),
+              filebase: json_api_name,
               description: 'JSON Parser for GLib.',
               requires: 'gio-2.0')
 
@@ -107,10 +107,10 @@ if build_gir
   gnome.generate_gir(json_lib,
                      sources: source_c + source_h + json_glib_enums + [ json_version_h ],
                      namespace: 'Json',
-                     nsversion: apiversion,
+                     nsversion: json_api_version,
                      identifier_prefix: 'Json',
                      symbol_prefix: 'json',
-                     export_packages: 'json-glib-1.0',
+                     export_packages: json_api_name,
                      includes: [ 'GObject-2.0', 'Gio-2.0', ],
                      install: true,
                      extra_args: gir_args)
