@@ -32,13 +32,9 @@ In order to build JSON-GLib you will need:
  * [ninja](http://ninja-build.org)
  * [meson](http://mesonbuild.com)
  * pkg-config
- * gtk-doc ≥ 1.13
+ * gtk-doc ≥ 1.13 (optional)
  * GLib, GIO ≥ 2.38
-
-Optionally, JSON-GLib depends on:
-
- * GObject-Introspection ≥ 1.38
- * LCov ≥ 1.6
+ * GObject-Introspection ≥ 1.38 (optional)
 
 INSTALLATION
 --------------------------------------------------------------------------------
