@@ -81,16 +81,16 @@ HACKING
 --------------------------------------------------------------------------------
 JSON-GLib is developed mainly inside a GIT repository available at:
 
-    https://gitlab.gnome.org/ebassi/json-glib/
+    https://gitlab.gnome.org/GNOME/json-glib/
 
 You can clone the GIT repository with:
 
-    git clone https://gitlab.gnome.org/ebassi/json-glib.git
+    git clone https://gitlab.gnome.org/GNOME/json-glib.git
 
 If you want to contribute functionality or bug fixes to JSON-GLib you can either
 open a merge request on Gitlab:
 
-    https://gitlab.gnome.org/ebassi/json-glib/merge_requests/new
+    https://gitlab.gnome.org/GNOME/json-glib/merge_requests/new
 
 or you can attach patches for review to a bug on [the bug tracking system][bugzilla]
 using:
