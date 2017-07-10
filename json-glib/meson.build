@@ -64,24 +64,13 @@ json_c_args = [
   '-DJSON_LOCALEDIR="@0@"'.format(json_localedir)
 ]
 
-common_ldflags = []
-
-if host_system == 'linux'
-  common_ldflags = [ '-Wl,-Bsymbolic', '-Wl,-z,relro', '-Wl,-z,now', ]
-endif
-
-# Maintain compatibility with autotools
-if host_system == 'darwin'
-  common_ldflags += [ '-compatibility_version=1', '-current_version=1.0', ]
-endif
-
 json_lib = library(json_api_name,
                    source_c + json_glib_enums,
                    version: libversion,
                    soversion: soversion,
                    include_directories: root_dir,
                    dependencies: [ gio_dep, gobject_dep, ],
-                   c_args: json_c_args + common_cflags + extra_args,
+                   c_args: json_c_args + common_cflags,
                    link_args: common_ldflags,
                    install: true)
 

@@ -40,7 +40,6 @@ gio_dep = dependency('gio-2.0', version: glib_req_version)
 # Configurations
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
-extra_args = []
 
 cdata = configuration_data()
 check_headers = [
@@ -116,26 +115,39 @@ else
   test_cflags = []
 endif
 
-common_cflags = []
-foreach cflag: test_cflags
-  if cc.has_argument(cflag)
-    common_cflags += [ cflag ]
-  endif
-endforeach
-
 if get_option('default_library') != 'static'
   if host_system == 'windows'
     cdata.set('DLL_EXPORT', true)
-    if cc.get_id() == 'msvc'
-      cdata.set('_JSON_EXTERN', '__declspec(dllexport) extern')
-    else
-      cdata.set('_JSON_EXTERN', '__attribute__((visibility("default"))) __declspec(dllexport) extern')
-      extra_args += ['-fvisibility=hidden']
+    cdata.set('_JSON_EXTERN', '__declspec(dllexport) extern')
+    if cc.get_id() != 'msvc'
+      test_cflags += '-fvisibility=hidden'
     endif
   else
     cdata.set('_JSON_EXTERN', '__attribute__((visibility("default"))) extern')
-    extra_args += ['-fvisibility=hidden']
+    test_cflags += '-fvisibility=hidden'
   endif
+endif
+
+common_cflags = []
+foreach cflag: test_cflags
+  if cc.has_argument(cflag)
+    common_cflags += cflag
+  endif
+endforeach
+
+common_ldflags = []
+
+if host_system == 'linux'
+  foreach ldflag: [ '-Wl,-Bsymbolic', '-Wl,-z,relro', '-Wl,-z,now', ]
+    if cc.has_argument(ldflag)
+      common_ldflags += ldflag
+    endif
+  endforeach
+endif
+
+# Maintain compatibility with autotools
+if host_system == 'darwin'
+  common_ldflags += [ '-compatibility_version 1', '-current_version 1.0', ]
 endif
 
 root_dir = include_directories('.')
