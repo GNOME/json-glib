@@ -22,6 +22,8 @@ json_glib_enums = gnome.mkenums('json-enum-types',
                                 c_template: 'json-enum-types.c.in',
                                 install_header: true,
                                 install_dir: install_header_dir)
+# Keep a reference to the generated header, for internal dependencies
+json_enum_types_h = json_glib_enums.get(1)
 
 source_c = [
   'json-array.c',
@@ -50,9 +52,9 @@ version_data.set('JSON_VERSION', meson.project_version())
 
 json_version_h = configure_file(input: 'json-version.h.in',
                                 output: 'json-version.h',
-                                install_dir: install_header_dir,
+                                configuration: version_data,
                                 install: true,
-                                configuration: version_data)
+                                install_dir: install_header_dir)
 
 install_headers(source_h + [ 'json-glib.h', ], subdir: install_header_subdir)
 
@@ -93,16 +95,11 @@ pkgg.generate(libraries: [ json_lib ],
               description: 'JSON Parser for GLib.',
               requires: 'gio-2.0')
 
-# Generated headers, used to declare the dependency for internal
-# targets
-json_gen_headers = [ json_version_h, json_glib_enums.get(1), ]
-
 if build_gir
   gir_args = [
     '--c-include=json-glib/json-glib.h',
     '-DJSON_COMPILATION',
   ]
-
 
   gnome.generate_gir(json_lib,
                      sources: source_c + source_h + json_glib_enums + [ json_version_h ],
@@ -119,7 +116,7 @@ endif
 json_glib_dep = declare_dependency(link_with: json_lib,
                                    include_directories: root_dir,
                                    dependencies: [ gobject_dep, gio_dep, ],
-                                   sources: json_gen_headers)
+                                   sources: [ json_enum_types_h ])
 
 tools = [
   [ 'json-glib-validate', [ 'json-glib-validate.c', ] ],
@@ -130,7 +127,10 @@ foreach t: tools
   bin_name = t[0]
   bin_sources = t[1]
 
-  executable(bin_name, bin_sources, c_args: json_c_args, dependencies: json_glib_dep, install: true)
+  executable(bin_name, bin_sources,
+             c_args: json_c_args,
+             dependencies: json_glib_dep,
+             install: true)
 endforeach
 
 subdir('tests')
