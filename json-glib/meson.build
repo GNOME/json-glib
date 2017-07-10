@@ -97,6 +97,7 @@ pkgg.generate(libraries: [ json_lib ],
 
 if build_gir
   gir_args = [
+    '--quiet',
     '--c-include=json-glib/json-glib.h',
     '-DJSON_COMPILATION',
   ]
