@@ -16,7 +16,6 @@ json_version_minor = version_arr[1].to_int()
 json_version_micro = version_arr[2].to_int()
 
 apiversion = '1.0'
-soversion = 0
 
 if json_version_minor.is_odd()
   json_interface_age = 0
