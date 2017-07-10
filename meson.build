@@ -3,6 +3,7 @@ project('json-glib', 'c', version: '1.3.1',
         default_options: [
           'warning_level=1',
           'buildtype=debugoptimized',
+          'c_std=c99',
         ],
         meson_version: '>= 0.40.1')
 
