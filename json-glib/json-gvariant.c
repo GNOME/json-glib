@@ -31,6 +31,7 @@
 
 #include "json-generator.h"
 #include "json-parser.h"
+#include "json-types-private.h"
 
 /**
  * SECTION:json-gvariant
@@ -947,8 +948,7 @@ json_to_gvariant_dict_entry (JsonNode     *json_node,
   gchar *value_signature;
   const gchar *tmp_signature;
 
-  GList *member;
-
+  GQueue *members;
   const gchar *json_member;
   JsonNode *json_value;
   GVariant *variant_member;
@@ -970,9 +970,8 @@ json_to_gvariant_dict_entry (JsonNode     *json_node,
                               &key_signature,
                               &value_signature);
 
-  member = json_object_get_members (obj);
-
-  json_member = (const gchar *) member->data;
+  members = json_object_get_members_internal (obj);
+  json_member = (const gchar *) members->head->data;
   variant_member = gvariant_simple_from_string (json_member,
                                                 key_signature[0],
                                                 error);
@@ -998,7 +997,6 @@ json_to_gvariant_dict_entry (JsonNode     *json_node,
         }
     }
 
-  g_list_free (member);
   g_free (value_signature);
   g_free (key_signature);
   g_free (entry_signature);
@@ -1026,7 +1024,7 @@ json_to_gvariant_dictionary (JsonNode     *json_node,
   const gchar *tmp_signature;
 
   GVariantBuilder *builder;
-  GList *members;
+  GQueue *members;
   GList *member;
 
   obj = json_node_get_object (json_node);
@@ -1043,10 +1041,9 @@ json_to_gvariant_dictionary (JsonNode     *json_node,
 
   builder = g_variant_builder_new (G_VARIANT_TYPE (dict_signature));
 
-  members = json_object_get_members (obj);
+  members = json_object_get_members_internal (obj);
 
-  member = members;
-  while (member != NULL)
+  for (member = members->head; member != NULL; member = member->next)
     {
       const gchar *json_member;
       JsonNode *json_value;
@@ -1082,15 +1079,12 @@ json_to_gvariant_dictionary (JsonNode     *json_node,
           roll_back = TRUE;
           break;
         }
-
-      member = member->next;
     }
 
   if (! roll_back)
     variant = g_variant_builder_end (builder);
 
   g_variant_builder_unref (builder);
-  g_list_free (members);
   g_free (value_signature);
   g_free (key_signature);
   g_free (entry_signature);

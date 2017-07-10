@@ -426,7 +426,8 @@ dump_object (JsonGenerator *generator,
              JsonObject    *object)
 {
   JsonGeneratorPrivate *priv = generator->priv;
-  GList *members, *l;
+  GQueue *members;
+  GList *l;
   gboolean pretty = priv->pretty;
   guint indent = priv->indent;
   guint i;
@@ -436,9 +437,9 @@ dump_object (JsonGenerator *generator,
   if (pretty)
     g_string_append_c (buffer, '\n');
 
-  members = json_object_get_members (object);
+  members = json_object_get_members_internal (object);
 
-  for (l = members; l != NULL; l = l->next)
+  for (l = members->head; l != NULL; l = l->next)
     {
       const gchar *member_name = l->data;
       JsonNode *cur = json_object_get_member (object, member_name);
@@ -451,8 +452,6 @@ dump_object (JsonGenerator *generator,
       if (pretty)
         g_string_append_c (buffer, '\n');
     }
-
-  g_list_free (members);
 
   if (pretty)
     {
@@ -479,6 +478,35 @@ json_generator_new (void)
 }
 
 /**
+ * json_generator_to_gstring:
+ * @generator: a #JsonGenerator
+ * @string: a #GString
+ *
+ * Generates a JSON data stream from @generator
+ * and appends it to @string.
+ *
+ * Return value: (transfer none): a #GString holding a JSON data stream.
+ *   Use g_string_free() to free the allocated resources.
+ *
+ * Since: 1.4
+ */
+GString *
+json_generator_to_gstring (JsonGenerator *generator,
+                           GString       *string)
+{
+  JsonNode *root;
+
+  g_return_val_if_fail (JSON_IS_GENERATOR (generator), NULL);
+  g_return_val_if_fail (string != NULL, NULL);
+
+  root = generator->priv->root;
+  if (root != NULL)
+    dump_node (generator, string, 0, NULL, root);
+
+  return string;
+}
+
+/**
  * json_generator_to_data:
  * @generator: a #JsonGenerator
  * @length: (out): return location for the length of the returned
@@ -494,22 +522,12 @@ gchar *
 json_generator_to_data (JsonGenerator *generator,
                         gsize         *length)
 {
-  JsonNode *root;
   GString *string;
 
   g_return_val_if_fail (JSON_IS_GENERATOR (generator), NULL);
 
-  root = generator->priv->root;
-  if (!root)
-    {
-      if (length)
-        *length = 0;
-
-      return NULL;
-    }
-
   string = g_string_new ("");
-  dump_node (generator, string, 0, NULL, root);
+  json_generator_to_gstring (generator, string);
 
   if (length)
     *length = string->len;

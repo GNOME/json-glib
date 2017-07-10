@@ -755,10 +755,10 @@ walk_path_node (GList      *path,
           case JSON_NODE_OBJECT:
             {
               JsonObject *object = json_node_get_object (root);
-              GList *members, *l;
+              GQueue *members = json_object_get_members_internal (object);
+              GList *l;
 
-              members = json_object_get_members (object);
-              for (l = members; l != NULL; l = l->next)
+              for (l = members->head; l != NULL; l = l->next)
                 {
                   JsonNode *m = json_object_get_member (object, l->data);
 
@@ -774,7 +774,6 @@ walk_path_node (GList      *path,
                       walk_path_node (path, m, results);
                     }
                 }
-              g_list_free (members);
             }
             break;
 
@@ -815,10 +814,10 @@ walk_path_node (GList      *path,
       if (JSON_NODE_HOLDS_OBJECT (root))
         {
           JsonObject *object = json_node_get_object (root);
-          GList *members, *l;
+          GQueue *members = json_object_get_members_internal (object);
+          GList *l;
 
-          members = json_object_get_members (object);
-          for (l = members; l != NULL; l = l->next)
+          for (l = members->head; l != NULL; l = l->next)
             {
               JsonNode *member = json_object_get_member (object, l->data);
 
@@ -830,7 +829,6 @@ walk_path_node (GList      *path,
                   json_array_add_element (results, json_node_copy (member));
                 }
             }
-          g_list_free (members);
         }
       else
         json_array_add_element (results, json_node_copy (root));

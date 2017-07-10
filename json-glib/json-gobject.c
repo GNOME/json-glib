@@ -183,7 +183,9 @@ json_gobject_new (GType       gtype,
   gboolean find_property;
   gboolean deserialize_property;
   gboolean set_property;
-  GList *members, *members_left, *l;
+  GQueue *members;
+  GList *l;
+  GQueue members_left = G_QUEUE_INIT;
   guint n_members;
   GObjectClass *klass;
   GObject *retval;
@@ -193,8 +195,7 @@ json_gobject_new (GType       gtype,
   klass = g_type_class_ref (gtype);
 
   n_members = json_object_get_size (object);
-  members = json_object_get_members (object);
-  members_left = NULL;
+  members = json_object_get_members_internal (object);
 
   /* first pass: construct-only properties; here we cannot use Serializable
    * because we don't have an instance yet; we use the default implementation
@@ -204,7 +205,7 @@ json_gobject_new (GType       gtype,
    */
   construct_params = g_array_sized_new (FALSE, FALSE, sizeof (GParameter), n_members);
 
-  for (l = members; l != NULL; l = l->next)
+  for (l = members->head; l != NULL; l = l->next)
     {
       const gchar *member_name = l->data;
       GParamSpec *pspec;
@@ -244,7 +245,7 @@ json_gobject_new (GType       gtype,
         }
 
     next_member:
-      members_left = g_list_prepend (members_left, l->data);
+      g_queue_push_tail (&members_left, l->data);
     }
 
   G_GNUC_BEGIN_IGNORE_DEPRECATIONS
@@ -263,12 +264,6 @@ json_gobject_new (GType       gtype,
     }
 
   g_array_free (construct_params, TRUE);
-  g_list_free (members);
-
-  /* we use g_list_prepend() above, but we want to maintain
-   * the ordering of json_object_get_members() here
-   */
-  members = g_list_reverse (members_left);
 
   /* do the Serializable type check once */
   if (g_type_is_a (gtype, JSON_TYPE_SERIALIZABLE))
@@ -288,7 +283,7 @@ json_gobject_new (GType       gtype,
 
   g_object_freeze_notify (retval);
 
-  for (l = members; l != NULL; l = l->next)
+  for (l = members_left.head; l != NULL; l = l->next)
     {
       const gchar *member_name = l->data;
       GParamSpec *pspec;
@@ -349,7 +344,7 @@ json_gobject_new (GType       gtype,
       g_value_unset (&value);
     }
 
-  g_list_free (members);
+  g_queue_clear (&members_left);
 
   g_object_thaw_notify (retval);
 
