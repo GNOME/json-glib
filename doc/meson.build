@@ -19,7 +19,10 @@ docpath = join_paths(json_datadir, 'gtk-doc', 'html')
 
 gnome.gtkdoc('json-glib',
              main_xml: 'json-glib-docs.xml',
-             src_dir: [ join_paths(meson.source_root(), 'json-glib'), join_paths(meson.build_root(), 'json-glib'), ],
+             src_dir: [
+               join_paths(meson.source_root(), 'json-glib'),
+               join_paths(meson.build_root(), 'json-glib'),
+             ],
              dependencies: json_glib_dep,
              gobject_typesfile: 'json-glib.types',
              scan_args: [

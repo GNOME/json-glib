@@ -3,33 +3,27 @@ project('json-glib', 'c', version: '1.3.1',
         default_options: [
           'warning_level=1',
           'buildtype=debugoptimized',
+          'c_std=c99',
         ],
         meson_version: '>= 0.40.1')
 
-
-# Versionning
+# Versioning
 json_version = meson.project_version()
 version_arr = json_version.split('.')
 json_version_major = version_arr[0].to_int()
 json_version_minor = version_arr[1].to_int()
 json_version_micro = version_arr[2].to_int()
 
-apiversion = '1.0'
-soversion = 0
+json_interface_age = json_version_minor.is_even() ? json_version_micro : 0
+json_binary_age = 100 * json_version_minor + json_version_micro
+json_api_version = '1.0'
 
-if json_version_minor.is_odd()
-  json_interface_age = 0
-else
-  json_interface_age = json_version_micro
-endif
+json_api_name = '@0@-@1@'.format(meson.project_name(), json_api_version)
+json_gettext_domain = json_api_name
 
-# maintaining compatibility with the previous libtool versioning
-# current = minor * 100 + micro - interface
-# revision = interface
+# Maintain compatibility with the old soname versioning
 soversion = 0
-current = json_version_minor * 100 + json_version_micro - json_interface_age
-revision = json_interface_age
-libversion = '@0@.@1@.@2@'.format(soversion, current, revision)
+libversion = '@0@.@1@.@2@'.format(soversion, json_binary_age - json_interface_age, json_interface_age)
 
 # Paths
 json_includedir = join_paths(get_option('prefix'), get_option('includedir'))
@@ -46,7 +40,6 @@ gio_dep = dependency('gio-2.0', version: glib_req_version)
 # Configurations
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
-extra_args = []
 
 cdata = configuration_data()
 check_headers = [
@@ -58,7 +51,8 @@ foreach h: check_headers
     cdata.set(h.get(1), 1)
   endif
 endforeach
-cdata.set_quoted('GETTEXT_PACKAGE', 'json-glib-1.0')
+
+cdata.set_quoted('GETTEXT_PACKAGE', json_gettext_domain)
 
 if cc.get_id() == 'msvc'
   # Compiler options taken from msvc_recommended_pragmas.h
@@ -84,63 +78,76 @@ if cc.get_id() == 'msvc'
   ]
 elif cc.get_id() == 'gcc' or cc.get_id() == 'clang'
   test_cflags = [
-    '-Wpointer-arith',
-    '-Wmissing-declarations',
-    '-Wformat=2',
-    '-Wstrict-prototypes',
-    '-Wmissing-prototypes',
-    '-Wnested-externs',
-    '-Wold-style-definition',
-    '-Wdeclaration-after-statement',
-    '-Wunused',
-    '-Wno-uninitialized',
-    '-Wshadow',
     '-Wcast-align',
-    '-Wmissing-noreturn',
-    '-Wmissing-format-attribute',
     '-Wlogical-op',
+    '-Wmissing-declarations',
+    '-Wmissing-format-attribute',
+    '-Wmissing-prototypes',
+    '-Wmissing-noreturn',
+    '-Wold-style-definition',
+    '-Wpointer-arith',
+    '-Wshadow',
+    '-Wstrict-prototypes',
+    '-Wunused',
     '-Wno-discarded-qualifiers',
+    '-Wno-int-conversion',
+    '-fno-strict-aliasing',
+    '-Wno-uninitialized',
+    '-Werror=address',
+    '-Werror=array-bounds',
+    '-Werror=empty-body',
+    '-Werror=format=2',
     '-Werror=implicit',
-    '-Werror=nonnull',
     '-Werror=init-self',
+    '-Werror=int-to-pointer-cast',
     '-Werror=main',
     '-Werror=missing-braces',
-    '-Werror=sequence-point',
-    '-Werror=return-type',
-    '-Werror=trigraphs',
-    '-Werror=array-bounds',
-    '-Werror=write-strings',
-    '-Werror=address',
-    '-Werror=int-to-pointer-cast',
+    '-Werror=nested-externs',
+    '-Werror=nonnull',
     '-Werror=pointer-to-int-cast',
-    '-Werror=empty-body',
-    '-fno-strict-aliasing',
-    '-Wno-int-conversion',
+    '-Werror=return-type',
+    '-Werror=sequence-point',
+    '-Werror=trigraphs',
+    '-Werror=undef',
+    '-Werror=write-strings',
   ]
 else
   test_cflags = []
 endif
 
-common_cflags = []
-foreach cflag: test_cflags
-  if cc.has_argument(cflag)
-    common_cflags += [ cflag ]
-  endif
-endforeach
-
 if get_option('default_library') != 'static'
   if host_system == 'windows'
     cdata.set('DLL_EXPORT', true)
-    if cc.get_id() == 'msvc'
-      cdata.set('_JSON_EXTERN', '__declspec(dllexport) extern')
-    else
-      cdata.set('_JSON_EXTERN', '__attribute__((visibility("default"))) __declspec(dllexport) extern')
-      extra_args += ['-fvisibility=hidden']
+    cdata.set('_JSON_EXTERN', '__declspec(dllexport) extern')
+    if cc.get_id() != 'msvc'
+      test_cflags += '-fvisibility=hidden'
     endif
   else
     cdata.set('_JSON_EXTERN', '__attribute__((visibility("default"))) extern')
-    extra_args += ['-fvisibility=hidden']
+    test_cflags += '-fvisibility=hidden'
   endif
+endif
+
+common_cflags = []
+foreach cflag: test_cflags
+  if cc.has_argument(cflag)
+    common_cflags += cflag
+  endif
+endforeach
+
+common_ldflags = []
+
+if host_system == 'linux'
+  foreach ldflag: [ '-Wl,-Bsymbolic', '-Wl,-z,relro', '-Wl,-z,now', ]
+    if cc.has_argument(ldflag)
+      common_ldflags += ldflag
+    endif
+  endforeach
+endif
+
+# Maintain compatibility with autotools
+if host_system == 'darwin'
+  common_ldflags += [ '-compatibility_version 1', '-current_version 1.0', ]
 endif
 
 root_dir = include_directories('.')

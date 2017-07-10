@@ -248,9 +248,11 @@ json_gobject_new (GType       gtype,
       g_queue_push_tail (&members_left, l->data);
     }
 
+  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
   retval = g_object_newv (gtype,
                           construct_params->len,
                           (GParameter *) construct_params->data);
+  G_GNUC_END_IGNORE_DEPRECATIONS
 
   /* free the contents of the GArray */
   for (i = 0; i < construct_params->len; i++)
