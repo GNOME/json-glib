@@ -147,7 +147,10 @@ endif
 
 # Maintain compatibility with autotools
 if host_system == 'darwin'
-  common_ldflags += [ '-compatibility_version 1', '-current_version 1.0', ]
+  common_ldflags += [
+    '-compatibility_version 1',
+    '-current_version @0@.@1@'.format(json_binary_age - json_interface_age, json_interface_age),
+  ]
 endif
 
 root_dir = include_directories('.')
