@@ -1,6 +1,16 @@
 Overview of changes for 1.4
 ==============================
 • Use Meson as the only build system
+• #773504 - Avoid extra allocations [Garrett Regier]
+• #780550 - meson error looking for python3 [Daniele Forghieri]
+• #769206 - docs: Clarify when NULL might be returned [Matthew Leeds]
+• #766281 - utils/json_from_string: Don't reset user-provided error
+            argument [Heinrich Fink]
+• #758580 - json_reader_is_value returns TRUE for null type but
+            json_reader_get_value throws an error [Robert Ancell]
+• #768788 - Incorrect account of jsonPath syntax in doc [Allin Cottrell]
+• #774688 - json_from_string() could be optimized to avoid copying the
+            root node [Ole André Vadla Ravnås]
 
 Overview of changes for 1.2
 ==============================
