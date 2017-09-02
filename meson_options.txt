@@ -1,9 +1,9 @@
-option('disable_introspection',
-        type: 'boolean', value: false,
-        description: 'Whether to disable the introspection generation')
+option('enable-introspection',
+       type: 'boolean', value: true,
+       description: 'Whether to generate introspection data (requires gobject-introspection)')
 option('enable-gtk-doc',
        type: 'boolean', value: false,
-       description: 'Whether to generate the API reference for JSON-GLib')
+       description: 'Whether to generate the API reference (requires gtk-doc)')
 option('enable-man',
        type: 'boolean', value: false,
-       description: 'Whether to generate the man pages for JSON-GLib tools')
+       description: 'Whether to generate man pages (requires xsltproc)')

@@ -84,6 +84,8 @@ pkgg.generate(libraries: [ json_lib ],
               description: 'JSON Parser for GLib.',
               requires: 'gio-2.0')
 
+gir = find_program('g-ir-scanner', required: false)
+build_gir = gir.found() and get_option('enable-introspection')
 if build_gir
   gir_args = [
     '--quiet',
