@@ -24,7 +24,7 @@ For more information, see:
  * [GLib and GObject][glib]
  * [JSON-GLib][json-glib]
 
-REQUIREMENTS
+Requirements
 --------------------------------------------------------------------------------
 In order to build JSON-GLib you will need:
 
@@ -36,7 +36,7 @@ In order to build JSON-GLib you will need:
  * GLib, GIO ≥ 2.38
  * GObject-Introspection ≥ 1.38 (optional)
 
-INSTALLATION
+Build and installation
 --------------------------------------------------------------------------------
 To build JSON-GLib just run:
 
@@ -49,13 +49,10 @@ To build JSON-GLib just run:
 
 See the [Meson documentation](http://mesonbuild.com) for more information.
 
-BUGS
+Contributing
 --------------------------------------------------------------------------------
-JSON-GLib tracks bugs in the GNOME Bugzilla.
-
-If you find a bug in JSON-GLib, please file an issue using
-[the appropriate form][bugzilla-enter-bug]. You can also check
-[the list of open bugs][bugzilla-bug-page].
+If you find a bug in JSON-GLib, please file an issue on the
+[Issues page][gitlab-issues].
 
 Required information:
 
@@ -67,7 +64,29 @@ Required information:
  * in case of a segmentation fault, a full stack trace with debugging
    symbols obtained through gdb is greatly appreaciated
 
-RELEASE NOTES
+JSON-GLib is developed mainly inside a GIT repository available at:
+
+    https://gitlab.gnome.org/GNOME/json-glib/
+
+You can clone the GIT repository with:
+
+    git clone https://gitlab.gnome.org/GNOME/json-glib.git
+
+If you want to contribute functionality or bug fixes to JSON-GLib you should
+fork the json-glib repository, work on a separate branch, and then open a
+merge request on Gitlab:
+
+    https://gitlab.gnome.org/GNOME/json-glib/merge_requests/new
+
+Please, try to conform to the coding style used by JSON-GLib, which is the same
+used by projects like GLib, [GTK+][gtk-coding-style], and Clutter. Coding style
+conformance is a requirement for upstream acceptance.
+
+Make sure you always run the test suite when you are fixing bugs. New features
+should come with a test unit. Patches that regress the test suite will be
+rejected.
+
+Release notes
 --------------------------------------------------------------------------------
  * Prior to JSON-GLib 0.10, a JsonSerializable implementation could
    automatically fall back to the default serialization code by simply
@@ -77,38 +96,7 @@ RELEASE NOTES
    properties. JSON-GLib provides public API for the default implementation
    in case the serialization code wants to fall back to that.
 
-HACKING
---------------------------------------------------------------------------------
-JSON-GLib is developed mainly inside a GIT repository available at:
-
-    https://gitlab.gnome.org/GNOME/json-glib/
-
-You can clone the GIT repository with:
-
-    git clone https://gitlab.gnome.org/GNOME/json-glib.git
-
-If you want to contribute functionality or bug fixes to JSON-GLib you can either
-open a merge request on Gitlab:
-
-    https://gitlab.gnome.org/GNOME/json-glib/merge_requests/new
-
-or you can attach patches for review to a bug on [the bug tracking system][bugzilla]
-using:
-
-    git format-patch master -k -s
-
-to generate the patches from each commit. Using [git-bz][git-bz] to automate
-this process is strongly encouraged.
-
-Please, try to conform to the coding style used by JSON-GLib, which is the same
-used by projects like GLib, GTK+, and Clutter. Coding style conformance is a
-requirement for upstream acceptance.
-
-Make sure you always run the test suite when you are fixing bugs. New features
-should come with a test unit. Patches that regress the test suite will be
-rejected.
-
-AUTHOR, COPYRIGHT AND LICENSING
+Copyright and licensing
 --------------------------------------------------------------------------------
 JSON-GLib has been written by Emmanuele Bassi
 
@@ -125,7 +113,5 @@ Copyright 2013  Emmanuele Bassi
 [glib]: http://www.gtk.org "GTK+"
 [json-glib]: https://wiki.gnome.org/Projects/JsonGlib "JSON-GLib wiki"
 [gnome]: https://www.gnome.org "GNOME"
-[bugzilla]: https://bugzilla.gnome.org "GNOME Bugzilla"
-[bugzilla-bug-page]: https://bugzilla.gnome.org/page.cgi?id=browse.html&product=json-glib "GNOME Bugzilla - Browse: json-glib"
-[bugzilla-enter-bug]: https://bugzilla.gnome.org/enter_bug.cgi?product=json-glib "GNOME Bugzilla - Enter bug: json-glib"
-[git-bz]: http://blog.fishsoup.net/2008/11/16/git-bz-bugzilla-subcommand-for-git/
+[gitlab-issues]: https://gitlab.gnome.org/GNOME/json-glib/issues
+[gtk-coding-style]: https://git.gnome.org/browse/gtk+/tree/docs/CODING-STYLE
