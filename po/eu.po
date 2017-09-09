@@ -2,35 +2,35 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2013, 2014.
+# Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2013, 2014, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: json-glib master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=json-"
+"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=json-"
 "glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2014-04-03 17:32+0200\n"
-"PO-Revision-Date: 2014-04-03 17:38+0200\n"
+"POT-Creation-Date: 2017-06-27 22:31+0000\n"
+"PO-Revision-Date: 2017-08-27 19:11+0200\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@zundan.com>\n"
-"Language-Team: Basque <librezale@librezale.org>\n"
+"Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.4\n"
+"X-Generator: Lokalize 1.5\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../json-glib/json-glib-format.c:50
+#: json-glib/json-glib-format.c:50
 msgid "Prettify output"
 msgstr "Koskatu irteera"
 
-#: ../json-glib/json-glib-format.c:51
+#: json-glib/json-glib-format.c:51
 msgid "Indentation spaces"
 msgstr "Koskaren zuriuneak"
 
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: ../json-glib/json-glib-format.c:77 ../json-glib/json-glib-validate.c:63
+#: json-glib/json-glib-format.c:77 json-glib/json-glib-validate.c:63
 #, c-format
 msgid "%s: %s: error opening file: %s\n"
 msgstr "%s: %s: errorea fitxategia irekitzean: %s\n"
@@ -38,7 +38,7 @@ msgstr "%s: %s: errorea fitxategia irekitzean: %s\n"
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: ../json-glib/json-glib-format.c:89 ../json-glib/json-glib-validate.c:75
+#: json-glib/json-glib-format.c:89 json-glib/json-glib-validate.c:75
 #, c-format
 msgid "%s: %s: error parsing file: %s\n"
 msgstr "%s: %s: errorea fitxategia analizatzean: %s\n"
@@ -46,7 +46,7 @@ msgstr "%s: %s: errorea fitxategia analizatzean: %s\n"
 #. Translators: the first %s is the program name, the
 #. * second one is the URI of the file.
 #.
-#: ../json-glib/json-glib-format.c:108
+#: json-glib/json-glib-format.c:108
 #, c-format
 msgid "%s: %s: error writing to stdout"
 msgstr "%s: %s: errorea irteera estandarrean idaztean"
@@ -54,209 +54,241 @@ msgstr "%s: %s: errorea irteera estandarrean idaztean"
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: ../json-glib/json-glib-format.c:128 ../json-glib/json-glib-validate.c:87
+#: json-glib/json-glib-format.c:129 json-glib/json-glib-validate.c:87
 #, c-format
 msgid "%s: %s: error closing: %s\n"
 msgstr "%s: %s: errorea ixtean: %s\n"
 
-#: ../json-glib/json-glib-format.c:157 ../json-glib/json-glib-validate.c:115
+#: json-glib/json-glib-format.c:158 json-glib/json-glib-validate.c:115
 msgid "FILE"
 msgstr "FITXATEGIA"
 
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
-#: ../json-glib/json-glib-format.c:160
+#: json-glib/json-glib-format.c:161
 msgid "Format JSON files."
 msgstr "JSON fitxategien formatua."
 
-#: ../json-glib/json-glib-format.c:161
+#: json-glib/json-glib-format.c:162
 msgid "json-glib-format formats JSON resources."
-msgstr "'json-glib-format'-ek  JSON baliabideei formatu ematen die."
+msgstr "“json-glib-format“-ek  JSON baliabideei formatu ematen die."
 
 #. Translators: the %s is the program name. This error message
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: ../json-glib/json-glib-format.c:178 ../json-glib/json-glib-validate.c:136
+#: json-glib/json-glib-format.c:179 json-glib/json-glib-validate.c:136
 #, c-format
 msgid "Error parsing commandline options: %s\n"
 msgstr "Errorea komando-lerroaren aukerak analizatzean: %s\n"
 
-#: ../json-glib/json-glib-format.c:180 ../json-glib/json-glib-format.c:194
-#: ../json-glib/json-glib-validate.c:138 ../json-glib/json-glib-validate.c:152
+#: json-glib/json-glib-format.c:181 json-glib/json-glib-format.c:195
+#: json-glib/json-glib-validate.c:138 json-glib/json-glib-validate.c:152
 #, c-format
-msgid "Try \"%s --help\" for more information."
-msgstr "Saiatu '%s --help' erabiltzen informazio gehiagorako."
+#| msgid "Try \"%s --help\" for more information."
+msgid "Try “%s --help” for more information."
+msgstr "Saiatu “%s --help“ erabiltzen informazio gehiagorako."
 
 #. Translators: the %s is the program name. This error message
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: ../json-glib/json-glib-format.c:192 ../json-glib/json-glib-validate.c:150
+#: json-glib/json-glib-format.c:193 json-glib/json-glib-validate.c:150
 #, c-format
 msgid "%s: missing files"
 msgstr "%s: fitxategiak falta dira"
 
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
-#: ../json-glib/json-glib-validate.c:118
+#: json-glib/json-glib-validate.c:118
 msgid "Validate JSON files."
 msgstr "JSON fitxategien balidazioa."
 
-#: ../json-glib/json-glib-validate.c:119
+#: json-glib/json-glib-validate.c:119
 msgid "json-glib-validate validates JSON data at the given URI."
 msgstr ""
-"'json-glib-validate'-ek JSON datuen balidazioa egiten du emandako URIan."
+"“json-glib-validate“-ek JSON datuen balidazioa egiten du emandako URIan."
 
-#: ../json-glib/json-gobject.c:915
+#. translators: the %s is the name of the data structure
+#: json-glib/json-gobject.c:943
 #, c-format
-msgid "Expecting a JSON object, but the root node is of type `%s'"
-msgstr "JSON objektu bat espero zen, baina erroaren nodoa '%s' motakoa da"
+#| msgid "Expecting a JSON object, but the root node is of type `%s'"
+msgid "Expecting a JSON object, but the root node is of type “%s”"
+msgstr "JSON objektu bat espero zen, baina erroaren nodoa “%s“ motakoa da"
 
-#: ../json-glib/json-gvariant.c:523
+#. translators: the '%s' is the type name
+#: json-glib/json-gvariant.c:523
 #, c-format
-msgid "Unexpected type '%s' in JSON node"
-msgstr "Ustekabeko '%s' mota JSON nodoan"
+#| msgid "Unexpected type '%s' in JSON node"
+msgid "Unexpected type “%s” in JSON node"
+msgstr "Ustekabeko “%s“ mota JSON nodoan"
 
-#: ../json-glib/json-gvariant.c:593
+#: json-glib/json-gvariant.c:593
 msgid "Missing elements in JSON array to conform to a tuple"
 msgstr "JSON matrizean elementuak falta dira tupla bat osatzeko"
 
-#: ../json-glib/json-gvariant.c:621
-msgid "Missing closing symbol ')' in the GVariant tuple type"
-msgstr "Itxierako ')' ikurra falta da GVariant tupla motan"
+#: json-glib/json-gvariant.c:621
+#| msgid "Missing closing symbol ')' in the GVariant tuple type"
+msgid "Missing closing symbol “)” in the GVariant tuple type"
+msgstr "Itxierako “)“ ikurra falta da GVariant tupla motan"
 
-#: ../json-glib/json-gvariant.c:629
+#: json-glib/json-gvariant.c:629
 msgid "Unexpected extra elements in JSON array"
 msgstr "Ustekabeko elementu gehigarriak JSON nodoan"
 
-#: ../json-glib/json-gvariant.c:908
+#: json-glib/json-gvariant.c:908
 msgid "Invalid string value converting to GVariant"
 msgstr "Baliogabeko kate-balioa GVariant-era bihurtzean"
 
-#: ../json-glib/json-gvariant.c:964
+#: json-glib/json-gvariant.c:964
 msgid ""
 "A GVariant dictionary entry expects a JSON object with exactly one member"
 msgstr ""
 "GVariant hiztegiaren sarrera batek JSON  objektu bat espero du kide bakar "
 "batekin soilik"
 
-#: ../json-glib/json-gvariant.c:1244
+#: json-glib/json-gvariant.c:1248
 #, c-format
-msgid "GVariant class '%c' not supported"
-msgstr "'%c' GVariant klasea ez dago onartuta"
+#| msgid "GVariant class '%c' not supported"
+msgid "GVariant class “%c” not supported"
+msgstr "“%c“ GVariant klasea ez dago onartuta"
 
-#: ../json-glib/json-gvariant.c:1292
+#: json-glib/json-gvariant.c:1296
 msgid "Invalid GVariant signature"
 msgstr "Baliogabeko GVariant sinadura"
 
-#: ../json-glib/json-gvariant.c:1340
+#: json-glib/json-gvariant.c:1344
 msgid "JSON data is empty"
 msgstr "JSONen datuak hutsik daude"
 
-#: ../json-glib/json-parser.c:815
+#. translators: %s: is the file name, the first %d is the line
+#. * number, the second %d is the position on the line, and %s is
+#. * the error message
+#.
+#: json-glib/json-parser.c:907
 #, c-format
 msgid "%s:%d:%d: Parse error: %s"
 msgstr "%s:%d:%d: analisi-errorea: %s"
 
-#: ../json-glib/json-parser.c:883
+#: json-glib/json-parser.c:990
 msgid "JSON data must be UTF-8 encoded"
 msgstr "JSON datuak UTF-8 kodeketan egon behar dute"
 
-#: ../json-glib/json-path.c:388
+#: json-glib/json-path.c:389
 msgid "Only one root node is allowed in a JSONPath expression"
 msgstr ""
 "Soilik erroko nodo bakar bat dago baimenduta JSONPath adierazpen batean"
 
-#: ../json-glib/json-path.c:397
+#. translators: the %c is the invalid character
+#: json-glib/json-path.c:398
 #, c-format
-msgid "Root node followed by invalid character '%c'"
-msgstr "Erroko nodoaren ondoren baliogabeko '%c' karakterea dago"
+#| msgid "Root node followed by invalid character '%c'"
+msgid "Root node followed by invalid character “%c”"
+msgstr "Erroko nodoaren ondoren baliogabeko “%c“ karakterea dago"
 
-#: ../json-glib/json-path.c:437
+#: json-glib/json-path.c:438
 msgid "Missing member name or wildcard after . character"
-msgstr "Kidearen izena edo '.' karakterearen ondorengo izartxoa falta da"
+msgstr "Kidearen izena edo “.“ karakterearen ondorengo izartxoa falta da"
 
-#: ../json-glib/json-path.c:511
+#: json-glib/json-path.c:512
 #, c-format
-msgid "Malformed slice expression '%*s'"
-msgstr "Gaizki osatutako '%*s' adierazpen zatia"
+#| msgid "Malformed slice expression '%*s'"
+msgid "Malformed slice expression “%*s”"
+msgstr "Gaizki osatutako “%*s“ adierazpen zatia"
 
-#: ../json-glib/json-path.c:555
+#: json-glib/json-path.c:556
 #, c-format
-msgid "Invalid set definition '%*s'"
-msgstr "'%*s' multzoaren definizioa baliogabea"
+#| msgid "Invalid set definition '%*s'"
+msgid "Invalid set definition “%*s”"
+msgstr "Baliogabeko “%*s“ multzoaren definizioa"
 
-#: ../json-glib/json-path.c:608
+#: json-glib/json-path.c:609
 #, c-format
-msgid "Invalid slice definition '%*s'"
-msgstr "Baliogabeko '%*s' definizio zatia"
+#| msgid "Invalid slice definition '%*s'"
+msgid "Invalid slice definition “%*s”"
+msgstr "Baliogabeko “%*s“ definizio zatia"
 
-#: ../json-glib/json-path.c:636
+#: json-glib/json-path.c:637
 #, c-format
-msgid "Invalid array index definition '%*s'"
-msgstr "Baliogabeko '%*s' matrizearen indizearen definizioa"
+#| msgid "Invalid array index definition '%*s'"
+msgid "Invalid array index definition “%*s”"
+msgstr "Baliogabeko “%*s“ matrizearen indizearen definizioa"
 
-#: ../json-glib/json-path.c:655
+#: json-glib/json-path.c:656
 #, c-format
-msgid "Invalid first character '%c'"
-msgstr "Aurreneko '%c' karakterea baliogabea"
+#| msgid "Invalid first character '%c'"
+msgid "Invalid first character “%c”"
+msgstr "Aurreneko “%c“ karakterea baliogabea"
 
-#: ../json-glib/json-reader.c:456
+#: json-glib/json-reader.c:474
 #, c-format
+#| msgid ""
+#| "The current node is of type '%s', but an array or an object was expected."
 msgid ""
-"The current node is of type '%s', but an array or an object was expected."
-msgstr "Uneko nodoa '%s' motakoa da, baina matrize edo objektu bat espero zen."
+"The current node is of type “%s”, but an array or an object was expected."
+msgstr "Uneko nodoa “%s“ motakoa da, baina matrize edo objektu bat espero zen."
 
-#: ../json-glib/json-reader.c:468
+#: json-glib/json-reader.c:486
 #, c-format
+#| msgid ""
+#| "The index '%d' is greater than the size of the array at the current "
+#| "position."
 msgid ""
-"The index '%d' is greater than the size of the array at the current position."
-msgstr "'%d' indizea uneko posizioko matrizearen tamaina baino handiagoa da."
+"The index “%d” is greater than the size of the array at the current position."
+msgstr "“%d“ indizea uneko posizioko matrizearen tamaina baino handiagoa da."
 
-#: ../json-glib/json-reader.c:485
+#: json-glib/json-reader.c:503
 #, c-format
+#| msgid ""
+#| "The index '%d' is greater than the size of the object at the current "
+#| "position."
 msgid ""
-"The index '%d' is greater than the size of the object at the current "
+"The index “%d” is greater than the size of the object at the current "
 "position."
-msgstr "'%d' indizea uneko posizioko objektuaren tamaina baino handiagoa da ."
+msgstr "“%d“ indizea uneko posizioko objektuaren tamaina baino handiagoa da ."
 
-#: ../json-glib/json-reader.c:570 ../json-glib/json-reader.c:724
-#: ../json-glib/json-reader.c:775 ../json-glib/json-reader.c:813
-#: ../json-glib/json-reader.c:851 ../json-glib/json-reader.c:889
-#: ../json-glib/json-reader.c:927 ../json-glib/json-reader.c:972
-#: ../json-glib/json-reader.c:1008 ../json-glib/json-reader.c:1034
+#: json-glib/json-reader.c:587 json-glib/json-reader.c:751
+#: json-glib/json-reader.c:802 json-glib/json-reader.c:840
+#: json-glib/json-reader.c:878 json-glib/json-reader.c:916
+#: json-glib/json-reader.c:954 json-glib/json-reader.c:999
+#: json-glib/json-reader.c:1035 json-glib/json-reader.c:1061
 msgid "No node available at the current position"
 msgstr "Ez dago nodorik erabilgarri uneko posizioan"
 
-#: ../json-glib/json-reader.c:577
+#: json-glib/json-reader.c:594
 #, c-format
-msgid "The current position holds a '%s' and not an array"
-msgstr "Uneko posizioak '%s' dauka, eta ez matrize bat"
+#| msgid "The current position holds a '%s' and not an array"
+msgid "The current position holds a “%s” and not an array"
+msgstr "Uneko posizioak “%s“ dauka, eta ez matrize bat"
 
-#: ../json-glib/json-reader.c:640
+#: json-glib/json-reader.c:670
 #, c-format
-msgid "The current node is of type '%s', but an object was expected."
-msgstr "Uneko nodoa '%s' motakoa da, baina objektu bat espero zen."
+#| msgid "The current node is of type '%s', but an object was expected."
+msgid "The current node is of type “%s”, but an object was expected."
+msgstr "Uneko nodoa “%s“ motakoa da, baina objektu bat espero zen."
 
-#: ../json-glib/json-reader.c:647
+#: json-glib/json-reader.c:677
 #, c-format
-msgid "The member '%s' is not defined in the object at the current position."
-msgstr "'%s' kidea ez dago uneko posizioko objektuan definituta."
+#| msgid ""
+#| "The member '%s' is not defined in the object at the current position."
+msgid "The member “%s” is not defined in the object at the current position."
+msgstr "“%s“ kidea ez dago uneko posizioko objektuan definituta."
 
-#: ../json-glib/json-reader.c:731 ../json-glib/json-reader.c:782
+#: json-glib/json-reader.c:758 json-glib/json-reader.c:809
 #, c-format
-msgid "The current position holds a '%s' and not an object"
-msgstr "Uneko posizioak '%s' dauka, baina ez objektu bat"
+#| msgid "The current position holds a '%s' and not an object"
+msgid "The current position holds a “%s” and not an object"
+msgstr "Uneko posizioak “%s“ dauka, baina ez objektu bat"
 
-#: ../json-glib/json-reader.c:822 ../json-glib/json-reader.c:860
-#: ../json-glib/json-reader.c:898 ../json-glib/json-reader.c:936
-#: ../json-glib/json-reader.c:981
+#: json-glib/json-reader.c:849 json-glib/json-reader.c:887
+#: json-glib/json-reader.c:925 json-glib/json-reader.c:963
+#: json-glib/json-reader.c:1008
 #, c-format
-msgid "The current position holds a '%s' and not a value"
-msgstr "Uneko posizioak '%s' dauka, baina ez balio bat"
+#| msgid "The current position holds a '%s' and not a value"
+msgid "The current position holds a “%s” and not a value"
+msgstr "Uneko posizioak “%s“ dauka, baina ez balio bat"
 
-#: ../json-glib/json-reader.c:944
+#: json-glib/json-reader.c:971
 msgid "The current position does not hold a string type"
 msgstr "Uneko posizioak ez dauka kate motakorik"
 
