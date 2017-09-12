@@ -39,7 +39,7 @@ gnome.gtkdoc('json-glib',
              install: true)
 
 xsltproc = find_program('xsltproc', required: false)
-if get_option('enable-man') and xsltproc.found()
+if xsltproc.found()
   xlstproc_flags = [
     '--nonet',
     '--stringparam', 'man.output.quietly', '1',

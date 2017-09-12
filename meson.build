@@ -164,6 +164,6 @@ subdir('json-glib')
 
 subdir('po')
 
-if get_option('enable-gtk-doc')
+if get_option('docs')
   subdir('doc')
 endif
