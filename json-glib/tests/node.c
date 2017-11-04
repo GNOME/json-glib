@@ -1,6 +1,4 @@
-#include <glib.h>
-#include <json-glib/json-glib.h>
-#include <string.h>
+#include "json-test-utils.h"
 
 static void
 test_init_int (void)
@@ -19,7 +17,7 @@ test_init_double (void)
   JsonNode *node = json_node_new (JSON_NODE_VALUE);
 
   json_node_set_double (node, 3.14159);
-  g_assert_cmpfloat (json_node_get_double (node), ==, 3.14159);
+  json_assert_fuzzy_equals (json_node_get_double (node), 3.14159, 0.00001);
 
   json_node_free (node);
 }
@@ -119,13 +117,13 @@ test_get_int (void)
 
   json_node_set_int (node, 0);
   g_assert_cmpint (json_node_get_int (node), ==, 0);
-  g_assert_cmpfloat (json_node_get_double (node), ==, 0.0);
+  json_assert_almost_equals (json_node_get_double (node), 0.0);
   g_assert (!json_node_get_boolean (node));
   g_assert (!json_node_is_null (node));
 
   json_node_set_int (node, 42);
   g_assert_cmpint (json_node_get_int (node), ==, 42);
-  g_assert_cmpfloat (json_node_get_double (node), ==, 42.0);
+  json_assert_almost_equals (json_node_get_double (node), 42.0);
   g_assert (json_node_get_boolean (node));
   g_assert (!json_node_is_null (node));
 
@@ -138,7 +136,7 @@ test_get_double (void)
   JsonNode *node = json_node_new (JSON_NODE_VALUE);
 
   json_node_set_double (node, 3.14);
-  g_assert_cmpfloat (json_node_get_double (node), ==, 3.14);
+  json_assert_fuzzy_equals (json_node_get_double (node), 3.14, 0.001);
   g_assert_cmpint (json_node_get_int (node), ==, 3);
   g_assert (json_node_get_boolean (node));
 
@@ -232,9 +230,9 @@ test_gvalue_autopromotion (void)
     g_print ("Expecting a gdouble, got a %s\n", g_type_name (G_VALUE_TYPE (&check))); 
 
   g_assert_cmpint (G_VALUE_TYPE (&check), ==, G_TYPE_DOUBLE);
-  g_assert_cmpfloat ((float) g_value_get_double (&check), ==, 3.14159f);
+  json_assert_fuzzy_equals (g_value_get_double (&check), 3.14159, 0.00001);
   g_assert_cmpint (G_VALUE_TYPE (&value), !=, G_VALUE_TYPE (&check));
-  g_assert_cmpfloat ((gdouble) g_value_get_float (&value), ==, g_value_get_double (&check));
+  json_assert_almost_equals (g_value_get_float (&value), g_value_get_double (&check));
 
   g_value_unset (&value);
   g_value_unset (&check);
