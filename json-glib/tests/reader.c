@@ -1,9 +1,4 @@
-#include <stdlib.h>
-#include <stdio.h>
-
-#include <glib.h>
-
-#include <json-glib/json-glib.h>
+#include "json-test-utils.h"
 
 static const gchar *test_base_array_data =
 "[ 0, true, null, \"foo\", 3.14, [ false ], { \"bar\" : 42 } ]";
@@ -78,7 +73,7 @@ test_base_object (void)
   g_assert (json_reader_get_error (reader) == NULL);
 
   json_reader_read_member (reader, "double");
-  g_assert_cmpfloat (json_reader_get_double_value (reader), ==, 42.47);
+  json_assert_fuzzy_equals (json_reader_get_double_value (reader), 42.47, 0.01);
   json_reader_end_element (reader);
 
   g_object_unref (reader);

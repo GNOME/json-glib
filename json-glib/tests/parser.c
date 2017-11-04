@@ -1,11 +1,5 @@
-#include "config.h"
-
+#include "json-test-utils.h"
 #include <stdlib.h>
-#include <stdio.h>
-
-#include <glib.h>
-
-#include <json-glib/json-glib.h>
 
 static const gchar *test_empty_string = "";
 static const gchar *test_empty_array_string = "[ ]";
@@ -38,13 +32,13 @@ verify_string_value (JsonNode *node)
 static void
 verify_double_value (JsonNode *node)
 {
-  g_assert_cmpfloat (10.2e3, ==, json_node_get_double (node));
+  json_assert_fuzzy_equals (10.2e3, json_node_get_double (node), 0.1);
 }
 
 static void
 verify_negative_double_value (JsonNode *node)
 {
-  g_assert_cmpfloat (-3.14, ==, json_node_get_double (node));
+  json_assert_fuzzy_equals (-3.14, json_node_get_double (node), 0.01);
 }
 
 static const struct {

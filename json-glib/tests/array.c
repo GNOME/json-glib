@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include <glib.h>
-#include <json-glib/json-glib.h>
+#include "json-test-utils.h"
 
 static void
 test_empty_array (void)
@@ -37,7 +32,7 @@ test_add_element (void)
 
   json_array_add_double_element (array, 3.14);
   g_assert_cmpint (json_array_get_length (array), ==, 3);
-  g_assert_cmpfloat (json_array_get_double_element (array, 2), ==, 3.14);
+  json_assert_fuzzy_equals (json_array_get_double_element (array, 2), 3.14, 0.001);
 
   json_array_add_boolean_element (array, TRUE);
   g_assert_cmpint (json_array_get_length (array), ==, 4);
