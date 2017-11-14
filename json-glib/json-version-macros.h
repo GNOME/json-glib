@@ -47,6 +47,8 @@
 
 #define JSON_VERSION_1_4        (G_ENCODE_VERSION (1, 4))
 
+#define JSON_VERSION_1_6        (G_ENCODE_VERSION (1, 6))
+
 /* evaluates to the current stable version; for development cycles,
  * this means the next stable target
  */
@@ -122,6 +124,7 @@
 
 /* XXX: Every new stable minor release should add a set of macros here */
 
+/* 1.0 */
 #if JSON_VERSION_MIN_REQUIRED >= JSON_VERSION_1_0
 # define JSON_DEPRECATED_IN_1_0                JSON_DEPRECATED
 # define JSON_DEPRECATED_IN_1_0_FOR(f)         JSON_DEPRECATED_FOR(f)
@@ -136,6 +139,7 @@
 # define JSON_AVAILABLE_IN_1_0                 _JSON_EXTERN
 #endif
 
+/* 1.2 */
 #if JSON_VERSION_MIN_REQUIRED >= JSON_VERSION_1_2
 # define JSON_DEPRECATED_IN_1_2                JSON_DEPRECATED
 # define JSON_DEPRECATED_IN_1_2_FOR(f)         JSON_DEPRECATED_FOR(f)
@@ -150,6 +154,7 @@
 # define JSON_AVAILABLE_IN_1_2                 _JSON_EXTERN
 #endif
 
+/* 1.4 */
 #if JSON_VERSION_MIN_REQUIRED >= JSON_VERSION_1_4
 # define JSON_DEPRECATED_IN_1_4                JSON_DEPRECATED
 # define JSON_DEPRECATED_IN_1_4_FOR(f)         JSON_DEPRECATED_FOR(f)
@@ -162,6 +167,21 @@
 # define JSON_AVAILABLE_IN_1_4                 JSON_UNAVAILABLE(1, 4)
 #else
 # define JSON_AVAILABLE_IN_1_4                 _JSON_EXTERN
+#endif
+
+/* 1.6 */
+#if JSON_VERSION_MIN_REQUIRED >= JSON_VERSION_1_6
+# define JSON_DEPRECATED_IN_1_6                JSON_DEPRECATED
+# define JSON_DEPRECATED_IN_1_6_FOR(f)         JSON_DEPRECATED_FOR(f)
+#else
+# define JSON_DEPRECATED_IN_1_6                _JSON_EXTERN
+# define JSON_DEPRECATED_IN_1_6_FOR(f)         _JSON_EXTERN
+#endif
+
+#if JSON_VERSION_MAX_ALLOWED < JSON_VERSION_1_6
+# define JSON_AVAILABLE_IN_1_6                 JSON_UNAVAILABLE(1, 6)
+#else
+# define JSON_AVAILABLE_IN_1_6                 _JSON_EXTERN
 #endif
 
 #endif /* __JSON_VERSION_MACROS_H__ */

@@ -1,4 +1,4 @@
-project('json-glib', 'c', version: '1.4.3',
+project('json-glib', 'c', version: '1.5.1',
         license: 'LGPLv2.1+',
         default_options: [
           'warning_level=1',
