@@ -579,10 +579,50 @@ json_object_get_member (JsonObject  *object,
   return object_get_member_internal (object, member_name);
 }
 
+#define JSON_OBJECT_GET(ret_type,type_name) \
+ret_type \
+json_object_get_ ##type_name## _member (JsonObject *object, \
+                                        const char *member_name) \
+{ \
+  g_return_val_if_fail (object != NULL, (ret_type) 0); \
+  g_return_val_if_fail (member_name != NULL, (ret_type) 0); \
+\
+  JsonNode *node = object_get_member_internal (object, member_name); \
+  g_return_val_if_fail (node != NULL, (ret_type) 0); \
+\
+  if (JSON_NODE_HOLDS_NULL (node)) \
+    return (ret_type) 0; \
+\
+  g_return_val_if_fail (JSON_NODE_TYPE (node) == JSON_NODE_VALUE, (ret_type) 0); \
+\
+  return json_node_get_ ##type_name (node); \
+}
+
+#define JSON_OBJECT_GET_DEFAULT(ret_type,type_name) \
+ret_type \
+json_object_get_ ##type_name## _member_with_default (JsonObject *object, \
+                                                     const char *member_name, \
+                                                     ret_type    default_value) \
+{ \
+  g_return_val_if_fail (object != NULL, default_value); \
+  g_return_val_if_fail (member_name != NULL, default_value); \
+\
+  JsonNode *node = object_get_member_internal (object, member_name); \
+  if (node == NULL) \
+    return default_value; \
+\
+  if (JSON_NODE_HOLDS_NULL (node)) \
+    return default_value; \
+\
+  g_return_val_if_fail (JSON_NODE_TYPE (node) == JSON_NODE_VALUE, default_value); \
+\
+  return json_node_get_ ##type_name (node); \
+}
+
 /**
  * json_object_get_int_member:
  * @object: a #JsonObject
- * @member_name: the name of the member
+ * @member_name: the name of the @object member
  *
  * Convenience function that retrieves the integer value
  * stored in @member_name of @object
@@ -593,21 +633,26 @@ json_object_get_member (JsonObject  *object,
  *
  * Since: 0.8
  */
-gint64
-json_object_get_int_member (JsonObject  *object,
-                            const gchar *member_name)
-{
-  JsonNode *node;
+JSON_OBJECT_GET (gint64, int)
 
-  g_return_val_if_fail (object != NULL, 0);
-  g_return_val_if_fail (member_name != NULL, 0);
-
-  node = object_get_member_internal (object, member_name);
-  g_return_val_if_fail (node != NULL, 0);
-  g_return_val_if_fail (JSON_NODE_TYPE (node) == JSON_NODE_VALUE, 0);
-
-  return json_node_get_int (node);
-}
+/**
+ * json_object_get_int_member_with_default:
+ * @object: a #JsonObject
+ * @member_name: the name of the @object member
+ * @default_value: the value to return if @member_name is not valid
+ *
+ * Convenience function that retrieves the integer value
+ * stored in @member_name of @object.
+ *
+ * If @member_name does not exist, does not contain a scalar value,
+ * or contains `null`, then @default_value is returned instead.
+ *
+ * Returns: the integer value of the object's member, or the
+ *   given default
+ *
+ * Since: 1.6
+ */
+JSON_OBJECT_GET_DEFAULT (gint64, int)
 
 /**
  * json_object_get_double_member:
@@ -623,21 +668,26 @@ json_object_get_int_member (JsonObject  *object,
  *
  * Since: 0.8
  */
-gdouble
-json_object_get_double_member (JsonObject  *object,
-                               const gchar *member_name)
-{
-  JsonNode *node;
+JSON_OBJECT_GET (gdouble, double)
 
-  g_return_val_if_fail (object != NULL, 0.0);
-  g_return_val_if_fail (member_name != NULL, 0.0);
-
-  node = object_get_member_internal (object, member_name);
-  g_return_val_if_fail (node != NULL, 0.0);
-  g_return_val_if_fail (JSON_NODE_TYPE (node) == JSON_NODE_VALUE, 0.0);
-
-  return json_node_get_double (node);
-}
+/**
+ * json_object_get_double_member_with_default:
+ * @object: a #JsonObject
+ * @member_name: the name of the @object member
+ * @default_value: the value to return if @member_name is not valid
+ *
+ * Convenience function that retrieves the floating point value
+ * stored in @member_name of @object.
+ *
+ * If @member_name does not exist, does not contain a scalar value,
+ * or contains `null`, then @default_value is returned instead.
+ *
+ * Returns: the floating point value of the object's member, or the
+ *   given default
+ *
+ * Since: 1.6
+ */
+JSON_OBJECT_GET_DEFAULT (double, double)
 
 /**
  * json_object_get_boolean_member:
@@ -653,21 +703,61 @@ json_object_get_double_member (JsonObject  *object,
  *
  * Since: 0.8
  */
-gboolean
-json_object_get_boolean_member (JsonObject  *object,
-                                const gchar *member_name)
-{
-  JsonNode *node;
+JSON_OBJECT_GET (gboolean, boolean)
 
-  g_return_val_if_fail (object != NULL, FALSE);
-  g_return_val_if_fail (member_name != NULL, FALSE);
+/**
+ * json_object_get_boolean_member_with_default:
+ * @object: a #JsonObject
+ * @member_name: the name of the @object member
+ * @default_value: the value to return if @member_name is not valid
+ *
+ * Convenience function that retrieves the boolean value
+ * stored in @member_name of @object.
+ *
+ * If @member_name does not exist, does not contain a scalar value,
+ * or contains `null`, then @default_value is returned instead.
+ *
+ * Returns: the boolean value of the object's member, or the
+ *   given default
+ *
+ * Since: 1.6
+ */
+JSON_OBJECT_GET_DEFAULT (gboolean, boolean)
 
-  node = object_get_member_internal (object, member_name);
-  g_return_val_if_fail (node != NULL, FALSE);
-  g_return_val_if_fail (JSON_NODE_TYPE (node) == JSON_NODE_VALUE, FALSE);
+/**
+ * json_object_get_string_member:
+ * @object: a #JsonObject
+ * @member_name: the name of the member
+ *
+ * Convenience function that retrieves the string value
+ * stored in @member_name of @object
+ *
+ * See also: json_object_get_member()
+ *
+ * Return value: the string value of the object's member
+ *
+ * Since: 0.8
+ */
+JSON_OBJECT_GET (const gchar *, string)
 
-  return json_node_get_boolean (node);
-}
+/**
+ * json_object_get_string_member_with_default:
+ * @object: a #JsonObject
+ * @member_name: the name of the @object member
+ * @default_value: the value to return if @member_name is not valid
+ *
+ * Convenience function that retrieves the string value
+ * stored in @member_name of @object.
+ *
+ * If @member_name does not exist, does not contain a scalar value,
+ * or contains `null`, then @default_value is returned instead.
+ *
+ * Returns: the string value of the object's member, or the
+ *   given default
+ *
+ * Since: 1.6
+ */
+JSON_OBJECT_GET_DEFAULT (const char *, string)
 
 /**
  * json_object_get_null_member:
@@ -705,39 +795,6 @@ json_object_get_null_member (JsonObject  *object,
     return json_node_get_array (node) == NULL;
 
   return FALSE;
-}
-
-/**
- * json_object_get_string_member:
- * @object: a #JsonObject
- * @member_name: the name of the member
- *
- * Convenience function that retrieves the string value
- * stored in @member_name of @object
- *
- * See also: json_object_get_member()
- *
- * Return value: the string value of the object's member
- *
- * Since: 0.8
- */
-const gchar *
-json_object_get_string_member (JsonObject  *object,
-                               const gchar *member_name)
-{
-  JsonNode *node;
-
-  g_return_val_if_fail (object != NULL, NULL);
-  g_return_val_if_fail (member_name != NULL, NULL);
-
-  node = object_get_member_internal (object, member_name);
-  g_return_val_if_fail (node != NULL, NULL);
-  g_return_val_if_fail (JSON_NODE_HOLDS_VALUE (node) || JSON_NODE_HOLDS_NULL (node), NULL);
-
-  if (JSON_NODE_HOLDS_NULL (node))
-    return NULL;
-
-  return json_node_get_string (node);
 }
 
 /**
