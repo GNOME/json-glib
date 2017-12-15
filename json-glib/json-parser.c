@@ -746,6 +746,7 @@ json_parse_object (JsonParser   *parser,
             {
               priv->error_code = JSON_PARSER_ERROR_TRAILING_COMMA;
 
+              g_free (name);
               json_object_unref (object);
               json_node_unref (member);
               json_node_unref (priv->current_node);
@@ -758,6 +759,7 @@ json_parse_object (JsonParser   *parser,
         {
           priv->error_code = JSON_PARSER_ERROR_MISSING_COMMA;
 
+          g_free (name);
           json_object_unref (object);
           json_node_unref (member);
           json_node_unref (priv->current_node);
