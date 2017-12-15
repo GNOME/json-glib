@@ -215,6 +215,7 @@ path_expressions_invalid (gconstpointer data)
   g_assert_error (error, JSON_PATH_ERROR, code);
 
   g_object_unref (path);
+  g_clear_error (&error);
 }
 
 static void
