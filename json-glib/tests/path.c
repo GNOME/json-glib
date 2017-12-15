@@ -204,17 +204,14 @@ path_expressions_invalid (gconstpointer data)
   const char *desc = test_expressions[index_].desc;
   const JsonPathError code = test_expressions[index_].error_code;
 
-  JsonPath *path = json_path_new ();
-  GError *error = NULL;
+  g_autoptr(JsonPath) path = json_path_new ();
+  g_autoptr(GError) error = NULL;
 
   if (g_test_verbose ())
     g_print ("* %s ('%s')\n", desc, expr);
 
-
   g_assert (!json_path_compile (path, expr, &error));
   g_assert_error (error, JSON_PATH_ERROR, code);
-
-  g_object_unref (path);
 }
 
 static void

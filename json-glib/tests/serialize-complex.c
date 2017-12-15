@@ -42,6 +42,7 @@ struct _TestObjectClass
 };
 
 GType test_object_get_type (void);
+G_DEFINE_AUTOPTR_CLEANUP_FUNC (TestObject, g_object_unref)
 
 /*** implementation ***/
 
@@ -257,17 +258,17 @@ test_object_init (TestObject *object)
 static void
 test_serialize (void)
 {
-  TestObject *obj = g_object_new (TEST_TYPE_OBJECT,
-                                  "foo", 47,
-                                  "bar", FALSE,
-                                  "baz", "Hello, World!",
-                                  "meh", 0.5,
-                                  NULL);
-  JsonParser *parser = json_parser_new ();
-  GError *error = NULL;
+  g_autoptr(TestObject) obj = g_object_new (TEST_TYPE_OBJECT,
+                                            "foo", 47,
+                                            "bar", FALSE,
+                                            "baz", "Hello, World!",
+                                            "meh", 0.5,
+                                            NULL);
+  g_autoptr(JsonParser) parser = NULL;
+  g_autoptr(GError) error = NULL;
   JsonObject *object;
   JsonNode *node;
-  gchar *data;
+  g_autofree gchar *data = NULL;
   gsize len;
 
   data = json_gobject_to_data (G_OBJECT (obj), &len);
@@ -291,10 +292,6 @@ test_serialize (void)
 
   /* blah is read-only */
   g_assert (json_object_has_member (object, "blah"));
-
-  g_free (data);
-  g_object_unref (parser);
-  g_object_unref (obj);
 }
 
 int

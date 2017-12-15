@@ -83,9 +83,9 @@ test_base_object (void)
 static void
 test_base_array (void)
 {
-  JsonParser *parser = json_parser_new ();
-  JsonReader *reader = json_reader_new (NULL);
-  GError *error = NULL;
+  g_autoptr(JsonParser) parser = json_parser_new ();
+  g_autoptr(JsonReader) reader = json_reader_new (NULL);
+  g_autoptr(GError) error = NULL;
 
   json_parser_load_from_data (parser, test_base_array_data, -1, &error);
   g_assert (error == NULL);
@@ -131,8 +131,6 @@ test_base_array (void)
                   JSON_READER_ERROR_INVALID_INDEX);
   json_reader_end_element (reader);
   g_assert (json_reader_get_error (reader) == NULL);
-
-  g_object_unref (reader);
 }
 
 static void
