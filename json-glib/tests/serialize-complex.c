@@ -263,7 +263,7 @@ test_serialize (void)
                                   "baz", "Hello, World!",
                                   "meh", 0.5,
                                   NULL);
-  JsonParser *parser = json_parser_new ();
+  JsonParser *parser = NULL;
   GError *error = NULL;
   JsonObject *object;
   JsonNode *node;
@@ -295,6 +295,7 @@ test_serialize (void)
   g_free (data);
   g_object_unref (parser);
   g_object_unref (obj);
+  g_clear_error (&error);
 }
 
 int
