@@ -1179,9 +1179,11 @@ json_parser_load_from_data (JsonParser   *parser,
  * json_parser_get_root:
  * @parser: a #JsonParser
  *
- * Retrieves the top level node from the parsed JSON stream.
+ * Retrieves the top level node from the parsed JSON stream. If the parser input
+ * was an empty string, or if parsing failed, this will be %NULL. It will also
+ * be %NULL if it has been stolen using json_parser_steal_root().
  *
- * Return value: (transfer none): the root #JsonNode . The returned
+ * Return value: (transfer none) (nullable): the root #JsonNode . The returned
  *   node is owned by the #JsonParser and should never be modified
  *   or freed.
  */
@@ -1191,7 +1193,8 @@ json_parser_get_root (JsonParser *parser)
   g_return_val_if_fail (JSON_IS_PARSER (parser), NULL);
 
   /* Sanity check. */
-  g_return_val_if_fail (!parser->priv->is_immutable ||
+  g_return_val_if_fail (parser->priv->root == NULL ||
+                        !parser->priv->is_immutable ||
                         json_node_is_immutable (parser->priv->root), NULL);
 
   return parser->priv->root;
@@ -1201,9 +1204,10 @@ json_parser_get_root (JsonParser *parser)
  * json_parser_steal_root:
  * @parser: a #JsonParser
  *
- * Steals the top level node from the parsed JSON stream.
+ * Steals the top level node from the parsed JSON stream. This will be %NULL
+ * in the same situations as json_parser_get_root() returns %NULL.
  *
- * Returns: (transfer full): the top level #JsonNode
+ * Returns: (transfer full) (nullable): the top level #JsonNode
  *
  * Since: 1.4
  */
@@ -1213,6 +1217,11 @@ json_parser_steal_root (JsonParser *parser)
   JsonParserPrivate *priv = json_parser_get_instance_private (parser);
 
   g_return_val_if_fail (JSON_IS_PARSER (parser), NULL);
+
+  /* Sanity check. */
+  g_return_val_if_fail (parser->priv->root == NULL ||
+                        !parser->priv->is_immutable ||
+                        json_node_is_immutable (parser->priv->root), NULL);
 
   return g_steal_pointer (&priv->root);
 }
