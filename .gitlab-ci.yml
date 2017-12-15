@@ -11,5 +11,5 @@ build-json-glib:
   script:
   - meson _build .
   - ninja -C _build
-  - mesontest -C _build
+  - ninja -C _build test
   - ninja -C _build install
