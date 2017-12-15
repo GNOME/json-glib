@@ -71,6 +71,25 @@ test_set_member (void)
 }
 
 static void
+test_get_member_default (void)
+{
+  JsonObject *object = json_object_new ();
+
+  json_object_set_int_member (object, "foo", 42);
+  json_object_set_boolean_member (object, "bar", TRUE);
+  json_object_set_string_member (object, "hello", "world");
+
+  g_assert_cmpint (json_object_get_int_member_with_default (object, "foo", 47), ==, 42);
+  g_assert_true (json_object_get_boolean_member_with_default (object, "bar", FALSE));
+  g_assert_cmpstr (json_object_get_string_member_with_default (object, "hello", "wisconsin"), ==, "world");
+
+  g_assert_cmpint (json_object_get_int_member_with_default (object, "no", 4), ==, 4);
+  g_assert_cmpstr (json_object_get_string_member_with_default (object, "doesNotExist", "indeed"), ==, "indeed");
+
+  json_object_unref (object);
+}
+
+static void
 test_remove_member (void)
 {
   JsonObject *object = json_object_new ();
@@ -204,6 +223,7 @@ main (int   argc,
   g_test_add_func ("/object/empty-object", test_empty_object);
   g_test_add_func ("/object/add-member", test_add_member);
   g_test_add_func ("/object/set-member", test_set_member);
+  g_test_add_func ("/object/get-member-default", test_get_member_default);
   g_test_add_func ("/object/remove-member", test_remove_member);
   g_test_add_func ("/object/foreach-member", test_foreach_member);
   g_test_add_func ("/object/iter", test_iter);
