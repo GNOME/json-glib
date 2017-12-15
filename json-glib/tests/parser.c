@@ -144,13 +144,9 @@ static guint n_test_assignments    = G_N_ELEMENTS (test_assignments);
 static guint n_test_unicode        = G_N_ELEMENTS (test_unicode);
 
 static void
-test_empty (void)
+test_empty_with_parser (JsonParser *parser)
 {
-  JsonParser *parser;
   GError *error = NULL;
-
-  parser = json_parser_new ();
-  g_assert (JSON_IS_PARSER (parser));
 
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with empty string...\n");
@@ -170,7 +166,23 @@ test_empty (void)
 
       g_assert (NULL == json_parser_get_root (parser));
     }
+}
 
+static void
+test_empty (void)
+{
+  JsonParser *parser;
+
+  /* Check with and without immutability enabled, as there have been bugs with
+   * NULL root nodes on immutable parsers. */
+  parser = json_parser_new ();
+  g_assert (JSON_IS_PARSER (parser));
+  test_empty_with_parser (parser);
+  g_object_unref (parser);
+
+  parser = json_parser_new_immutable ();
+  g_assert (JSON_IS_PARSER (parser));
+  test_empty_with_parser (parser);
   g_object_unref (parser);
 }
 
