@@ -133,6 +133,8 @@ test_base_array (void)
   g_assert (json_reader_get_error (reader) == NULL);
 
   g_object_unref (reader);
+  g_object_unref (parser);
+  g_clear_error (&error);
 }
 
 static void
