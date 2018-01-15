@@ -567,7 +567,7 @@ object_get_member_internal (JsonObject  *object,
  * a #JsonObject.
  *
  * Return value: (transfer none) (nullable): a pointer to the node for the
- *   requested object member, or %NULL
+ *   requested object member, or %NULL if it does not exist.
  */
 JsonNode *
 json_object_get_member (JsonObject  *object,
@@ -625,9 +625,10 @@ json_object_get_ ##type_name## _member_with_default (JsonObject *object, \
  * @member_name: the name of the @object member
  *
  * Convenience function that retrieves the integer value
- * stored in @member_name of @object
+ * stored in @member_name of @object. It is an error to specify a
+ * @member_name which does not exist.
  *
- * See also: json_object_get_member()
+ * See also: json_object_get_member() and json_object_has_member()
  *
  * Return value: the integer value of the object's member
  *
@@ -660,9 +661,10 @@ JSON_OBJECT_GET_DEFAULT (gint64, int)
  * @member_name: the name of the member
  *
  * Convenience function that retrieves the floating point value
- * stored in @member_name of @object
+ * stored in @member_name of @object. It is an error to specify a
+ * @member_name which does not exist.
  *
- * See also: json_object_get_member()
+ * See also: json_object_get_member() and json_object_has_member()
  *
  * Return value: the floating point value of the object's member
  *
@@ -695,9 +697,10 @@ JSON_OBJECT_GET_DEFAULT (double, double)
  * @member_name: the name of the member
  *
  * Convenience function that retrieves the boolean value
- * stored in @member_name of @object
+ * stored in @member_name of @object. It is an error to specify a
+ * @member_name which does not exist.
  *
- * See also: json_object_get_member()
+ * See also: json_object_get_member() and json_object_has_member()
  *
  * Return value: the boolean value of the object's member
  *
@@ -730,9 +733,10 @@ JSON_OBJECT_GET_DEFAULT (gboolean, boolean)
  * @member_name: the name of the member
  *
  * Convenience function that retrieves the string value
- * stored in @member_name of @object
+ * stored in @member_name of @object. It is an error to specify a
+ * @member_name that does not exist.
  *
- * See also: json_object_get_member()
+ * See also: json_object_get_member() and json_object_has_member()
  *
  * Return value: the string value of the object's member
  *
@@ -765,9 +769,10 @@ JSON_OBJECT_GET_DEFAULT (const char *, string)
  * @member_name: the name of the member
  *
  * Convenience function that checks whether the value
- * stored in @member_name of @object is null
+ * stored in @member_name of @object is null. It is an error to
+ * specify a @member_name which does not exist.
  *
- * See also: json_object_get_member()
+ * See also: json_object_get_member() and json_object_has_member()
  *
  * Return value: %TRUE if the value is null
  *
@@ -803,9 +808,10 @@ json_object_get_null_member (JsonObject  *object,
  * @member_name: the name of the member
  *
  * Convenience function that retrieves the array
- * stored in @member_name of @object
+ * stored in @member_name of @object. It is an error to specify a
+ * @member_name which does not exist.
  *
- * See also: json_object_get_member()
+ * See also: json_object_get_member() and json_object_has_member()
  *
  * Return value: (transfer none): the array inside the object's member
  *
@@ -839,7 +845,7 @@ json_object_get_array_member (JsonObject  *object,
  * stored in @member_name of @object. It is an error to specify a @member_name
  * which does not exist.
  *
- * See also: json_object_get_member()
+ * See also: json_object_get_member() and json_object_has_member()
  *
  * Return value: (transfer none) (nullable): the object inside the object’s
  *    member, or %NULL if the value for the member is `null`
