@@ -23,8 +23,14 @@
 
 #include "config.h"
 
-#ifdef HAVE_UNISTD_H
+#ifdef G_OS_UNIX
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#endif
+#include <fcntl.h>
+#ifdef G_OS_WIN32
+#include <windows.h>
 #endif
 
 #include <stdlib.h>
@@ -34,6 +40,7 @@
 
 #include <glib.h>
 #include <glib/gi18n.h>
+#include <glib/gstdio.h>
 #include <json-glib/json-glib.h>
 
 #if defined (G_OS_WIN32) && !defined (HAVE_UNISTD_H)
@@ -43,13 +50,15 @@
 #endif
 
 static char **files = NULL;
+static char *output = NULL;
 static gboolean prettify = FALSE;
 static int indent_spaces = 2;
 
 static GOptionEntry entries[] = {
   { "prettify", 'p', 0, G_OPTION_ARG_NONE, &prettify, N_("Prettify output"), NULL },
-  { "indent-spaces", 'i', 0, G_OPTION_ARG_INT, &indent_spaces, N_("Indentation spaces"), NULL },
-  { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &files, NULL, NULL },
+  { "indent-spaces", 'i', 0, G_OPTION_ARG_INT, &indent_spaces, N_("Indentation spaces"), N_("SPACES") },
+  { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, N_("Output file"), N_("FILE") },
+  { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &files, NULL, N_("FILE…") },
   { NULL },
 };
 
@@ -65,6 +74,7 @@ format (JsonParser    *parser,
   gboolean close_res;
   char *data, *p;
   gsize len;
+  int fd = -1;
 
   error = NULL;
 
@@ -95,10 +105,30 @@ format (JsonParser    *parser,
 
   json_generator_set_root (generator, json_parser_get_root (parser));
   data = json_generator_to_data (generator, &len);
+
+  if (output == NULL)
+    fd = STDOUT_FILENO;
+  else
+    {
+      int sv_errno;
+
+      fd = g_open (output, O_CREAT | O_WRONLY, 0666);
+      if (fd < 0)
+        {
+          sv_errno = errno;
+
+          g_printerr (_("%s: %s: error opening file: %s\n"),
+                      g_get_prgname (), output, g_strerror (sv_errno));
+          res = FALSE;
+          goto out;
+        }
+    }
+
   p = data;
+
   while (len > 0)
     {
-      gssize written = write (STDOUT_FILENO, p, len);
+      gssize written = write (fd, p, len);
 
       if (written == -1 && errno != EINTR)
         {
@@ -114,7 +144,7 @@ format (JsonParser    *parser,
       p += written;
     }
 
-  if (write (STDOUT_FILENO, "\n", 1) < 0)
+  if (write (fd, "\n", 1) < 0)
     g_error ("%s: %s", g_get_prgname (), g_strerror (errno));
 
   g_free (data);
@@ -132,6 +162,9 @@ out:
       res = FALSE;
     }
 
+  if (fd != STDOUT_FILENO)
+    g_close (fd, NULL);
+
   return res;
 }
 
@@ -143,7 +176,6 @@ main (int   argc,
   GError *error = NULL;
   const char *description;
   const char *summary;
-  gchar *param;
   JsonParser *parser;
   JsonGenerator *generator;
   gboolean res;
@@ -155,20 +187,17 @@ main (int   argc,
   bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
   textdomain (GETTEXT_PACKAGE);
 
-  param = g_strdup_printf (("%s..."), _("FILE"));
   /* Translators: this message will appear after the usage string */
   /* and before the list of options.                              */
   summary = _("Format JSON files.");
   description = _("json-glib-format formats JSON resources.");
 
-  context = g_option_context_new (param);
+  context = g_option_context_new (NULL);
   g_option_context_set_summary (context, summary);
   g_option_context_set_description (context, description);
   g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_parse (context, &argc, &argv, &error);
   g_option_context_free (context);
-
-  g_free (param);
 
   if (error != NULL)
     {

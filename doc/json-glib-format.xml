@@ -27,6 +27,7 @@
   <cmdsynopsis>
     <command>json-glib-format</command>
     <arg><option>-h</option>, <option>--help</option></arg>
+    <arg><option>--output</option> <replaceable>FILE</replaceable></arg>
     <arg><option>--prettify</option></arg>
     <arg><option>--indent-spaces</option> <replaceable>SPACES</replaceable></arg>
     <arg choice="plain">URI</arg>
@@ -40,7 +41,7 @@
 <para><command>json-glib-format</command> offers a simple command line
 interface to format JSON data. It reads a list or URIs, applies the
 spacified formatting rules on the JSON data, and outputs the formatted
-JSON to the standard output.</para>
+JSON to the standard output or to a file.</para>
 
 <para>
 The resources to operate on are specified by the <replaceable>URI</replaceable>
@@ -56,6 +57,14 @@ argument.
 <term><option>-h</option>, <option>--help</option></term>
 <listitem><para>
 Prints help and exits.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>--output</option> <replaceable>FILE</replaceable></term>
+<listitem><para>
+Redirects the output to <replaceable>FILE</replaceable> instead of using
+the standard output.
 </para></listitem>
 </varlistentry>
 
