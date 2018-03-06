@@ -5,7 +5,7 @@ project('json-glib', 'c', version: '1.5.1',
           'buildtype=debugoptimized',
           'c_std=c99',
         ],
-        meson_version: '>= 0.40.1')
+        meson_version: '>= 0.44.0')
 
 # Versioning
 json_version = meson.project_version()
@@ -128,15 +128,9 @@ if get_option('default_library') != 'static'
   endif
 endif
 
-common_cflags = []
-foreach cflag: test_cflags
-  if cc.has_argument(cflag)
-    common_cflags += cflag
-  endif
-endforeach
+common_cflags = cc.get_supported_arguments(test_cflags)
 
 common_ldflags = []
-
 if host_system == 'linux'
   foreach ldflag: [ '-Wl,-Bsymbolic', '-Wl,-z,relro', '-Wl,-z,now', ]
     if cc.has_argument(ldflag)
@@ -161,9 +155,5 @@ python3 = import('python3').find_python()
 gen_installed_test = files('build-aux/gen-installed-test.py')
 
 subdir('json-glib')
-
 subdir('po')
-
-if get_option('docs')
-  subdir('doc')
-endif
+subdir('doc')
