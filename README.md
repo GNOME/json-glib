@@ -45,7 +45,7 @@ To build JSON-GLib just run:
 ```sh
   $ meson _build .
   $ ninja -C _build
-  $ mesontest -C _build
+  $ meson test -C _build
   $ sudo ninja -C _build install
 ```
 
