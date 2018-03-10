@@ -1,15 +1,22 @@
-image: fedora:26
+image: fedora:27
 
 stages:
   - build
 
 before_script:
-  - dnf install -y gcc meson ninja-build gettext gtk-doc glib2-devel
+  - dnf install -y gcc gettext glib2-devel gobject-introspection-devel gtk-doc meson ninja-build
 
 build-json-glib:
   stage: build
   script:
-  - meson _build .
-  - ninja -C _build
-  - ninja -C _build test
-  - ninja -C _build install
+    - meson --prefix /usr -Dman=true _build .
+    - cd _build
+    - ninja
+    - meson test
+  except:
+    - tags
+  artifacts:
+    when: on_failure
+    name: "json-glib-${CI_COMMIT_REF_NAME}"
+    paths:
+      - "${CI_PROJECT_DIR}/_build/meson-logs"
