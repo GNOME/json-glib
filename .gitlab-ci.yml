@@ -20,3 +20,18 @@ build-json-glib:
     name: "json-glib-${CI_COMMIT_REF_NAME}"
     paths:
       - "${CI_PROJECT_DIR}/_build/meson-logs"
+
+dist-json-glib:
+  stage: build
+  only:
+    - tags
+  script:
+    - meson --prefix /usr --buildtype release -Dman=true -Ddocs=true _build .
+    - cd _build
+    - ninja dist
+    - ninja json-glib-doc
+    - tar -c -f "json-glib-docs-${CI_COMMIT_TAG}.tar.xz" -C docs html
+  artifacts:
+    paths:
+      - "${CI_PROJECT_DIR}/_build/json-glib-docs-${CI_COMMIT_TAG}.tar.xz"
+      - "${CI_PROJECT_DIR}/_build/meson-dist/json-glib-*.tar.xz"
