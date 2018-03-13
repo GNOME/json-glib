@@ -4,7 +4,7 @@ stages:
   - build
 
 before_script:
-  - dnf install -y gcc gettext glib2-devel gobject-introspection-devel gtk-doc meson ninja-build
+  - dnf install -y gcc gettext glib2-devel gobject-introspection-devel gtk-doc meson ninja-build redhat-rpm-config
 
 build-json-glib:
   stage: build
