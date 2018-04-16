@@ -7,8 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json-glib json-glib-1-4\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues\n"
-"POT-Creation-Date: 2018-03-13 14:47+0000\n"
-"PO-Revision-Date: 2018-03-16 21:48+0100\n"
+"POT-Creation-Date: 2018-03-16 20:51+0000\n"
+"PO-Revision-Date: 2018-04-16 14:44+0200\n"
+"Last-Translator: \n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
@@ -16,21 +17,37 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"Last-Translator: \n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: json-glib/json-glib-format.c:50
+#: json-glib/json-glib-format.c:58
 msgid "Prettify output"
 msgstr "Uljepšani izlaz"
 
-#: json-glib/json-glib-format.c:51
+#: json-glib/json-glib-format.c:59
 msgid "Indentation spaces"
 msgstr "Poravnanje razmaka"
+
+#: json-glib/json-glib-format.c:59
+msgid "SPACES"
+msgstr "RAZMACI"
+
+#: json-glib/json-glib-format.c:60
+msgid "Output file"
+msgstr "Izlazna datoteka"
+
+#: json-glib/json-glib-format.c:60 json-glib/json-glib-validate.c:115
+msgid "FILE"
+msgstr "DATOTEKA"
+
+#: json-glib/json-glib-format.c:61
+msgid "FILE…"
+msgstr "DATOTEKA…"
 
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:77 json-glib/json-glib-validate.c:63
+#: json-glib/json-glib-format.c:87 json-glib/json-glib-format.c:120
+#: json-glib/json-glib-validate.c:63
 #, c-format
 msgid "%s: %s: error opening file: %s\n"
 msgstr "%s: %s: greška otvaranja datoteke: %s\n"
@@ -38,7 +55,7 @@ msgstr "%s: %s: greška otvaranja datoteke: %s\n"
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:89 json-glib/json-glib-validate.c:75
+#: json-glib/json-glib-format.c:99 json-glib/json-glib-validate.c:75
 #, c-format
 msgid "%s: %s: error parsing file: %s\n"
 msgstr "%s: %s: greška obrade datoteke: %s\n"
@@ -46,7 +63,7 @@ msgstr "%s: %s: greška obrade datoteke: %s\n"
 #. Translators: the first %s is the program name, the
 #. * second one is the URI of the file.
 #.
-#: json-glib/json-glib-format.c:108
+#: json-glib/json-glib-format.c:138
 #, c-format
 msgid "%s: %s: error writing to stdout"
 msgstr "%s: %s: greška zapisivanja u stdout"
@@ -54,22 +71,18 @@ msgstr "%s: %s: greška zapisivanja u stdout"
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:129 json-glib/json-glib-validate.c:87
+#: json-glib/json-glib-format.c:159 json-glib/json-glib-validate.c:87
 #, c-format
 msgid "%s: %s: error closing: %s\n"
 msgstr "%s: %s: greška zatvaranja: %s\n"
 
-#: json-glib/json-glib-format.c:158 json-glib/json-glib-validate.c:115
-msgid "FILE"
-msgstr "DATOTEKA"
-
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
-#: json-glib/json-glib-format.c:161
+#: json-glib/json-glib-format.c:192
 msgid "Format JSON files."
 msgstr "Format JSON datoteka."
 
-#: json-glib/json-glib-format.c:162
+#: json-glib/json-glib-format.c:193
 msgid "json-glib-format formats JSON resources."
 msgstr "json-glib-format formati JSON resursa."
 
@@ -77,12 +90,12 @@ msgstr "json-glib-format formati JSON resursa."
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: json-glib/json-glib-format.c:179 json-glib/json-glib-validate.c:136
+#: json-glib/json-glib-format.c:208 json-glib/json-glib-validate.c:136
 #, c-format
 msgid "Error parsing commandline options: %s\n"
 msgstr "Greška obrade mogućnosti naredbenog redka: %s\n"
 
-#: json-glib/json-glib-format.c:181 json-glib/json-glib-format.c:195
+#: json-glib/json-glib-format.c:210 json-glib/json-glib-format.c:224
 #: json-glib/json-glib-validate.c:138 json-glib/json-glib-validate.c:152
 #, c-format
 msgid "Try “%s --help” for more information."
@@ -92,7 +105,7 @@ msgstr "Pokušajte “%s --help” za više informacija."
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: json-glib/json-glib-format.c:193 json-glib/json-glib-validate.c:150
+#: json-glib/json-glib-format.c:222 json-glib/json-glib-validate.c:150
 #, c-format
 msgid "%s: missing files"
 msgstr "%s: nedostaju datoteke"
