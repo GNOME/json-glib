@@ -5,14 +5,14 @@
 # Cheng Lu <chenglu1990@gmail.com>, 2012.
 # Wylmer Wang <wantinghard@gmail.com>, 2012.
 # Sphinx Jiang <yishanj13@gmail.com>, 2014.
-# Mingcong Bai <jeffbai@aosc.xyz>, 2017.
+# Mingcong Bai <jeffbai@aosc.xyz>, 2017, 2018.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: json-glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues\n"
-"POT-Creation-Date: 2017-10-18 15:10+0000\n"
-"PO-Revision-Date: 2017-06-10 14:29+0800\n"
+"POT-Creation-Date: 2018-03-13 11:19+0000\n"
+"PO-Revision-Date: 2018-05-10 12:06-0500\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.xyz>\n"
 "Language-Team: Chinese Simplified <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -20,20 +20,37 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Generator: Poedit 2.0.6\n"
 
-#: json-glib/json-glib-format.c:50
+#: json-glib/json-glib-format.c:58
 msgid "Prettify output"
 msgstr "美化输出"
 
-#: json-glib/json-glib-format.c:51
+#: json-glib/json-glib-format.c:59
 msgid "Indentation spaces"
 msgstr "缩进空格"
+
+#: json-glib/json-glib-format.c:59
+msgid "SPACES"
+msgstr "空格"
+
+#: json-glib/json-glib-format.c:60
+msgid "Output file"
+msgstr "输出文件"
+
+#: json-glib/json-glib-format.c:60 json-glib/json-glib-validate.c:115
+msgid "FILE"
+msgstr "文件"
+
+#: json-glib/json-glib-format.c:61
+msgid "FILE…"
+msgstr "文件…"
 
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:77 json-glib/json-glib-validate.c:63
+#: json-glib/json-glib-format.c:87 json-glib/json-glib-format.c:120
+#: json-glib/json-glib-validate.c:63
 #, c-format
 msgid "%s: %s: error opening file: %s\n"
 msgstr "%s: %s：打开文件出错：%s\n"
@@ -41,7 +58,7 @@ msgstr "%s: %s：打开文件出错：%s\n"
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:89 json-glib/json-glib-validate.c:75
+#: json-glib/json-glib-format.c:99 json-glib/json-glib-validate.c:75
 #, c-format
 msgid "%s: %s: error parsing file: %s\n"
 msgstr "%s: %s：解析文件出错： %s\n"
@@ -49,7 +66,7 @@ msgstr "%s: %s：解析文件出错： %s\n"
 #. Translators: the first %s is the program name, the
 #. * second one is the URI of the file.
 #.
-#: json-glib/json-glib-format.c:108
+#: json-glib/json-glib-format.c:138
 #, c-format
 msgid "%s: %s: error writing to stdout"
 msgstr "%s: %s：写到标准输出出错"
@@ -57,22 +74,18 @@ msgstr "%s: %s：写到标准输出出错"
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:129 json-glib/json-glib-validate.c:87
+#: json-glib/json-glib-format.c:159 json-glib/json-glib-validate.c:87
 #, c-format
 msgid "%s: %s: error closing: %s\n"
 msgstr "%s: %s：关闭出错： %s\n"
 
-#: json-glib/json-glib-format.c:158 json-glib/json-glib-validate.c:115
-msgid "FILE"
-msgstr "文件"
-
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
-#: json-glib/json-glib-format.c:161
+#: json-glib/json-glib-format.c:192
 msgid "Format JSON files."
 msgstr "格式化 JSON 文件。"
 
-#: json-glib/json-glib-format.c:162
+#: json-glib/json-glib-format.c:193
 msgid "json-glib-format formats JSON resources."
 msgstr "json-glib-format 可以格式化 JSON 资源。"
 
@@ -80,12 +93,12 @@ msgstr "json-glib-format 可以格式化 JSON 资源。"
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: json-glib/json-glib-format.c:179 json-glib/json-glib-validate.c:136
+#: json-glib/json-glib-format.c:208 json-glib/json-glib-validate.c:136
 #, c-format
 msgid "Error parsing commandline options: %s\n"
 msgstr "解析命令行选项出错：%s\n"
 
-#: json-glib/json-glib-format.c:181 json-glib/json-glib-format.c:195
+#: json-glib/json-glib-format.c:210 json-glib/json-glib-format.c:224
 #: json-glib/json-glib-validate.c:138 json-glib/json-glib-validate.c:152
 #, c-format
 msgid "Try “%s --help” for more information."
@@ -95,7 +108,7 @@ msgstr "请运行“%s --help”以了解更多信息。"
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: json-glib/json-glib-format.c:193 json-glib/json-glib-validate.c:150
+#: json-glib/json-glib-format.c:222 json-glib/json-glib-validate.c:150
 #, c-format
 msgid "%s: missing files"
 msgstr "%s：缺少文件"
@@ -160,12 +173,12 @@ msgstr "JSON 数据为空"
 #. * number, the second %d is the position on the line, and %s is
 #. * the error message
 #.
-#: json-glib/json-parser.c:907
+#: json-glib/json-parser.c:909
 #, c-format
 msgid "%s:%d:%d: Parse error: %s"
 msgstr "%s:%d:%d：解析错误：%s"
 
-#: json-glib/json-parser.c:990
+#: json-glib/json-parser.c:992
 msgid "JSON data must be UTF-8 encoded"
 msgstr "JSON 数据必须是 UTF-8 编码"
 
