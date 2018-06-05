@@ -647,7 +647,9 @@ JSON_OBJECT_GET (gint64, int)
  * stored in @member_name of @object.
  *
  * If @member_name does not exist, does not contain a scalar value,
- * or contains `null`, then @default_value is returned instead.
+ * or contains `null`, then @default_value is returned instead. If
+ * @member_name contains a non-integer, non-`null` scalar value, then whatever
+ * json_node_get_int() would return is returned.
  *
  * Returns: the integer value of the object's member, or the
  *   given default
@@ -684,7 +686,9 @@ JSON_OBJECT_GET (gdouble, double)
  * stored in @member_name of @object.
  *
  * If @member_name does not exist, does not contain a scalar value,
- * or contains `null`, then @default_value is returned instead.
+ * or contains `null`, then @default_value is returned instead. If
+ * @member_name contains a non-double, non-`null` scalar value, then
+ * whatever json_node_get_double() would return is returned.
  *
  * Returns: the floating point value of the object's member, or the
  *   given default
@@ -721,7 +725,9 @@ JSON_OBJECT_GET (gboolean, boolean)
  * stored in @member_name of @object.
  *
  * If @member_name does not exist, does not contain a scalar value,
- * or contains `null`, then @default_value is returned instead.
+ * or contains `null`, then @default_value is returned instead. If
+ * @member_name contains a non-boolean, non-`null` scalar value, then
+ * whatever json_node_get_boolean() would return is returned.
  *
  * Returns: the boolean value of the object's member, or the
  *   given default
@@ -758,7 +764,9 @@ JSON_OBJECT_GET (const gchar *, string)
  * stored in @member_name of @object.
  *
  * If @member_name does not exist, does not contain a scalar value,
- * or contains `null`, then @default_value is returned instead.
+ * or contains `null`, then @default_value is returned instead. If
+ * @member_name contains a non-string, non-`null` scalar value, then
+ * %NULL is returned.
  *
  * Returns: the string value of the object's member, or the
  *   given default
