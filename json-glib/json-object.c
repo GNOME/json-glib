@@ -627,7 +627,8 @@ json_object_get_ ##type_name## _member_with_default (JsonObject *object, \
  *
  * Convenience function that retrieves the integer value
  * stored in @member_name of @object. It is an error to specify a
- * @member_name which does not exist.
+ * @member_name which does not exist or which holds a non-scalar,
+ * non-`null` value.
  *
  * See also: json_object_get_int_member_with_default(),
  * json_object_get_member() and json_object_has_member()
@@ -666,7 +667,8 @@ JSON_OBJECT_GET_DEFAULT (gint64, int)
  *
  * Convenience function that retrieves the floating point value
  * stored in @member_name of @object. It is an error to specify a
- * @member_name which does not exist.
+ * @member_name which does not exist or which holds a non-scalar,
+ * non-`null` value.
  *
  * See also: json_object_get_double_member_with_default(),
  * json_object_get_member() and json_object_has_member()
@@ -705,7 +707,8 @@ JSON_OBJECT_GET_DEFAULT (double, double)
  *
  * Convenience function that retrieves the boolean value
  * stored in @member_name of @object. It is an error to specify a
- * @member_name which does not exist.
+ * @member_name which does not exist or which holds a non-scalar,
+ * non-`null` value.
  *
  * See also: json_object_get_boolean_member_with_default(),
  * json_object_get_member() and json_object_has_member()
@@ -744,7 +747,8 @@ JSON_OBJECT_GET_DEFAULT (gboolean, boolean)
  *
  * Convenience function that retrieves the string value
  * stored in @member_name of @object. It is an error to specify a
- * @member_name that does not exist.
+ * @member_name that does not exist or which holds a non-scalar,
+ * non-`null` value.
  *
  * See also: json_object_get_string_member_with_default(),
  * json_object_get_member() and json_object_has_member()
@@ -822,7 +826,8 @@ json_object_get_null_member (JsonObject  *object,
  *
  * Convenience function that retrieves the array
  * stored in @member_name of @object. It is an error to specify a
- * @member_name which does not exist.
+ * @member_name which does not exist or which holds a non-`null`, non-array
+ * value.
  *
  * See also: json_object_get_member() and json_object_has_member()
  *
@@ -856,7 +861,7 @@ json_object_get_array_member (JsonObject  *object,
  *
  * Convenience function that retrieves the object
  * stored in @member_name of @object. It is an error to specify a @member_name
- * which does not exist.
+ * which does not exist or which holds a non-`null`, non-object value.
  *
  * See also: json_object_get_member() and json_object_has_member()
  *
