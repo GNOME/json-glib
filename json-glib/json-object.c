@@ -614,7 +614,8 @@ json_object_get_ ##type_name## _member_with_default (JsonObject *object, \
   if (JSON_NODE_HOLDS_NULL (node)) \
     return default_value; \
 \
-  g_return_val_if_fail (JSON_NODE_TYPE (node) == JSON_NODE_VALUE, default_value); \
+  if (JSON_NODE_TYPE (node) != JSON_NODE_VALUE) \
+    return default_value; \
 \
   return json_node_get_ ##type_name (node); \
 }

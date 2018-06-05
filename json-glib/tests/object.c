@@ -74,11 +74,13 @@ static void
 test_get_member_default (void)
 {
   JsonObject *object = json_object_new ();
+  JsonObject *empty = json_object_new ();
 
   json_object_set_int_member (object, "foo", 42);
   json_object_set_boolean_member (object, "bar", TRUE);
   json_object_set_string_member (object, "hello", "world");
   json_object_set_double_member (object, "pi", 3.); /* close enough */
+  json_object_set_object_member (object, "empty", g_steal_pointer (&empty));
 
   /* Keys exists, with correctly-typed values */
   g_assert_cmpint (json_object_get_int_member_with_default (object, "foo", 47), ==, 42);
@@ -93,21 +95,24 @@ test_get_member_default (void)
   g_assert_cmpfloat (json_object_get_double_member_with_default (object, "doesNotExist", 4.), ==, 4.);
 
   /* Keys exist, but with wrongly-typed scalar values. */
-  /* int: */
   g_assert_cmpint (json_object_get_int_member_with_default (object, "hello", 42), ==, 0);
   g_assert_cmpint (json_object_get_int_member_with_default (object, "pi", 42), ==, 3);
   g_assert_cmpint (json_object_get_int_member_with_default (object, "bar", 42), ==, 1);
-  /* boolean: */
-  /* non-numerical values are considered FALSE */
+
   g_assert_false (json_object_get_boolean_member_with_default (object, "hello", TRUE));
-  /* any non-0 numerical value is considered TRUE */
   g_assert_true (json_object_get_boolean_member_with_default (object, "foo", FALSE));
-  /* string: */
+
   g_assert_cmpstr (json_object_get_string_member_with_default (object, "foo", "wisconsin"), ==, NULL);
-  /* double: */
+
   g_assert_cmpfloat (json_object_get_double_member_with_default (object, "foo", 1.), ==, 42);
   g_assert_cmpfloat (json_object_get_double_member_with_default (object, "bar", 3.), ==, 1);
   g_assert_cmpfloat (json_object_get_double_member_with_default (object, "hello", 3.), ==, 0);
+
+  /* Key exists, with non-scalar value */
+  g_assert_cmpint (json_object_get_int_member_with_default (object, "empty", 1), ==, 1);
+  g_assert_true (json_object_get_boolean_member_with_default (object, "empty", TRUE));
+  g_assert_cmpstr (json_object_get_string_member_with_default (object, "empty", "x"), ==, "x");
+  g_assert_cmpfloat (json_object_get_double_member_with_default (object, "empty", 1.), ==, 1.);
 
   json_object_unref (object);
 }
