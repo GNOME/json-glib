@@ -6,10 +6,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: json-glib master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=json-"
-"glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-06-27 22:31+0000\n"
-"PO-Revision-Date: 2017-09-10 11:33+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues\n"
+"POT-Creation-Date: 2018-03-13 11:19+0000\n"
+"PO-Revision-Date: 2018-06-22 18:20+0300\n"
 "Last-Translator: Efstathios Iosifidis <iosifidis@opensuse.org>\n"
 "Language-Team: team@lists.gnome.gr\n"
 "Language: el\n"
@@ -17,21 +16,38 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: Poedit 2.0.7\n"
 "X-Project-Style: gnome\n"
 
-#: json-glib/json-glib-format.c:50
+#: json-glib/json-glib-format.c:58
 msgid "Prettify output"
 msgstr "Ωραιοποίηση εξόδου"
 
-#: json-glib/json-glib-format.c:51
+#: json-glib/json-glib-format.c:59
 msgid "Indentation spaces"
 msgstr "Διαστήματα εσοχών"
+
+#: json-glib/json-glib-format.c:59
+msgid "SPACES"
+msgstr "KENA"
+
+#: json-glib/json-glib-format.c:60
+msgid "Output file"
+msgstr "Αρχείο εξόδου"
+
+#: json-glib/json-glib-format.c:60 json-glib/json-glib-validate.c:115
+msgid "FILE"
+msgstr "ΑΡΧΕΙΟ"
+
+#: json-glib/json-glib-format.c:61
+msgid "FILE…"
+msgstr "ΑΡΧΕΙΟ…"
 
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:77 json-glib/json-glib-validate.c:63
+#: json-glib/json-glib-format.c:87 json-glib/json-glib-format.c:120
+#: json-glib/json-glib-validate.c:63
 #, c-format
 msgid "%s: %s: error opening file: %s\n"
 msgstr "%s: %s: σφάλμα ανοίγματος αρχείου: %s\n"
@@ -39,7 +55,7 @@ msgstr "%s: %s: σφάλμα ανοίγματος αρχείου: %s\n"
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:89 json-glib/json-glib-validate.c:75
+#: json-glib/json-glib-format.c:99 json-glib/json-glib-validate.c:75
 #, c-format
 msgid "%s: %s: error parsing file: %s\n"
 msgstr "%s: %s: σφάλμα ανάλυσης αρχείου: %s\n"
@@ -47,7 +63,7 @@ msgstr "%s: %s: σφάλμα ανάλυσης αρχείου: %s\n"
 #. Translators: the first %s is the program name, the
 #. * second one is the URI of the file.
 #.
-#: json-glib/json-glib-format.c:108
+#: json-glib/json-glib-format.c:138
 #, c-format
 msgid "%s: %s: error writing to stdout"
 msgstr "%s: %s: σφάλμα εγγραφής στην τυπική έξοδο"
@@ -55,22 +71,18 @@ msgstr "%s: %s: σφάλμα εγγραφής στην τυπική έξοδο"
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:129 json-glib/json-glib-validate.c:87
+#: json-glib/json-glib-format.c:159 json-glib/json-glib-validate.c:87
 #, c-format
 msgid "%s: %s: error closing: %s\n"
 msgstr "%s: %s: σφάλμα κλεισίματος: %s\n"
 
-#: json-glib/json-glib-format.c:158 json-glib/json-glib-validate.c:115
-msgid "FILE"
-msgstr "ΑΡΧΕΙΟ"
-
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
-#: json-glib/json-glib-format.c:161
+#: json-glib/json-glib-format.c:192
 msgid "Format JSON files."
 msgstr "Μορφή αρχείων JSON."
 
-#: json-glib/json-glib-format.c:162
+#: json-glib/json-glib-format.c:193
 msgid "json-glib-format formats JSON resources."
 msgstr "το json-glib-format μορφοποιεί τους πόρους JSON."
 
@@ -78,15 +90,14 @@ msgstr "το json-glib-format μορφοποιεί τους πόρους JSON."
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: json-glib/json-glib-format.c:179 json-glib/json-glib-validate.c:136
+#: json-glib/json-glib-format.c:208 json-glib/json-glib-validate.c:136
 #, c-format
 msgid "Error parsing commandline options: %s\n"
 msgstr "Σφάλμα ανάλυσης επιλογών της γραμμής εντολών: %s\n"
 
-#: json-glib/json-glib-format.c:181 json-glib/json-glib-format.c:195
+#: json-glib/json-glib-format.c:210 json-glib/json-glib-format.c:224
 #: json-glib/json-glib-validate.c:138 json-glib/json-glib-validate.c:152
 #, c-format
-#| msgid "Try \"%s --help\" for more information."
 msgid "Try “%s --help” for more information."
 msgstr "Δοκιμάστε «%s --help» για περισσότερες πληροφορίες."
 
@@ -94,7 +105,7 @@ msgstr "Δοκιμάστε «%s --help» για περισσότερες πλη�
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: json-glib/json-glib-format.c:193 json-glib/json-glib-validate.c:150
+#: json-glib/json-glib-format.c:222 json-glib/json-glib-validate.c:150
 #, c-format
 msgid "%s: missing files"
 msgstr "%s: λείπουν αρχεία"
@@ -110,33 +121,30 @@ msgid "json-glib-validate validates JSON data at the given URI."
 msgstr "το json-glib-validate επικυρώνει δεδομένα JSON στο δοσμένο URI."
 
 #. translators: the %s is the name of the data structure
-#: json-glib/json-gobject.c:943
+#: json-glib/json-gobject.c:940
 #, c-format
-#| msgid "Expecting a JSON object, but the root node is of type `%s'"
 msgid "Expecting a JSON object, but the root node is of type “%s”"
 msgstr "Αναμένεται αντικείμενο JSON, αλλά ο αρχικός κόμβος είναι τύπου «%s»"
 
 #. translators: the '%s' is the type name
-#: json-glib/json-gvariant.c:523
+#: json-glib/json-gvariant.c:524
 #, c-format
-#| msgid "Unexpected type '%s' in JSON node"
 msgid "Unexpected type “%s” in JSON node"
 msgstr "Αναπάντεχος τύπος «%s» σε κόμβο JSON"
 
-#: json-glib/json-gvariant.c:593
+#: json-glib/json-gvariant.c:594
 msgid "Missing elements in JSON array to conform to a tuple"
 msgstr "Λείπουν στοιχεία σε πίνακα JSON για συμφωνία με πλειάδα"
 
-#: json-glib/json-gvariant.c:621
-#| msgid "Missing closing symbol ')' in the GVariant tuple type"
+#: json-glib/json-gvariant.c:622
 msgid "Missing closing symbol “)” in the GVariant tuple type"
 msgstr "Λείπει το σύμβολο κλεισίματος «)» στον τύπο πλειάδας GVariant"
 
-#: json-glib/json-gvariant.c:629
+#: json-glib/json-gvariant.c:630
 msgid "Unexpected extra elements in JSON array"
 msgstr "Αναπάντεχα πρόσθετα στοιχεία σε πίνακα JSON"
 
-#: json-glib/json-gvariant.c:908
+#: json-glib/json-gvariant.c:909
 msgid "Invalid string value converting to GVariant"
 msgstr "Άκυρη τιμή συμβολοσειράς μετατροπής σε GVariant"
 
@@ -147,17 +155,16 @@ msgstr ""
 "Μια καταχώριση λεξικού GVariant περιμένει ένα αντικείμενο JSON με ακριβώς "
 "ένα μέλος"
 
-#: json-glib/json-gvariant.c:1248
+#: json-glib/json-gvariant.c:1242
 #, c-format
-#| msgid "GVariant class '%c' not supported"
 msgid "GVariant class “%c” not supported"
 msgstr "Η κλάση GVariant «%c» δεν υποστηρίζεται"
 
-#: json-glib/json-gvariant.c:1296
+#: json-glib/json-gvariant.c:1290
 msgid "Invalid GVariant signature"
 msgstr "Άκυρη υπογραφή GVariant"
 
-#: json-glib/json-gvariant.c:1344
+#: json-glib/json-gvariant.c:1338
 msgid "JSON data is empty"
 msgstr "Τα δεδομένα JSON είναι κενά"
 
@@ -165,12 +172,12 @@ msgstr "Τα δεδομένα JSON είναι κενά"
 #. * number, the second %d is the position on the line, and %s is
 #. * the error message
 #.
-#: json-glib/json-parser.c:907
+#: json-glib/json-parser.c:909
 #, c-format
 msgid "%s:%d:%d: Parse error: %s"
 msgstr "%s:%d:%d: Σφάλμα ανάλυσης: %s"
 
-#: json-glib/json-parser.c:990
+#: json-glib/json-parser.c:992
 msgid "JSON data must be UTF-8 encoded"
 msgstr "Τα δεδομένα JSON πρέπει να είναι κωδικοποιημένα ως UTF-8"
 
@@ -181,7 +188,6 @@ msgstr "Μόνο ένας αρχικός κόμβος επιτρέπεται σ�
 #. translators: the %c is the invalid character
 #: json-glib/json-path.c:398
 #, c-format
-#| msgid "Root node followed by invalid character '%c'"
 msgid "Root node followed by invalid character “%c”"
 msgstr "Αρχικός κόμβος ακολουθούμενος από μη έγκυρο χαρακτήρα «%c»"
 
@@ -191,38 +197,31 @@ msgstr "Λείπει όνομα μέλους ή συμβόλου υποκατά�
 
 #: json-glib/json-path.c:512
 #, c-format
-#| msgid "Malformed slice expression '%*s'"
 msgid "Malformed slice expression “%*s”"
 msgstr "Κακοδιατυπωμένη έκφραση τεμαχισμού «%*s»"
 
 #: json-glib/json-path.c:556
 #, c-format
-#| msgid "Invalid set definition '%*s'"
 msgid "Invalid set definition “%*s”"
 msgstr "Άκυρος ορισμός συνόλου «%*s»"
 
 #: json-glib/json-path.c:609
 #, c-format
-#| msgid "Invalid slice definition '%*s'"
 msgid "Invalid slice definition “%*s”"
 msgstr "Άκυρος ορισμός τεμαχισμού «%*s»"
 
 #: json-glib/json-path.c:637
 #, c-format
-#| msgid "Invalid array index definition '%*s'"
 msgid "Invalid array index definition “%*s”"
 msgstr "Μη έγκυρος ορισμός δείκτη πίνακα «%*s»"
 
 #: json-glib/json-path.c:656
 #, c-format
-#| msgid "Invalid first character '%c'"
 msgid "Invalid first character “%c”"
 msgstr "Μή έγκυρος ο πρώτος χαρακτήρας «%c»"
 
 #: json-glib/json-reader.c:474
 #, c-format
-#| msgid ""
-#| "The current node is of type '%s', but an array or an object was expected."
 msgid ""
 "The current node is of type “%s”, but an array or an object was expected."
 msgstr ""
@@ -231,9 +230,6 @@ msgstr ""
 
 #: json-glib/json-reader.c:486
 #, c-format
-#| msgid ""
-#| "The index '%d' is greater than the size of the array at the current "
-#| "position."
 msgid ""
 "The index “%d” is greater than the size of the array at the current position."
 msgstr ""
@@ -242,9 +238,6 @@ msgstr ""
 
 #: json-glib/json-reader.c:503
 #, c-format
-#| msgid ""
-#| "The index '%d' is greater than the size of the object at the current "
-#| "position."
 msgid ""
 "The index “%d” is greater than the size of the object at the current "
 "position."
@@ -252,48 +245,42 @@ msgstr ""
 "Ο δείκτης «%d» είναι μεγαλύτερος από το μέγεθος του αντικειμένου στην "
 "τρέχουσα θέση."
 
-#: json-glib/json-reader.c:587 json-glib/json-reader.c:751
-#: json-glib/json-reader.c:802 json-glib/json-reader.c:840
-#: json-glib/json-reader.c:878 json-glib/json-reader.c:916
-#: json-glib/json-reader.c:954 json-glib/json-reader.c:999
-#: json-glib/json-reader.c:1035 json-glib/json-reader.c:1061
+#: json-glib/json-reader.c:585 json-glib/json-reader.c:751
+#: json-glib/json-reader.c:799 json-glib/json-reader.c:837
+#: json-glib/json-reader.c:875 json-glib/json-reader.c:913
+#: json-glib/json-reader.c:951 json-glib/json-reader.c:996
+#: json-glib/json-reader.c:1032 json-glib/json-reader.c:1058
 msgid "No node available at the current position"
 msgstr "Κανένας διαθέσιμος κόμβος στην τρέχουσα θέση"
 
-#: json-glib/json-reader.c:594
+#: json-glib/json-reader.c:592
 #, c-format
-#| msgid "The current position holds a '%s' and not an array"
 msgid "The current position holds a “%s” and not an array"
 msgstr "Η τρέχουσα θέση περιέχει ένα «%s» και όχι ένα πίνακα"
 
-#: json-glib/json-reader.c:670
+#: json-glib/json-reader.c:668
 #, c-format
-#| msgid "The current node is of type '%s', but an object was expected."
 msgid "The current node is of type “%s”, but an object was expected."
 msgstr "Ο τρέχων κόμβος είναι του τύπου «%s», αλλά αναμενόταν ένα αντικείμενο."
 
-#: json-glib/json-reader.c:677
+#: json-glib/json-reader.c:675
 #, c-format
-#| msgid ""
-#| "The member '%s' is not defined in the object at the current position."
 msgid "The member “%s” is not defined in the object at the current position."
 msgstr "Το μέλος «%s» δεν ορίζεται στο αντικείμενο στην τρέχουσα θέση."
 
-#: json-glib/json-reader.c:758 json-glib/json-reader.c:809
+#: json-glib/json-reader.c:758 json-glib/json-reader.c:806
 #, c-format
-#| msgid "The current position holds a '%s' and not an object"
 msgid "The current position holds a “%s” and not an object"
 msgstr "Η τρέχουσα θέση περιέχει ένα «%s» και όχι ένα αντικείμενο"
 
-#: json-glib/json-reader.c:849 json-glib/json-reader.c:887
-#: json-glib/json-reader.c:925 json-glib/json-reader.c:963
-#: json-glib/json-reader.c:1008
+#: json-glib/json-reader.c:846 json-glib/json-reader.c:884
+#: json-glib/json-reader.c:922 json-glib/json-reader.c:960
+#: json-glib/json-reader.c:1005
 #, c-format
-#| msgid "The current position holds a '%s' and not a value"
 msgid "The current position holds a “%s” and not a value"
 msgstr "Η τρέχουσα θέση περιέχει ένα «%s» και όχι μια τιμή"
 
-#: json-glib/json-reader.c:971
+#: json-glib/json-reader.c:968
 msgid "The current position does not hold a string type"
 msgstr "Η τρέχουσα θέση δεν περιέχει τύπο συμβολοσειράς"
 
