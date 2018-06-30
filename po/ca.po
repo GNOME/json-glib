@@ -6,9 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: json-glib master\n"
-"Report-Msgid-Bugs-To: https://bugzilla.gnome.org/enter_bug.cgi?product=json-"
-"glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2017-08-15 04:47+0000\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues\n"
+"POT-Creation-Date: 2018-03-13 11:19+0000\n"
 "PO-Revision-Date: 2017-08-21 21:06+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
@@ -19,18 +18,35 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: json-glib/json-glib-format.c:50
+#: json-glib/json-glib-format.c:58
 msgid "Prettify output"
 msgstr "Formata la sortida"
 
-#: json-glib/json-glib-format.c:51
+#: json-glib/json-glib-format.c:59
 msgid "Indentation spaces"
 msgstr "Espais de sagnat"
+
+#: json-glib/json-glib-format.c:59
+msgid "SPACES"
+msgstr "ESPAIS"
+
+#: json-glib/json-glib-format.c:60
+msgid "Output file"
+msgstr "Fitxer de sortida"
+
+#: json-glib/json-glib-format.c:60 json-glib/json-glib-validate.c:115
+msgid "FILE"
+msgstr "FITXER"
+
+#: json-glib/json-glib-format.c:61
+msgid "FILE…"
+msgstr "FITXER…"
 
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:77 json-glib/json-glib-validate.c:63
+#: json-glib/json-glib-format.c:87 json-glib/json-glib-format.c:120
+#: json-glib/json-glib-validate.c:63
 #, c-format
 msgid "%s: %s: error opening file: %s\n"
 msgstr "%s: %s: s'ha produït un error en obrir el fitxer: %s\n"
@@ -38,7 +54,7 @@ msgstr "%s: %s: s'ha produït un error en obrir el fitxer: %s\n"
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:89 json-glib/json-glib-validate.c:75
+#: json-glib/json-glib-format.c:99 json-glib/json-glib-validate.c:75
 #, c-format
 msgid "%s: %s: error parsing file: %s\n"
 msgstr "%s: %s: s'ha produït un error en analitzar el fitxer: %s\n"
@@ -46,7 +62,7 @@ msgstr "%s: %s: s'ha produït un error en analitzar el fitxer: %s\n"
 #. Translators: the first %s is the program name, the
 #. * second one is the URI of the file.
 #.
-#: json-glib/json-glib-format.c:108
+#: json-glib/json-glib-format.c:138
 #, c-format
 msgid "%s: %s: error writing to stdout"
 msgstr "%s: %s: s'ha produït un error en escriure a la sortida estàndard"
@@ -54,22 +70,18 @@ msgstr "%s: %s: s'ha produït un error en escriure a la sortida estàndard"
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:129 json-glib/json-glib-validate.c:87
+#: json-glib/json-glib-format.c:159 json-glib/json-glib-validate.c:87
 #, c-format
 msgid "%s: %s: error closing: %s\n"
 msgstr "%s: %s: s'ha produït un error en tancar: %s\n"
 
-#: json-glib/json-glib-format.c:158 json-glib/json-glib-validate.c:115
-msgid "FILE"
-msgstr "FITXER"
-
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
-#: json-glib/json-glib-format.c:161
+#: json-glib/json-glib-format.c:192
 msgid "Format JSON files."
 msgstr "Formata fitxers JSON."
 
-#: json-glib/json-glib-format.c:162
+#: json-glib/json-glib-format.c:193
 msgid "json-glib-format formats JSON resources."
 msgstr "El json-glib-format formata recursos JSON."
 
@@ -77,13 +89,13 @@ msgstr "El json-glib-format formata recursos JSON."
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: json-glib/json-glib-format.c:179 json-glib/json-glib-validate.c:136
+#: json-glib/json-glib-format.c:208 json-glib/json-glib-validate.c:136
 #, c-format
 msgid "Error parsing commandline options: %s\n"
 msgstr ""
 "S'ha produït un error en analitzar les opcions de la línia d'ordres: %s\n"
 
-#: json-glib/json-glib-format.c:181 json-glib/json-glib-format.c:195
+#: json-glib/json-glib-format.c:210 json-glib/json-glib-format.c:224
 #: json-glib/json-glib-validate.c:138 json-glib/json-glib-validate.c:152
 #, c-format
 msgid "Try “%s --help” for more information."
@@ -93,7 +105,7 @@ msgstr "Per a més informació proveu «%s --help»."
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: json-glib/json-glib-format.c:193 json-glib/json-glib-validate.c:150
+#: json-glib/json-glib-format.c:222 json-glib/json-glib-validate.c:150
 #, c-format
 msgid "%s: missing files"
 msgstr "%s: manquen els fitxers"
@@ -159,12 +171,12 @@ msgstr "No hi ha dades de JSON"
 #. * number, the second %d is the position on the line, and %s is
 #. * the error message
 #.
-#: json-glib/json-parser.c:907
+#: json-glib/json-parser.c:909
 #, c-format
 msgid "%s:%d:%d: Parse error: %s"
 msgstr "%s:%d:%d: error en l'anàlisi: %s"
 
-#: json-glib/json-parser.c:990
+#: json-glib/json-parser.c:992
 msgid "JSON data must be UTF-8 encoded"
 msgstr "Les dades JSON han d'estar codificades amb UTF-8"
 
