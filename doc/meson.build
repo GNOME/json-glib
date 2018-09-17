@@ -17,29 +17,31 @@ glib_prefix = dependency('glib-2.0').get_pkgconfig_variable('prefix')
 glib_docpath = join_paths(glib_prefix, 'share', 'gtk-doc', 'html')
 docpath = join_paths(json_datadir, 'gtk-doc', 'html')
 
-gnome.gtkdoc('json-glib',
-             main_xml: 'json-glib-docs.xml',
-             src_dir: [
-               join_paths(meson.source_root(), 'json-glib'),
-               join_paths(meson.build_root(), 'json-glib'),
-             ],
-             dependencies: json_glib_dep,
-             gobject_typesfile: 'json-glib.types',
-             scan_args: [
-               '--rebuild-types',
-               '--ignore-decorators=_JSON_EXTERN',
-               '--ignore-headers=' + ' '.join(private_headers),
-             ],
-             fixxref_args: [
-               '--html-dir=@0@'.format(docpath),
-               '--extra-dir=@0@'.format(join_paths(glib_docpath, 'glib')),
-               '--extra-dir=@0@'.format(join_paths(glib_docpath, 'gobject')),
-               '--extra-dir=@0@'.format(join_paths(glib_docpath, 'gio')),
-             ],
-             install: true)
+if get_option('docs')
+  gnome.gtkdoc('json-glib',
+               main_xml: 'json-glib-docs.xml',
+               src_dir: [
+                 join_paths(meson.source_root(), 'json-glib'),
+                 join_paths(meson.build_root(), 'json-glib'),
+               ],
+               dependencies: json_glib_dep,
+               gobject_typesfile: 'json-glib.types',
+               scan_args: [
+                 '--rebuild-types',
+                 '--ignore-decorators=_JSON_EXTERN',
+                 '--ignore-headers=' + ' '.join(private_headers),
+               ],
+               fixxref_args: [
+                 '--html-dir=@0@'.format(docpath),
+                 '--extra-dir=@0@'.format(join_paths(glib_docpath, 'glib')),
+                 '--extra-dir=@0@'.format(join_paths(glib_docpath, 'gobject')),
+                 '--extra-dir=@0@'.format(join_paths(glib_docpath, 'gio')),
+               ],
+               install: true)
+endif
 
 xsltproc = find_program('xsltproc', required: false)
-if xsltproc.found()
+if get_option('man') and xsltproc.found()
   xlstproc_flags = [
     '--nonet',
     '--stringparam', 'man.output.quietly', '1',

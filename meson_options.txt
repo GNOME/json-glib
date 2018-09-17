@@ -4,3 +4,6 @@ option('introspection',
 option('docs',
        type: 'boolean', value: false,
        description: 'Build the API reference and man pages (requires gtk-doc and xsltproc)')
+option('man',
+       type: 'boolean', value: false,
+       description: 'Build the man pages (requires xsltproc)')
