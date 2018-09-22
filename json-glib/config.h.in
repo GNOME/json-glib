@@ -1,0 +1,11 @@
+/*
+ * Do not edit, your changes will be lost.
+ */
+
+#pragma once
+
+#define GETTEXT_PACKAGE "@JSON_GETTEXT_DOMAIN@"
+
+#cmakedefine HAVE_UNISTD_H @HAVE_UNISTD_H@
+
+#cmakedefine _JSON_EXTERN @_JSON_EXTERN@
