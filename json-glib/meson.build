@@ -93,8 +93,8 @@ pkgg.generate(
   requires: 'gio-2.0',
 )
 
-build_gir = get_option('introspection')
-if build_gir
+gir = find_program('g-ir-scanner', required : get_option('introspection'))
+if gir.found()
   gir_args = [
     '--quiet',
     '--c-include=json-glib/json-glib.h',
