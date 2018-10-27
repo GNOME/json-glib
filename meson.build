@@ -152,7 +152,12 @@ python3 = import('python').find_installation()
 gen_installed_test = files('build-aux/gen-installed-test.py')
 
 subdir('json-glib')
-subdir('po')
+
+# xgettext is optional (on Windows for instance)
+if find_program('xgettext', required : get_option('nls')).found()
+  subdir('po')
+endif
+
 subdir('doc')
 
 if not meson.is_subproject()
