@@ -163,4 +163,6 @@ if find_program('xgettext', required : get_option('nls')).found()
   subdir('po')
 endif
 
-subdir('doc')
+if find_program('gtkdoc-scan', required : get_option('gtk_doc')).found()
+  subdir('doc')
+endif
