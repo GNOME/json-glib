@@ -34,8 +34,14 @@ json_libexecdir = join_paths(get_option('prefix'), get_option('libexecdir'))
 
 # Dependencies
 glib_req_version = '>= 2.44.0'
-gobject_dep = dependency('gobject-2.0', version: glib_req_version)
-gio_dep = dependency('gio-2.0', version: glib_req_version)
+glib_dep = dependency('glib-2.0', version: glib_req_version,
+  fallback: ['glib', 'libglib_dep'])
+gobject_dep = dependency('gobject-2.0', version: glib_req_version,
+  fallback: ['glib', 'libgobject_dep'])
+gio_dep = dependency('gio-2.0', version: glib_req_version,
+  fallback: ['glib', 'libgio_dep'])
+gmodule_dep = dependency('gmodule-2.0',
+  fallback: ['glib', 'libgmodule_dep'])
 
 # Configurations
 cc = meson.get_compiler('c')

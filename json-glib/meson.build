@@ -76,7 +76,7 @@ json_lib = library(
   version: libversion,
   soversion: soversion,
   include_directories: root_dir,
-  dependencies: [ gio_dep, gobject_dep, ],
+  dependencies: [gio_dep, gobject_dep, glib_dep, gmodule_dep],
   c_args: json_c_args + common_cflags,
   link_args: common_ldflags,
   install: true,
@@ -121,7 +121,7 @@ endif
 json_glib_dep = declare_dependency(
   link_with: json_lib,
   include_directories: root_dir,
-  dependencies: [ gobject_dep, gio_dep, ],
+  dependencies: [gobject_dep, gio_dep, glib_dep, gmodule_dep],
   sources: [ json_enum_types_h, json_glib_gir ],
 )
 
