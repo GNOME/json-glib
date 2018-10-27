@@ -93,7 +93,8 @@ pkgg.generate(
   requires: 'gio-2.0',
 )
 
-build_gir = get_option('introspection')
+gir = find_program('g-ir-scanner', required : get_option('introspection'))
+build_gir = gir.found() and (not meson.is_cross_build() or meson.has_exe_wrapper())
 if build_gir
   gir_args = [
     '--quiet',
