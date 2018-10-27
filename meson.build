@@ -5,7 +5,7 @@ project('json-glib', 'c', version: '1.5.1',
           'buildtype=debugoptimized',
           'c_std=c99',
         ],
-        meson_version: '>= 0.44.0')
+        meson_version: '>= 0.47.0')
 
 # Versioning
 json_version = meson.project_version()
