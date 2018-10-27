@@ -1,4 +1,4 @@
-if get_option('docs')
+if find_program('gtkdoc-scan', required : get_option('gtk_doc')).found()
   subdir('xml')
 
   private_headers = [
