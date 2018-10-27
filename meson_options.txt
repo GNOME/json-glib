@@ -7,3 +7,6 @@ option('docs',
 option('man',
        type: 'boolean', value: false,
        description: 'Build the man pages (requires xsltproc)')
+option('nls',
+       type: 'feature', value: 'auto', yield: true,
+       description: 'Enable native language support (translations)')
