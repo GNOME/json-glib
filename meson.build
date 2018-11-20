@@ -138,11 +138,11 @@ common_cflags = cc.get_supported_arguments(test_cflags)
 
 common_ldflags = []
 if host_system == 'linux'
-  foreach ldflag: [ '-Wl,-Bsymbolic', '-Wl,-z,relro', '-Wl,-z,now', ]
-    if cc.has_argument(ldflag)
-      common_ldflags += ldflag
-    endif
-  endforeach
+  common_ldflags += cc.get_supported_link_arguments([
+    '-Wl,-Bsymbolic',
+    '-Wl,-z,relro',
+    '-Wl,-z,now',
+  ])
 endif
 
 # Maintain compatibility with autotools
