@@ -151,7 +151,7 @@ root_dir = include_directories('.')
 
 gnome = import('gnome')
 
-python3 = import('python3').find_python()
+python3 = import('python').find_installation()
 gen_installed_test = files('build-aux/gen-installed-test.py')
 
 subdir('json-glib')
