@@ -5,7 +5,7 @@ project('json-glib', 'c', version: '1.5.1',
           'buildtype=debugoptimized',
           'c_std=c99',
         ],
-        meson_version: '>= 0.44.0')
+        meson_version: '>= 0.47.0')
 
 # Versioning
 json_version = meson.project_version()
@@ -34,8 +34,8 @@ json_libexecdir = join_paths(get_option('prefix'), get_option('libexecdir'))
 
 # Dependencies
 glib_req_version = '>= 2.44.0'
-gobject_dep = dependency('gobject-2.0', version: glib_req_version)
-gio_dep = dependency('gio-2.0', version: glib_req_version)
+gio_dep = dependency('gio-2.0', version: glib_req_version,
+  fallback: ['glib', 'libgio_dep'])
 
 # Configurations
 cc = meson.get_compiler('c')
@@ -132,11 +132,11 @@ common_cflags = cc.get_supported_arguments(test_cflags)
 
 common_ldflags = []
 if host_system == 'linux'
-  foreach ldflag: [ '-Wl,-Bsymbolic', '-Wl,-z,relro', '-Wl,-z,now', ]
-    if cc.has_argument(ldflag)
-      common_ldflags += ldflag
-    endif
-  endforeach
+  common_ldflags += cc.get_supported_link_arguments([
+    '-Wl,-Bsymbolic',
+    '-Wl,-z,relro',
+    '-Wl,-z,now',
+  ])
 endif
 
 # Maintain compatibility with autotools
@@ -151,7 +151,7 @@ root_dir = include_directories('.')
 
 gnome = import('gnome')
 
-python3 = import('python3').find_python()
+python3 = import('python').find_installation()
 gen_installed_test = files('build-aux/gen-installed-test.py')
 
 subdir('json-glib')

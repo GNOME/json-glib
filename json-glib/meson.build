@@ -76,7 +76,7 @@ json_lib = library(
   version: libversion,
   soversion: soversion,
   include_directories: root_dir,
-  dependencies: [ gio_dep, gobject_dep, ],
+  dependencies: [gio_dep],
   c_args: json_c_args + common_cflags,
   link_args: common_ldflags,
   install: true,
@@ -93,8 +93,8 @@ pkgg.generate(
   requires: 'gio-2.0',
 )
 
-build_gir = get_option('introspection')
-if build_gir
+gir = find_program('g-ir-scanner', required : get_option('introspection'))
+if gir.found()
   gir_args = [
     '--quiet',
     '--c-include=json-glib/json-glib.h',
@@ -121,7 +121,7 @@ endif
 json_glib_dep = declare_dependency(
   link_with: json_lib,
   include_directories: root_dir,
-  dependencies: [ gobject_dep, gio_dep, ],
+  dependencies: [gio_dep],
   sources: [ json_enum_types_h, json_glib_gir ],
 )
 
