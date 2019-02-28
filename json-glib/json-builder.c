@@ -250,7 +250,7 @@ json_builder_new (void)
 }
 
 /**
- * json_builder_new_immutable:
+ * json_builder_new_immutable: (constructor)
  *
  * Creates a new #JsonBuilder instance with its #JsonBuilder:immutable property
  * set to %TRUE to create immutable output trees.
