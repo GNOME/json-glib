@@ -9,6 +9,7 @@ tests = [
   'object',
   'parser',
   'path',
+  'pointer',
   'reader',
   'serialize-simple',
   'serialize-complex',
