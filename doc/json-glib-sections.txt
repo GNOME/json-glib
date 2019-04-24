@@ -449,6 +449,26 @@ json_path_error_quark
 </SECTION>
 
 <SECTION>
+<FILE>json-pointer</FILE>
+JsonPointer
+JsonPointerClass
+json_pointer_new
+JSON_POINTER_ERROR
+JsonPointerError
+json_pointer_compile
+json_pointer_match
+<SUBSECTION>
+json_pointer_query
+<SUBSECTION Standard>
+JSON_TYPE_POINTER
+JSON_POINTER
+JSON_IS_POINTER
+<SUBSECTION Private>
+json_pointer_get_type
+json_pointer_error_quark
+</SECTION>
+
+<SECTION>
 <FILE>json-utils</FILE>
 json_from_string
 json_to_string
