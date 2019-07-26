@@ -614,7 +614,8 @@ json_object_get_ ##type_name## _member_with_default (JsonObject *object, \
   if (JSON_NODE_HOLDS_NULL (node)) \
     return default_value; \
 \
-  g_return_val_if_fail (JSON_NODE_TYPE (node) == JSON_NODE_VALUE, default_value); \
+  if (JSON_NODE_TYPE (node) != JSON_NODE_VALUE) \
+    return default_value; \
 \
   return json_node_get_ ##type_name (node); \
 }
@@ -626,7 +627,8 @@ json_object_get_ ##type_name## _member_with_default (JsonObject *object, \
  *
  * Convenience function that retrieves the integer value
  * stored in @member_name of @object. It is an error to specify a
- * @member_name which does not exist.
+ * @member_name which does not exist or which holds a non-scalar,
+ * non-`null` value.
  *
  * See also: json_object_get_int_member_with_default(),
  * json_object_get_member() and json_object_has_member()
@@ -647,7 +649,9 @@ JSON_OBJECT_GET (gint64, int)
  * stored in @member_name of @object.
  *
  * If @member_name does not exist, does not contain a scalar value,
- * or contains `null`, then @default_value is returned instead.
+ * or contains `null`, then @default_value is returned instead. If
+ * @member_name contains a non-integer, non-`null` scalar value, then whatever
+ * json_node_get_int() would return is returned.
  *
  * Returns: the integer value of the object's member, or the
  *   given default
@@ -663,7 +667,8 @@ JSON_OBJECT_GET_DEFAULT (gint64, int)
  *
  * Convenience function that retrieves the floating point value
  * stored in @member_name of @object. It is an error to specify a
- * @member_name which does not exist.
+ * @member_name which does not exist or which holds a non-scalar,
+ * non-`null` value.
  *
  * See also: json_object_get_double_member_with_default(),
  * json_object_get_member() and json_object_has_member()
@@ -684,7 +689,9 @@ JSON_OBJECT_GET (gdouble, double)
  * stored in @member_name of @object.
  *
  * If @member_name does not exist, does not contain a scalar value,
- * or contains `null`, then @default_value is returned instead.
+ * or contains `null`, then @default_value is returned instead. If
+ * @member_name contains a non-double, non-`null` scalar value, then
+ * whatever json_node_get_double() would return is returned.
  *
  * Returns: the floating point value of the object's member, or the
  *   given default
@@ -700,7 +707,8 @@ JSON_OBJECT_GET_DEFAULT (double, double)
  *
  * Convenience function that retrieves the boolean value
  * stored in @member_name of @object. It is an error to specify a
- * @member_name which does not exist.
+ * @member_name which does not exist or which holds a non-scalar,
+ * non-`null` value.
  *
  * See also: json_object_get_boolean_member_with_default(),
  * json_object_get_member() and json_object_has_member()
@@ -721,7 +729,9 @@ JSON_OBJECT_GET (gboolean, boolean)
  * stored in @member_name of @object.
  *
  * If @member_name does not exist, does not contain a scalar value,
- * or contains `null`, then @default_value is returned instead.
+ * or contains `null`, then @default_value is returned instead. If
+ * @member_name contains a non-boolean, non-`null` scalar value, then
+ * whatever json_node_get_boolean() would return is returned.
  *
  * Returns: the boolean value of the object's member, or the
  *   given default
@@ -737,7 +747,8 @@ JSON_OBJECT_GET_DEFAULT (gboolean, boolean)
  *
  * Convenience function that retrieves the string value
  * stored in @member_name of @object. It is an error to specify a
- * @member_name that does not exist.
+ * @member_name that does not exist or which holds a non-scalar,
+ * non-`null` value.
  *
  * See also: json_object_get_string_member_with_default(),
  * json_object_get_member() and json_object_has_member()
@@ -758,7 +769,9 @@ JSON_OBJECT_GET (const gchar *, string)
  * stored in @member_name of @object.
  *
  * If @member_name does not exist, does not contain a scalar value,
- * or contains `null`, then @default_value is returned instead.
+ * or contains `null`, then @default_value is returned instead. If
+ * @member_name contains a non-string, non-`null` scalar value, then
+ * %NULL is returned.
  *
  * Returns: the string value of the object's member, or the
  *   given default
@@ -813,7 +826,8 @@ json_object_get_null_member (JsonObject  *object,
  *
  * Convenience function that retrieves the array
  * stored in @member_name of @object. It is an error to specify a
- * @member_name which does not exist.
+ * @member_name which does not exist or which holds a non-`null`, non-array
+ * value.
  *
  * See also: json_object_get_member() and json_object_has_member()
  *
@@ -847,7 +861,7 @@ json_object_get_array_member (JsonObject  *object,
  *
  * Convenience function that retrieves the object
  * stored in @member_name of @object. It is an error to specify a @member_name
- * which does not exist.
+ * which does not exist or which holds a non-`null`, non-object value.
  *
  * See also: json_object_get_member() and json_object_has_member()
  *
