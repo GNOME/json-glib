@@ -75,6 +75,7 @@ json_lib = library(
   source_c + json_glib_enums,
   version: libversion,
   soversion: soversion,
+  darwin_versions: darwin_versions,
   include_directories: root_dir,
   dependencies: [gio_dep],
   c_args: json_c_args + common_cflags,

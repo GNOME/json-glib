@@ -5,7 +5,7 @@ project('json-glib', 'c', version: '1.5.1',
           'buildtype=debugoptimized',
           'c_std=c99',
         ],
-        meson_version: '>= 0.47.0')
+        meson_version: '>= 0.48.0')
 
 # Versioning
 json_version = meson.project_version()
@@ -23,7 +23,11 @@ json_gettext_domain = json_api_name
 
 # Maintain compatibility with the old soname versioning
 soversion = 0
-libversion = '@0@.@1@.@2@'.format(soversion, json_binary_age - json_interface_age, json_interface_age)
+current = json_binary_age - json_interface_age
+revision = json_interface_age
+libversion = '@0@.@1@.@2@'.format(soversion, current, revision)
+
+darwin_versions = [current + 1, '@0@.@1@'.format(current + 1, revision)]
 
 # Paths
 json_includedir = join_paths(get_option('prefix'), get_option('includedir'))
@@ -137,14 +141,6 @@ if host_system == 'linux'
     '-Wl,-z,relro',
     '-Wl,-z,now',
   ])
-endif
-
-# Maintain compatibility with autotools
-if host_system == 'darwin'
-  common_ldflags += [
-    '-compatibility_version 1',
-    '-current_version @0@.@1@'.format(json_binary_age - json_interface_age, json_interface_age),
-  ]
 endif
 
 root_dir = include_directories('.')
