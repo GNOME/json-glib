@@ -1270,7 +1270,7 @@ out:
  * The returned variant has a floating reference that will need to be sunk
  * by the caller code.
  *
- * Return value: (transfer none): A newly created, floating #GVariant
+ * Return value: (nullable) (transfer none): A newly created, floating #GVariant
  *   compliant with @signature, or %NULL on error
  *
  * Since: 0.14
@@ -1309,8 +1309,8 @@ json_gvariant_deserialize (JsonNode     *json_node,
  * The returned variant has a floating reference that will need to be sunk
  * by the caller code.
  *
- * Returns: (transfer none): A newly created, floating #GVariant compliant
- *   with @signature, or %NULL on error
+ * Returns: (nullable) (transfer none): A newly created, floating #GVariant
+ *   compliant with @signature, or %NULL on error
  *
  * Since: 0.14
  */
