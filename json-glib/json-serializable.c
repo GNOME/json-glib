@@ -111,6 +111,10 @@ json_serializable_real_deserialize (JsonSerializable *serializable,
                                     JsonNode         *node)
 {
   JSON_NOTE (GOBJECT, "Default deserialization for property '%s'", pspec->name);
+
+  if (!G_IS_VALUE (value))
+    g_value_init (value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+
   return json_deserialize_pspec (value, pspec, node);
 }
 
