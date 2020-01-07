@@ -199,8 +199,8 @@ G_DEFINE_INTERFACE (JsonSerializable, json_serializable, G_TYPE_OBJECT);
  *                                     pspec);
  * ]|
  *
- * Return value: (transfer full): a #JsonNode containing the serialized
- *   property
+ * Return value: (transfer full) (nullable): a #JsonNode containing the
+ *   serialized property, or %NULL if it should be omitted.
  *
  * Since: 0.10
  */
