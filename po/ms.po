@@ -1,0 +1,281 @@
+# Malay translation for json-glib.
+# Copyright (C) 2019 json-glib's COPYRIGHT HOLDER
+# This file is distributed under the same license as the json-glib package.
+# abuyop <abuyop@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: json-glib master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues\n"
+"POT-Creation-Date: 2019-11-15 14:11+0000\n"
+"PO-Revision-Date: 2019-12-25 14:08+0800\n"
+"Language-Team: Malay <ms@li.org>\n"
+"Language: ms\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: abuyop <abuyop@gmail.com>\n"
+"X-Generator: Poedit 2.0.6\n"
+
+#: json-glib/json-glib-format.c:58
+msgid "Prettify output"
+msgstr "Cantikan output"
+
+#: json-glib/json-glib-format.c:59
+msgid "Indentation spaces"
+msgstr "Jarak pengengsotan"
+
+#: json-glib/json-glib-format.c:59
+msgid "SPACES"
+msgstr "JARAK"
+
+#: json-glib/json-glib-format.c:60
+msgid "Output file"
+msgstr "Fail output"
+
+#: json-glib/json-glib-format.c:60 json-glib/json-glib-validate.c:115
+msgid "FILE"
+msgstr "FAIL"
+
+#: json-glib/json-glib-format.c:61
+msgid "FILE…"
+msgstr "FAIL..."
+
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-format.c:87 json-glib/json-glib-format.c:120
+#: json-glib/json-glib-validate.c:63
+#, c-format
+msgid "%s: %s: error opening file: %s\n"
+msgstr "%s: %s: ralat membuka fail: %s\n"
+
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-format.c:99 json-glib/json-glib-validate.c:75
+#, c-format
+msgid "%s: %s: error parsing file: %s\n"
+msgstr "%s: %s: ralat menghurai fail: %s\n"
+
+#. Translators: the first %s is the program name, the
+#. * second one is the URI of the file.
+#.
+#: json-glib/json-glib-format.c:138
+#, c-format
+msgid "%s: %s: error writing to stdout"
+msgstr "%s: %s: ralat menulis ke stdout"
+
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-format.c:159 json-glib/json-glib-validate.c:87
+#, c-format
+msgid "%s: %s: error closing: %s\n"
+msgstr "%s: %s: ralat menutup: %s\n"
+
+#. Translators: this message will appear after the usage string
+#. and before the list of options.
+#: json-glib/json-glib-format.c:192
+msgid "Format JSON files."
+msgstr "Format fail JSON."
+
+#: json-glib/json-glib-format.c:193
+msgid "json-glib-format formats JSON resources."
+msgstr "json-glib-format memformat sumber-sumber JSON."
+
+#. Translators: the %s is the program name. This error message
+#. * means the user is calling json-glib-validate without any
+#. * argument.
+#.
+#: json-glib/json-glib-format.c:208 json-glib/json-glib-validate.c:136
+#, c-format
+msgid "Error parsing commandline options: %s\n"
+msgstr "Ralat menghurai pilihan baris perintah: %s\n"
+
+#: json-glib/json-glib-format.c:210 json-glib/json-glib-format.c:224
+#: json-glib/json-glib-validate.c:138 json-glib/json-glib-validate.c:152
+#, c-format
+msgid "Try “%s --help” for more information."
+msgstr "Cuba “%s --help” untuk maklumat lanjut."
+
+#. Translators: the %s is the program name. This error message
+#. * means the user is calling json-glib-validate without any
+#. * argument.
+#.
+#: json-glib/json-glib-format.c:222 json-glib/json-glib-validate.c:150
+#, c-format
+msgid "%s: missing files"
+msgstr "%s: fail hilang"
+
+#. Translators: this message will appear after the usage string
+#. and before the list of options.
+#: json-glib/json-glib-validate.c:118
+msgid "Validate JSON files."
+msgstr "Sahkan fail JSON."
+
+#: json-glib/json-glib-validate.c:119
+msgid "json-glib-validate validates JSON data at the given URI."
+msgstr "json-glib-validate sahkan data JSON pada URI yang diberikan."
+
+#. translators: the %s is the name of the data structure
+#: json-glib/json-gobject.c:940
+#, c-format
+msgid "Expecting a JSON object, but the root node is of type “%s”"
+msgstr "Jangkakan satu objek JSON, tetapi nod root adalah jenis \"%s\""
+
+#. translators: the '%s' is the type name
+#: json-glib/json-gvariant.c:524
+#, c-format
+msgid "Unexpected type “%s” in JSON node"
+msgstr "Jenis \"%s\" tidak dijangka dalam nod JSON"
+
+#: json-glib/json-gvariant.c:594
+msgid "Missing elements in JSON array to conform to a tuple"
+msgstr "Unsur-unsur hilang dalam tatasusunan JSON untuk akur pada tupel"
+
+#: json-glib/json-gvariant.c:622
+msgid "Missing closing symbol “)” in the GVariant tuple type"
+msgstr "Simbol tutup \")\" hilang dalam jenis tupel GVariant"
+
+#: json-glib/json-gvariant.c:630
+msgid "Unexpected extra elements in JSON array"
+msgstr "Unsur-unsur tambahan tidak dijangka dalam tatasusunan JSON"
+
+#: json-glib/json-gvariant.c:909
+msgid "Invalid string value converting to GVariant"
+msgstr "Nilai rentetan tidak sah menukar ke GVariant"
+
+#: json-glib/json-gvariant.c:964
+msgid ""
+"A GVariant dictionary entry expects a JSON object with exactly one member"
+msgstr ""
+"Satu masukan kamus GVariant menjangkakan satu objek JSON dengan satu ahli "
+"sahaja"
+
+#: json-glib/json-gvariant.c:1242
+#, c-format
+msgid "GVariant class “%c” not supported"
+msgstr "Kelas GVariant \"%c\" tidak disokong"
+
+#: json-glib/json-gvariant.c:1290
+msgid "Invalid GVariant signature"
+msgstr "Tanda tangan GVariant tidak sah"
+
+#: json-glib/json-gvariant.c:1338
+msgid "JSON data is empty"
+msgstr "Data JSON kosong"
+
+#. translators: %s: is the file name, the first %d is the line
+#. * number, the second %d is the position on the line, and %s is
+#. * the error message
+#.
+#: json-glib/json-parser.c:909
+#, c-format
+msgid "%s:%d:%d: Parse error: %s"
+msgstr "%s:%d:%d: Ralat hurai: %s"
+
+#: json-glib/json-parser.c:992
+msgid "JSON data must be UTF-8 encoded"
+msgstr "Data JSON mestilah terenkod UTF-8"
+
+#: json-glib/json-path.c:389
+msgid "Only one root node is allowed in a JSONPath expression"
+msgstr "Hanya satu nod root dibenarkan dalam ungkapan JSONPath"
+
+#. translators: the %c is the invalid character
+#: json-glib/json-path.c:398
+#, c-format
+msgid "Root node followed by invalid character “%c”"
+msgstr "Nod root diikuti dengan aksara \"%c\" yang tidak sah"
+
+#: json-glib/json-path.c:438
+msgid "Missing member name or wildcard after . character"
+msgstr "Nama ahli hilang atau kad liar selepas aksara ."
+
+#: json-glib/json-path.c:512
+#, c-format
+msgid "Malformed slice expression “%*s”"
+msgstr "Ungkapan hirisan \"%*s\" cacat"
+
+#: json-glib/json-path.c:556
+#, c-format
+msgid "Invalid set definition “%*s”"
+msgstr "Takrifan set \"%*s\" tidak sah"
+
+#: json-glib/json-path.c:609
+#, c-format
+msgid "Invalid slice definition “%*s”"
+msgstr "Takrifan hirisan \"%*s\" tidak sah"
+
+#: json-glib/json-path.c:637
+#, c-format
+msgid "Invalid array index definition “%*s”"
+msgstr "Takrifan indeks tatasusunan \"%*s\" tidak sah"
+
+#: json-glib/json-path.c:656
+#, c-format
+msgid "Invalid first character “%c”"
+msgstr "Aksara pertama \"%c\" tidak sah"
+
+#: json-glib/json-reader.c:474
+#, c-format
+msgid ""
+"The current node is of type “%s”, but an array or an object was expected."
+msgstr ""
+"Nod semasa ialah jenis \"%s\", tetapi satu tatasusunan atau objek telah "
+"dijangka."
+
+#: json-glib/json-reader.c:486
+#, c-format
+msgid ""
+"The index “%d” is greater than the size of the array at the current position."
+msgstr ""
+"Indeks \"%d\" atau lebih besar dari saiz tatasusunan pada kedudukan semasa."
+
+#: json-glib/json-reader.c:503
+#, c-format
+msgid ""
+"The index “%d” is greater than the size of the object at the current "
+"position."
+msgstr ""
+"Indeks \"%d\" adalah lebih besar dari saiz objek pada kedudukan semasa."
+
+#: json-glib/json-reader.c:585 json-glib/json-reader.c:751
+#: json-glib/json-reader.c:799 json-glib/json-reader.c:837
+#: json-glib/json-reader.c:875 json-glib/json-reader.c:913
+#: json-glib/json-reader.c:951 json-glib/json-reader.c:996
+#: json-glib/json-reader.c:1032 json-glib/json-reader.c:1058
+msgid "No node available at the current position"
+msgstr "Tiada nod tersedia pada kedudukan semasa"
+
+#: json-glib/json-reader.c:592
+#, c-format
+msgid "The current position holds a “%s” and not an array"
+msgstr "Kedudukan semasa menahan satu \"%s\" dan bukanlah satu tatasusunan"
+
+#: json-glib/json-reader.c:668
+#, c-format
+msgid "The current node is of type “%s”, but an object was expected."
+msgstr "Nod semasa ialah jenis \"%s\", tetapi satu objek telah dijangka."
+
+#: json-glib/json-reader.c:675
+#, c-format
+msgid "The member “%s” is not defined in the object at the current position."
+msgstr "Ahli \"%s\" tidak ditakrif dalam objek pada kedudukan semasa."
+
+#: json-glib/json-reader.c:758 json-glib/json-reader.c:806
+#, c-format
+msgid "The current position holds a “%s” and not an object"
+msgstr "Kedudukan semasa menahan satu \"%s\" dan bukannya satu objek"
+
+#: json-glib/json-reader.c:846 json-glib/json-reader.c:884
+#: json-glib/json-reader.c:922 json-glib/json-reader.c:960
+#: json-glib/json-reader.c:1005
+#, c-format
+msgid "The current position holds a “%s” and not a value"
+msgstr "Kedudukan semasa menahan satu \"%s\" dan bukanlah satu nilai"
+
+#: json-glib/json-reader.c:968
+msgid "The current position does not hold a string type"
+msgstr "Kedudukan semasa tidak menahan satu jenis rentetan"
