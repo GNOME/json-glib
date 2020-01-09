@@ -7,3 +7,6 @@ option('gtk_doc',
 option('man',
        type: 'boolean', value: false,
        description: 'Build the man pages (requires xsltproc)')
+option('tests',
+       type: 'boolean', value: true,
+       description: 'Build the tests')
