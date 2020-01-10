@@ -1142,7 +1142,7 @@ json_parser_load_from_file (JsonParser   *parser,
  * multiple times with the same #JsonParser object, but the contents of the
  * parser will be destroyed each time.
  *
- * Return value: %TRUE if the buffer was succesfully parser. In case
+ * Return value: %TRUE if the buffer was succesfully parsed. In case
  *   of error, @error is set accordingly and %FALSE is returned
  */
 gboolean
