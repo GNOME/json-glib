@@ -140,4 +140,6 @@ foreach t: tools
              install: true)
 endforeach
 
-subdir('tests')
+if get_option('tests')
+  subdir('tests')
+endif
