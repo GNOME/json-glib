@@ -1,16 +1,17 @@
 # json-glib ja.po
-# Copyright (C) 2012 json-glib's COPYRIGHT HOLDER
+# Copyright (C) 2012-2013, 2020 json-glib's COPYRIGHT HOLDER
 # This file is distributed under the same license as the json-glib package.
 # Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>, 2012.
 # Jiro Matsuzawa <jmatsuzawa@gnome.org>, 2012, 2013.
+# sicklylife <translation@sicklylife.jp>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: json-glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues\n"
 "POT-Creation-Date: 2019-11-15 14:11+0000\n"
-"PO-Revision-Date: 2013-09-18 22:29+0900\n"
-"Last-Translator: Jiro Matsuzawa <jmatsuzawa@gnome.org>\n"
+"PO-Revision-Date: 2020-01-28 21:00+0900\n"
+"Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -48,7 +49,7 @@ msgstr ""
 #: json-glib/json-glib-validate.c:63
 #, c-format
 msgid "%s: %s: error opening file: %s\n"
-msgstr ""
+msgstr "%s: %s: ファイルのオープン中にエラー: %s\n"
 
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
@@ -56,7 +57,7 @@ msgstr ""
 #: json-glib/json-glib-format.c:99 json-glib/json-glib-validate.c:75
 #, c-format
 msgid "%s: %s: error parsing file: %s\n"
-msgstr ""
+msgstr "%s: %s: ファイルの解析中にエラー: %s\n"
 
 #. Translators: the first %s is the program name, the
 #. * second one is the URI of the file.
@@ -64,7 +65,7 @@ msgstr ""
 #: json-glib/json-glib-format.c:138
 #, c-format
 msgid "%s: %s: error writing to stdout"
-msgstr ""
+msgstr "%s: %s: 標準出力への書き込み中にエラー"
 
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
@@ -72,7 +73,7 @@ msgstr ""
 #: json-glib/json-glib-format.c:159 json-glib/json-glib-validate.c:87
 #, c-format
 msgid "%s: %s: error closing: %s\n"
-msgstr ""
+msgstr "%s: %s: クローズ中にエラー: %s\n"
 
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
@@ -91,13 +92,13 @@ msgstr ""
 #: json-glib/json-glib-format.c:208 json-glib/json-glib-validate.c:136
 #, c-format
 msgid "Error parsing commandline options: %s\n"
-msgstr ""
+msgstr "コマンドラインオプションの解析エラー: %s\n"
 
 #: json-glib/json-glib-format.c:210 json-glib/json-glib-format.c:224
 #: json-glib/json-glib-validate.c:138 json-glib/json-glib-validate.c:152
 #, c-format
 msgid "Try “%s --help” for more information."
-msgstr ""
+msgstr "詳しい情報については“%s --help”を実行してください。"
 
 #. Translators: the %s is the program name. This error message
 #. * means the user is calling json-glib-validate without any
@@ -106,7 +107,7 @@ msgstr ""
 #: json-glib/json-glib-format.c:222 json-glib/json-glib-validate.c:150
 #, c-format
 msgid "%s: missing files"
-msgstr ""
+msgstr "%s: ファイルがありません"
 
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
@@ -120,27 +121,23 @@ msgstr ""
 
 #. translators: the %s is the name of the data structure
 #: json-glib/json-gobject.c:940
-#, fuzzy, c-format
-#| msgid "Expecting a JSON object, but the root node is of type `%s'"
+#, c-format
 msgid "Expecting a JSON object, but the root node is of type “%s”"
-msgstr "JSON オブジェクトであるべきところ、ルートノードが `%s' 型です"
+msgstr "JSON オブジェクトであるべきところ、ルートノードが“%s”型です"
 
 #. translators: the '%s' is the type name
 #: json-glib/json-gvariant.c:524
-#, fuzzy, c-format
-#| msgid "Unexpected type '%s' in JSON node"
+#, c-format
 msgid "Unexpected type “%s” in JSON node"
-msgstr "JSON ノードが `%s' 型になってしまってます"
+msgstr "JSON ノードが“%s”型になってしまってます"
 
 #: json-glib/json-gvariant.c:594
 msgid "Missing elements in JSON array to conform to a tuple"
 msgstr "JSON の配列にタプルを構成する要素が足りません"
 
 #: json-glib/json-gvariant.c:622
-#, fuzzy
-#| msgid "Missing closing symbol ')' in the GVariant tuple type"
 msgid "Missing closing symbol “)” in the GVariant tuple type"
-msgstr "GVariant タプル型に閉じ記号 ')' がありません"
+msgstr "GVariant タプル型に閉じ記号“)”がありません"
 
 #: json-glib/json-gvariant.c:630
 msgid "Unexpected extra elements in JSON array"
@@ -158,10 +155,9 @@ msgstr ""
 "なりません"
 
 #: json-glib/json-gvariant.c:1242
-#, fuzzy, c-format
-#| msgid "GVariant class '%c' not supported"
+#, c-format
 msgid "GVariant class “%c” not supported"
-msgstr "GVariant のクラス '%c' はサポートされていません"
+msgstr "GVariant のクラス“%c”はサポートされていません"
 
 #: json-glib/json-gvariant.c:1290
 msgid "Invalid GVariant signature"
@@ -182,7 +178,7 @@ msgstr "%s:%d:%d: パースエラー: %s"
 
 #: json-glib/json-parser.c:992
 msgid "JSON data must be UTF-8 encoded"
-msgstr ""
+msgstr "JSON データは UTF-8 である必要があります"
 
 #: json-glib/json-path.c:389
 msgid "Only one root node is allowed in a JSONPath expression"
@@ -190,38 +186,33 @@ msgstr "JSONPath 式ではルートノード一つだけが許可されていま
 
 #. translators: the %c is the invalid character
 #: json-glib/json-path.c:398
-#, fuzzy, c-format
-#| msgid "Root node followed by invalid character '%c'"
+#, c-format
 msgid "Root node followed by invalid character “%c”"
-msgstr "ルートノードの後に無効な文字 '%c' があります"
+msgstr "ルートノードの後に無効な文字“%c”があります"
 
 #: json-glib/json-path.c:438
 msgid "Missing member name or wildcard after . character"
 msgstr ""
 
 #: json-glib/json-path.c:512
-#, fuzzy, c-format
-#| msgid "Malformed slice expression '%*s'"
+#, c-format
 msgid "Malformed slice expression “%*s”"
-msgstr "不正なスライス式 '%*s'"
+msgstr "不正なスライス式“%*s”"
 
 #: json-glib/json-path.c:556
-#, fuzzy, c-format
-#| msgid "Invalid set definition '%*s'"
+#, c-format
 msgid "Invalid set definition “%*s”"
-msgstr "無効な集合定義 '%*s'"
+msgstr "無効な集合定義“%*s”"
 
 #: json-glib/json-path.c:609
-#, fuzzy, c-format
-#| msgid "Invalid slice definition '%*s'"
+#, c-format
 msgid "Invalid slice definition “%*s”"
-msgstr "無効なスライス定義: '%*s'"
+msgstr "無効なスライス定義“%*s”"
 
 #: json-glib/json-path.c:637
-#, fuzzy, c-format
-#| msgid "Invalid array index definition '%*s'"
+#, c-format
 msgid "Invalid array index definition “%*s”"
-msgstr "無効な配列インデックス定義 '%*s'"
+msgstr "無効な配列インデックス定義“%*s”"
 
 #: json-glib/json-path.c:656
 #, c-format
@@ -229,32 +220,24 @@ msgid "Invalid first character “%c”"
 msgstr ""
 
 #: json-glib/json-reader.c:474
-#, fuzzy, c-format
-#| msgid ""
-#| "The current node is of type '%s', but an array or an object was expected."
+#, c-format
 msgid ""
 "The current node is of type “%s”, but an array or an object was expected."
 msgstr ""
-"現在のノードは '%s' 型ですが、配列あるいはオブジェクトである必要があります。"
+"現在のノードは“%s”型ですが、配列またはオブジェクトである必要があります。"
 
 #: json-glib/json-reader.c:486
-#, fuzzy, c-format
-#| msgid ""
-#| "The index '%d' is greater than the size of the array at the current "
-#| "position."
+#, c-format
 msgid ""
 "The index “%d” is greater than the size of the array at the current position."
-msgstr "インデックス '%d' は現在位置にある配列の長さよりも大きいです。"
+msgstr "インデックス“%d”は現在位置にある配列の長さよりも大きいです。"
 
 #: json-glib/json-reader.c:503
-#, fuzzy, c-format
-#| msgid ""
-#| "The index '%d' is greater than the size of the object at the current "
-#| "position."
+#, c-format
 msgid ""
 "The index “%d” is greater than the size of the object at the current "
 "position."
-msgstr "インデックス '%d' は現在位置のオブジェクトの大きさよりも大きいです。"
+msgstr "インデックス“%d”は現在位置のオブジェクトの大きさよりも大きいです。"
 
 #: json-glib/json-reader.c:585 json-glib/json-reader.c:751
 #: json-glib/json-reader.c:799 json-glib/json-reader.c:837
@@ -265,37 +248,31 @@ msgid "No node available at the current position"
 msgstr "現在位置にノードがありません"
 
 #: json-glib/json-reader.c:592
-#, fuzzy, c-format
-#| msgid "The current position holds a '%s' and not an array"
+#, c-format
 msgid "The current position holds a “%s” and not an array"
-msgstr "現在位置は '%s' で、配列ではありません"
+msgstr "現在位置は“%s”で、配列ではありません"
 
 #: json-glib/json-reader.c:668
-#, fuzzy, c-format
-#| msgid "The current node is of type '%s', but an object was expected."
+#, c-format
 msgid "The current node is of type “%s”, but an object was expected."
-msgstr "現在のノードは '%s' 型ですが、オブジェクトである必要があります。"
+msgstr "現在のノードは“%s”型ですが、オブジェクトである必要があります。"
 
 #: json-glib/json-reader.c:675
-#, fuzzy, c-format
-#| msgid ""
-#| "The member '%s' is not defined in the object at the current position."
+#, c-format
 msgid "The member “%s” is not defined in the object at the current position."
-msgstr "現在位置のオブジェクトで '%s' メンバーは定義されていません"
+msgstr "現在位置のオブジェクトで“%s”メンバーは定義されていません。"
 
 #: json-glib/json-reader.c:758 json-glib/json-reader.c:806
-#, fuzzy, c-format
-#| msgid "The current position holds a '%s' and not an object"
+#, c-format
 msgid "The current position holds a “%s” and not an object"
-msgstr "現在位置は '%s' で、オブジェクトではありません"
+msgstr "現在位置は“%s”で、オブジェクトではありません"
 
 #: json-glib/json-reader.c:846 json-glib/json-reader.c:884
 #: json-glib/json-reader.c:922 json-glib/json-reader.c:960
 #: json-glib/json-reader.c:1005
-#, fuzzy, c-format
-#| msgid "The current position holds a '%s' and not a value"
+#, c-format
 msgid "The current position holds a “%s” and not a value"
-msgstr "現在位置は '%s' で値ではありません"
+msgstr "現在位置は“%s”で、値ではありません"
 
 #: json-glib/json-reader.c:968
 msgid "The current position does not hold a string type"
