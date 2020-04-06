@@ -840,6 +840,10 @@ gvariant_simple_from_string (const gchar    *st,
 {
   GVariant *variant = NULL;
   gchar *nptr = NULL;
+  gboolean conversion_error = FALSE;
+  gint64 signed_value;
+  guint64 unsigned_value;
+  gdouble double_value;
 
   errno = 0;
 
@@ -851,43 +855,61 @@ gvariant_simple_from_string (const gchar    *st,
       else if (g_strcmp0 (st, "false") == 0)
         variant = g_variant_new_boolean (FALSE);
       else
-        errno = 1;
+        conversion_error = TRUE;
       break;
 
     case G_VARIANT_CLASS_BYTE:
-      variant = g_variant_new_byte (g_ascii_strtoll (st, &nptr, 10));
+      signed_value = g_ascii_strtoll (st, &nptr, 10);
+      conversion_error = errno != 0 || nptr == st;
+      variant = g_variant_new_byte (signed_value);
       break;
 
     case G_VARIANT_CLASS_INT16:
-      variant = g_variant_new_int16 (g_ascii_strtoll (st, &nptr, 10));
+      signed_value = g_ascii_strtoll (st, &nptr, 10);
+      conversion_error = errno != 0 || nptr == st;
+      variant = g_variant_new_int16 (signed_value);
       break;
 
     case G_VARIANT_CLASS_UINT16:
-      variant = g_variant_new_uint16 (g_ascii_strtoll (st, &nptr, 10));
+      signed_value = g_ascii_strtoll (st, &nptr, 10);
+      conversion_error = errno != 0 || nptr == st;
+      variant = g_variant_new_uint16 (signed_value);
       break;
 
     case G_VARIANT_CLASS_INT32:
-      variant = g_variant_new_int32 (g_ascii_strtoll (st, &nptr, 10));
+      signed_value = g_ascii_strtoll (st, &nptr, 10);
+      conversion_error = errno != 0 || nptr == st;
+      variant = g_variant_new_int32 (signed_value);
       break;
 
     case G_VARIANT_CLASS_UINT32:
-      variant = g_variant_new_uint32 (g_ascii_strtoull (st, &nptr, 10));
+      unsigned_value = g_ascii_strtoull (st, &nptr, 10);
+      conversion_error = errno != 0 || nptr == st;
+      variant = g_variant_new_uint32 (unsigned_value);
       break;
 
     case G_VARIANT_CLASS_INT64:
-      variant = g_variant_new_int64 (g_ascii_strtoll (st, &nptr, 10));
+      signed_value = g_ascii_strtoll (st, &nptr, 10);
+      conversion_error = errno != 0 || nptr == st;
+      variant = g_variant_new_int64 (signed_value);
       break;
 
     case G_VARIANT_CLASS_UINT64:
-      variant = g_variant_new_uint64 (g_ascii_strtoull (st, &nptr, 10));
+      unsigned_value = g_ascii_strtoull (st, &nptr, 10);
+      conversion_error = errno != 0 || nptr == st;
+      variant = g_variant_new_uint64 (unsigned_value);
       break;
 
     case G_VARIANT_CLASS_HANDLE:
-      variant = g_variant_new_handle (strtol (st, &nptr, 10));
+      signed_value = strtol (st, &nptr, 10);
+      conversion_error = errno != 0 || nptr == st;
+      variant = g_variant_new_handle (signed_value);
       break;
 
     case G_VARIANT_CLASS_DOUBLE:
-      variant = g_variant_new_double (g_ascii_strtod (st, &nptr));
+      double_value = g_ascii_strtod (st, &nptr);
+      conversion_error = errno != 0 || nptr == st;
+      variant = g_variant_new_double (double_value);
       break;
 
     case G_VARIANT_CLASS_STRING:
@@ -901,7 +923,7 @@ gvariant_simple_from_string (const gchar    *st,
       break;
     }
 
-  if (errno != 0 || nptr == st)
+  if (conversion_error)
     {
       g_set_error_literal (error,
                            G_IO_ERROR,
