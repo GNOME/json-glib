@@ -843,6 +843,7 @@ gvariant_simple_from_string (const gchar    *st,
   gboolean conversion_error = FALSE;
   gint64 signed_value;
   guint64 unsigned_value;
+  gdouble double_value;
 
   errno = 0;
 
@@ -872,17 +873,17 @@ gvariant_simple_from_string (const gchar    *st,
     case G_VARIANT_CLASS_UINT16:
       signed_value = g_ascii_strtoll (st, &nptr, 10);
       conversion_error = errno != 0 || nptr == st;
-      variant = g_variant_new_uint16 (g_ascii_strtoll (st, &nptr, 10));
+      variant = g_variant_new_uint16 (signed_value);
       break;
 
     case G_VARIANT_CLASS_INT32:
       signed_value = g_ascii_strtoll (st, &nptr, 10);
       conversion_error = errno != 0 || nptr == st;
-      variant = g_variant_new_int32 (g_ascii_strtoll (st, &nptr, 10));
+      variant = g_variant_new_int32 (signed_value);
       break;
 
     case G_VARIANT_CLASS_UINT32:
-      unsigned_value = g_ascii_strtoll (st, &nptr, 10);
+      unsigned_value = g_ascii_strtoull (st, &nptr, 10);
       conversion_error = errno != 0 || nptr == st;
       variant = g_variant_new_uint32 (unsigned_value);
       break;
@@ -890,11 +891,11 @@ gvariant_simple_from_string (const gchar    *st,
     case G_VARIANT_CLASS_INT64:
       signed_value = g_ascii_strtoll (st, &nptr, 10);
       conversion_error = errno != 0 || nptr == st;
-      variant = g_variant_new_int64 (g_ascii_strtoll (st, &nptr, 10));
+      variant = g_variant_new_int64 (signed_value);
       break;
 
     case G_VARIANT_CLASS_UINT64:
-      unsigned_value = g_ascii_strtoll (st, &nptr, 10);
+      unsigned_value = g_ascii_strtoull (st, &nptr, 10);
       conversion_error = errno != 0 || nptr == st;
       variant = g_variant_new_uint64 (unsigned_value);
       break;
@@ -906,7 +907,9 @@ gvariant_simple_from_string (const gchar    *st,
       break;
 
     case G_VARIANT_CLASS_DOUBLE:
-      variant = g_variant_new_double (g_ascii_strtod (st, &nptr));
+      double_value = g_ascii_strtod (st, &nptr);
+      conversion_error = errno != 0 || nptr == st;
+      variant = g_variant_new_double (double_value);
       break;
 
     case G_VARIANT_CLASS_STRING:
