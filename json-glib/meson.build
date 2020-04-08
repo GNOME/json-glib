@@ -57,7 +57,6 @@ json_version_h = configure_file(
   input: 'json-version.h.in',
   output: 'json-version.h',
   configuration: version_data,
-  install: true,
   install_dir: install_header_dir,
 )
 
