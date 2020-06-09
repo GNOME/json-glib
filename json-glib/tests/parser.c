@@ -689,19 +689,12 @@ test_stream_sync (void)
   g_free (path);
 }
 
+/* Assert that the JSON in @parser was correctly loaded from stream-load.json. */
 static void
-on_load_complete (GObject      *gobject,
-                  GAsyncResult *result,
-                  gpointer      user_data)
+assert_stream_load_json_correct (JsonParser *parser)
 {
-  JsonParser *parser = JSON_PARSER (gobject);
-  GMainLoop *main_loop = user_data;
-  GError *error = NULL;
   JsonNode *root;
   JsonArray *array;
-
-  json_parser_load_from_stream_finish (parser, result, &error);
-  g_assert_no_error (error);
 
   root = json_parser_get_root (parser);
   g_assert (root != NULL);
@@ -711,6 +704,21 @@ on_load_complete (GObject      *gobject,
   g_assert_cmpint (json_array_get_length (array), ==, 1);
   g_assert (JSON_NODE_HOLDS_OBJECT (json_array_get_element (array, 0)));
   g_assert (json_object_has_member (json_array_get_object_element (array, 0), "hello"));
+}
+
+static void
+on_load_complete (GObject      *gobject,
+                  GAsyncResult *result,
+                  gpointer      user_data)
+{
+  JsonParser *parser = JSON_PARSER (gobject);
+  GMainLoop *main_loop = user_data;
+  GError *error = NULL;
+
+  json_parser_load_from_stream_finish (parser, result, &error);
+  g_assert_no_error (error);
+
+  assert_stream_load_json_correct (parser);
 
   g_main_loop_quit (main_loop);
 }
