@@ -754,6 +754,59 @@ test_stream_async (void)
   g_free (path);
 }
 
+/* Test json_parser_load_from_mapped_file() succeeds. */
+static void
+test_mapped (void)
+{
+  GError *error = NULL;
+  JsonParser *parser = json_parser_new ();
+  char *path;
+
+  path = g_test_build_filename (G_TEST_DIST, "stream-load.json", NULL);
+
+  json_parser_load_from_mapped_file (parser, path, &error);
+  g_assert_no_error (error);
+
+  assert_stream_load_json_correct (parser);
+
+  g_object_unref (parser);
+  g_free (path);
+}
+
+/* Test json_parser_load_from_mapped_file() error handling for file I/O. */
+static void
+test_mapped_file_error (void)
+{
+  GError *error = NULL;
+  JsonParser *parser = json_parser_new ();
+
+  json_parser_load_from_mapped_file (parser, "nope.json", &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_NOENT);
+
+  g_assert_null (json_parser_get_root (parser));
+
+  g_object_unref (parser);
+}
+
+/* Test json_parser_load_from_mapped_file() error handling for JSON parsing. */
+static void
+test_mapped_json_error (void)
+{
+  GError *error = NULL;
+  JsonParser *parser = json_parser_new ();
+  char *path;
+
+  path = g_test_build_filename (G_TEST_DIST, "invalid.json", NULL);
+
+  json_parser_load_from_mapped_file (parser, path, &error);
+  g_assert_error (error, JSON_PARSER_ERROR, JSON_PARSER_ERROR_INVALID_BAREWORD);
+
+  g_assert_null (json_parser_get_root (parser));
+
+  g_object_unref (parser);
+  g_free (path);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -772,6 +825,9 @@ main (int   argc,
   g_test_add_func ("/parser/unicode-escape", test_unicode_escape);
   g_test_add_func ("/parser/stream-sync", test_stream_sync);
   g_test_add_func ("/parser/stream-async", test_stream_async);
+  g_test_add_func ("/parser/mapped", test_mapped);
+  g_test_add_func ("/parser/mapped/file-error", test_mapped_file_error);
+  g_test_add_func ("/parser/mapped/json-error", test_mapped_json_error);
 
   return g_test_run ();
 }

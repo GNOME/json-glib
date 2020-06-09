@@ -153,6 +153,10 @@ JSON_AVAILABLE_IN_1_0
 gboolean    json_parser_load_from_file          (JsonParser           *parser,
                                                  const gchar          *filename,
                                                  GError              **error);
+JSON_AVAILABLE_IN_1_6
+gboolean    json_parser_load_from_mapped_file   (JsonParser           *parser,
+                                                 const gchar          *filename,
+                                                 GError              **error);
 JSON_AVAILABLE_IN_1_0
 gboolean    json_parser_load_from_data          (JsonParser           *parser,
                                                  const gchar          *data,
