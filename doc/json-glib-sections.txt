@@ -183,6 +183,7 @@ JsonParserClass
 json_parser_new
 json_parser_new_immutable
 json_parser_load_from_file
+json_parser_load_from_mapped_file
 json_parser_load_from_data
 json_parser_load_from_stream
 json_parser_load_from_stream_async
