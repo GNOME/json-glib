@@ -136,6 +136,7 @@ if host_system == 'linux'
     '-Wl,-Bsymbolic',
     '-Wl,-z,relro',
     '-Wl,-z,now',
+    '-Wl,--default-symver',
   ])
 endif
 
