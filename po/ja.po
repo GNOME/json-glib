@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: json-glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues\n"
 "POT-Creation-Date: 2020-06-16 13:37+0000\n"
-"PO-Revision-Date: 2020-01-28 21:00+0900\n"
+"PO-Revision-Date: 2020-08-21 22:40+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "Language: ja\n"
@@ -32,7 +32,7 @@ msgstr ""
 
 #: json-glib/json-glib-format.c:60
 msgid "Output file"
-msgstr ""
+msgstr "出力ファイル"
 
 #: json-glib/json-glib-format.c:60 json-glib/json-glib-validate.c:115
 msgid "FILE"
@@ -129,7 +129,7 @@ msgstr "JSON オブジェクトであるべきところ、ルートノードが�
 #: json-glib/json-gvariant.c:524
 #, c-format
 msgid "Unexpected type “%s” in JSON node"
-msgstr "JSON ノードが“%s”型になってしまってます"
+msgstr "JSON ノードが“%s”型になっています"
 
 #: json-glib/json-gvariant.c:594
 msgid "Missing elements in JSON array to conform to a tuple"
@@ -151,13 +151,13 @@ msgstr "GVariant に変換するのに無効な文字列です"
 msgid ""
 "A GVariant dictionary entry expects a JSON object with exactly one member"
 msgstr ""
-"GVariant の辞書エントリはメンバーを一つだけ含んだ JSON オブジェクトでなくては"
-"なりません"
+"GVariant の辞書エントリーはメンバーを一つだけ含んだ JSON オブジェクトでなくて"
+"はなりません"
 
 #: json-glib/json-gvariant.c:1264
 #, c-format
 msgid "GVariant class “%c” not supported"
-msgstr "GVariant のクラス“%c”はサポートされていません"
+msgstr "GVariant のクラス“%c”はサポートしていません"
 
 #: json-glib/json-gvariant.c:1312
 msgid "Invalid GVariant signature"
@@ -174,7 +174,7 @@ msgstr "JSON データが空です"
 #: json-glib/json-parser.c:909
 #, c-format
 msgid "%s:%d:%d: Parse error: %s"
-msgstr "%s:%d:%d: パースエラー: %s"
+msgstr "%s:%d:%d: 解析エラー: %s"
 
 #: json-glib/json-parser.c:992
 msgid "JSON data must be UTF-8 encoded"
@@ -192,7 +192,7 @@ msgstr "ルートノードの後に無効な文字“%c”があります"
 
 #: json-glib/json-path.c:438
 msgid "Missing member name or wildcard after . character"
-msgstr ""
+msgstr "“.”の後にメンバー名またはワイルドカードがありません"
 
 #: json-glib/json-path.c:512
 #, c-format
@@ -217,7 +217,7 @@ msgstr "無効な配列インデックス定義“%*s”"
 #: json-glib/json-path.c:656
 #, c-format
 msgid "Invalid first character “%c”"
-msgstr ""
+msgstr "無効な先頭文字“%c”"
 
 #: json-glib/json-reader.c:474
 #, c-format
