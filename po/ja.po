@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json-glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues\n"
-"POT-Creation-Date: 2019-11-15 14:11+0000\n"
+"POT-Creation-Date: 2020-06-16 13:37+0000\n"
 "PO-Revision-Date: 2020-01-28 21:00+0900\n"
 "Last-Translator: sicklylife <translation@sicklylife.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -143,27 +143,27 @@ msgstr "GVariant タプル型に閉じ記号“)”がありません"
 msgid "Unexpected extra elements in JSON array"
 msgstr "JSON 配列に余計な要素があります"
 
-#: json-glib/json-gvariant.c:909
+#: json-glib/json-gvariant.c:931
 msgid "Invalid string value converting to GVariant"
 msgstr "GVariant に変換するのに無効な文字列です"
 
-#: json-glib/json-gvariant.c:964
+#: json-glib/json-gvariant.c:986
 msgid ""
 "A GVariant dictionary entry expects a JSON object with exactly one member"
 msgstr ""
 "GVariant の辞書エントリはメンバーを一つだけ含んだ JSON オブジェクトでなくては"
 "なりません"
 
-#: json-glib/json-gvariant.c:1242
+#: json-glib/json-gvariant.c:1264
 #, c-format
 msgid "GVariant class “%c” not supported"
 msgstr "GVariant のクラス“%c”はサポートされていません"
 
-#: json-glib/json-gvariant.c:1290
+#: json-glib/json-gvariant.c:1312
 msgid "Invalid GVariant signature"
 msgstr "無効な GVariant シグネチャです"
 
-#: json-glib/json-gvariant.c:1338
+#: json-glib/json-gvariant.c:1360
 msgid "JSON data is empty"
 msgstr "JSON データが空です"
 
