@@ -968,9 +968,12 @@ json_object_foreach_member (JsonObject        *object,
                             gpointer           data)
 {
   GList *l;
+  int age;
 
   g_return_if_fail (object != NULL);
   g_return_if_fail (func != NULL);
+
+  age = object->age;
 
   for (l = object->members_ordered.head; l != NULL; l = l->next)
     {
@@ -978,6 +981,8 @@ json_object_foreach_member (JsonObject        *object,
       JsonNode *member_node = g_hash_table_lookup (object->members, member_name);
 
       func (object, member_name, member_node, data);
+
+      g_assert (object->age == age);
     }
 }
 
