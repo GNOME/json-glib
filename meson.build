@@ -23,7 +23,10 @@ json_gettext_domain = json_api_name
 
 # Maintain compatibility with the old soname versioning
 soversion = 0
+current = json_binary_age - json_interface_age
+revision = json_interface_age
 libversion = '@0@.@1@.@2@'.format(soversion, json_binary_age - json_interface_age, json_interface_age)
+darwin_versions = [ current + 1, '@0@.@1@'.format(current + 1, revision) ]
 
 # Paths
 json_includedir = join_paths(get_option('prefix'), get_option('includedir'))
@@ -142,14 +145,6 @@ if host_system == 'linux'
     '-Wl,-z,now',
     '-Wl,--default-symver',
   ])
-endif
-
-# Maintain compatibility with autotools
-if host_system == 'darwin'
-  common_ldflags += [
-    '-compatibility_version 1',
-    '-current_version @0@.@1@'.format(json_binary_age - json_interface_age, json_interface_age),
-  ]
 endif
 
 root_dir = include_directories('.')

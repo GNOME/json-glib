@@ -78,6 +78,7 @@ json_lib = library(
   dependencies: [gio_dep],
   c_args: json_c_args + common_cflags,
   link_args: common_ldflags,
+  darwin_versions: darwin_versions,
   install: true,
 )
 
