@@ -957,6 +957,9 @@ json_object_remove_member (JsonObject  *object,
  * from within the iterator @func, but it is not safe to add or
  * remove members from the @object.
  *
+ * The order in which the @object members are iterated is the
+ * insertion order.
+ *
  * Since: 0.8
  */
 void
