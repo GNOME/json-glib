@@ -189,8 +189,8 @@ json_gobject_new (GType       gtype,
   guint n_members;
   GObjectClass *klass;
   GObject *retval;
-  GArray *construct_params;
-  gint i;
+  GArray *construct_values;
+  GPtrArray *construct_names;
 
   klass = g_type_class_ref (gtype);
 
@@ -203,15 +203,20 @@ json_gobject_new (GType       gtype,
    *
    * FIXME - find a way to allow deserialization for these properties
    */
-  construct_params = g_array_sized_new (FALSE, FALSE, sizeof (GParameter), n_members);
+  construct_names = g_ptr_array_sized_new (n_members);
+  g_ptr_array_set_free_func (construct_names, g_free);
+
+  construct_values = g_array_sized_new (FALSE, FALSE, sizeof (GValue), n_members);
+  g_array_set_clear_func (construct_values, (GDestroyNotify) g_value_unset);
+
 
   for (l = members->head; l != NULL; l = l->next)
     {
-      const gchar *member_name = l->data;
-      GParamSpec *pspec;
-      GParameter param = { NULL, };
-      JsonNode *val;
+      const char *member_name = l->data;
+      GValue value = G_VALUE_INIT;
       gboolean res = FALSE;
+      GParamSpec *pspec;
+      JsonNode *val;
 
       pspec = g_object_class_find_property (klass, member_name);
       if (!pspec)
@@ -224,22 +229,21 @@ json_gobject_new (GType       gtype,
       if (!(pspec->flags & G_PARAM_WRITABLE))
         goto next_member;
 
-      g_value_init (&param.value, G_PARAM_SPEC_VALUE_TYPE (pspec));
+      g_value_init (&value, G_PARAM_SPEC_VALUE_TYPE (pspec));
 
       val = json_object_get_member (object, member_name);
-      res = json_deserialize_pspec (&param.value, pspec, val);
+      res = json_deserialize_pspec (&value, pspec, val);
       if (!res)
 	{
 	  g_warning ("Failed to deserialize \"%s\" property of type \"%s\" for an object of type \"%s\"",
-		     pspec->name, G_VALUE_TYPE_NAME (&param.value), g_type_name (gtype));
+		     pspec->name, G_VALUE_TYPE_NAME (&value), g_type_name (gtype));
 
-	  g_value_unset (&param.value);
+	  g_value_unset (&value);
 	}
       else
         {
-          param.name = g_strdup (pspec->name);
-
-          g_array_append_val (construct_params, param);
+          g_ptr_array_add (construct_names, g_strdup (pspec->name));
+          g_array_append_val (construct_values, value);
 
           continue;
         }
@@ -248,22 +252,13 @@ json_gobject_new (GType       gtype,
       g_queue_push_tail (&members_left, l->data);
     }
 
-  G_GNUC_BEGIN_IGNORE_DEPRECATIONS
-  retval = g_object_newv (gtype,
-                          construct_params->len,
-                          (GParameter *) construct_params->data);
-  G_GNUC_END_IGNORE_DEPRECATIONS
+  retval = g_object_new_with_properties (gtype,
+                                         construct_names->len,
+                                         (const char **) construct_names->pdata,
+                                         (GValue *) construct_values->data);
 
-  /* free the contents of the GArray */
-  for (i = 0; i < construct_params->len; i++)
-    {
-      GParameter *param = &g_array_index (construct_params, GParameter, i);
-
-      g_free ((gchar *) param->name);
-      g_value_unset (&param->value);
-    }
-
-  g_array_free (construct_params, TRUE);
+  g_ptr_array_unref (construct_names);
+  g_array_unref (construct_values);
 
   /* do the Serializable type check once */
   if (g_type_is_a (gtype, JSON_TYPE_SERIALIZABLE))

@@ -208,6 +208,7 @@ static const struct
   { "bareword-3", "{ \"foo\" : ponies }", test_invalid_bareword },
   { "bareword-4", "[ 3, 2, 1, lift_off ]", test_invalid_bareword },
   { "bareword-5", "{ foo : 42 }", test_invalid_bareword },
+  { "bareword-6", "\"st\"ring\"", test_invalid_bareword },
 
   /* values */
   { "values-1", "[ -false ]", test_invalid_value },

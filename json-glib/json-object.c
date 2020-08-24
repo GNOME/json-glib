@@ -62,7 +62,8 @@ json_object_new (void)
   JsonObject *object;
 
   object = g_slice_new0 (JsonObject);
-  
+
+  object->age = 0;
   object->ref_count = 1;
   object->members = g_hash_table_new_full (g_str_hash, g_str_equal,
                                            g_free,
@@ -176,7 +177,10 @@ object_set_member_internal (JsonObject  *object,
   gchar *name = g_strdup (member_name);
 
   if (g_hash_table_lookup (object->members, name) == NULL)
-    g_queue_push_tail (&object->members_ordered, name);
+    {
+      g_queue_push_tail (&object->members_ordered, name);
+      object->age += 1;
+    }
   else
     {
       GList *l;
@@ -953,6 +957,9 @@ json_object_remove_member (JsonObject  *object,
  * from within the iterator @func, but it is not safe to add or
  * remove members from the @object.
  *
+ * The order in which the @object members are iterated is the
+ * insertion order.
+ *
  * Since: 0.8
  */
 void
@@ -961,9 +968,12 @@ json_object_foreach_member (JsonObject        *object,
                             gpointer           data)
 {
   GList *l;
+  int age;
 
   g_return_if_fail (object != NULL);
   g_return_if_fail (func != NULL);
+
+  age = object->age;
 
   for (l = object->members_ordered.head; l != NULL; l = l->next)
     {
@@ -971,6 +981,8 @@ json_object_foreach_member (JsonObject        *object,
       JsonNode *member_node = g_hash_table_lookup (object->members, member_name);
 
       func (object, member_name, member_node, data);
+
+      g_assert (object->age == age);
     }
 }
 
@@ -1120,6 +1132,12 @@ json_object_iter_init (JsonObjectIter  *iter,
  * The order in which members are returned by the iterator is undefined. The
  * iterator is invalidated if its #JsonObject is modified during iteration.
  *
+ * You must use this function with a #JsonObjectIter initialized with
+ * json_object_iter_init(); using this function with an iterator initialized
+ * with json_object_iter_init_ordered() yields undefined behavior.
+ *
+ * See also: json_object_iter_next_ordered()
+ *
  * Returns: %TRUE if @member_name and @member_node are valid; %FALSE if the end
  *    of the object has been reached
  *
@@ -1139,4 +1157,103 @@ json_object_iter_next (JsonObjectIter  *iter,
   return g_hash_table_iter_next (&iter_real->members_iter,
                                  (gpointer *) member_name,
                                  (gpointer *) member_node);
+}
+
+/**
+ * json_object_iter_init_ordered:
+ * @iter: an uninitialised #JsonObjectIter
+ * @object: the #JsonObject to iterate over
+ *
+ * Initialise the @iter and associate it with @object.
+ *
+ * |[<!-- language="C" -->
+ * JsonObjectIter iter;
+ * const gchar *member_name;
+ * JsonNode *member_node;
+ *
+ * json_object_iter_init_ordered (&iter, some_object);
+ * while (json_object_iter_next_ordered (&iter, &member_name, &member_node))
+ *   {
+ *     // Do something with @member_name and @member_node.
+ *   }
+ * ]|
+ *
+ * See also: json_object_iter_init()
+ *
+ * Since: 1.6
+ */
+void
+json_object_iter_init_ordered (JsonObjectIter  *iter,
+                               JsonObject      *object)
+{
+  JsonObjectOrderedIterReal *iter_real = (JsonObjectOrderedIterReal *) iter;
+
+  g_return_if_fail (iter != NULL);
+  g_return_if_fail (object != NULL);
+  g_return_if_fail (object->ref_count > 0);
+
+  iter_real->object = object;
+  iter_real->cur_member = NULL;
+  iter_real->next_member = NULL;
+  iter_real->age = iter_real->object->age;
+}
+
+/**
+ * json_object_iter_next_ordered:
+ * @iter: a #JsonObjectIter
+ * @member_name: (out callee-allocates) (transfer none) (optional): return
+ *    location for the member name, or %NULL to ignore
+ * @member_node: (out callee-allocates) (transfer none) (optional): return
+ *    location for the member value, or %NULL to ignore
+ *
+ * Advance @iter and retrieve the next member in the object. If the end of the
+ * object is reached, %FALSE is returned and @member_name and @member_node are
+ * set to invalid values. After that point, the @iter is invalid.
+ *
+ * The order in which members are returned by the iterator is the same order in
+ * which the members were added to the #JsonObject. The iterator is invalidated
+ * if its #JsonObject is modified during iteration.
+ *
+ * You must use this function with a #JsonObjectIter initialized with
+ * json_object_iter_init_ordered(); using this function with an iterator initialized
+ * with json_object_iter_init() yields undefined behavior.
+ *
+ * See also: json_object_iter_next()
+ *
+ * Returns: %TRUE if @member_name and @member_node are valid; %FALSE if the end
+ *    of the object has been reached
+ *
+ * Since: 1.6
+ */
+gboolean
+json_object_iter_next_ordered (JsonObjectIter  *iter,
+                               const gchar    **member_name,
+                               JsonNode       **member_node)
+{
+  JsonObjectOrderedIterReal *iter_real = (JsonObjectOrderedIterReal *) iter;
+  const char *name = NULL;
+
+  g_return_val_if_fail (iter != NULL, FALSE);
+  g_return_val_if_fail (iter_real->object != NULL, FALSE);
+  g_return_val_if_fail (iter_real->object->ref_count > 0, FALSE);
+  g_return_val_if_fail (iter_real->age == iter_real->object->age, FALSE);
+
+  if (iter_real->cur_member == NULL)
+    iter_real->cur_member = iter_real->object->members_ordered.head;
+  else
+    iter_real->cur_member = iter_real->cur_member->next;
+
+  name = iter_real->cur_member != NULL ? iter_real->cur_member->data : NULL;
+
+  if (member_name != NULL)
+    *member_name = name;
+  if (member_node != NULL)
+    {
+      if (name != NULL)
+        *member_node = g_hash_table_lookup (iter_real->object->members, name);
+      else
+        *member_name = NULL;
+    }
+
+  return iter_real->cur_member != NULL;
 }

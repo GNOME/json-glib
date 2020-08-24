@@ -122,20 +122,9 @@ json_parser_clear (JsonParser *parser)
 {
   JsonParserPrivate *priv = parser->priv;
 
-  g_free (priv->variable_name);
-  priv->variable_name = NULL;
-
-  if (priv->last_error)
-    {
-      g_error_free (priv->last_error);
-      priv->last_error = NULL;
-    }
-
-  if (priv->root)
-    {
-      json_node_unref (priv->root);
-      priv->root = NULL;
-    }
+  g_clear_pointer (&priv->variable_name, g_free);
+  g_clear_pointer (&priv->last_error, g_error_free);
+  g_clear_pointer (&priv->root, json_node_unref);
 }
 
 static void
@@ -880,6 +869,14 @@ json_parse_statement (JsonParser  *parser,
     case G_TOKEN_FLOAT:
     case G_TOKEN_STRING:
     case G_TOKEN_IDENTIFIER:
+      if (priv->root != NULL)
+        {
+          JSON_NOTE (PARSER, "Only one top level statement is possible");
+          json_scanner_get_next_token (scanner);
+          priv->error_code = JSON_PARSER_ERROR_INVALID_BAREWORD;
+          return G_TOKEN_EOF;
+        }
+
       JSON_NOTE (PARSER, "Statement is a value");
       token = json_scanner_get_next_token (scanner);
       return json_parse_value (parser, scanner, token, &priv->root);
@@ -888,7 +885,7 @@ json_parse_statement (JsonParser  *parser,
       JSON_NOTE (PARSER, "Unknown statement");
       json_scanner_get_next_token (scanner);
       priv->error_code = JSON_PARSER_ERROR_INVALID_BAREWORD;
-      return G_TOKEN_SYMBOL;
+      return priv->root != NULL ? G_TOKEN_EOF : G_TOKEN_SYMBOL;
     }
 }
 

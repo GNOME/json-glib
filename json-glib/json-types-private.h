@@ -104,6 +104,7 @@ struct _JsonObject
 
   GQueue members_ordered;
 
+  int age;
   guint immutable_hash;  /* valid iff immutable */
   volatile gint ref_count;
   gboolean immutable : 1;
@@ -117,6 +118,19 @@ typedef struct
 } JsonObjectIterReal;
 
 G_STATIC_ASSERT (sizeof (JsonObjectIterReal) == sizeof (JsonObjectIter));
+
+typedef struct
+{
+  JsonObject *object; /* unowned */
+  GList *cur_member;
+  GList *next_member;
+  gpointer priv_pointer[3];
+  int age;
+  int priv_int[1];
+  gboolean priv_boolean;
+} JsonObjectOrderedIterReal;
+
+G_STATIC_ASSERT (sizeof (JsonObjectOrderedIterReal) == sizeof (JsonObjectIter));
 
 G_GNUC_INTERNAL
 const gchar *   json_node_type_get_name         (JsonNodeType     node_type);

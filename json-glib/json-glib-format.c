@@ -93,12 +93,15 @@ format (JsonParser    *parser,
   parse_res = json_parser_load_from_stream (parser, in, NULL, &error);
   if (!parse_res)
     {
+      char *uri = g_file_get_uri (file);
+
       /* Translators: the first %s is the program name, the second one
        * is the URI of the file, the third is the error message.
        */
       g_printerr (_("%s: %s: error parsing file: %s\n"),
-                  g_get_prgname (), g_file_get_uri (file), error->message);
+                  g_get_prgname (), uri, error->message);
       g_clear_error (&error);
+      g_free (uri);
       res = FALSE;
       goto out;
     }
@@ -132,10 +135,13 @@ format (JsonParser    *parser,
 
       if (written == -1 && errno != EINTR)
         {
+          char *uri = g_file_get_uri (file);
+
           /* Translators: the first %s is the program name, the
            * second one is the URI of the file.
            */
-          g_printerr (_("%s: %s: error writing to stdout"), g_get_prgname (), g_file_get_uri (file));
+          g_printerr (_("%s: %s: error writing to stdout"), g_get_prgname (), uri);
+          g_free (uri);
           res = FALSE;
           goto out;
         }
@@ -153,14 +159,19 @@ out:
   close_res = g_input_stream_close (in, NULL, &error);
   if (!close_res)
     {
+      char *uri = g_file_get_uri (file);
+
       /* Translators: the first %s is the program name, the second one
        * is the URI of the file, the third is the error message.
        */
       g_printerr (_("%s: %s: error closing: %s\n"),
-                  g_get_prgname (), g_file_get_uri (file), error->message);
+                  g_get_prgname (), uri, error->message);
       g_clear_error (&error);
+      g_free (uri);
       res = FALSE;
     }
+
+  g_object_unref (in);
 
   if (fd != STDOUT_FILENO)
     g_close (fd, NULL);

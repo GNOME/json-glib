@@ -57,7 +57,6 @@ json_version_h = configure_file(
   input: 'json-version.h.in',
   output: 'json-version.h',
   configuration: version_data,
-  install: true,
   install_dir: install_header_dir,
 )
 
@@ -79,6 +78,7 @@ json_lib = library(
   dependencies: [gio_dep],
   c_args: json_c_args + common_cflags,
   link_args: common_ldflags,
+  darwin_versions: darwin_versions,
   install: true,
 )
 
