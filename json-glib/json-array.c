@@ -85,6 +85,30 @@ json_array_sized_new (guint n_elements)
   return array;
 }
 
+JsonArray *
+json_array_copy (JsonArray *array,
+                 JsonNode  *new_parent)
+{
+  JsonArray *copy;
+  guint i;
+
+  copy = json_array_sized_new (array->elements->len);
+  for (i = 0; i < array->elements->len; i++)
+    {
+      JsonNode *child_copy;
+
+      child_copy = json_node_copy (g_ptr_array_index (array->elements, i));
+      child_copy->parent = new_parent;
+      g_ptr_array_index (copy->elements, i) = child_copy;
+    }
+  copy->elements->len = array->elements->len;
+
+  copy->immutable_hash = array->immutable_hash;
+  copy->immutable = array->immutable;
+
+  return copy;
+}
+
 /**
  * json_array_ref:
  * @array: a #JsonArray

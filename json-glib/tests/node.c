@@ -91,7 +91,7 @@ test_copy_object (void)
   copy = json_node_copy (node);
 
   g_assert_cmpint (json_node_get_node_type (node), ==, json_node_get_node_type (copy));
-  g_assert (json_node_get_object (node) == json_node_get_object (copy));
+  g_assert (json_node_get_object (node) != json_node_get_object (copy));
 
   json_node_free (copy);
   json_node_free (node);

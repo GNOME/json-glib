@@ -169,6 +169,14 @@ void            json_value_seal                 (JsonValue       *value);
 G_GNUC_INTERNAL
 guint           json_value_hash                 (gconstpointer    key);
 
+G_GNUC_INTERNAL
+JsonArray *     json_array_copy                 (JsonArray       *array,
+                                                 JsonNode        *new_parent);
+
+G_GNUC_INTERNAL
+JsonObject *    json_object_copy                (JsonObject      *object,
+                                                 JsonNode        *new_parent);
+
 G_END_DECLS
 
 #endif /* __JSON_TYPES_PRIVATE_H__ */

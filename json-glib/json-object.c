@@ -72,6 +72,35 @@ json_object_new (void)
   return object;
 }
 
+JsonObject *
+json_object_copy (JsonObject *object,
+                  JsonNode   *new_parent)
+{
+  JsonObject *copy;
+  GList *cur;
+
+  copy = json_object_new ();
+
+  for (cur = object->members_ordered.head; cur != NULL; cur = cur->next)
+    {
+      gchar *name;
+      JsonNode *child_copy;
+
+      name = g_strdup (cur->data);
+
+      child_copy = json_node_copy (g_hash_table_lookup (object->members, name));
+      child_copy->parent = new_parent;
+
+      g_hash_table_insert (copy->members, name, child_copy);
+      g_queue_push_tail (&copy->members_ordered, name);
+    }
+
+  copy->immutable_hash = object->immutable_hash;
+  copy->immutable = object->immutable;
+
+  return copy;
+}
+
 /**
  * json_object_ref:
  * @object: a #JsonObject
