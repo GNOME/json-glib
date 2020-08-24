@@ -37,12 +37,12 @@
  * @error: return location for a #GError
  *
  * Parses the string in @str and returns a #JsonNode representing
- * the JSON tree.
+ * the JSON tree. If @str is empty, this function will return %NULL.
  *
  * In case of parsing error, this function returns %NULL and sets
  * @error appropriately.
  *
- * Returns: (transfer full): a #JsonNode, or %NULL
+ * Returns: (transfer full) (nullable): a #JsonNode, or %NULL
  *
  * Since: 1.2
  */
