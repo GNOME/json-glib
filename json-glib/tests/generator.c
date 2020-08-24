@@ -34,9 +34,9 @@ static const gchar *nested_object =
 "}";
 
 static const char *pretty_examples[] = {
- "[\n]",
+ "[]",
 
- "{\n}",
+ "{}",
 
  "[\n"
  "\ttrue,\n"
@@ -382,10 +382,9 @@ test_pretty (void)
 
       data = json_generator_to_data (generator, &len);
 
-      if (g_test_verbose ())
-        g_print ("** checking pretty printing:\n%s\n** expected:\n%s\n",
-                 data,
-                 pretty_examples[i]);
+      g_test_message ("checking pretty printing: %s\texpected: %s",
+                      data,
+                      pretty_examples[i]);
 
       g_assert_cmpint (len, ==, strlen (pretty_examples[i]));
       g_assert_cmpstr (data, ==, pretty_examples[i]);

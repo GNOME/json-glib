@@ -394,12 +394,15 @@ dump_array (JsonGenerator *generator,
 
   g_string_append_c (buffer, '[');
 
-  if (pretty)
-    g_string_append_c (buffer, '\n');
+  if (array_len == 0)
+    goto out;
 
   for (i = 0; i < array_len; i++)
     {
       JsonNode *cur = json_array_get_element (array, i);
+
+      if (i == 0 && pretty)
+        g_string_append_c (buffer, '\n');
 
       dump_node (generator, buffer, level + 1, NULL, cur);
 
@@ -416,6 +419,7 @@ dump_array (JsonGenerator *generator,
         g_string_append_c (buffer, priv->indent_char);
     }
 
+out:
   g_string_append_c (buffer, ']');
 }
 
@@ -434,15 +438,15 @@ dump_object (JsonGenerator *generator,
 
   g_string_append_c (buffer, '{');
 
-  if (pretty)
-    g_string_append_c (buffer, '\n');
-
   members = json_object_get_members_internal (object);
 
   for (l = members->head; l != NULL; l = l->next)
     {
       const gchar *member_name = l->data;
       JsonNode *cur = json_object_get_member (object, member_name);
+
+      if (l->prev == NULL && pretty)
+        g_string_append_c (buffer, '\n');
 
       dump_node (generator, buffer, level + 1, member_name, cur);
 
