@@ -1,6 +1,28 @@
 Overview of changes for 1.6
 ==============================
-• TBD
+• Add getters with default fallback for JsonObject [Emmanuele Bassi]
+• #26 - Clarify some expections of the json_object_get_*_member APIs [Debarshi Ray]
+• #29 - Improve reproducibility of the build [Ravish Bhatia]
+• Use json_node_unref() with g_autoptr() [Robert Ancell]
+• Clarify documentation regarding programmer errors [Philip Withnall]
+• Fix getting immutable root nodes from empty input [Philip Withnall]
+• Fix various memory leaks [Philip Withnall, Emmanuele Bassi]
+• Add `--output` option to json-glib-format [Emmanuele Bassi]
+• Refresh the build [Emmanuele Bassi]
+• Add glib as a fallback sub-project [Xavier Claessens]
+• Don't error with MSVC C4819 warning [Seungha Yang]
+• Fix nullable annotation [Niels De Graef]
+• Allow disabling tests when building [Stéphane Cerveau]
+• #39 - Fix default deserialization method for JsonSerializable [Jeremy Philippe]
+• Stop string to GVariant conversion failing due to unrelated errno changes [Robert Ancell]
+• Support loading files via memory mapping [Philip Withnall]
+• #33 - Add a symbol version to all exported symbols [Simon McVittie]
+• #48 - Fix build with Clang 11 [Dimitry Andric]
+• Stop using deprecated g_object_newv() constructor [Emmanuele Bassi]
+• Add ordered iteration to JsonObjectIter [Emmanuele Bassi]
+• #46 - Document nullability of `json_from_string()` [Emmanuele Bassi]
+• #45 - Properly detect multiple top-level statements [Emmanuele Bassi]
+• #41, #22 - Fix library versions on Darwin [Tom Schoonjans]
 
 Overview of changes for 1.4
 ==============================
