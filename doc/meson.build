@@ -12,6 +12,8 @@ if find_program('gtkdoc-scan', required : get_option('gtk_doc')).found()
     'json-private.h',
     'json-scanner.h',
     'json-types-private.h',
+
+    'tests/json-test-utils.h',
   ]
 
   glib_prefix = dependency('glib-2.0').get_pkgconfig_variable('prefix')
