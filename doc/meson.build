@@ -23,10 +23,7 @@ if find_program('gtkdoc-scan', required : get_option('gtk_doc')).found()
   gnome.gtkdoc(
     'json-glib',
     main_xml: 'json-glib-docs.xml',
-    src_dir: [
-      join_paths(meson.source_root(), 'json-glib'),
-      join_paths(meson.build_root(), 'json-glib'),
-    ],
+    src_dir: include_directories('../json-glib'),
     dependencies: json_glib_dep,
     gobject_typesfile: 'json-glib.types',
     scan_args: [
