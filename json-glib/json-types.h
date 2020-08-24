@@ -448,6 +448,14 @@ gboolean              json_object_iter_next          (JsonObjectIter  *iter,
                                                       const gchar    **member_name,
                                                       JsonNode       **member_node);
 
+JSON_AVAILABLE_IN_1_6
+void                  json_object_iter_init_ordered  (JsonObjectIter  *iter,
+                                                      JsonObject      *object);
+JSON_AVAILABLE_IN_1_6
+gboolean              json_object_iter_next_ordered  (JsonObjectIter  *iter,
+                                                      const char     **member_name,
+                                                      JsonNode       **member_node);
+
 JSON_AVAILABLE_IN_1_0
 GType                 json_array_get_type            (void) G_GNUC_CONST;
 JSON_AVAILABLE_IN_1_0

@@ -106,6 +106,7 @@ test_remove_member (void)
 typedef struct _TestForeachFixture
 {
   gint n_members;
+  gboolean ordered;
 } TestForeachFixture;
 
 static const struct {
@@ -128,15 +129,27 @@ verify_foreach (JsonObject  *object,
                 gpointer     user_data)
 {
   TestForeachFixture *fixture = user_data;
-  gint i;
 
-  for (i = 0; i < G_N_ELEMENTS (type_verify); i++)
+  if (fixture->ordered)
     {
-      if (strcmp (member_name, type_verify[i].member_name) == 0)
+      int idx = fixture->n_members;
+
+      g_assert_cmpstr (member_name, ==, type_verify[idx].member_name);
+      g_assert_true (json_node_get_node_type (member_node) == type_verify[idx].member_type);
+      g_assert_true (json_node_get_value_type (member_node) == type_verify[idx].member_gtype);
+    }
+  else
+    {
+      int i;
+
+      for (i = 0; i < G_N_ELEMENTS (type_verify); i++)
         {
-          g_assert (json_node_get_node_type (member_node) == type_verify[i].member_type);
-          g_assert (json_node_get_value_type (member_node) == type_verify[i].member_gtype);
-          break;
+          if (strcmp (member_name, type_verify[i].member_name) == 0)
+            {
+              g_assert_true (json_node_get_node_type (member_node) == type_verify[i].member_type);
+              g_assert_true (json_node_get_value_type (member_node) == type_verify[i].member_gtype);
+              break;
+            }
         }
     }
 
@@ -147,7 +160,7 @@ static void
 test_foreach_member (void)
 {
   JsonObject *object = json_object_new ();
-  TestForeachFixture fixture = { 0, };
+  TestForeachFixture fixture = { 0, TRUE, };
 
   json_object_set_int_member (object, "integer", 42);
   json_object_set_boolean_member (object, "boolean", TRUE);
@@ -167,7 +180,7 @@ static void
 test_iter (void)
 {
   JsonObject *object = NULL;
-  TestForeachFixture fixture = { 0, };
+  TestForeachFixture fixture = { 0, FALSE, };
   JsonObjectIter iter;
   const gchar *member_name;
   JsonNode *member_node;
@@ -184,6 +197,34 @@ test_iter (void)
   json_object_iter_init (&iter, object);
 
   while (json_object_iter_next (&iter, &member_name, &member_node))
+    verify_foreach (object, member_name, member_node, &fixture);
+
+  g_assert_cmpint (fixture.n_members, ==, json_object_get_size (object));
+
+  json_object_unref (object);
+}
+
+static void
+test_ordered_iter (void)
+{
+  JsonObject *object = NULL;
+  TestForeachFixture fixture = { 0, TRUE, };
+  JsonObjectIter iter;
+  const gchar *member_name;
+  JsonNode *member_node;
+
+  object = json_object_new ();
+
+  json_object_set_int_member (object, "integer", 42);
+  json_object_set_boolean_member (object, "boolean", TRUE);
+  json_object_set_string_member (object, "string", "hello");
+  json_object_set_double_member (object, "double", 3.14159);
+  json_object_set_null_member (object, "null");
+  json_object_set_int_member (object, "", 0);
+
+  json_object_iter_init_ordered (&iter, object);
+
+  while (json_object_iter_next_ordered (&iter, &member_name, &member_node))
     verify_foreach (object, member_name, member_node, &fixture);
 
   g_assert_cmpint (fixture.n_members, ==, json_object_get_size (object));
@@ -227,6 +268,7 @@ main (int   argc,
   g_test_add_func ("/object/remove-member", test_remove_member);
   g_test_add_func ("/object/foreach-member", test_foreach_member);
   g_test_add_func ("/object/iter", test_iter);
+  g_test_add_func ("/object/ordered-iter", test_ordered_iter);
   g_test_add_func ("/object/empty-member", test_empty_member);
 
   return g_test_run ();
