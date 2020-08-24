@@ -130,6 +130,10 @@ endif
 
 common_cflags = cc.get_supported_arguments(test_cflags)
 
+if get_option('debug')
+  cdata.set('JSON_ENABLE_DEBUG', true)
+endif
+
 common_ldflags = []
 if host_system == 'linux'
   common_ldflags += cc.get_supported_link_arguments([
