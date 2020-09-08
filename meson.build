@@ -137,15 +137,12 @@ if get_option('debug')
   cdata.set('JSON_ENABLE_DEBUG', true)
 endif
 
-common_ldflags = []
-if host_system == 'linux'
-  common_ldflags += cc.get_supported_link_arguments([
-    '-Wl,-Bsymbolic',
-    '-Wl,-z,relro',
-    '-Wl,-z,now',
-    '-Wl,--default-symver',
-  ])
-endif
+common_ldflags = cc.get_supported_link_arguments([
+  '-Wl,-Bsymbolic',
+  '-Wl,-z,relro',
+  '-Wl,-z,now',
+  '-Wl,--default-symver',
+])
 
 root_dir = include_directories('.')
 
