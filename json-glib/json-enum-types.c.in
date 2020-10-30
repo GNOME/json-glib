@@ -9,8 +9,8 @@
 
 /*** BEGIN file-production ***/
 
-/* enumerations from "@filename@" */
-#include "@filename@"
+/* enumerations from "@basename@" */
+#include "@basename@"
 
 /*** END file-production ***/
 
