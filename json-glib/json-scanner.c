@@ -40,6 +40,10 @@
 #include <io.h> /* For _read() */
 #endif
 
+enum {
+  JSON_ERR_MALFORMED_SURROGATE_PAIR = G_TOKEN_LAST + 1,
+};
+
 struct _JsonScannerConfig
 {
   /* Character sets
@@ -681,7 +685,11 @@ json_scanner_unexp_token (JsonScanner *scanner,
 	case G_ERR_DIGIT_RADIX:
 	  g_snprintf (token_string, token_string_len, "scanner: digit is beyond radix");
 	  break;
-	  
+
+	case JSON_ERR_MALFORMED_SURROGATE_PAIR:
+	  g_snprintf (token_string, token_string_len, "scanner: malformed surrogate pair");
+	  break;
+
 	case G_ERR_UNKNOWN:
 	default:
 	  g_snprintf (token_string, token_string_len, "scanner: unknown error");
@@ -1066,7 +1074,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 	  gstring = g_string_new (NULL);
 	  while ((ch = json_scanner_get_char (scanner, line_p, position_p)) != 0)
 	    {
-	      if (ch == '"')
+	      if (ch == '"' || token == G_TOKEN_ERROR)
 		{
 		  in_string_dq = FALSE;
 		  break;
@@ -1130,8 +1138,20 @@ json_scanner_get_token_ll (JsonScanner *scanner,
                                       units[0] = ucs;
                                       units[1] = json_scanner_get_unichar (scanner, line_p, position_p);
 
-                                      ucs = decode_utf16_surrogate_pair (units);
-                                      g_assert (g_unichar_validate (ucs));
+                                      if (0xdc00 <= units[1] && units[1] <= 0xdfff &&
+                                          0xd800 <= units[0] && units[0] <= 0xdbff)
+                                        {
+                                          ucs = decode_utf16_surrogate_pair (units);
+                                          g_assert (g_unichar_validate (ucs));
+                                        }
+                                      else
+                                        {
+                                          token = G_TOKEN_ERROR;
+                                          value.v_error = JSON_ERR_MALFORMED_SURROGATE_PAIR;
+                                          gstring = NULL;
+                                          break;
+                                        }
+
                                     }
                                 }
 
