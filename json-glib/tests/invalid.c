@@ -212,6 +212,9 @@ static const struct
 
   /* values */
   { "values-1", "[ -false ]", test_invalid_value },
+  { "values-2", "[\"\\uD800\\uD800\"]", test_invalid_value },
+  { "values-3", "[\"\\uDB00\\uD800\"]", test_invalid_value },
+  { "values-4", "[\"\\uDB00\"]", test_invalid_value },
 
   /* assignment */
   { "assignment-1", "var foo", test_invalid_assignment },
