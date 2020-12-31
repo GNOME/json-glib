@@ -970,7 +970,7 @@ json_parser_new_immutable (void)
 
 static gboolean
 json_parser_load (JsonParser   *parser,
-                  const gchar  *data,
+                  const gchar  *input_data,
                   gsize         length,
                   GError      **error)
 {
@@ -979,6 +979,7 @@ json_parser_load (JsonParser   *parser,
   gboolean done;
   gboolean retval = TRUE;
   gint i;
+  gchar *data = input_data;
 
   json_parser_clear (parser);
 
@@ -989,6 +990,19 @@ json_parser_load (JsonParser   *parser,
                            _("JSON data must be UTF-8 encoded"));
       g_signal_emit (parser, parser_signals[ERROR], 0, *error);
       return FALSE;
+    }
+
+  if (length >= 3)
+    {
+      /* Check for UTF-8 signature and skip it if necessary */
+       if (((data[0] & 0xFF) == 0xEF) &&
+           ((data[1] & 0xFF) == 0xBB) &&
+           ((data[2] & 0xFF) == 0xBF))
+         {
+           JSON_NOTE (PARSER, "Skipping BOM");
+           data += 3;
+           length -= 3;
+         }
     }
 
   scanner = json_scanner_create (parser);

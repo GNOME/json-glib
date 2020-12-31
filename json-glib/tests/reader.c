@@ -212,6 +212,32 @@ test_reader_null_value (void)
   g_object_unref (parser);
 }
 
+/* test_reader_skip_bom: Ensure that a BOM Unicode character is skipped when parsing */
+static void
+test_reader_skip_bom (void)
+{
+  JsonParser *parser = json_parser_new ();
+  JsonReader *reader = json_reader_new (NULL);
+  GError *error = NULL;
+  char *path;
+
+  path = g_test_build_filename (G_TEST_DIST, "skip-bom.json", NULL);
+
+  json_parser_load_from_mapped_file (parser, path, &error);
+  g_assert_no_error (error);
+
+  json_reader_set_root (reader, json_parser_get_root (parser));
+
+  json_reader_read_member (reader, "appName");
+  g_assert_true (json_reader_is_value (reader));
+  g_assert_no_error (json_reader_get_error (reader));
+  g_assert_cmpstr (json_reader_get_string_value (reader), ==, "String starts with BOM");
+
+  g_free (path);
+  g_object_unref (reader);
+  g_object_unref (parser);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -223,6 +249,7 @@ main (int   argc,
   g_test_add_func ("/reader/base-object", test_base_object);
   g_test_add_func ("/reader/level", test_reader_level);
   g_test_add_func ("/reader/null-value", test_reader_null_value);
+  g_test_add_func ("/reader/bom", test_reader_skip_bom);
 
   return g_test_run ();
 }
