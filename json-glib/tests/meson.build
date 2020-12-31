@@ -17,6 +17,7 @@ tests = [
 
 test_data = [
   'invalid.json',
+  'skip-bom.json',
   'stream-load.json',
 ]
 
