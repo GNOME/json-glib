@@ -9,10 +9,9 @@ before_script:
 build-json-glib:
   stage: build
   script:
-    - meson --prefix /usr -Dman=true _build .
-    - cd _build
-    - ninja
-    - meson test
+    - meson setup --prefix /usr -Dman=true _build .
+    - meson compile -C _build
+    - meson test -C _build
   except:
     - tags
   artifacts:
@@ -26,10 +25,10 @@ dist-json-glib:
   only:
     - tags
   script:
-    - meson --prefix /usr --buildtype release -Dman=true -Ddocs=true _build .
-    - cd _build
-    - ninja dist
-    - ninja json-glib-doc
+    - meson setup --prefix /usr --buildtype release -Dman=true -Dgtk_doc=enabled_build .
+    - meson compile -C _build
+    - meson dist -C _build
+    - ninja -C _build json-glib-doc
     - tar -c -f "json-glib-docs-${CI_COMMIT_TAG}.tar.xz" -C docs html
   artifacts:
     paths:
