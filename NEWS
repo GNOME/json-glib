@@ -23,6 +23,9 @@ Overview of changes for 1.6
 • #46 - Document nullability of `json_from_string()` [Emmanuele Bassi]
 • #45 - Properly detect multiple top-level statements [Emmanuele Bassi]
 • #41, #22 - Fix library versions on Darwin [Tom Schoonjans]
+• Fix build reproducibility [!33, Alexander Kanavin]
+• #26 - Fix parsing of UTF-16 surrogate pairs [James Westman]
+• #56 - Ignore UTF-8 BOM [Jan-Michael Brummer]
 
 Overview of changes for 1.4
 ==============================
