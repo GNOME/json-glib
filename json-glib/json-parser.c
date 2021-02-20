@@ -844,6 +844,8 @@ json_parse_statement (JsonParser  *parser,
             return '=';
           }
 
+        if (priv->has_assignment)
+          g_free (priv->variable_name);
         priv->has_assignment = TRUE;
         priv->variable_name = name;
 
