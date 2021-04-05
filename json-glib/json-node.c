@@ -149,7 +149,7 @@ json_node_unset (JsonNode *node)
     case JSON_NODE_ARRAY:
       if (node->data.array)
         json_array_unref (node->data.array);
-      //node->data.array = NULL;
+      node->data.array = NULL;
       break;
 
     case JSON_NODE_VALUE:
