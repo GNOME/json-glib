@@ -749,7 +749,7 @@ json_generator_set_indent (JsonGenerator *generator,
 guint
 json_generator_get_indent (JsonGenerator *generator)
 {
-  g_return_val_if_fail (JSON_IS_GENERATOR (generator), FALSE);
+  g_return_val_if_fail (JSON_IS_GENERATOR (generator), 0);
 
   return generator->priv->indent;
 }

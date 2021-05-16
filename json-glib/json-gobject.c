@@ -57,8 +57,8 @@ enum_from_string (GType        type,
   gint value;
   gboolean retval = TRUE;
 
-  g_return_val_if_fail (G_TYPE_IS_ENUM (type), 0);
-  g_return_val_if_fail (string != NULL, 0);
+  g_return_val_if_fail (G_TYPE_IS_ENUM (type), FALSE);
+  g_return_val_if_fail (string != NULL, FALSE);
 
   value = strtoul (string, &endptr, 0);
   if (endptr != string) /* parsed a number */
@@ -95,8 +95,8 @@ flags_from_string (GType        type,
   gunichar ch;
   gboolean eos;
 
-  g_return_val_if_fail (G_TYPE_IS_FLAGS (type), 0);
-  g_return_val_if_fail (string != 0, 0);
+  g_return_val_if_fail (G_TYPE_IS_FLAGS (type), FALSE);
+  g_return_val_if_fail (string != 0, FALSE);
 
   ret = TRUE;
 
