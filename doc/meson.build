@@ -1,43 +1,46 @@
-if find_program('gtkdoc-scan', required : get_option('gtk_doc')).found()
-  subdir('xml')
+if get_option('gtk_doc').enabled()
+  dependency('gi-docgen', version: '>= 2021.6',
+    fallback: ['gi-docgen', 'dummy_dep'],
+  )
 
-  private_headers = [
-    'config.h',
+  gidocgen = find_program('gi-docgen', required: get_option('gtk_doc'))
 
-    'json-debug.h',
-    'json-enum-types.h',
-    'json-glib.h',
-    'json-gobject-private.h',
-    'json-marshal.h',
-    'json-private.h',
-    'json-scanner.h',
-    'json-types-private.h',
+  json_docdir = json_datadir / 'doc'
 
-    'tests/json-test-utils.h',
+  toml_conf = configuration_data()
+  toml_conf.set('JSON_VERSION', meson.project_version())
+
+  json_toml = configure_file(
+    input: 'json-glib.toml.in',
+    output: 'json-glib.toml',
+    configuration: toml_conf,
+  )
+
+  json_content_files = [
+    'json-gboxed.md',
+    'json-gobject.md',
+    'json-gvariant.md',
   ]
 
-  glib_prefix = dependency('glib-2.0').get_pkgconfig_variable('prefix')
-  glib_docpath = join_paths(glib_prefix, 'share', 'gtk-doc', 'html')
-  docpath = join_paths(json_datadir, 'gtk-doc', 'html')
-
-  gnome.gtkdoc(
-    'json-glib',
-    main_xml: 'json-glib-docs.xml',
-    src_dir: include_directories('../json-glib'),
-    dependencies: json_glib_dep,
-    gobject_typesfile: 'json-glib.types',
-    scan_args: [
-      '--rebuild-types',
-      '--ignore-decorators=_JSON_EXTERN',
-      '--ignore-headers=' + ' '.join(private_headers),
+  custom_target('json-glib-doc',
+    input: json_glib_gir[0],
+    output: 'json-glib-1.0',
+    command: [
+      gidocgen,
+      'generate',
+      '--quiet',
+      '--fatal-warnings',
+      '--add-include-path=@0@'.format(meson.current_build_dir() / '../json-glib'),
+      '--config', json_toml,
+      '--output-dir=@OUTPUT@',
+      '--no-namespace-dir',
+      '--content-dir=@0@'.format(meson.current_source_dir()),
+      '@INPUT@',
     ],
-    fixxref_args: [
-      '--html-dir=@0@'.format(docpath),
-      '--extra-dir=@0@'.format(join_paths(glib_docpath, 'glib')),
-      '--extra-dir=@0@'.format(join_paths(glib_docpath, 'gobject')),
-      '--extra-dir=@0@'.format(join_paths(glib_docpath, 'gio')),
-    ],
+    depend_files: [ json_toml, json_content_files ],
+    build_by_default: true,
     install: true,
+    install_dir: json_docdir,
   )
 endif
 
