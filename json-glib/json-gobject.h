@@ -129,7 +129,26 @@ gboolean  json_serializable_default_deserialize_property (JsonSerializable *seri
  * JsonBoxedSerializeFunc:
  * @boxed: a #GBoxed
  *
- * Serializes the passed #GBoxed and stores it inside a #JsonNode
+ * Serializes the passed `GBoxed` and stores it inside a `JsonNode`, for instance:
+ *
+ * ```c
+ * static JsonNode *
+ * my_point_serialize (gconstpointer boxed)
+ * {
+ *   const MyPoint *point = boxed;
+ *
+ *   g_autoptr(JsonBuilder) builder = json_builder_new ();
+ *
+ *   json_builder_begin_object (builder);
+ *   json_builder_set_member_name (builder, "x");
+ *   json_builder_add_double_value (builder, point->x);
+ *   json_builder_set_member_name (builder, "y");
+ *   json_builder_add_double_value (builder, point->y);
+ *   json_builder_end_object (builder);
+ *
+ *   return json_builder_get_root (builder);
+ * }
+ * ```
  *
  * Return value: the newly created #JsonNode
  *
@@ -141,7 +160,36 @@ typedef JsonNode *(* JsonBoxedSerializeFunc) (gconstpointer boxed);
  * JsonBoxedDeserializeFunc:
  * @node: a #JsonNode
  *
- * Deserializes the contents of the passed #JsonNode into a #GBoxed
+ * Deserializes the contents of the passed `JsonNode` into a `GBoxed`, for instance:
+ *
+ * ```c
+ * static gpointer
+ * my_point_deserialize (JsonNode *node)
+ * {
+ *   double x = 0.0, y = 0.0;
+ *
+ *   if (JSON_NODE_HOLDS_ARRAY (node))
+ *     {
+ *       JsonArray *array = json_node_get_array (node);
+ *
+ *       if (json_array_get_length (array) == 2)
+ *         {
+ *           x = json_array_get_double_element (array, 0);
+ *           y = json_array_get_double_element (array, 1);
+ *         }
+ *     }
+ *   else if (JSON_NODE_HOLDS_OBJECT (node))
+ *     {
+ *       JsonObject *obj = json_node_get_object (node);
+ *
+ *       x = json_object_get_double_member_with_default (obj, "x", 0.0);
+ *       y = json_object_get_double_member_with_default (obj, "y", 0.0);
+ *     }
+ *
+ *   // my_point_new() is defined elsewhere
+ *   return my_point_new (x, y);
+ * }
+ * ```
  *
  * Return value: the newly created boxed type
  *
