@@ -78,7 +78,7 @@ pages:
   stage: deploy
   needs: ['reference']
   script:
-    - mv _reference _public
+    - mv _reference public
   artifacts:
     paths:
       - public
