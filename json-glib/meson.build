@@ -97,7 +97,7 @@ gir = find_program('g-ir-scanner', required : get_option('introspection'))
 if gir.found()
   gir_args = [
     '--quiet',
-    '--c-include=json-glib/json-glib.h',
+    '--warn-all',
     '-DJSON_COMPILATION',
   ]
 
@@ -113,6 +113,7 @@ if gir.found()
     header: 'json-glib/json-glib.h',
     install: true,
     extra_args: gir_args,
+    fatal_warnings: true,
   )
 else
   json_glib_gir = []
