@@ -17,21 +17,6 @@
  *   Emmanuele Bassi  <ebassi@openedhand.com>
  */
 
-/**
- * SECTION:json-gobject
- * @short_description: Serialize and deserialize GObjects
- *
- * JSON-GLib provides API for serializing and deserializing #GObject
- * instances to and from JSON data streams.
- *
- * Simple #GObject classes can be (de)serialized into JSON objects, if the
- * properties have compatible types with the native JSON types (integers,
- * booleans, strings, string vectors). If the class to be (de)serialized has
- * complex data types for properties (like boxed types or other objects)
- * then the class should implement the provided #JsonSerializable interface
- * and its virtual functions.
- */
-
 #include "config.h"
 
 #include <string.h>
@@ -857,18 +842,20 @@ json_gobject_serialize (GObject *gobject)
  * @error: return location for a #GError, or %NULL
  *
  * Deserializes a JSON data stream and creates the corresponding
- * #GObject class. If @gtype implements the #JsonSerializableIface
- * interface, it will be asked to deserialize all the JSON members
- * into the respective properties; otherwise, the default implementation
- * will be used to translate the compatible JSON native types.
+ * #GObject class.
  *
- * Note: the JSON data stream must be an object declaration.
+ * If @gtype implements the #JsonSerializableIface interface, it will be
+ * asked to deserialize all the JSON members into the respective properties;
+ * otherwise, the default implementation will be used to translate the
+ * compatible JSON native types.
  *
- * Return value: (transfer full): a #GObject or %NULL
+ * **Note**: the JSON data stream must be an object declaration.
+ *
+ * Return value: (transfer full) (nullable): a #GObject instance of the given type
  *
  * Since: 0.4
  *
- * Deprecated: 0.10: Use json_gobject_from_data() instead
+ * Deprecated: 0.10: Use [func@Json.gobject_from_data] instead
  */
 GObject *
 json_construct_gobject (GType         gtype,
@@ -887,14 +874,16 @@ json_construct_gobject (GType         gtype,
  * @error: return location for a #GError, or %NULL
  *
  * Deserializes a JSON data stream and creates the corresponding
- * #GObject class. If @gtype implements the #JsonSerializableIface
- * interface, it will be asked to deserialize all the JSON members
- * into the respective properties; otherwise, the default implementation
- * will be used to translate the compatible JSON native types.
+ * #GObject class.
+ *
+ * If @gtype implements the #JsonSerializableIface interface, it will be asked
+ * to deserialize all the JSON members into the respective properties;
+ * otherwise, the default implementation will be used to translate the
+ * compatible JSON native types.
  *
  * Note: the JSON data stream must be an object declaration.
  *
- * Return value: (transfer full): a #GObject or %NULL
+ * Return value: (transfer full) (nullable): a #GObject of the given type
  *
  * Since: 0.10
  */
@@ -948,16 +937,18 @@ json_gobject_from_data (GType         gtype,
 /**
  * json_serialize_gobject:
  * @gobject: a #GObject
- * @length: (out): return value for the length of the buffer, or %NULL
+ * @length: (out) (optional): return value for the length of the buffer
  *
- * Serializes a #GObject into a JSON data stream. If @gobject implements
- * the #JsonSerializableIface interface, it will be asked to serizalize all
- * its properties; otherwise, the default implementation will be use to
- * translate the compatible types into JSON native types.
+ * Serializes a #GObject into a JSON data stream.
  *
- * Return value: a JSON data stream representing the passed #GObject
+ * If @gobject implements the #JsonSerializableIface interface, it will be
+ * asked to serizalize all its properties; otherwise, the default
+ * implementation will be use to translate the compatible types into JSON
+ * native types.
  *
- * Deprecated: 0.10: Use json_gobject_to_data() instead
+ * Return value: (transfer full): a JSON data stream representing the given object
+ *
+ * Deprecated: 0.10: Use [func@Json.gobject_to_data] instead
  */
 gchar *
 json_serialize_gobject (GObject *gobject,
@@ -969,7 +960,7 @@ json_serialize_gobject (GObject *gobject,
 /**
  * json_gobject_to_data:
  * @gobject: a #GObject
- * @length: (out): return value for the length of the buffer, or %NULL
+ * @length: (out) (optional): return value for the length of the buffer
  *
  * Serializes a #GObject into a JSON data stream, iterating recursively
  * over each property.

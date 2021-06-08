@@ -77,14 +77,6 @@ typedef enum {
   JSON_READER_ERROR_INVALID_TYPE
 } JsonReaderError;
 
-/**
- * JsonReader:
- *
- * The `JsonReader` structure contains only private data and should
- * be accessed using the provided API
- *
- * Since: 0.12
- */
 struct _JsonReader
 {
   /*< private >*/
@@ -93,13 +85,6 @@ struct _JsonReader
   JsonReaderPrivate *priv;
 };
 
-/**
- * JsonReaderClass:
- *
- * The `JsonReaderClass` structure contains only private data
- *
- * Since: 0.12
- */
 struct _JsonReaderClass
 {
   /*< private >*/

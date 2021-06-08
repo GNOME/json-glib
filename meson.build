@@ -5,7 +5,7 @@ project('json-glib', 'c', version: '1.6.3',
           'buildtype=debugoptimized',
           'c_std=c99',
         ],
-        meson_version: '>= 0.52.0')
+        meson_version: '>= 0.55.3')
 
 # Versioning
 json_version = meson.project_version()
@@ -157,3 +157,22 @@ gen_installed_test = files('build-aux/gen-installed-test.py')
 subdir('json-glib')
 subdir('po')
 subdir('doc')
+
+summary({
+    'prefix': get_option('prefix'),
+    'includedir': json_includedir,
+    'libdir': get_option('prefix') / get_option('libdir'),
+    'datadir': json_datadir,
+  },
+  section: 'Directories',
+)
+
+summary({
+    'Introspection': get_option('introspection').enabled() or get_option('introspection').auto(),
+    'Documentation': get_option('gtk_doc').enabled() or get_option('gtk_doc').auto(),
+    'Manual pages': get_option('man'),
+    'Tests': get_option('tests'),
+  },
+  section: 'Build',
+  bool_yn: true,
+)

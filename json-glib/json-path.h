@@ -56,24 +56,7 @@ typedef enum {
   JSON_PATH_ERROR_INVALID_QUERY
 } JsonPathError;
 
-/**
- * JsonPath:
- *
- * The `JsonPath` structure is an opaque object whose members cannot be
- * directly accessed except through the provided API.
- *
- * Since: 0.14
- */
 typedef struct _JsonPath        JsonPath;
-
-/**
- * JsonPathClass:
- *
- * The `JsonPathClass` structure is an opaque object class whose members
- * cannot be directly accessed.
- *
- * Since: 0.14
- */
 typedef struct _JsonPathClass   JsonPathClass;
 
 JSON_AVAILABLE_IN_1_0

@@ -21,45 +21,44 @@
  */
 
 /**
- * SECTION:json-path
- * @Title: JsonPath
- * @short_description: JSONPath implementation
+ * JsonPath:
  *
- * #JsonPath is a simple class implementing the JSONPath syntax for extracting
- * data out of a JSON tree. While the semantics of the JSONPath expressions are
- * heavily borrowed by the XPath specification for XML, the syntax follows the
- * ECMAScript origins of JSON.
+ * `JsonPath` is a simple class implementing the JSONPath syntax for extracting
+ * data out of a JSON tree.
+ *
+ * While the semantics of the JSONPath expressions are heavily borrowed by the
+ * XPath specification for XML, the syntax follows the ECMAScript origins of
+ * JSON.
  *
  * Once a #JsonPath instance has been created, it has to compile a JSONPath
- * expression using json_path_compile() before being able to match it to a
- * JSON tree; the same #JsonPath instance can be used to match multiple JSON
+ * expression using [method@Json.Path.compile] before being able to match it to
+ * a JSON tree; the same #JsonPath instance can be used to match multiple JSON
  * trees. It it also possible to compile a new JSONPath expression using the
  * same #JsonPath instance; the previous expression will be discarded only if
  * the compilation of the new expression is successful.
  *
- * The simple convenience function json_path_query() can be used for one-off
- * matching.
+ * The simple convenience function [func@Json.Path.query] can be used for
+ * one-off matching.
  *
- * ## Syntax of the JSONPath expressions ##
+ * ## Syntax of the JSONPath expressions
  *
  * A JSONPath expression is composed by path indices and operators.
  * Each path index can either be a member name or an element index inside
- * a JSON tree. A JSONPath expression must start with the '$' operator; each
+ * a JSON tree. A JSONPath expression must start with the `$` operator; each
  * path index is separated using either the dot notation or the bracket
  * notation, e.g.:
  *
- * |[<!-- language="plain" -->
- *   // dot notation
- *   $.store.book[0].title
+ * ```
+ * // dot notation
+ * $.store.book[0].title
  *
- *   // bracket notation
- *   $['store']['book'][0]['title']
- * ]|
+ * // bracket notation
+ * $['store']['book'][0]['title']
+ * ```
  *
  * The available operators are:
  *
- * * Root node
- *   The `$` character represents the root node of the JSON tree, and
+ * * The `$` character represents the root node of the JSON tree, and
  *   matches the entire document.
  *
  * * Child nodes can either be matched using `.` or `[]`. For instance,
@@ -95,62 +94,63 @@
  * [JSONPath website](http://goessner.net/articles/JsonPath/).
  *
  * ## Example of JSONPath matches
+ *
  * The following example shows some of the results of using #JsonPath
  * on a JSON tree. We use the following JSON description of a bookstore:
  *
- * |[<!-- language="plain" -->
- *   { "store": {
- *       "book": [
- *         { "category": "reference", "author": "Nigel Rees",
- *           "title": "Sayings of the Century", "price": "8.95"  },
- *         { "category": "fiction", "author": "Evelyn Waugh",
- *           "title": "Sword of Honour", "price": "12.99" },
- *         { "category": "fiction", "author": "Herman Melville",
- *           "title": "Moby Dick", "isbn": "0-553-21311-3",
- *           "price": "8.99" },
- *         { "category": "fiction", "author": "J. R. R. Tolkien",
- *           "title": "The Lord of the Rings", "isbn": "0-395-19395-8",
- *           "price": "22.99" }
- *       ],
- *       "bicycle": { "color": "red", "price": "19.95" }
- *     }
+ * ```json
+ * { "store": {
+ *     "book": [
+ *       { "category": "reference", "author": "Nigel Rees",
+ *         "title": "Sayings of the Century", "price": "8.95"  },
+ *       { "category": "fiction", "author": "Evelyn Waugh",
+ *         "title": "Sword of Honour", "price": "12.99" },
+ *       { "category": "fiction", "author": "Herman Melville",
+ *         "title": "Moby Dick", "isbn": "0-553-21311-3",
+ *         "price": "8.99" },
+ *       { "category": "fiction", "author": "J. R. R. Tolkien",
+ *         "title": "The Lord of the Rings", "isbn": "0-395-19395-8",
+ *         "price": "22.99" }
+ *     ],
+ *     "bicycle": { "color": "red", "price": "19.95" }
  *   }
- * ]|
+ * }
+ * ```
  *
  * We can parse the JSON using #JsonParser:
  *
- * |[<!-- language="C" -->
+ * ```c
  *   JsonParser *parser = json_parser_new ();
  *   json_parser_load_from_data (parser, json_data, -1, NULL);
- * ]|
+ * ```
  *
  * If we run the following code:
  *
- * |[<!-- language="C" -->
+ * ```c
  *   JsonNode *result;
  *   JsonPath *path = json_path_new ();
  *   json_path_compile (path, "$.store..author", NULL);
  *   result = json_path_match (path, json_parser_get_root (parser));
- * ]|
+ * ```
  *
  * The result #JsonNode will contain an array with all values of the
  * author member of the objects in the JSON tree. If we use a
  * #JsonGenerator to convert the #JsonNode to a string and print it:
  *
- * |[<!-- language="C" -->
+ * ```c
  *   JsonGenerator *generator = json_generator_new ();
  *   json_generator_set_root (generator, result);
  *   char *str = json_generator_to_data (generator, NULL);
  *   g_print ("Results: %s\n", str);
- * ]|
+ * ```
  *
  * The output will be:
  *
- * |[<!-- language="plain" -->
- *   ["Nigel Rees","Evelyn Waugh","Herman Melville","J. R. R. Tolkien"]
- * ]|
+ * ```json
+ * ["Nigel Rees","Evelyn Waugh","Herman Melville","J. R. R. Tolkien"]
+ * ```
  *
- * #JsonPath is available since JSON-GLib 0.14
+ * Since: 0.14
  */
 
 #include "config.h"

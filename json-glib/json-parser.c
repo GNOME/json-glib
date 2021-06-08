@@ -25,8 +25,7 @@
  */
 
 /**
- * SECTION:json-parser
- * @short_description: Parse JSON data streams
+ * JsonParser:
  *
  * #JsonParser provides an object for parsing a JSON data stream, either
  * inside a file or inside a static buffer.
@@ -199,7 +198,9 @@ json_parser_class_init (JsonParserClass *klass)
    * JsonParser:immutable:
    *
    * Whether the #JsonNode tree built by the #JsonParser should be immutable
-   * when created. Making the output immutable on creation avoids the expense
+   * when created.
+   *
+   * Making the output immutable on creation avoids the expense
    * of traversing it to make it immutable later.
    *
    * Since: 1.2
@@ -263,8 +264,9 @@ json_parser_class_init (JsonParserClass *klass)
    * @member_name: the name of the newly parsed member
    *
    * The ::object-member signal is emitted each time the #JsonParser
-   * has successfully parsed a single member of a #JsonObject. The
-   * object and member are passed to the signal handlers.
+   * has successfully parsed a single member of a #JsonObject.
+   *
+   * The object and member are passed to the signal handlers.
    */
   parser_signals[OBJECT_MEMBER] =
     g_signal_new ("object-member",
@@ -312,8 +314,9 @@ json_parser_class_init (JsonParserClass *klass)
    * @index_: the index of the newly parsed element
    *
    * The ::array-element signal is emitted each time the #JsonParser
-   * has successfully parsed a single element of a #JsonArray. The
-   * array and element index are passed to the signal handlers.
+   * has successfully parsed a single element of a #JsonArray.
+   *
+   * The array and element index are passed to the signal handlers.
    */
   parser_signals[ARRAY_ELEMENT] =
     g_signal_new ("array-element",
@@ -942,12 +945,12 @@ json_scanner_create (JsonParser *parser)
 /**
  * json_parser_new:
  * 
- * Creates a new #JsonParser instance. You can use the #JsonParser to
- * load a JSON stream from either a file or a buffer and then walk the
- * hierarchy using the data types API.
+ * Creates a new JSON parser.
  *
- * Return value: the newly created #JsonParser. Use g_object_unref()
- *   to release all the memory it allocates.
+ * You can use the `JsonParser` to load a JSON stream from either a file or a
+ * buffer and then walk the hierarchy using the data types API.
+ *
+ * Return value: (transfer full): the newly created parser
  */
 JsonParser *
 json_parser_new (void)
@@ -1097,16 +1100,17 @@ json_parser_load (JsonParser   *parser,
  * json_parser_load_from_file:
  * @parser: a #JsonParser
  * @filename: the path for the file to parse
- * @error: return location for a #GError, or %NULL
+ * @error: return location for a #GError
  *
- * Loads a JSON stream from the content of @filename and parses it. See
- * json_parser_load_from_data().
+ * Loads a JSON stream from the content of @filename and parses it.
  *
  * If the file is large or shared between processes,
- * json_parser_load_from_mapped_file() may be a more efficient way to load it.
+ * [method@Json.Parser.load_from_mapped_file] may be a more efficient
+ * way to load it.
+ *
+ * See also: [method@Json.Parser.load_from_data]
  *
  * Return value: %TRUE if the file was successfully loaded and parsed.
- *   In case of error, @error is set accordingly and %FALSE is returned
  */
 gboolean
 json_parser_load_from_file (JsonParser   *parser,
@@ -1151,16 +1155,17 @@ json_parser_load_from_file (JsonParser   *parser,
  * json_parser_load_from_mapped_file:
  * @parser: a #JsonParser
  * @filename: the path for the file to parse
- * @error: return location for a #GError, or %NULL
+ * @error: return location for a #GError
  *
- * Loads a JSON stream from the content of @filename and parses it. Unlike
- * json_parser_load_from_file(), @filename will be memory mapped as read-only
- * and parsed. @filename will be unmapped before this function returns.
+ * Loads a JSON stream from the content of `filename` and parses it.
  *
- * If mapping or reading the file fails, a %G_FILE_ERROR will be returned.
+ * Unlike [method@Json.Parser.load_from_file], `filename` will be memory
+ * mapped as read-only and parsed. `filename` will be unmapped before this
+ * function returns.
+ *
+ * If mapping or reading the file fails, a `G_FILE_ERROR` will be returned.
  *
  * Return value: %TRUE if the file was successfully loaded and parsed.
- *   In case of error, @error is set accordingly and %FALSE is returned
  * Since: 1.6
  */
 gboolean
@@ -1207,14 +1212,14 @@ json_parser_load_from_mapped_file (JsonParser   *parser,
  * @parser: a #JsonParser
  * @data: the buffer to parse
  * @length: the length of the buffer, or -1
- * @error: return location for a #GError, or %NULL
+ * @error: return location for a #GError
  *
- * Loads a JSON stream from a buffer and parses it. You can call this function
- * multiple times with the same #JsonParser object, but the contents of the
- * parser will be destroyed each time.
+ * Loads a JSON stream from a buffer and parses it.
  *
- * Return value: %TRUE if the buffer was succesfully parsed. In case
- *   of error, @error is set accordingly and %FALSE is returned
+ * You can call this function multiple times with the same parser, but the
+ * contents of the parser will be destroyed each time.
+ *
+ * Return value: %TRUE if the buffer was succesfully parsed
  */
 gboolean
 json_parser_load_from_data (JsonParser   *parser,
@@ -1252,13 +1257,13 @@ json_parser_load_from_data (JsonParser   *parser,
  * json_parser_get_root:
  * @parser: a #JsonParser
  *
- * Retrieves the top level node from the parsed JSON stream. If the parser input
- * was an empty string, or if parsing failed, this will be %NULL. It will also
- * be %NULL if it has been stolen using json_parser_steal_root().
+ * Retrieves the top level node from the parsed JSON stream.
  *
- * Return value: (transfer none) (nullable): the root #JsonNode . The returned
- *   node is owned by the #JsonParser and should never be modified
- *   or freed.
+ * If the parser input was an empty string, or if parsing failed, the root
+ * will be `NULL`. It will also be `NULL` if it has been stolen using
+ * [method@Json.Parser.steal_root].
+ *
+ * Return value: (transfer none) (nullable): the root node.
  */
 JsonNode *
 json_parser_get_root (JsonParser *parser)
@@ -1277,10 +1282,12 @@ json_parser_get_root (JsonParser *parser)
  * json_parser_steal_root:
  * @parser: a #JsonParser
  *
- * Steals the top level node from the parsed JSON stream. This will be %NULL
- * in the same situations as json_parser_get_root() returns %NULL.
+ * Steals the top level node from the parsed JSON stream.
  *
- * Returns: (transfer full) (nullable): the top level #JsonNode
+ * This will be `NULL` in the same situations as [method@Json.Parser.get_root]
+ * return `NULL`.
+ *
+ * Returns: (transfer full) (nullable): the root node
  *
  * Since: 1.4
  */
@@ -1306,7 +1313,7 @@ json_parser_steal_root (JsonParser *parser)
  * Retrieves the line currently parsed, starting from 1.
  *
  * This function has defined behaviour only while parsing; calling this
- * function from outside the signal handlers emitted by #JsonParser will
+ * function from outside the signal handlers emitted by the parser will
  * yield 0.
  *
  * Return value: the currently parsed line, or 0.
@@ -1330,7 +1337,7 @@ json_parser_get_current_line (JsonParser *parser)
  * from 0.
  *
  * This function has defined behaviour only while parsing; calling this
- * function from outside the signal handlers emitted by #JsonParser will
+ * function from outside the signal handlers emitted by the parser will
  * yield 0.
  *
  * Return value: the position in the current line, or 0.
@@ -1349,26 +1356,22 @@ json_parser_get_current_pos (JsonParser *parser)
 /**
  * json_parser_has_assignment:
  * @parser: a #JsonParser
- * @variable_name: (out) (allow-none) (transfer none): Return location for the variable
- *   name, or %NULL
+ * @variable_name: (out) (optional) (transfer none): the variable name
  *
  * A JSON data stream might sometimes contain an assignment, like:
  *
- * |[
- *   var _json_data = { "member_name" : [ ...
- * ]|
+ * ```
+ * var _json_data = { "member_name" : [ ...
+ * ```
  *
  * even though it would technically constitute a violation of the RFC.
  *
- * #JsonParser will ignore the left hand identifier and parse the right
- * hand value of the assignment. #JsonParser will record, though, the
+ * `JsonParser` will ignore the left hand identifier and parse the right
+ * hand value of the assignment. `JsonParser` will record, though, the
  * existence of the assignment in the data stream and the variable name
  * used.
  *
- * Return value: %TRUE if there was an assignment, %FALSE otherwise. If
- *   @variable_name is not %NULL it will be set to the name of the variable
- *   used in the assignment. The string is owned by #JsonParser and should
- *   never be modified or freed.
+ * Return value: %TRUE if there was an assignment, %FALSE otherwise
  *
  * Since: 0.4
  */
@@ -1394,8 +1397,8 @@ json_parser_has_assignment (JsonParser  *parser,
  * json_parser_load_from_stream:
  * @parser: a #JsonParser
  * @stream: an open #GInputStream
- * @cancellable: (allow-none): a #GCancellable, or %NULL
- * @error: the return location for a #GError, or %NULL
+ * @cancellable: (nullable): a #GCancellable
+ * @error: the return location for a #GError
  *
  * Loads the contents of an input stream and parses them.
  *
@@ -1485,14 +1488,13 @@ load_data_free (gpointer data_)
  * json_parser_load_from_stream_finish:
  * @parser: a #JsonParser
  * @result: a #GAsyncResult
- * @error: the return location for a #GError or %NULL
+ * @error: the return location for a #GError
  *
  * Finishes an asynchronous stream loading started with
- * json_parser_load_from_stream_async().
+ * [method@Json.Parser.load_from_stream_async].
  *
  * Return value: %TRUE if the content of the stream was successfully retrieves
- *   and parsed, and %FALSE otherwise. In case of error, the #GError will be
- *   filled accordingly.
+ *   and parsed, and %FALSE otherwise
  *
  * Since: 0.12
  */
@@ -1562,17 +1564,17 @@ read_from_stream (GTask *task,
  * json_parser_load_from_stream_async:
  * @parser: a #JsonParser
  * @stream: a #GInputStream
- * @cancellable: (allow-none): a #GCancellable, or %NULL
- * @callback: a #GAsyncReadyCallback to call when the request is satisfied
+ * @cancellable: (nullable): a #GCancellable
+ * @callback: (scope async): the function to call when the request is satisfied
  * @user_data: the data to pass to @callback
  *
  * Asynchronously reads the contents of @stream.
  *
- * For more details, see json_parser_load_from_stream() which is the
+ * For more details, see [method@Json.Parser.load_from_stream], which is the
  * synchronous version of this call.
  *
  * When the operation is finished, @callback will be called. You should
- * then call json_parser_load_from_stream_finish() to get the result
+ * then call [method@Json.Parser.load_from_stream_finish] to get the result
  * of the operation.
  *
  * Since: 0.12

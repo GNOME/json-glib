@@ -1,36 +1,86 @@
-image: fedora:33
+image: fedora:34
 
 stages:
   - build
+  - docs
+  - deploy
 
-before_script:
-  - dnf install -y gcc gettext git glib2-devel gobject-introspection-devel gtk-doc meson ninja-build redhat-rpm-config
-
-build-json-glib:
-  stage: build
+.build-default:
+  before_script:
+    - dnf install -y ${FEDORA_DEPS}
+    - pip3 install --user meson==${MESON_VERSION}
+    - export PATH="$PATH:$HOME/.local/bin"
   script:
-    - meson setup --prefix /usr -Dman=true _build .
+    - meson setup ${MESON_EXTRA_FLAGS} --prefix /usr _build .
     - meson compile -C _build
     - meson test -C _build
-  except:
-    - tags
+    - meson install -C _build
   artifacts:
-    when: on_failure
+    when: always
     name: "json-glib-${CI_COMMIT_REF_NAME}"
     paths:
       - "${CI_PROJECT_DIR}/_build/meson-logs"
 
-dist-json-glib:
+fedora-x86_64:
+  extends: .build-default
   stage: build
-  only:
-    - tags
-  script:
-    - meson setup --prefix /usr --buildtype release -Dman=true -Dgtk_doc=enabled_build .
-    - meson compile -C _build
-    - meson dist -C _build
-    - ninja -C _build json-glib-doc
-    - tar -c -f "json-glib-docs-${CI_COMMIT_TAG}.tar.xz" -C docs html
+  needs: []
+  variables:
+    FEDORA_DEPS:
+      gcc
+      gettext
+      git
+      glib2-devel
+      gobject-introspection-devel
+      ninja-build
+      python3
+      python3-pip
+      python3-wheel
+      redhat-rpm-config
+    MESON_VERSION: "0.55.3"
+    MESON_EXTRA_FLAGS: "--buildtype=debug --default-library=both -Dwerror=true -Dglib:werror=false -Dintrospection=enabled"
+
+reference:
+  extends: .build-default
+  stage: docs
+  needs: []
+  variables:
+    FEDORA_DEPS:
+      docbook-style-xsl
+      gcc
+      gettext
+      git
+      glib2-devel
+      gobject-introspection-devel
+      graphviz
+      ninja-build
+      python3
+      python3-jinja2
+      python3-markdown
+      python3-markupsafe
+      python3-pip
+      python3-pygments
+      python3-toml
+      python3-typogrify
+      python3-wheel
+      redhat-rpm-config
+      libxslt
+    MESON_VERSION: "0.55.3"
+    MESON_EXTRA_FLAGS: "-Dgtk_doc=enabled -Dman=true -Dintrospection=enabled"
+  after_script:
+    - mkdir _reference
+    - mv _build/doc/json-glib-1.0/ _reference/
   artifacts:
     paths:
-      - "${CI_PROJECT_DIR}/_build/json-glib-docs-${CI_COMMIT_TAG}.tar.xz"
-      - "${CI_PROJECT_DIR}/_build/meson-dist/json-glib-*.tar.xz"
+      - _reference
+
+pages:
+  stage: deploy
+  needs: ['reference']
+  script:
+    - mv _reference _public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master

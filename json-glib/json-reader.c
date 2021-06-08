@@ -21,18 +21,17 @@
  */
 
 /**
- * SECTION:json-reader
- * @Title: JsonReader
- * @short_description: A cursor-based parser
+ * JsonReader:
  *
- * #JsonReader provides a simple, cursor-based API for parsing a JSON DOM. It
- * is similar, in spirit, to the XML Reader API.
+ * `JsonReader` provides a simple, cursor-based API for parsing a JSON DOM.
  *
- * In case of error, #JsonReader will be set in an error state; all subsequent
+ * It is similar, in spirit, to the XML Reader API.
+ *
+ * In case of error, `JsonReader` will be set in an error state; all subsequent
  * calls will simply be ignored until a function that resets the error state is
  * called, e.g.:
  *
- * |[
+ * ```c
  * // ask for the 7th element; if the element does not exist, the
  * // reader will be put in an error state
  * json_reader_read_element (reader, 6);
@@ -43,12 +42,12 @@
  *
  * // this function resets the error state if any was set
  * json_reader_end_element (reader);
- * ]|
+ * ```
  *
  * If you want to detect the error state as soon as possible, you can use
- * json_reader_get_error():
+ * [method@Json.Reader.get_error]:
  *
- * |[<!-- language="C" -->
+ * ```c
  * // like the example above, but in this case we print out the
  * // error immediately
  * if (!json_reader_read_element (reader, 6))
@@ -56,9 +55,9 @@
  *     const GError *error = json_reader_get_error (reader);
  *     g_print ("Unable to read the element: %s", error->message);
  *   }
- * ]|
+ * ```
  *
- * #JsonReader is available since JSON-GLib 0.12.
+ * Since: 0.12
  */
 
 #include "config.h"
@@ -198,8 +197,9 @@ json_reader_init (JsonReader *self)
  * json_reader_new:
  * @node: (allow-none): a #JsonNode, or %NULL
  *
- * Creates a new #JsonReader. You can use this object to read the contents of
- * the JSON tree starting from @node
+ * Creates a new #JsonReader.
+ *
+ * You can use this object to read the contents of the JSON tree starting from @node.
  *
  * Return value: the newly created #JsonReader. Use g_object_unref() to
  *   release the allocated resources when done
@@ -234,10 +234,11 @@ json_reader_unset_error (JsonReader *reader)
 /**
  * json_reader_set_root:
  * @reader: a #JsonReader
- * @root: (allow-none): a #JsonNode
+ * @root: (nullable): a #JsonNode
  *
- * Sets the root #JsonNode to be read by @reader. The @reader will take
- * a copy of @root
+ * Sets the root #JsonNode to be read by @reader.
+ *
+ * The @reader will take a copy of @root
  *
  * If another #JsonNode is currently set as root, it will be replaced.
  *
@@ -282,7 +283,7 @@ json_reader_set_root (JsonReader *reader,
  * @Varargs: list of arguments for the @error_fmt string
  *
  * Sets the error state of @reader using the given error code
- * and string
+ * and string.
  *
  * Return value: %FALSE, to be used to return immediately from
  *   the caller function
@@ -319,7 +320,7 @@ json_reader_set_error (JsonReader      *reader,
  * @reader: a #JsonReader
  *
  * Retrieves the #GError currently set on @reader, if the #JsonReader
- * is in error state
+ * is in error state.
  *
  * Return value: (nullable) (transfer none): the pointer to the error, or %NULL
  *
@@ -337,7 +338,7 @@ json_reader_get_error (JsonReader *reader)
  * json_reader_is_array:
  * @reader: a #JsonReader
  *
- * Checks whether the @reader is currently on an array
+ * Checks whether the @reader is currently on an array.
  *
  * Return value: %TRUE if the #JsonReader is on an array, and %FALSE
  *   otherwise
@@ -360,7 +361,7 @@ json_reader_is_array (JsonReader *reader)
  * json_reader_is_object:
  * @reader: a #JsonReader
  *
- * Checks whether the @reader is currently on an object
+ * Checks whether the @reader is currently on an object.
  *
  * Return value: %TRUE if the #JsonReader is on an object, and %FALSE
  *   otherwise
@@ -383,7 +384,7 @@ json_reader_is_object (JsonReader *reader)
  * json_reader_is_value:
  * @reader: a #JsonReader
  *
- * Checks whether the @reader is currently on a value
+ * Checks whether the @reader is currently on a value.
  *
  * Return value: %TRUE if the #JsonReader is on a value, and %FALSE
  *   otherwise
@@ -414,15 +415,15 @@ json_reader_is_value (JsonReader *reader)
  * You can use the json_reader_get_value* family of functions to retrieve
  * the value of the element; for instance:
  *
- * |[
+ * ```c
  * json_reader_read_element (reader, 0);
  * int_value = json_reader_get_int_value (reader);
- * ]|
+ * ```
  *
  * After reading the value, json_reader_end_element() should be called to
  * reposition the cursor inside the #JsonReader, e.g.:
  *
- * |[
+ * ```c
  * json_reader_read_element (reader, 1);
  * str_value = json_reader_get_string_value (reader);
  * json_reader_end_element (reader);
@@ -430,7 +431,7 @@ json_reader_is_value (JsonReader *reader)
  * json_reader_read_element (reader, 2);
  * str_value = json_reader_get_string_value (reader);
  * json_reader_end_element (reader);
- * ]|
+ * ```
  *
  * If @reader is not currently on an array or an object, or if the @index_ is
  * bigger than the size of the array or the object, the #JsonReader will be
@@ -438,7 +439,7 @@ json_reader_is_value (JsonReader *reader)
  * that if used conditionally, json_reader_end_element() must be called on both
  * code paths:
  *
- * |[
+ * ```c
  * if (!json_reader_read_element (reader, 1))
  *   {
  *     json_reader_end_element (reader);
@@ -448,7 +449,7 @@ json_reader_is_value (JsonReader *reader)
  *
  * str_value = json_reader_get_string_value (reader);
  * json_reader_end_element (reader);
- * ]|
+ * ```c
  *
  * Return value: %TRUE on success, and %FALSE otherwise
  *
@@ -527,9 +528,9 @@ json_reader_read_element (JsonReader *reader,
  * @reader: a #JsonReader
  *
  * Moves the cursor back to the previous node after being positioned
- * inside an array
+ * inside an array.
  *
- * This function resets the error state of @reader, if any was set
+ * This function resets the error state of @reader, if any was set.
  *
  * Since: 0.12
  */
@@ -563,7 +564,7 @@ json_reader_end_element (JsonReader *reader)
  * @reader: a #JsonReader
  *
  * Counts the elements of the current position, if @reader is
- * positioned on an array
+ * positioned on an array.
  *
  * Return value: the number of elements, or -1. In case of failure
  *   the #JsonReader is set in an error state
@@ -608,15 +609,15 @@ json_reader_count_elements (JsonReader *reader)
  * You can use the json_reader_get_value* family of functions to retrieve
  * the value of the member; for instance:
  *
- * |[
+ * ```c
  * json_reader_read_member (reader, "width");
  * width = json_reader_get_int_value (reader);
- * ]|
+ * ```
  *
  * After reading the value, json_reader_end_member() should be called to
  * reposition the cursor inside the #JsonReader, e.g.:
  *
- * |[
+ * ```c
  * json_reader_read_member (reader, "author");
  * author = json_reader_get_string_value (reader);
  * json_reader_end_member (reader);
@@ -624,14 +625,14 @@ json_reader_count_elements (JsonReader *reader)
  * json_reader_read_member (reader, "title");
  * title = json_reader_get_string_value (reader);
  * json_reader_end_member (reader);
- * ]|
+ * ```
  *
  * If @reader is not currently on an object, or if the @member_name is not
  * defined in the object, the #JsonReader will be put in an error state until
  * json_reader_end_member() is called. This means that if used conditionally,
  * json_reader_end_member() must be called on both code paths:
  *
- * |[
+ * ```c
  * if (!json_reader_read_member (reader, "title"))
  *   {
  *     json_reader_end_member (reader);
@@ -641,7 +642,7 @@ json_reader_count_elements (JsonReader *reader)
  *
  * str_value = json_reader_get_string_value (reader);
  * json_reader_end_member (reader);
- * ]|
+ * ```
  *
  * Return value: %TRUE on success, and %FALSE otherwise
  *
@@ -688,9 +689,9 @@ json_reader_read_member (JsonReader  *reader,
  * @reader: a #JsonReader
  *
  * Moves the cursor back to the previous node after being positioned
- * inside an object
+ * inside an object.
  *
- * This function resets the error state of @reader, if any was set
+ * This function resets the error state of @reader, if any was set.
  *
  * Since: 0.12
  */
@@ -777,7 +778,7 @@ json_reader_list_members (JsonReader *reader)
  * @reader: a #JsonReader
  *
  * Counts the members of the current position, if @reader is
- * positioned on an object
+ * positioned on an object.
  *
  * Return value: the number of members, or -1. In case of failure
  *   the #JsonReader is set in an error state
@@ -815,11 +816,9 @@ json_reader_count_members (JsonReader *reader)
  * json_reader_get_value:
  * @reader: a #JsonReader
  *
- * Retrieves the #JsonNode of the current position of @reader
+ * Retrieves the #JsonNode of the current position of @reader.
  *
- * Return value: (nullable) (transfer none): a #JsonNode, or %NULL. The
- * returned node is owned by the #JsonReader and it should not be
- * modified or freed directly
+ * Return value: (nullable) (transfer none): the current value node
  *
  * Since: 0.12
  */
@@ -855,7 +854,7 @@ json_reader_get_value (JsonReader *reader)
  * json_reader_get_int_value:
  * @reader: a #JsonReader
  *
- * Retrieves the integer value of the current position of @reader
+ * Retrieves the integer value of the current position of @reader.
  *
  * Return value: the integer value
  *
@@ -893,7 +892,7 @@ json_reader_get_int_value (JsonReader *reader)
  * json_reader_get_double_value:
  * @reader: a #JsonReader
  *
- * Retrieves the floating point value of the current position of @reader
+ * Retrieves the floating point value of the current position of @reader.
  *
  * Return value: the floating point value
  *
@@ -931,7 +930,7 @@ json_reader_get_double_value (JsonReader *reader)
  * json_reader_get_string_value:
  * @reader: a #JsonReader
  *
- * Retrieves the string value of the current position of @reader
+ * Retrieves the string value of the current position of @reader.
  *
  * Return value: the string value
  *
@@ -976,7 +975,7 @@ json_reader_get_string_value (JsonReader *reader)
  * json_reader_get_boolean_value:
  * @reader: a #JsonReader
  *
- * Retrieves the boolean value of the current position of @reader
+ * Retrieves the boolean value of the current position of @reader.
  *
  * Return value: the boolean value
  *
@@ -1014,9 +1013,9 @@ json_reader_get_boolean_value (JsonReader *reader)
  * json_reader_get_null_value:
  * @reader: a #JsonReader
  *
- * Checks whether the value of the current position of @reader is 'null'
+ * Checks whether the value of the current position of @reader is `null`.
  *
- * Return value: %TRUE if 'null' is set, and %FALSE otherwise
+ * Return value: %TRUE if `null` is set, and %FALSE otherwise
  *
  * Since: 0.12
  */
@@ -1042,7 +1041,7 @@ json_reader_get_null_value (JsonReader *reader)
  *
  * Retrieves the name of the current member.
  *
- * Return value: (nullable) (transfer none): the name of the member, or %NULL
+ * Return value: (nullable) (transfer none): the name of the member
  *
  * Since: 0.14
  */

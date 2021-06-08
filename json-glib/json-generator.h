@@ -44,12 +44,6 @@ typedef struct _JsonGenerator           JsonGenerator;
 typedef struct _JsonGeneratorPrivate    JsonGeneratorPrivate;
 typedef struct _JsonGeneratorClass      JsonGeneratorClass;
 
-/**
- * JsonGenerator:
- *
- * JSON data streams generator. The contents of the #JsonGenerator structure
- * are private and should only be accessed via the provided API.
- */
 struct _JsonGenerator
 {
   /*< private >*/
@@ -58,11 +52,6 @@ struct _JsonGenerator
   JsonGeneratorPrivate *priv;
 };
 
-/**
- * JsonGeneratorClass:
- *
- * #JsonGenerator class
- */
 struct _JsonGeneratorClass
 {
   /*< private >*/
