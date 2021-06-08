@@ -73,9 +73,9 @@ Copyright 2007, 2008  OpenedHand Ltd
 Copyright 2009, 2010, 2011, 2012  Intel Corp.
 Copyright 2013  Emmanuele Bassi
 
-[json]: http://www.json.org "JSON"
-[glib]: http://www.gtk.org "GTK"
-[json-glib]: https://wiki.gnome.org/Projects/JsonGlib "JSON-GLib wiki"
+[json]: https://www.json.org "JSON"
+[glib]: https://www.gtk.org "GTK"
+[json-glib]: https://gnome.pages.gitlab.gnome.org/json-glib/json-glib-1.0/
 [gnome]: https://www.gnome.org "GNOME"
 [gitlab-issues]: https://gitlab.gnome.org/GNOME/json-glib/issues
 [gtk-coding-style]: https://gitlab.gnome.org/GNOME/gtk/-/blob/HEAD/docs/CODING-STYLE.md
