@@ -23,20 +23,18 @@
  */
 
 /**
- * SECTION:json-builder
- * @Title: JsonBuilder
- * @short_description: Generates JSON trees
- * @See_Also: JsonGenerator
+ * JsonBuilder:
  *
- * #JsonBuilder provides an object for generating a JSON tree.
- * You can generate only one tree with one #JsonBuilder instance.
+ * `JsonBuilder` provides an object for generating a JSON tree.
  *
- * The root of the JSON tree can be either a #JsonObject or a #JsonArray.
+ * You can generate only one tree with one `JsonBuilder` instance.
+ *
+ * The root of the JSON tree can be either a [struct@Json.Object] or a [struct@Json.Array].
  * Thus the first call must necessarily be either
- * json_builder_begin_object() or json_builder_begin_array().
+ * [method@Json.Builder.begin_object] or [method@Json.Builder.begin_array].
  *
- * For convenience to language bindings, #JsonBuilder returns itself from
- * most of functions, making it easy to chain function calls.
+ * For convenience to language bindings, most `JsonBuilder` method return the
+ * instance, making it easy to chain function calls.
  */
 
 #include "config.h"
@@ -191,7 +189,9 @@ json_builder_class_init (JsonBuilderClass *klass)
    * JsonBuilder:immutable:
    *
    * Whether the #JsonNode tree built by the #JsonBuilder should be immutable
-   * when created. Making the output immutable on creation avoids the expense
+   * when created.
+   *
+   * Making the output immutable on creation avoids the expense
    * of traversing it to make it immutable later.
    *
    * Since: 1.2
@@ -238,10 +238,11 @@ json_builder_is_valid_add_mode (JsonBuilder *builder)
 /**
  * json_builder_new:
  *
- * Creates a new #JsonBuilder. You can use this object to generate a
- * JSON tree and obtain the root #JsonNode.
+ * Creates a new `JsonBuilder`.
  *
- * Return value: the newly created #JsonBuilder instance
+ * You can use this object to generate a JSON tree and obtain the root node.
+ *
+ * Return value: the newly created builder instance
  */
 JsonBuilder *
 json_builder_new (void)
@@ -252,11 +253,13 @@ json_builder_new (void)
 /**
  * json_builder_new_immutable: (constructor)
  *
- * Creates a new #JsonBuilder instance with its #JsonBuilder:immutable property
- * set to %TRUE to create immutable output trees.
+ * Creates a new, immutable `JsonBuilder` instance.
+ *
+ * It is equivalent to setting the [property@Json.Builder:immutable] property
+ * set to `TRUE`.
  *
  * Since: 1.2
- * Returns: (transfer full): a new #JsonBuilder
+ * Returns: (transfer full): the newly create builder instance
  */
 JsonBuilder *
 json_builder_new_immutable (void)
@@ -266,13 +269,15 @@ json_builder_new_immutable (void)
 
 /**
  * json_builder_get_root:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  *
- * Returns the root of the current constructed tree, if the build is complete
- * (ie: all opened objects, object members and arrays are being closed).
+ * Returns the root of the current constructed tree.
  *
- * Return value: (nullable) (transfer full): the #JsonNode, or %NULL if the
- *   build is not complete. Free the returned value with json_node_unref().
+ * if the build is incomplete (ie: if there are any opened objects, or any
+ * open object members and array elements) then this function will return
+ * `NULL`.
+ *
+ * Return value: (nullable) (transfer full): the root node
  */
 JsonNode *
 json_builder_get_root (JsonBuilder *builder)
@@ -310,14 +315,14 @@ json_builder_reset (JsonBuilder *builder)
  * json_builder_begin_object:
  * @builder: a #JsonBuilder
  *
- * Opens a subobject inside the given @builder. When done adding members to
- * the subobject, json_builder_end_object() must be called.
+ * Opens a subobject inside the given builder.
  *
- * Can be called for first or only if the call is associated to an object member
- * or an array element.
+ * Once you added all members to the object, you must call [method@Json.Builder.end_object].
+ * to close the object.
  *
- * Return value: (nullable) (transfer none): the #JsonBuilder, or %NULL if the
- * call was inconsistent
+ * If the builder is in an inconsistent state, this function will return `NULL`.
+ *
+ * Return value: (nullable) (transfer none): the builder instance
  */
 JsonBuilder *
 json_builder_begin_object (JsonBuilder *builder)

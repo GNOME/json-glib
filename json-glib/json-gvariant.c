@@ -33,48 +33,6 @@
 #include "json-parser.h"
 #include "json-types-private.h"
 
-/**
- * SECTION:json-gvariant
- * @short_description: Serialize and deserialize GVariant types
- * @Title: JSON GVariant Integration
- *
- * Use json_gvariant_serialize() and json_gvariant_serialize_data() to
- * convert from any #GVariant value to a #JsonNode tree or its string
- * representation.
- *
- * Use json_gvariant_deserialize() and json_gvariant_deserialize_data() to
- * obtain the #GVariant value from a #JsonNode tree or directly from a JSON
- * string.
- *
- * Since many #GVariant data types cannot be directly represented as
- * JSON, a #GVariant type string (signature) should be provided to these
- * methods in order to obtain a correct, type-contrained result.
- * If no signature is provided, conversion can still be done, but the
- * resulting #GVariant value will be "guessed" from the JSON data types
- * using the following rules:
- *
- * ## Strings
- * JSON strings map to GVariant `(s)`.
- *
- * ## Integers
- * JSON integers map to GVariant int64 `(x)`.
- *
- * ## Booleans
- * JSON booleans map to GVariant boolean `(b)`.
- *
- * ## Numbers
- * JSON numbers map to GVariant double `(d)`.
- *
- * ## Arrays
- * JSON arrays map to GVariant arrays of variants `(av)`.
- *
- * ## Objects
- * JSON objects map to GVariant dictionaries of string to variants `(a{sv})`.
- *
- * ## Null values
- * JSON null values map to GVariant maybe variants `(mv)`.
- */
-
 /* custom extension to the GVariantClass enumeration to differentiate
  * a single dictionary entry from an array of dictionary entries
  */
@@ -257,12 +215,12 @@ gvariant_to_json_object (GVariant *variant)
 
 /**
  * json_gvariant_serialize:
- * @variant: A #GVariant to convert
+ * @variant: A `GVariant` to convert
  *
- * Converts @variant to a JSON tree.
+ * Converts `variant` to a JSON tree.
  *
- * Return value: (transfer full): A #JsonNode representing the root of the
- *   JSON data structure obtained from @variant
+ * Return value: (transfer full): the root of the JSON data structure
+ *   obtained from `variant`
  *
  * Since: 0.14
  */
@@ -413,15 +371,15 @@ json_gvariant_serialize (GVariant *variant)
 /**
  * json_gvariant_serialize_data:
  * @variant: A #GVariant to convert
- * @length: (out) (allow-none): Return location for the length of the returned
- *   string, or %NULL
+ * @length: (out) (optional): the length of the returned string
  *
- * Converts @variant to its JSON encoded string representation. This method
- * is actually a helper function. It uses json_gvariant_serialize() to obtain the
- * JSON tree, and then #JsonGenerator to stringify it.
+ * Converts @variant to its JSON encoded string representation.
+ *
+ * This is a convenience function around [func@Json.gvariant_serialize], to
+ * obtain the JSON tree, and then [class@Json.Generator] to stringify it.
  *
  * Return value: (transfer full): The JSON encoded string corresponding to
- *   @variant
+ *   the given variant
  *
  * Since: 0.14
  */
@@ -1275,25 +1233,31 @@ out:
 /**
  * json_gvariant_deserialize:
  * @json_node: A #JsonNode to convert
- * @signature: (allow-none): A valid #GVariant type string, or %NULL
+ * @signature: (nullable): A valid `GVariant` type string
  * @error: A pointer to a #GError
  *
- * Converts a JSON data structure to a GVariant value using @signature to
- * resolve ambiguous data types. If no error occurs, the resulting #GVariant
- * is guaranteed to conform to @signature.
+ * Converts a JSON data structure to a `GVariant`.
  *
- * If @signature is not %NULL but does not represent a valid GVariant type
- * string, %NULL is returned and error is set to %G_IO_ERROR_INVALID_ARGUMENT.
- * If a @signature is provided but the JSON structure cannot be mapped to it,
- * %NULL is returned and error is set to %G_IO_ERROR_INVALID_DATA.
- * If @signature is %NULL, the conversion is done based strictly on the types
+ * If `signature` is not `NULL`, it will be used to resolve ambiguous
+ * data types.
+ *
+ * If no error occurs, the resulting `GVariant` is guaranteed to conform
+ * to `signature`.
+ *
+ * If `signature` is not `NULL` but does not represent a valid `GVariant` type
+ * string, `NULL` is returned and the `error` is set to
+ * `G_IO_ERROR_INVALID_ARGUMENT`.
+ *
+ * If a `signature` is provided but the JSON structure cannot be mapped to it,
+ * `NULL` is returned and the `error` is set to `G_IO_ERROR_INVALID_DATA`.
+ *
+ * If `signature` is `NULL`, the conversion is done based strictly on the types
  * in the JSON nodes.
  *
  * The returned variant has a floating reference that will need to be sunk
  * by the caller code.
  *
- * Return value: (transfer none): A newly created, floating #GVariant
- *   compliant with @signature, or %NULL on error
+ * Return value: (transfer floating) (nullable): A newly created `GVariant`
  *
  * Since: 0.14
  */
@@ -1319,20 +1283,23 @@ json_gvariant_deserialize (JsonNode     *json_node,
 /**
  * json_gvariant_deserialize_data:
  * @json: A JSON data string
- * @length: The length of @json, or -1 if %NULL-terminated
- * @signature: (allow-none): A valid #GVariant type string, or %NULL
+ * @length: The length of @json, or -1 if `NUL`-terminated
+ * @signature: (nullable): A valid `GVariant` type string
  * @error: A pointer to a #GError
  *
- * Converts a JSON string to a #GVariant value. This method works exactly
- * like json_gvariant_deserialize(), but takes a JSON encoded string instead.
- * The string is first converted to a #JsonNode using #JsonParser, and then
- * json_gvariant_deserialize() is called.
+ * Converts a JSON string to a `GVariant` value.
+ *
+ * This function works exactly like [func@Json.gvariant_deserialize], but
+ * takes a JSON encoded string instead.
+ *
+ * The string is first converted to a [struct@Json.Node] using
+ * [class@Json.Parser], and then `json_gvariant_deserialize` is called on
+ * the node.
  *
  * The returned variant has a floating reference that will need to be sunk
  * by the caller code.
  *
- * Returns: (transfer none): A newly created, floating #GVariant compliant
- *   with @signature, or %NULL on error
+ * Returns: (transfer floating) (nullable): A newly created `GVariant`D compliant
  *
  * Since: 0.14
  */

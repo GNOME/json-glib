@@ -96,29 +96,8 @@ G_BEGIN_DECLS
 #define JSON_TYPE_OBJECT        (json_object_get_type ())
 #define JSON_TYPE_ARRAY         (json_array_get_type ())
 
-/**
- * JsonNode:
- *
- * A generic container of JSON data types. The contents of the #JsonNode
- * structure are private and should only be accessed via the provided
- * functions and never directly.
- */
 typedef struct _JsonNode        JsonNode;
-
-/**
- * JsonObject:
- *
- * A JSON object type. The contents of the #JsonObject structure are private
- * and should only be accessed by the provided API
- */
 typedef struct _JsonObject      JsonObject;
-
-/**
- * JsonArray:
- *
- * A JSON array type. The contents of the #JsonArray structure are private
- * and should only be accessed by the provided API
- */
 typedef struct _JsonArray       JsonArray;
 
 /**
@@ -144,9 +123,12 @@ typedef enum {
  * @member_node: a #JsonNode containing the @member_name value
  * @user_data: data passed to the function
  *
- * The function to be passed to json_object_foreach_member(). You
- * should not add or remove members to and from @object within
- * this function. It is safe to change the value of @member_node.
+ * The function to be passed to [method@Json.Object.foreach_member].
+ *
+ * You should not add or remove members to and from @object within
+ * this function.
+ *
+ * It is safe to change the value of @member_node.
  *
  * Since: 0.8
  */
@@ -162,9 +144,12 @@ typedef void (* JsonObjectForeach) (JsonObject  *object,
  * @element_node: a #JsonNode containing the value at @index_
  * @user_data: data passed to the function
  *
- * The function to be passed to json_array_foreach_element(). You
- * should not add or remove elements to and from @array within
- * this function. It is safe to change the value of @element_node.
+ * The function to be passed to [method@Json.Array.foreach_element].
+ *
+ * You should not add or remove elements to and from @array within
+ * this function.
+ *
+ * It is safe to change the value of @element_node.
  *
  * Since: 0.8
  */
@@ -423,12 +408,15 @@ gboolean              json_object_equal              (gconstpointer a,
 /**
  * JsonObjectIter:
  *
- * An iterator used to iterate over the members of a #JsonObject. This must
- * be allocated on the stack and initialised using json_object_iter_init().
- * The order in which members are returned by the iterator is undefined. The
- * iterator is invalidated if its #JsonObject is modified during iteration.
+ * An iterator object used to iterate over the members of a #JsonObject.
  *
- * All the fields in the #JsonObjectIter structure are private and should
+ * `JsonObjectIter` must be allocated on the stack and initialised using
+ * [method@Json.ObjectIter.init] or [method@Json.ObjectIter.init_ordered].
+ *
+ * The iterator is invalidated if its `JsonObject` is modified during
+ * iteration.
+ *
+ * All the fields in the `JsonObjectIter` structure are private and should
  * never be accessed directly.
  *
  * Since: 1.2 

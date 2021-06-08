@@ -73,12 +73,6 @@ typedef enum {
   JSON_PARSER_ERROR_UNKNOWN
 } JsonParserError;
 
-/**
- * JsonParser:
- * 
- * JSON data streams parser. The contents of the #JsonParser structure are
- * private and should only be accessed via the provided API.
- */
 struct _JsonParser
 {
   /*< private >*/
@@ -99,7 +93,7 @@ struct _JsonParser
  * @parse_end: class handler for the JsonParser::parse-end signal
  * @error: class handler for the JsonParser::error signal
  *
- * #JsonParser class.
+ * The class structure for the JsonParser type.
  */
 struct _JsonParserClass
 {

@@ -26,20 +26,24 @@
 #include "json-types-private.h"
 
 /**
- * SECTION:json-array
- * @short_description: a JSON array representation
+ * JsonArray:
  *
- * #JsonArray is the representation of the array type inside JSON. It contains
- * #JsonNode elements, which may contain fundamental types, other arrays or
- * objects.
+ * `JsonArray` is the representation of the array type inside JSON.
  *
- * Since arrays can be expensive, they are reference counted. You can control
- * the lifetime of a #JsonArray using json_array_ref() and json_array_unref().
+ * A `JsonArray` contains [struct@Json.Node] elements, which may contain
+ * fundamental types, other arrays or objects.
  *
- * To append an element, use json_array_add_element().
- * To extract an element at a given index, use json_array_get_element().
- * To retrieve the entire array in list form, use json_array_get_elements().
- * To retrieve the length of the array, use json_array_get_length().
+ * Since arrays can be arbitrarily big, copying them can be expensive; for
+ * this reason, they are reference counted. You can control the lifetime of
+ * a `JsonArray` using [method@Json.Array.ref] and [method@Json.Array.unref].
+ *
+ * To append an element, use [method@Json.Array.add_element].
+ *
+ * To extract an element at a given index, use [method@Json.Array.get_element].
+ *
+ * To retrieve the entire array in list form, use [method@Json.Array.get_elements].
+ *
+ * To retrieve the length of the array, use [method@Json.Array.get_length].
  */
 
 G_DEFINE_BOXED_TYPE (JsonArray, json_array, json_array_ref, json_array_unref);
@@ -47,9 +51,9 @@ G_DEFINE_BOXED_TYPE (JsonArray, json_array, json_array_ref, json_array_unref);
 /**
  * json_array_new: (constructor)
  *
- * Creates a new #JsonArray.
+ * Creates a new array.
  *
- * Return value: (transfer full): the newly created #JsonArray
+ * Return value: (transfer full): the newly created array
  */
 JsonArray *
 json_array_new (void)
@@ -68,9 +72,9 @@ json_array_new (void)
  * json_array_sized_new: (constructor)
  * @n_elements: number of slots to pre-allocate
  *
- * Creates a new #JsonArray with @n_elements slots already allocated.
+ * Creates a new array with `n_elements` slots already allocated.
  *
- * Return value: (transfer full): the newly created #JsonArray
+ * Return value: (transfer full): the newly created array
  */
 JsonArray *
 json_array_sized_new (guint n_elements)
@@ -87,12 +91,12 @@ json_array_sized_new (guint n_elements)
 
 /**
  * json_array_ref:
- * @array: a #JsonArray
+ * @array: the array to reference
  *
- * Increase by one the reference count of a #JsonArray.
+ * Acquires a reference on the given array.
  *
- * Return value: (transfer none): the passed #JsonArray, with the reference count
- *   increased by one.
+ * Return value: (transfer none): the passed array, with the reference count
+ *   increased by one
  */
 JsonArray *
 json_array_ref (JsonArray *array)
@@ -107,10 +111,11 @@ json_array_ref (JsonArray *array)
 
 /**
  * json_array_unref:
- * @array: a #JsonArray
+ * @array: the array to unreference
  *
- * Decreases by one the reference count of a #JsonArray. If the
- * reference count reaches zero, the array is destroyed and all
+ * Releases a reference on the given array.
+ *
+ * If the reference count reaches zero, the array is destroyed and all
  * its allocated resources are freed.
  */
 void
@@ -135,12 +140,13 @@ json_array_unref (JsonArray *array)
 
 /**
  * json_array_seal:
- * @array: a #JsonArray
+ * @array: the array to seal
  *
- * Seals the #JsonArray, making it immutable to further changes. This will
- * recursively seal all elements in the array too.
+ * Seals the given array, making it immutable to further changes.
  *
- * If the @array is already immutable, this is a no-op.
+ * This function will recursively seal all elements in the array too.
+ *
+ * If the `array` is already immutable, this is a no-op.
  *
  * Since: 1.2
  */
@@ -165,13 +171,13 @@ json_array_seal (JsonArray *array)
 
 /**
  * json_array_is_immutable:
- * @array: a #JsonArray
+ * @array: an array
  *
- * Check whether the given @array has been marked as immutable by calling
- * json_array_seal() on it.
+ * Check whether the given `array` has been marked as immutable by calling
+ * [method@Json.Array.seal] on it.
  *
  * Since: 1.2
- * Returns: %TRUE if the @array is immutable
+ * Returns: %TRUE if the array is immutable
  */
 gboolean
 json_array_is_immutable (JsonArray *array)
@@ -184,14 +190,12 @@ json_array_is_immutable (JsonArray *array)
 
 /**
  * json_array_get_elements:
- * @array: a #JsonArray
+ * @array: an array
  *
- * Gets the elements of a #JsonArray as a list of #JsonNode instances.
+ * Retrieves all the elements of an array as a list of nodes.
  *
- * Return value: (element-type JsonNode) (transfer container): a #GList
- *   containing the elements of the array. The contents of the list are
- *   owned by the array and should never be modified or freed. Use
- *   g_list_free() on the returned list when done using it
+ * Return value: (element-type JsonNode) (transfer container) (nullable): the elements
+ *   of the array
  */
 GList *
 json_array_get_elements (JsonArray *array)
@@ -211,14 +215,12 @@ json_array_get_elements (JsonArray *array)
 
 /**
  * json_array_dup_element:
- * @array: a #JsonArray
+ * @array: an array
  * @index_: the index of the element to retrieve
  *
- * Retrieves a copy of the #JsonNode containing the value of the
- * element at @index_ inside a #JsonArray
+ * Retrieves a copy of the element at the given position in the array.
  *
- * Return value: (transfer full): a copy of the #JsonNode at the requested
- *   index. Use json_node_unref() when done.
+ * Return value: (transfer full): a copy of the element at the given position
  *
  * Since: 0.6
  */
@@ -242,11 +244,10 @@ json_array_dup_element (JsonArray *array,
  * json_array_get_element:
  * @array: a #JsonArray
  * @index_: the index of the element to retrieve
- * 
- * Retrieves the #JsonNode containing the value of the element at @index_
- * inside a #JsonArray.
  *
- * Return value: (transfer none): a pointer to the #JsonNode at the requested index
+ * Retrieves the element at the given position in the array.
+ *
+ * Return value: (transfer none): the element at the given position
  */
 JsonNode *
 json_array_get_element (JsonArray *array,
@@ -260,13 +261,13 @@ json_array_get_element (JsonArray *array,
 
 /**
  * json_array_get_int_element:
- * @array: a #JsonArray
+ * @array: an array
  * @index_: the index of the element to retrieve
  *
- * Conveniently retrieves the integer value of the element at @index_
- * inside @array
+ * Conveniently retrieves the integer value of the element at the given
+ * position inside an array.
  *
- * See also: json_array_get_element(), json_node_get_int()
+ * See also: [method@Json.Array.get_element], [method@Json.Node.get_int]
  *
  * Return value: the integer value
  *
@@ -290,13 +291,13 @@ json_array_get_int_element (JsonArray *array,
 
 /**
  * json_array_get_double_element:
- * @array: a #JsonArray
+ * @array: an array
  * @index_: the index of the element to retrieve
  *
  * Conveniently retrieves the floating point value of the element at
- * @index_ inside @array
+ * the given position inside an array.
  *
- * See also: json_array_get_element(), json_node_get_double()
+ * See also: [method@Json.Array.get_element], [method@Json.Node.get_double]
  *
  * Return value: the floating point value
  *
@@ -320,15 +321,15 @@ json_array_get_double_element (JsonArray *array,
 
 /**
  * json_array_get_boolean_element:
- * @array: a #JsonArray
+ * @array: an array
  * @index_: the index of the element to retrieve
  *
- * Conveniently retrieves the boolean value of the element at @index_
- * inside @array
+ * Conveniently retrieves the boolean value of the element at the given
+ * position inside an array.
  *
- * See also: json_array_get_element(), json_node_get_boolean()
+ * See also: [method@Json.Array.get_element], [method@Json.Node.get_boolean]
  *
- * Return value: the integer value
+ * Return value: the boolean value
  *
  * Since: 0.8
  */
@@ -350,16 +351,15 @@ json_array_get_boolean_element (JsonArray *array,
 
 /**
  * json_array_get_string_element:
- * @array: a #JsonArray
+ * @array: an array
  * @index_: the index of the element to retrieve
  *
- * Conveniently retrieves the string value of the element at @index_
- * inside @array
+ * Conveniently retrieves the string value of the element at the given
+ * position inside an array.
  *
- * See also: json_array_get_element(), json_node_get_string()
+ * See also: [method@Json.Array.get_element], [method@Json.Node.get_string]
  *
- * Return value: the string value; the returned string is owned by
- *   the #JsonArray and should not be modified or freed
+ * Return value: (transfer none): the string value
  *
  * Since: 0.8
  */
@@ -384,14 +384,15 @@ json_array_get_string_element (JsonArray *array,
 
 /**
  * json_array_get_null_element:
- * @array: a #JsonArray
+ * @array: an array
  * @index_: the index of the element to retrieve
  *
- * Conveniently retrieves whether the element at @index_ is set to null
+ * Conveniently checks whether the element at the given position inside the
+ * array contains a `null` value.
  *
- * See also: json_array_get_element(), JSON_NODE_TYPE(), %JSON_NODE_NULL
+ * See also: [method@Json.Array.get_element], [method@Json.Node.is_null]
  *
- * Return value: %TRUE if the element is null
+ * Return value: `TRUE` if the element is `null`
  *
  * Since: 0.8
  */
@@ -421,13 +422,12 @@ json_array_get_null_element (JsonArray *array,
 
 /**
  * json_array_get_array_element:
- * @array: a #JsonArray
+ * @array: an array
  * @index_: the index of the element to retrieve
  *
- * Conveniently retrieves the array from the element at @index_
- * inside @array
+ * Conveniently retrieves the array at the given position inside an array.
  *
- * See also: json_array_get_element(), json_node_get_array()
+ * See also: [method@Json.Array.get_element], [method@Json.Node.get_array]
  *
  * Return value: (transfer none): the array
  *
@@ -457,10 +457,9 @@ json_array_get_array_element (JsonArray *array,
  * @array: a #JsonArray
  * @index_: the index of the element to retrieve
  *
- * Conveniently retrieves the object from the element at @index_
- * inside @array
+ * Conveniently retrieves the object at the given position inside an array.
  *
- * See also: json_array_get_element(), json_node_get_object()
+ * See also: [method@Json.Array.get_element], [method@Json.Node.get_object]
  *
  * Return value: (transfer none): the object
  *
@@ -487,9 +486,9 @@ json_array_get_object_element (JsonArray *array,
 
 /**
  * json_array_get_length:
- * @array: a #JsonArray
+ * @array: an array
  *
- * Retrieves the length of a #JsonArray
+ * Retrieves the length of the given array
  *
  * Return value: the length of the array
  */
@@ -503,11 +502,10 @@ json_array_get_length (JsonArray *array)
 
 /**
  * json_array_add_element:
- * @array: a #JsonArray
- * @node: (transfer full): a #JsonNode
+ * @array: an array
+ * @node: (transfer full): the element to add
  *
- * Appends @node inside @array. The array will take ownership of the
- * #JsonNode.
+ * Appends the given `node` inside an array.
  */
 void
 json_array_add_element (JsonArray *array,
@@ -521,12 +519,12 @@ json_array_add_element (JsonArray *array,
 
 /**
  * json_array_add_int_element:
- * @array: a #JsonArray
- * @value: an integer value
+ * @array: an array
+ * @value: the integer value to add
  *
- * Conveniently adds an integer @value into @array
+ * Conveniently adds the given integer value into an array.
  *
- * See also: json_array_add_element(), json_node_set_int()
+ * See also: [method@Json.Array.add_element], [method@Json.Node.set_int]
  *
  * Since: 0.8
  */
@@ -541,12 +539,12 @@ json_array_add_int_element (JsonArray *array,
 
 /**
  * json_array_add_double_element:
- * @array: a #JsonArray
- * @value: a floating point value
+ * @array: an array
+ * @value: the floating point value to add
  *
- * Conveniently adds a floating point @value into @array
+ * Conveniently adds the given floating point value into an array.
  *
- * See also: json_array_add_element(), json_node_set_double()
+ * See also: [method@Json.Array.add_element], [method@Json.Node.set_double]
  *
  * Since: 0.8
  */
@@ -561,12 +559,12 @@ json_array_add_double_element (JsonArray *array,
 
 /**
  * json_array_add_boolean_element:
- * @array: a #JsonArray
- * @value: a boolean value
+ * @array: an array
+ * @value: the boolean value to add
  *
- * Conveniently adds a boolean @value into @array
+ * Conveniently adds the given boolean value into an array.
  *
- * See also: json_array_add_element(), json_node_set_boolean()
+ * See also: [method@Json.Array.add_element], [method@Json.Node.set_boolean]
  *
  * Since: 0.8
  */
@@ -581,12 +579,12 @@ json_array_add_boolean_element (JsonArray *array,
 
 /**
  * json_array_add_string_element:
- * @array: a #JsonArray
- * @value: a string value
+ * @array: an array
+ * @value: the string value to add
  *
- * Conveniently adds a string @value into @array
+ * Conveniently adds the given string value into an array.
  *
- * See also: json_array_add_element(), json_node_set_string()
+ * See also: [method@Json.Array.add_element], [method@Json.Node.set_string]
  *
  * Since: 0.8
  */
@@ -610,11 +608,11 @@ json_array_add_string_element (JsonArray   *array,
 
 /**
  * json_array_add_null_element:
- * @array: a #JsonArray
+ * @array: an array
  *
- * Conveniently adds a null element into @array
+ * Conveniently adds a `null` element into an array
  *
- * See also: json_array_add_element(), %JSON_NODE_NULL
+ * See also: [method@Json.Array.add_element], `JSON_NODE_NULL`
  *
  * Since: 0.8
  */
@@ -628,13 +626,14 @@ json_array_add_null_element (JsonArray *array)
 
 /**
  * json_array_add_array_element:
- * @array: a #JsonArray
- * @value: (allow-none) (transfer full): a #JsonArray
+ * @array: an array
+ * @value: (nullable) (transfer full): the array to add
  *
- * Conveniently adds an array into @array. The @array takes ownership
- * of the newly added #JsonArray
+ * Conveniently adds an array into an array.
  *
- * See also: json_array_add_element(), json_node_take_array()
+ * If `value` is `NULL`, a `null` element will be added instead.
+ *
+ * See also: [method@Json.Array.add_element], [method@Json.Node.take_array]
  *
  * Since: 0.8
  */
@@ -661,13 +660,14 @@ json_array_add_array_element (JsonArray *array,
 
 /**
  * json_array_add_object_element:
- * @array: a #JsonArray
- * @value: (transfer full): a #JsonObject
+ * @array: an array
+ * @value: (transfer full) (nullable): the object to add
  *
- * Conveniently adds an object into @array. The @array takes ownership
- * of the newly added #JsonObject
+ * Conveniently adds an object into an array.
  *
- * See also: json_array_add_element(), json_node_take_object()
+ * If `value` is `NULL`, a `null` element will be added instead.
+ *
+ * See also: [method@Json.Array.add_element], [method@Json.Node.take_object]
  *
  * Since: 0.8
  */
@@ -697,8 +697,9 @@ json_array_add_object_element (JsonArray  *array,
  * @array: a #JsonArray
  * @index_: the position of the element to be removed
  *
- * Removes the #JsonNode inside @array at @index_ freeing its allocated
- * resources.
+ * Removes the element at the given position inside an array.
+ *
+ * This function will release the reference held on the element.
  */
 void
 json_array_remove_element (JsonArray *array,
@@ -712,16 +713,16 @@ json_array_remove_element (JsonArray *array,
 
 /**
  * json_array_foreach_element:
- * @array: a #JsonArray
+ * @array: an array
  * @func: (scope call): the function to be called on each element
  * @data: (closure): data to be passed to the function
  *
- * Iterates over all elements of @array and calls @func on
+ * Iterates over all elements of an array, and calls a function on
  * each one of them.
  *
- * It is safe to change the value of a #JsonNode of the @array
- * from within the iterator @func, but it is not safe to add or
- * remove elements from the @array.
+ * It is safe to change the value of an element of the array while
+ * iterating over it, but it is not safe to add or remove elements
+ * from the array.
  *
  * Since: 0.8
  */
@@ -747,15 +748,16 @@ json_array_foreach_element (JsonArray        *array,
 
 /**
  * json_array_hash:
- * @key: (type JsonArray): a JSON array to hash
+ * @key: (type JsonArray) (not nullable): a JSON array to hash
  *
- * Calculate a hash value for the given @key (a #JsonArray).
+ * Calculates a hash value for the given `key`.
  *
- * The hash is calculated over the array and all its elements, recursively. If
- * the array is immutable, this is a fast operation; otherwise, it scales
+ * The hash is calculated over the array and all its elements, recursively.
+ *
+ * If the array is immutable, this is a fast operation; otherwise, it scales
  * proportionally with the length of the array.
  *
- * Returns: hash value for @key
+ * Returns: hash value for the key
  * Since: 1.2
  */
 guint
@@ -785,14 +787,17 @@ json_array_hash (gconstpointer key)
 
 /**
  * json_array_equal:
- * @a: (type JsonArray): a JSON array
- * @b: (type JsonArray): another JSON array
+ * @a: (type JsonArray) (not nullable): a JSON array
+ * @b: (type JsonArray) (not nullable): another JSON array
  *
- * Check whether @a and @b are equal #JsonArrays, meaning they have the same
- * number of elements, and the values of elements in corresponding positions
- * are equal.
+ * Check whether two arrays are equal.
  *
- * Returns: %TRUE if @a and @b are equal; %FALSE otherwise
+ * Equality is defined as:
+ *
+ *  - the array have the same number of elements
+ *  - the values of elements in corresponding positions are equal
+ *
+ * Returns: `TRUE` if the arrays are equal, and `FALSE` otherwise
  * Since: 1.2
  */
 gboolean

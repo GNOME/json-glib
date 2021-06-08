@@ -18,13 +18,14 @@
  */
 
 /**
- * SECTION:json-serializable
- * @short_description: Interface for serialize and deserialize special GObjects
+ * JsonSerializable:
  *
- * #JsonSerializable is an interface for #GObject classes that
- * allows controlling how the class is going to be serialized
- * or deserialized by json_construct_gobject() and
- * json_serialize_gobject() respectively.
+ * `JsonSerializable` is an interface for controlling the serialization
+ * and deserialization of `GObject` classes.
+ *
+ * Implementing this interface allows controlling how the class is going
+ * to be serialized or deserialized by [func@Json.construct_gobject] and
+ * [func@Json.serialize_gobject], respectively.
  */
 
 #include "config.h"
@@ -78,6 +79,7 @@ json_serializable_serialize_property (JsonSerializable *serializable,
  * property contained inside @property_node into @value.
  *
  * The @value can be:
+ *
  * - an empty #GValue initialized by %G_VALUE_INIT, which will be automatically
  *   initialized with the expected type of the property (since JSON-GLib 1.6)
  * - a #GValue initialized with the expected type of the property
@@ -190,15 +192,14 @@ G_DEFINE_INTERFACE (JsonSerializable, json_serializable, G_TYPE_OBJECT);
  * @value: the value of the property
  * @pspec: a #GParamSpec
  *
- * Calls the default implementation of the #JsonSerializable
- * #JsonSerializableIface.serialize_property() virtual function.
+ * Calls the default implementation of the [vfunc@Json.Serializable.serialize_property]
+ * virtual function.
  *
- * This function can be used inside a custom implementation
- * of the #JsonSerializableIface.serialize_property() virtual
- * function in lieu of calling the default implementation
- * through g_type_default_interface_peek():
+ * This function can be used inside a custom implementation of the
+ * `serialize_property()` virtual function in lieu of calling the
+ * default implementation through `g_type_default_interface_peek()`:
  *
- * |[<!-- language="C" -->
+ * ```c
  *   JsonSerializable *iface;
  *   JsonNode *node;
  *
@@ -206,7 +207,7 @@ G_DEFINE_INTERFACE (JsonSerializable, json_serializable, G_TYPE_OBJECT);
  *   node = iface->serialize_property (serializable, property_name,
  *                                     value,
  *                                     pspec);
- * ]|
+ * ```
  *
  * Return value: (transfer full) (nullable): a #JsonNode containing the
  *   serialized property, or %NULL if it should be omitted.
@@ -237,13 +238,14 @@ json_serializable_default_serialize_property (JsonSerializable *serializable,
  * @pspec: a #GParamSpec
  * @property_node: a #JsonNode containing the serialized property
  *
- * Calls the default implementation of the #JsonSerializable
- * deserialize_property() virtual function
+ * Calls the default implementation of the [vfunc@Json.Serializable.deserialize_property]
+ * virtual function.
  *
- * This function can be used inside a custom implementation
- * of the deserialize_property() virtual function in lieu of:
+ * This function can be used inside a custom implementation of the
+ * `deserialize_property()` virtual function in lieu of calling the
+ * default implementation through `g_type_default_interface_peek()`:
  *
- * |[<!-- language="C" -->
+ * ```c
  *   JsonSerializable *iface;
  *   gboolean res;
  *
@@ -252,7 +254,7 @@ json_serializable_default_serialize_property (JsonSerializable *serializable,
  *                                      value,
  *                                      pspec,
  *                                      property_node);
- * ]|
+ * ```
  *
  * Return value: %TRUE if the property was successfully deserialized.
  *
@@ -282,7 +284,7 @@ json_serializable_default_deserialize_property (JsonSerializable *serializable,
  * @serializable: a #JsonSerializable
  * @name: the name of the property
  *
- * Calls the #JsonSerializableIface.find_property() implementation on
+ * Calls the [vfunc@Json.Serializable.find_property] implementation on
  * the @serializable instance. *
  *
  * Return value: (nullable) (transfer none): the #GParamSpec for the property
@@ -306,11 +308,11 @@ json_serializable_find_property (JsonSerializable *serializable,
  * @n_pspecs: (out): return location for the length of the array
  *   of #GParamSpec returned by the function
  *
- * Calls the #JsonSerializableIface.list_properties() implementation on
+ * Calls the [vfunc@Json.Serializable.list_properties] implementation on
  * the @serializable instance.
  *
  * Return value: (array length=n_pspecs) (transfer container): an array
- *   of #GParamSpec. Use g_free() to free the array when done.
+ *   of #GParamSpec
  *
  * Since: 0.14
  */
@@ -329,7 +331,7 @@ json_serializable_list_properties (JsonSerializable *serializable,
  * @pspec: a #GParamSpec
  * @value: the property value to set
  *
- * Calls the #JsonSerializableIface.set_property() implementation
+ * Calls the [vfunc@Json.Serializable.set_property] implementation
  * on the @serializable instance.
  *
  * Since: 0.14
@@ -354,7 +356,7 @@ json_serializable_set_property (JsonSerializable *serializable,
  * @pspec: a #GParamSpec
  * @value: (out): return location for the property value
  *
- * Calls the #JsonSerializableIface.get_property() implementation
+ * Calls the [vfunc@Json.Serializable.get_property] implementation
  * on the @serializable instance.
  *
  * Since: 0.14
