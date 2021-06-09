@@ -41,7 +41,7 @@ G_BEGIN_DECLS
 /**
  * JSON_READER_ERROR:
  *
- * Error domain for #JsonReader errors
+ * Error domain for `JsonReader`.
  *
  * Since: 0.12
  */
@@ -63,7 +63,9 @@ typedef struct _JsonReaderClass         JsonReaderClass;
  * @JSON_READER_ERROR_INVALID_TYPE: The node at the current position does not
  *   hold a value of the desired type
  *
- * Error codes enumeration for #JsonReader errors
+ * Error codes for `JSON_READER_ERROR`.
+ *
+ * This enumeration can be extended at later date
  *
  * Since: 0.12
  */
