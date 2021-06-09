@@ -28,13 +28,12 @@
  * @str: a valid UTF-8 string containing JSON data
  * @error: return location for a #GError
  *
- * Parses the string in @str and returns a #JsonNode representing
- * the JSON tree.
+ * Parses the given string and returns the corresponding JSON tree.
  *
- * If @str is empty, this function will return %NULL.
+ * If the string is empty, this function will return `NULL`.
  *
- * In case of parsing error, this function returns %NULL and sets
- * @error appropriately.
+ * In case of parsing error, this function returns `NULL` and sets
+ * the error appropriately.
  *
  * Returns: (transfer full) (nullable): the root node of the JSON tree
  *
@@ -65,11 +64,11 @@ json_from_string (const char  *str,
 
 /**
  * json_to_string:
- * @node: a #JsonNode
+ * @node: a JSON tree
  * @pretty: whether the output should be prettyfied for printing
  *
  * Generates a stringified JSON representation of the contents of
- * the passed @node.
+ * the given `node`.
  *
  * Returns: (transfer full): the string representation of the node
  *
