@@ -40,6 +40,11 @@ G_BEGIN_DECLS
 #define JSON_IS_PARSER_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((klass), JSON_TYPE_PARSER))
 #define JSON_PARSER_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), JSON_TYPE_PARSER, JsonParserClass))
 
+/**
+ * JSON_PARSER_ERROR:
+ *
+ * Error domain for `JsonParser`.
+ */
 #define JSON_PARSER_ERROR               (json_parser_error_quark ())
 
 typedef struct _JsonParser              JsonParser;
@@ -57,7 +62,7 @@ typedef struct _JsonParserClass         JsonParserClass;
  * @JSON_PARSER_ERROR_INVALID_DATA: invalid data (Since: 0.18)
  * @JSON_PARSER_ERROR_UNKNOWN: unknown error
  *
- * Error enumeration for #JsonParser
+ * Error codes for `JSON_PARSER_ERROR`.
  *
  * This enumeration can be extended at later date
  */

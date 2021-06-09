@@ -27,8 +27,42 @@
 /**
  * JsonParser:
  *
- * #JsonParser provides an object for parsing a JSON data stream, either
+ * `JsonParser` provides an object for parsing a JSON data stream, either
  * inside a file or inside a static buffer.
+ *
+ * ## Using `JsonParser`
+ *
+ * The `JsonParser` API is fairly simple:
+ *
+ * ```c
+ * gboolean
+ * parse_json (const char *filename)
+ * {
+ *   g_autoptr(JsonParser) parser = json_parser_new ();
+ *   g_autoptr(GError) error = NULL
+ *
+ *   json_parser_load_from_file (parser, filename, &error);
+ *   if (error != NULL)
+ *     {
+ *       g_critical ("Unable to parse '%s': %s", filename, error->message);
+ *       return FALSE;
+ *     }
+ *
+ *   g_autoptr(JsonNode) root = json_parser_get_root (parser);
+ *
+ *   // manipulate the object tree from the root node
+ *
+ *   return TRUE
+ * }
+ * ```
+ *
+ * By default, the entire process of loading the data and parsing it is
+ * synchronous; the [method@Json.Parser.load_from_stream_async()] API will
+ * load the data asynchronously, but parse it in the main context as the
+ * signals of the parser must be emitted in the same thread. If you do
+ * not use signals, and you wish to also parse the JSON data without blocking,
+ * you should use a `GTask` and the synchronous `JsonParser` API inside the
+ * task itself.
  */
 
 #include "config.h"
@@ -197,7 +231,7 @@ json_parser_class_init (JsonParserClass *klass)
   /**
    * JsonParser:immutable:
    *
-   * Whether the #JsonNode tree built by the #JsonParser should be immutable
+   * Whether the tree built by the parser should be immutable
    * when created.
    *
    * Making the output immutable on creation avoids the expense
@@ -216,10 +250,9 @@ json_parser_class_init (JsonParserClass *klass)
 
   /**
    * JsonParser::parse-start:
-   * @parser: the #JsonParser that received the signal
+   * @parser: the parser that emitted the signal
    * 
-   * The ::parse-start signal is emitted when the parser began parsing
-   * a JSON data stream.
+   * This signal is emitted when a parser starts parsing a JSON data stream.
    */
   parser_signals[PARSE_START] =
     g_signal_new ("parse-start",
@@ -231,10 +264,10 @@ json_parser_class_init (JsonParserClass *klass)
                   G_TYPE_NONE, 0);
   /**
    * JsonParser::parse-end:
-   * @parser: the #JsonParser that received the signal
+   * @parser: the parser that emitted the signal
    *
-   * The ::parse-end signal is emitted when the parser successfully
-   * finished parsing a JSON data stream
+   * This signal is emitted when a parser successfully finished parsing a
+   * JSON data stream
    */
   parser_signals[PARSE_END] =
     g_signal_new ("parse-end",
@@ -245,10 +278,9 @@ json_parser_class_init (JsonParserClass *klass)
                   G_TYPE_NONE, 0);
   /**
    * JsonParser::object-start:
-   * @parser: the #JsonParser that received the signal
+   * @parser: the parser that emitted the signal
    *
-   * The ::object-start signal is emitted each time the #JsonParser
-   * starts parsing a #JsonObject.
+   * This signal is emitted each time a parser starts parsing a JSON object.
    */
   parser_signals[OBJECT_START] =
     g_signal_new ("object-start",
@@ -259,14 +291,12 @@ json_parser_class_init (JsonParserClass *klass)
                   G_TYPE_NONE, 0);
   /**
    * JsonParser::object-member:
-   * @parser: the #JsonParser that received the signal
-   * @object: a #JsonObject
+   * @parser: the parser that emitted the signal
+   * @object: the JSON object being parsed
    * @member_name: the name of the newly parsed member
    *
-   * The ::object-member signal is emitted each time the #JsonParser
-   * has successfully parsed a single member of a #JsonObject.
-   *
-   * The object and member are passed to the signal handlers.
+   * The `::object-member` signal is emitted each time a parser
+   * has successfully parsed a single member of a JSON object
    */
   parser_signals[OBJECT_MEMBER] =
     g_signal_new ("object-member",
@@ -279,11 +309,11 @@ json_parser_class_init (JsonParserClass *klass)
                   G_TYPE_STRING);
   /**
    * JsonParser::object-end:
-   * @parser: the #JsonParser that received the signal
-   * @object: the parsed #JsonObject
+   * @parser: the parser that emitted the signal
+   * @object: the parsed JSON object
    *
-   * The ::object-end signal is emitted each time the #JsonParser
-   * has successfully parsed an entire #JsonObject.
+   * The `::object-end` signal is emitted each time a parser
+   * has successfully parsed an entire JSON object.
    */
   parser_signals[OBJECT_END] =
     g_signal_new ("object-end",
@@ -295,10 +325,10 @@ json_parser_class_init (JsonParserClass *klass)
                   JSON_TYPE_OBJECT);
   /**
    * JsonParser::array-start:
-   * @parser: the #JsonParser that received the signal
+   * @parser: the parser that emitted the signal
    *
-   * The ::array-start signal is emitted each time the #JsonParser
-   * starts parsing a #JsonArray
+   * The `::array-start` signal is emitted each time a parser
+   * starts parsing a JSON array.
    */
   parser_signals[ARRAY_START] =
     g_signal_new ("array-start",
@@ -309,14 +339,12 @@ json_parser_class_init (JsonParserClass *klass)
                   G_TYPE_NONE, 0);
   /**
    * JsonParser::array-element:
-   * @parser: the #JsonParser that received the signal
-   * @array: a #JsonArray
-   * @index_: the index of the newly parsed element
+   * @parser: the parser that emitted the signal
+   * @array: a JSON array
+   * @index_: the index of the newly parsed array element
    *
-   * The ::array-element signal is emitted each time the #JsonParser
-   * has successfully parsed a single element of a #JsonArray.
-   *
-   * The array and element index are passed to the signal handlers.
+   * The `::array-element` signal is emitted each time a parser
+   * has successfully parsed a single element of a JSON array.
    */
   parser_signals[ARRAY_ELEMENT] =
     g_signal_new ("array-element",
@@ -329,11 +357,11 @@ json_parser_class_init (JsonParserClass *klass)
                   G_TYPE_INT);
   /**
    * JsonParser::array-end:
-   * @parser: the #JsonParser that received the signal
-   * @array: the parsed #JsonArray
+   * @parser: the parser that emitted the signal
+   * @array: the parsed JSON array
    *
-   * The ::array-end signal is emitted each time the #JsonParser
-   * has successfully parsed an entire #JsonArray
+   * The `::array-end` signal is emitted each time a parser
+   * has successfully parsed an entire JSON array.
    */
   parser_signals[ARRAY_END] =
     g_signal_new ("array-end",
@@ -345,10 +373,10 @@ json_parser_class_init (JsonParserClass *klass)
                   JSON_TYPE_ARRAY);
   /**
    * JsonParser::error:
-   * @parser: the parser instance that received the signal
-   * @error: a pointer to the #GError
+   * @parser: the parser that emitted the signal
+   * @error: the error
    *
-   * The ::error signal is emitted each time a #JsonParser encounters
+   * The `::error` signal is emitted each time a parser encounters
    * an error in a JSON stream.
    */
   parser_signals[ERROR] =
@@ -950,7 +978,7 @@ json_scanner_create (JsonParser *parser)
  * You can use the `JsonParser` to load a JSON stream from either a file or a
  * buffer and then walk the hierarchy using the data types API.
  *
- * Return value: (transfer full): the newly created parser
+ * Returns: (transfer full): the newly created parser
  */
 JsonParser *
 json_parser_new (void)
@@ -961,11 +989,11 @@ json_parser_new (void)
 /**
  * json_parser_new_immutable:
  *
- * Creates a new #JsonParser instance with its #JsonParser:immutable property
- * set to %TRUE to create immutable output trees.
+ * Creates a new parser instance with its [property@Json.Parser:immutable]
+ * property set to `TRUE` to create immutable output trees.
  *
  * Since: 1.2
- * Returns: (transfer full): a new #JsonParser
+ * Returns: (transfer full): the newly created parser 
  */
 JsonParser *
 json_parser_new_immutable (void)
@@ -1098,11 +1126,11 @@ json_parser_load (JsonParser   *parser,
 
 /**
  * json_parser_load_from_file:
- * @parser: a #JsonParser
- * @filename: the path for the file to parse
+ * @parser: a parser
+ * @filename: (type filename): the path for the file to parse
  * @error: return location for a #GError
  *
- * Loads a JSON stream from the content of @filename and parses it.
+ * Loads a JSON stream from the content of `filename` and parses it.
  *
  * If the file is large or shared between processes,
  * [method@Json.Parser.load_from_mapped_file] may be a more efficient
@@ -1110,7 +1138,7 @@ json_parser_load (JsonParser   *parser,
  *
  * See also: [method@Json.Parser.load_from_data]
  *
- * Return value: %TRUE if the file was successfully loaded and parsed.
+ * Returns: `TRUE` if the file was successfully loaded and parsed.
  */
 gboolean
 json_parser_load_from_file (JsonParser   *parser,
@@ -1153,8 +1181,8 @@ json_parser_load_from_file (JsonParser   *parser,
 
 /**
  * json_parser_load_from_mapped_file:
- * @parser: a #JsonParser
- * @filename: the path for the file to parse
+ * @parser: a parser
+ * @filename: (type filename): the path for the file to parse
  * @error: return location for a #GError
  *
  * Loads a JSON stream from the content of `filename` and parses it.
@@ -1165,7 +1193,7 @@ json_parser_load_from_file (JsonParser   *parser,
  *
  * If mapping or reading the file fails, a `G_FILE_ERROR` will be returned.
  *
- * Return value: %TRUE if the file was successfully loaded and parsed.
+ * Returns: `TRUE` if the file was successfully loaded and parsed.
  * Since: 1.6
  */
 gboolean
@@ -1209,9 +1237,9 @@ json_parser_load_from_mapped_file (JsonParser   *parser,
 
 /**
  * json_parser_load_from_data:
- * @parser: a #JsonParser
+ * @parser: a parser
  * @data: the buffer to parse
- * @length: the length of the buffer, or -1
+ * @length: the length of the buffer, or -1 if it is `NUL` terminated
  * @error: return location for a #GError
  *
  * Loads a JSON stream from a buffer and parses it.
@@ -1219,7 +1247,7 @@ json_parser_load_from_mapped_file (JsonParser   *parser,
  * You can call this function multiple times with the same parser, but the
  * contents of the parser will be destroyed each time.
  *
- * Return value: %TRUE if the buffer was succesfully parsed
+ * Returns: `TRUE` if the buffer was succesfully parsed
  */
 gboolean
 json_parser_load_from_data (JsonParser   *parser,
@@ -1255,7 +1283,7 @@ json_parser_load_from_data (JsonParser   *parser,
 
 /**
  * json_parser_get_root:
- * @parser: a #JsonParser
+ * @parser: a parser
  *
  * Retrieves the top level node from the parsed JSON stream.
  *
@@ -1263,7 +1291,7 @@ json_parser_load_from_data (JsonParser   *parser,
  * will be `NULL`. It will also be `NULL` if it has been stolen using
  * [method@Json.Parser.steal_root].
  *
- * Return value: (transfer none) (nullable): the root node.
+ * Returns: (transfer none) (nullable): the root node.
  */
 JsonNode *
 json_parser_get_root (JsonParser *parser)
@@ -1280,7 +1308,7 @@ json_parser_get_root (JsonParser *parser)
 
 /**
  * json_parser_steal_root:
- * @parser: a #JsonParser
+ * @parser: a parser
  *
  * Steals the top level node from the parsed JSON stream.
  *
@@ -1308,7 +1336,7 @@ json_parser_steal_root (JsonParser *parser)
 
 /**
  * json_parser_get_current_line:
- * @parser: a #JsonParser
+ * @parser: a parser
  *
  * Retrieves the line currently parsed, starting from 1.
  *
@@ -1316,7 +1344,7 @@ json_parser_steal_root (JsonParser *parser)
  * function from outside the signal handlers emitted by the parser will
  * yield 0.
  *
- * Return value: the currently parsed line, or 0.
+ * Returns: the currently parsed line, or 0.
  */
 guint
 json_parser_get_current_line (JsonParser *parser)
@@ -1331,7 +1359,7 @@ json_parser_get_current_line (JsonParser *parser)
 
 /**
  * json_parser_get_current_pos:
- * @parser: a #JsonParser
+ * @parser: a parser
  *
  * Retrieves the current position inside the current line, starting
  * from 0.
@@ -1340,7 +1368,7 @@ json_parser_get_current_line (JsonParser *parser)
  * function from outside the signal handlers emitted by the parser will
  * yield 0.
  *
- * Return value: the position in the current line, or 0.
+ * Returns: the position in the current line, or 0.
  */
 guint
 json_parser_get_current_pos (JsonParser *parser)
@@ -1355,7 +1383,7 @@ json_parser_get_current_pos (JsonParser *parser)
 
 /**
  * json_parser_has_assignment:
- * @parser: a #JsonParser
+ * @parser: a parser
  * @variable_name: (out) (optional) (transfer none): the variable name
  *
  * A JSON data stream might sometimes contain an assignment, like:
@@ -1371,7 +1399,7 @@ json_parser_get_current_pos (JsonParser *parser)
  * existence of the assignment in the data stream and the variable name
  * used.
  *
- * Return value: %TRUE if there was an assignment, %FALSE otherwise
+ * Returns: `TRUE` if there was an assignment, and `FALSE` otherwise
  *
  * Since: 0.4
  */
@@ -1395,20 +1423,20 @@ json_parser_has_assignment (JsonParser  *parser,
 
 /**
  * json_parser_load_from_stream:
- * @parser: a #JsonParser
- * @stream: an open #GInputStream
+ * @parser: a parser
+ * @stream: the input stream with the JSON data
  * @cancellable: (nullable): a #GCancellable
  * @error: the return location for a #GError
  *
  * Loads the contents of an input stream and parses them.
  *
- * If @cancellable is not %NULL, then the operation can be cancelled by
- * triggering the @cancellable object from another thread. If the
- * operation was cancelled, the error %G_IO_ERROR_CANCELLED will be set
- * on the passed @error.
+ * If `cancellable` is not `NULL`, then the operation can be cancelled by
+ * triggering the cancellable object from another thread. If the
+ * operation was cancelled, `G_IO_ERROR_CANCELLED` will be set
+ * on the given `error`.
  *
- * Return value: %TRUE if the data stream was successfully read and
- *   parsed, and %FALSE otherwise
+ * Returns: `TRUE` if the data stream was successfully read and
+ *   parsed, and `FALSE` otherwise
  *
  * Since: 0.12
  */
@@ -1486,15 +1514,15 @@ load_data_free (gpointer data_)
 
 /**
  * json_parser_load_from_stream_finish:
- * @parser: a #JsonParser
- * @result: a #GAsyncResult
+ * @parser: a parser
+ * @result: the result of the asynchronous operation
  * @error: the return location for a #GError
  *
  * Finishes an asynchronous stream loading started with
  * [method@Json.Parser.load_from_stream_async].
  *
- * Return value: %TRUE if the content of the stream was successfully retrieves
- *   and parsed, and %FALSE otherwise
+ * Returns: `TRUE` if the content of the stream was successfully retrieved
+ *   and parsed, and `FALSE` otherwise
  *
  * Since: 0.12
  */
@@ -1514,7 +1542,7 @@ json_parser_load_from_stream_finish (JsonParser    *parser,
       LoadData *data = g_task_get_task_data (G_TASK (result));
       GError *internal_error = NULL;
 
-      /* We need to do this inside the finis() function because JsonParser will emit
+      /* We need to do this inside the finish() function because JsonParser will emit
        * signals, and we need to ensure that the signals are emitted in the right
        * context; it's easier to do that if we just rely on the async callback being
        * called in the right context, even if it means making the finish() function
@@ -1562,13 +1590,13 @@ read_from_stream (GTask *task,
 
 /**
  * json_parser_load_from_stream_async:
- * @parser: a #JsonParser
- * @stream: a #GInputStream
+ * @parser: a parser
+ * @stream: the input stream with the JSON data
  * @cancellable: (nullable): a #GCancellable
  * @callback: (scope async): the function to call when the request is satisfied
  * @user_data: the data to pass to @callback
  *
- * Asynchronously reads the contents of @stream.
+ * Asynchronously reads the contents of a stream.
  *
  * For more details, see [method@Json.Parser.load_from_stream], which is the
  * synchronous version of this call.
