@@ -30,11 +30,11 @@
  * XPath specification for XML, the syntax follows the ECMAScript origins of
  * JSON.
  *
- * Once a #JsonPath instance has been created, it has to compile a JSONPath
+ * Once a `JsonPath` instance has been created, it has to compile a JSONPath
  * expression using [method@Json.Path.compile] before being able to match it to
- * a JSON tree; the same #JsonPath instance can be used to match multiple JSON
+ * a JSON tree; the same `JsonPath` instance can be used to match multiple JSON
  * trees. It it also possible to compile a new JSONPath expression using the
- * same #JsonPath instance; the previous expression will be discarded only if
+ * same `JsonPath` instance; the previous expression will be discarded only if
  * the compilation of the new expression is successful.
  *
  * The simple convenience function [func@Json.Path.query] can be used for
@@ -95,7 +95,7 @@
  *
  * ## Example of JSONPath matches
  *
- * The following example shows some of the results of using #JsonPath
+ * The following example shows some of the results of using `JsonPath`
  * on a JSON tree. We use the following JSON description of a bookstore:
  *
  * ```json
@@ -117,31 +117,32 @@
  * }
  * ```
  *
- * We can parse the JSON using #JsonParser:
+ * We can parse the JSON using [class@Json.Parser]:
  *
  * ```c
- *   JsonParser *parser = json_parser_new ();
- *   json_parser_load_from_data (parser, json_data, -1, NULL);
+ * JsonParser *parser = json_parser_new ();
+ * json_parser_load_from_data (parser, json_data, -1, NULL);
  * ```
  *
  * If we run the following code:
  *
  * ```c
- *   JsonNode *result;
- *   JsonPath *path = json_path_new ();
- *   json_path_compile (path, "$.store..author", NULL);
- *   result = json_path_match (path, json_parser_get_root (parser));
+ * JsonNode *result;
+ * JsonPath *path = json_path_new ();
+ * json_path_compile (path, "$.store..author", NULL);
+ * result = json_path_match (path, json_parser_get_root (parser));
  * ```
  *
- * The result #JsonNode will contain an array with all values of the
+ * The `result` node will contain an array with all values of the
  * author member of the objects in the JSON tree. If we use a
- * #JsonGenerator to convert the #JsonNode to a string and print it:
+ * [class@Json.Generator] to convert the `result` node to a string
+ * and print it:
  *
  * ```c
- *   JsonGenerator *generator = json_generator_new ();
- *   json_generator_set_root (generator, result);
- *   char *str = json_generator_to_data (generator, NULL);
- *   g_print ("Results: %s\n", str);
+ * JsonGenerator *generator = json_generator_new ();
+ * json_generator_set_root (generator, result);
+ * char *str = json_generator_to_data (generator, NULL);
+ * g_print ("Results: %s\n", str);
  * ```
  *
  * The output will be:
@@ -264,13 +265,12 @@ json_path_init (JsonPath *self)
 /**
  * json_path_new:
  *
- * Creates a new #JsonPath instance.
+ * Creates a new `JsonPath` instance.
  *
- * Once created, the #JsonPath object should be used with json_path_compile()
- * and json_path_match().
+ * Once created, the `JsonPath` object should be used with
+ * [method@Json.Path.compile] and [method@Json.Path.match].
  *
- * Return value: (transfer full): the newly created #JsonPath instance. Use
- *   g_object_unref() to free the allocated resources when done
+ * Return value: (transfer full): the newly created path
  *
  * Since: 0.14
  */
@@ -347,17 +347,17 @@ json_path_foreach_print (gpointer data,
 
 /**
  * json_path_compile:
- * @path: a #JsonPath
+ * @path: a path
  * @expression: a JSONPath expression
  * @error: return location for a #GError, or %NULL
  *
- * Validates and decomposes @expression.
+ * Validates and decomposes the given expression.
  *
- * A JSONPath expression must be compiled before calling json_path_match().
+ * A JSONPath expression must be compiled before calling
+ * [method@Json.Path.match].
  *
- * Return value: %TRUE on success; on error, @error will be set with
- *   the %JSON_PATH_ERROR domain and a code from the #JsonPathError
- *   enumeration, and %FALSE will be returned
+ * Return value: `TRUE` if the compilation was successful, and `FALSE`
+ *   otherwise
  *
  * Since: 0.14
  */
@@ -924,18 +924,16 @@ walk_path_node (GList      *path,
 
 /**
  * json_path_match:
- * @path: a compiled #JsonPath
- * @root: a #JsonNode
+ * @path: a compiled path
+ * @root: the root node of the JSON data to match
  *
- * Matches the JSON tree pointed by @root using the expression compiled
- * into the #JsonPath.
+ * Matches the JSON tree pointed by `root` using the expression compiled
+ * into the `JsonPath`.
  *
- * The matching #JsonNodes will be copied into a #JsonArray and
- * returned wrapped in a #JsonNode.
+ * The nodes matching the expression will be copied into an array.
  *
- * Return value: (transfer full): a newly-created #JsonNode of type
- *   %JSON_NODE_ARRAY containing an array of matching #JsonNodes.
- *   Use json_node_unref() when done
+ * Return value: (transfer full): a newly-created node of type
+ *   `JSON_NODE_ARRAY` containing the array of matching nodes
  *
  * Since: 0.14
  */
@@ -968,14 +966,13 @@ json_path_match (JsonPath *path,
  *
  * Queries a JSON tree using a JSONPath expression.
  *
- * This function is a simple wrapper around json_path_new(),
- * json_path_compile() and json_path_match(). It implicitly
- * creates a #JsonPath instance, compiles @expression and
- * matches it against the JSON tree pointed by @root.
+ * This function is a simple wrapper around [ctor@Json.Path.new],
+ * [method@Json.Path.compile], and [method@Json.Path.match]. It implicitly
+ * creates a `JsonPath` instance, compiles the given expression and matches
+ * it against the JSON tree pointed by `root`.
  *
- * Return value: (transfer full): a newly-created #JsonNode of type
- *   %JSON_NODE_ARRAY containing an array of matching #JsonNodes.
- *   Use json_node_unref() when done
+ * Return value: (transfer full): a newly-created node of type
+ *   `JSON_NODE_ARRAY` containing the array of matching nodes
  *
  * Since: 0.14
  */
