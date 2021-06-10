@@ -41,42 +41,45 @@
  *
  * When parsing a JSON data stream you extract the root node and walk
  * the node tree by retrieving the type of data contained inside the
- * node with the %JSON_NODE_TYPE macro. If the node contains a fundamental
- * type you can retrieve a copy of the #GValue holding it with the
- * json_node_get_value() function, and then use the #GValue API to extract
+ * node with the `JSON_NODE_TYPE` macro. If the node contains a fundamental
+ * type you can retrieve a copy of the `GValue` holding it with the
+ * [method@Json.Node.get_value] function, and then use the `GValue` API to extract
  * the data; if the node contains a complex type you can retrieve the
- * #JsonObject or the #JsonArray using json_node_get_object() or
- * json_node_get_array() respectively, and then retrieve the nodes
+ * [struct@Json.Object] or the [struct@Json.Array] using [method@Json.Node.get_object]
+ * or [method@Json.Node.get_array] respectively, and then retrieve the nodes
  * they contain.
  *
- * A #JsonNode may be marked as immutable using json_node_seal(). This marks the
- * node and all its descendents as read-only, and means that subsequent calls to
- * setter functions (such as json_node_set_array()) on them will abort as a
- * programmer error. By marking a node tree as immutable, it may be referenced
- * in multiple places and its hash value cached for fast lookups, without the
- * possibility of a value deep within the tree changing and affecting hash
- * values. Immutable #JsonNodes may be passed to functions which retain a
- * reference to them without needing to take a copy.
+ * A `JsonNode` may be marked as immutable using [method@Json.Node.seal]. This
+ * marks the node and all its descendents as read-only, and means that
+ * subsequent calls to setter functions (such as [method@Json.Node.set_array])
+ * on them will abort as a programmer error. By marking a node tree as
+ * immutable, it may be referenced in multiple places and its hash value cached
+ * for fast lookups, without the possibility of a value deep within the tree
+ * changing and affecting hash values. Immutable nodes may be passed to
+ * functions which retain a reference to them without needing to take a copy.
  *
- * #JsonNode supports two types of memory management: alloc/free semantics, and
- * ref/unref semantics. The two may be mixed to a limited extent: nodes may be
- * allocated (which gives them a reference count of 1), referenced one or more
- * times, unreferenced exactly that number of times (using json_node_unref()),
- * then either unreferenced exactly once more or freed (using json_node_free())
- * to destroy them. json_node_free() must not be used when a node might have a
- * reference count not equal to 1. To this end, json-glib uses json_node_copy()
- * and json_node_unref() internally.
+ * A `JsonNode` supports two types of memory management: `malloc`/`free`
+ * semantics, and reference counting semantics. The two may be mixed to a
+ * limited extent: nodes may be allocated (which gives them a reference count
+ * of 1), referenced one or more times, unreferenced exactly that number of
+ * times (using [method@Json.Node.unref]), then either unreferenced exactly
+ * once more or freed (using [method@Json.Node.free]) to destroy them.
+ * The [method@Json.Node.free] function must not be used when a node might
+ * have a reference count not equal to 1. To this end, JSON-GLib uses
+ * [method@Json.Node.copy] and [method@Json.Node.unref] internally.
  */
 
 G_DEFINE_BOXED_TYPE (JsonNode, json_node, json_node_copy, json_node_unref)
 
 /**
  * json_node_get_value_type:
- * @node: a #JsonNode
+ * @node: the node to check
  *
- * Returns the #GType of the payload of the node.
+ * Returns the `GType` of the payload of the node.
  *
- * Return value: a #GType for the payload.
+ * For `JSON_NODE_NULL` nodes, the returned type is `G_TYPE_INVALID`.
+ *
+ * Return value: the type for the payload
  *
  * Since: 0.4
  */
@@ -111,12 +114,11 @@ json_node_get_value_type (JsonNode *node)
 /**
  * json_node_alloc: (constructor)
  *
- * Allocates a new #JsonNode.
+ * Allocates a new, uninitialized node.
  *
- * Use json_node_init() and its variants to initialize the returned value.
+ * Use [method@Json.Node.init] and its variants to initialize the returned value.
  *
- * Return value: (transfer full): the newly allocated #JsonNode. Use
- *   json_node_free() to free the resources allocated by this function
+ * Return value: (transfer full): the newly allocated node
  *
  * Since: 0.16
  */
@@ -163,7 +165,7 @@ json_node_unset (JsonNode *node)
 
 /**
  * json_node_init:
- * @node: the #JsonNode to initialize
+ * @node: the node to initialize
  * @type: the type of JSON node to initialize @node to
  *
  * Initializes a @node to a specific @type.
@@ -171,7 +173,7 @@ json_node_unset (JsonNode *node)
  * If the node has already been initialized once, it will be reset to
  * the given type, and any data contained will be cleared.
  *
- * Return value: (transfer none): the initialized #JsonNode
+ * Return value: (transfer none): the initialized node
  *
  * Since: 0.16
  */
@@ -192,17 +194,17 @@ json_node_init (JsonNode *node,
 
 /**
  * json_node_init_object:
- * @node: the #JsonNode to initialize
- * @object: (allow-none): the #JsonObject to initialize @node with, or %NULL
+ * @node: the node to initialize
+ * @object: (nullable): the JSON object to initialize @node with, or `NULL`
  *
- * Initializes @node to %JSON_NODE_OBJECT and sets @object into it.
+ * Initializes @node to `JSON_NODE_OBJECT` and sets @object into it.
  *
  * This function will take a reference on @object.
  *
  * If the node has already been initialized once, it will be reset to
  * the given type, and any data contained will be cleared.
  *
- * Return value: (transfer none): the initialized #JsonNode
+ * Return value: (transfer none): the initialized node
  *
  * Since: 0.16
  */
@@ -220,17 +222,17 @@ json_node_init_object (JsonNode   *node,
 
 /**
  * json_node_init_array:
- * @node: the #JsonNode to initialize
- * @array: (allow-none): the #JsonArray to initialize @node with, or %NULL
+ * @node: the node to initialize
+ * @array: (nullable): the JSON array to initialize @node with, or `NULL`
  *
- * Initializes @node to %JSON_NODE_ARRAY and sets @array into it.
+ * Initializes @node to `JSON_NODE_ARRAY` and sets @array into it.
  *
  * This function will take a reference on @array.
  *
  * If the node has already been initialized once, it will be reset to
  * the given type, and any data contained will be cleared.
  *
- * Return value: (transfer none): the initialized #JsonNode
+ * Return value: (transfer none): the initialized node
  *
  * Since: 0.16
  */
@@ -248,15 +250,15 @@ json_node_init_array (JsonNode  *node,
 
 /**
  * json_node_init_int:
- * @node: the #JsonNode to initialize
+ * @node: the node to initialize
  * @value: an integer
  *
- * Initializes @node to %JSON_NODE_VALUE and sets @value into it.
+ * Initializes @node to `JSON_NODE_VALUE` and sets @value into it.
  *
  * If the node has already been initialized once, it will be reset to
  * the given type, and any data contained will be cleared.
  *
- * Return value: (transfer none): the initialized #JsonNode
+ * Return value: (transfer none): the initialized node
  *
  * Since: 0.16
  */
@@ -274,15 +276,15 @@ json_node_init_int (JsonNode *node,
 
 /**
  * json_node_init_double:
- * @node: the #JsonNode to initialize
+ * @node: the node to initialize
  * @value: a floating point value
  *
- * Initializes @node to %JSON_NODE_VALUE and sets @value into it.
+ * Initializes @node to `JSON_NODE_VALUE` and sets @value into it.
  *
  * If the node has already been initialized once, it will be reset to
  * the given type, and any data contained will be cleared.
  *
- * Return value: (transfer none): the initialized #JsonNode
+ * Return value: (transfer none): the initialized node
  *
  * Since: 0.16
  */
@@ -300,15 +302,15 @@ json_node_init_double (JsonNode *node,
 
 /**
  * json_node_init_boolean:
- * @node: the #JsonNode to initialize
+ * @node: the node to initialize
  * @value: a boolean value
  *
- * Initializes @node to %JSON_NODE_VALUE and sets @value into it.
+ * Initializes @node to `JSON_NODE_VALUE` and sets @value into it.
  *
  * If the node has already been initialized once, it will be reset to
  * the given type, and any data contained will be cleared.
  *
- * Return value: (transfer none): the initialized #JsonNode
+ * Return value: (transfer none): the initialized node
  *
  * Since: 0.16
  */
@@ -326,15 +328,15 @@ json_node_init_boolean (JsonNode *node,
 
 /**
  * json_node_init_string:
- * @node: the #JsonNode to initialize
- * @value: (allow-none): a string value
+ * @node: the node to initialize
+ * @value: (nullable): a string value
  *
- * Initializes @node to %JSON_NODE_VALUE and sets @value into it.
+ * Initializes @node to `JSON_NODE_VALUE` and sets @value into it.
  *
  * If the node has already been initialized once, it will be reset to
  * the given type, and any data contained will be cleared.
  *
- * Return value: (transfer none): the initialized #JsonNode
+ * Return value: (transfer none): the initialized node
  *
  * Since: 0.16
  */
@@ -352,14 +354,14 @@ json_node_init_string (JsonNode   *node,
 
 /**
  * json_node_init_null:
- * @node: the #JsonNode to initialize
+ * @node: the node to initialize
  *
- * Initializes @node to %JSON_NODE_NULL.
+ * Initializes @node to `JSON_NODE_NULL`.
  *
  * If the node has already been initialized once, it will be reset to
  * the given type, and any data contained will be cleared.
  *
- * Return value: (transfer none): the initialized #JsonNode
+ * Return value: (transfer none): the initialized node
  *
  * Since: 0.16
  */
@@ -373,18 +375,18 @@ json_node_init_null (JsonNode *node)
 
 /**
  * json_node_new: (constructor)
- * @type: a #JsonNodeType
+ * @type: the type of the node to create 
  *
- * Creates a new #JsonNode of @type.
+ * Creates a new node holding the given @type.
  *
- * This is a convenience function for json_node_alloc() and json_node_init(),
- * and it's the equivalent of:
+ * This is a convenience function for [ctor@Json.Node.alloc] and
+ * [method@Json.Node.init], and it's the equivalent of:
  *
  * ```c
    json_node_init (json_node_alloc (), type);
  * ```
  *
- * Return value: (transfer full): the newly created #JsonNode
+ * Return value: (transfer full): the newly created node
  */
 JsonNode *
 json_node_new (JsonNodeType type)
@@ -397,7 +399,7 @@ json_node_new (JsonNodeType type)
 
 /**
  * json_node_copy:
- * @node: a #JsonNode
+ * @node: the node to copy 
  *
  * Copies @node.
  *
@@ -408,7 +410,7 @@ json_node_new (JsonNodeType type)
  * The copy will be immutable if, and only if, @node is immutable. However,
  * there should be no need to copy an immutable node.
  *
- * Return value: (transfer full): the copied #JsonNode
+ * Return value: (transfer full): the copied of the given node
  */
 JsonNode *
 json_node_copy (JsonNode *node)
@@ -457,7 +459,7 @@ json_node_copy (JsonNode *node)
 
 /**
  * json_node_ref:
- * @node: a #JsonNode
+ * @node: the node to reference 
  *
  * Increments the reference count of @node.
  *
@@ -476,7 +478,7 @@ json_node_ref (JsonNode *node)
 
 /**
  * json_node_unref:
- * @node: (transfer full): a #JsonNode
+ * @node: (transfer full): the node to unreference
  *
  * Decrements the reference count of @node.
  *
@@ -499,14 +501,14 @@ json_node_unref (JsonNode *node)
 
 /**
  * json_node_set_object:
- * @node: a #JsonNode initialized to %JSON_NODE_OBJECT
- * @object: (nullable): a #JsonObject
+ * @node: a node initialized to `JSON_NODE_OBJECT`
+ * @object: (nullable): a JSON object
  *
  * Sets @objects inside @node.
  *
  * The reference count of @object is increased.
  *
- * If @object is %NULL, the node’s existing object is cleared.
+ * If @object is `NULL`, the node’s existing object is cleared.
  *
  * It is an error to call this on an immutable node, or on a node which is not
  * an object node.
@@ -530,8 +532,8 @@ json_node_set_object (JsonNode   *node,
 
 /**
  * json_node_take_object:
- * @node: a #JsonNode initialized to %JSON_NODE_OBJECT
- * @object: (transfer full): a #JsonObject
+ * @node: a node initialized to `JSON_NODE_OBJECT`
+ * @object: (transfer full): a JSON object
  *
  * Sets @object inside @node.
  *
@@ -560,14 +562,14 @@ json_node_take_object (JsonNode   *node,
 
 /**
  * json_node_get_object:
- * @node: a #JsonNode
+ * @node: a node holding a JSON object
  *
- * Retrieves the #JsonObject stored inside a #JsonNode.
+ * Retrieves the object stored inside a node.
  *
  * It is a programmer error to call this on a node which doesn’t hold an
- * object value. Use %JSON_NODE_HOLDS_OBJECT first.
+ * object value. Use `JSON_NODE_HOLDS_OBJECT` first.
  *
- * Return value: (transfer none) (nullable): the #JsonObject
+ * Return value: (transfer none) (nullable): the JSON object
  */
 JsonObject *
 json_node_get_object (JsonNode *node)
@@ -580,16 +582,16 @@ json_node_get_object (JsonNode *node)
 
 /**
  * json_node_dup_object:
- * @node: a #JsonNode
+ * @node: a node holding a JSON object
  *
- * Retrieves the #JsonObject inside @node.
+ * Retrieves the object inside @node.
  *
  * The reference count of the returned object is increased.
  *
  * It is a programmer error to call this on a node which doesn’t hold an
- * object value. Use %JSON_NODE_HOLDS_OBJECT first.
+ * object value. Use `JSON_NODE_HOLDS_OBJECT` first.
  *
- * Return value: (transfer full) (nullable): the #JsonObject
+ * Return value: (transfer full) (nullable): the JSON object
  */
 JsonObject *
 json_node_dup_object (JsonNode *node)
@@ -605,15 +607,15 @@ json_node_dup_object (JsonNode *node)
 
 /**
  * json_node_set_array:
- * @node: a #JsonNode initialized to %JSON_NODE_ARRAY
- * @array: a #JsonArray
+ * @node: a node initialized to `JSON_NODE_ARRAY`
+ * @array: a JSON array
  *
  * Sets @array inside @node.
  *
  * The reference count of @array is increased.
  *
  * It is a programmer error to call this on a node which doesn’t hold an
- * array value. Use %JSON_NODE_HOLDS_ARRAY first.
+ * array value. Use `JSON_NODE_HOLDS_ARRAY` first.
  */
 void
 json_node_set_array (JsonNode  *node,
@@ -634,15 +636,15 @@ json_node_set_array (JsonNode  *node,
 
 /**
  * json_node_take_array:
- * @node: a #JsonNode initialized to %JSON_NODE_ARRAY
- * @array: (transfer full): a #JsonArray
+ * @node: a node initialized to `JSON_NODE_ARRAY`
+ * @array: (transfer full): a JSON array
  *
  * Sets @array inside @node.
  *
  * The reference count of @array is not increased.
  *
  * It is a programmer error to call this on a node which doesn’t hold an
- * array value. Use %JSON_NODE_HOLDS_ARRAY first.
+ * array value. Use `JSON_NODE_HOLDS_ARRAY` first.
  */
 void
 json_node_take_array (JsonNode  *node,
@@ -664,14 +666,14 @@ json_node_take_array (JsonNode  *node,
 
 /**
  * json_node_get_array:
- * @node: a #JsonNode
+ * @node: a node holding an array
  *
- * Retrieves the #JsonArray stored inside a #JsonNode.
+ * Retrieves the JSON array stored inside a node.
  *
  * It is a programmer error to call this on a node which doesn’t hold an
- * array value. Use %JSON_NODE_HOLDS_ARRAY first.
+ * array value. Use `JSON_NODE_HOLDS_ARRAY` first.
  *
- * Return value: (transfer none) (nullable): the #JsonArray
+ * Return value: (transfer none) (nullable): the JSON array
  */
 JsonArray *
 json_node_get_array (JsonNode *node)
@@ -684,16 +686,16 @@ json_node_get_array (JsonNode *node)
 
 /**
  * json_node_dup_array:
- * @node: a #JsonNode
+ * @node: a node holding an array
  *
- * Retrieves the #JsonArray inside @node.
+ * Retrieves the JSON array inside @node.
  *
  * The reference count of the returned array is increased.
  *
  * It is a programmer error to call this on a node which doesn’t hold an
- * array value. Use %JSON_NODE_HOLDS_ARRAY first.
+ * array value. Use `JSON_NODE_HOLDS_ARRAY` first.
  *
- * Return value: (transfer full) (nullable): the #JsonArray with its reference
+ * Return value: (transfer full) (nullable): the JSON array with its reference
  *   count increased.
  */
 JsonArray *
@@ -710,15 +712,16 @@ json_node_dup_array (JsonNode *node)
 
 /**
  * json_node_get_value:
- * @node: a #JsonNode
+ * @node: a node
  * @value: (out caller-allocates): return location for an uninitialized value
  *
- * Retrieves a value from a #JsonNode and copies into @value.
+ * Retrieves a value from a node and copies into @value.
  *
- * When done using it, call g_value_unset() on the #GValue.
+ * When done using it, call `g_value_unset()` on the `GValue` to free the
+ * associated resources.
  *
  * It is a programmer error to call this on a node which doesn’t hold a scalar
- * value. Use %JSON_NODE_HOLDS_VALUE first.
+ * value. Use `JSON_NODE_HOLDS_VALUE` first.
  */
 void
 json_node_get_value (JsonNode *node,
@@ -756,12 +759,24 @@ json_node_get_value (JsonNode *node,
 
 /**
  * json_node_set_value:
- * @node: a #JsonNode initialized to %JSON_NODE_VALUE
- * @value: the #GValue to set
+ * @node: a node initialized to `JSON_NODE_VALUE`
+ * @value: the value to set
  *
- * Sets @value inside @node.
+ * Sets a scalar value inside the given node.
  *
- * The passed #GValue is copied into the #JsonNode.
+ * The contents of the given `GValue` are copied into the `JsonNode`.
+ *
+ * The following `GValue` types have a direct mapping to JSON types:
+ *
+ *  - `G_TYPE_INT64`
+ *  - `G_TYPE_DOUBLE`
+ *  - `G_TYPE_BOOLEAN`
+ *  - `G_TYPE_STRING`
+ *
+ * JSON-GLib will also automatically promote the following `GValue` types:
+ *
+ *  - `G_TYPE_INT` to `G_TYPE_INT64`
+ *  - `G_TYPE_FLOAT` to `G_TYPE_DOUBLE`
  *
  * It is an error to call this on an immutable node, or on a node which is not
  * a value node.
@@ -820,9 +835,9 @@ json_node_set_value (JsonNode     *node,
 
 /**
  * json_node_free:
- * @node: a #JsonNode
+ * @node: the node to free
  *
- * Frees the resources allocated by @node.
+ * Frees the resources allocated by the node.
  */
 void
 json_node_free (JsonNode *node)
@@ -842,15 +857,15 @@ json_node_free (JsonNode *node)
 
 /**
  * json_node_seal:
- * @node: a #JsonNode
+ * @node: the node to seal
  *
- * Seals the #JsonNode, making it immutable to further changes.
+ * Seals the given node, making it immutable to further changes.
  *
  * In order to be sealed, the @node must have a type and value set. The value
- * will be recursively sealed — if the node holds an object, that #JsonObject
+ * will be recursively sealed — if the node holds an object, that JSON object
  * will be sealed, etc.
  *
- * If the @node is already immutable, this is a no-op.
+ * If the `node` is already immutable, this is a no-op.
  *
  * Since: 1.2
  */
@@ -887,13 +902,13 @@ json_node_seal (JsonNode *node)
 
 /**
  * json_node_is_immutable:
- * @node: a #JsonNode
+ * @node: the node to check
  *
  * Check whether the given @node has been marked as immutable by calling
- * json_node_seal() on it.
+ * [method@Json.Node.seal] on it.
  *
  * Since: 1.2
- * Returns: %TRUE if the @node is immutable
+ * Returns: `TRUE` if the @node is immutable
  */
 gboolean
 json_node_is_immutable (JsonNode *node)
@@ -905,11 +920,14 @@ json_node_is_immutable (JsonNode *node)
 
 /**
  * json_node_type_name:
- * @node: a #JsonNode
+ * @node: a node
  *
  * Retrieves the user readable name of the data type contained by @node.
  *
- * Return value: (transfer none): a string containing the name of the type.
+ * **Note**: The name is only meant for debugging purposes, and there is no
+ * guarantee the name will stay the same across different versions.
+ *
+ * Return value: (transfer none): a string containing the name of the type
  */
 const gchar *
 json_node_type_name (JsonNode *node)
@@ -958,10 +976,10 @@ json_node_type_get_name (JsonNodeType node_type)
 
 /**
  * json_node_set_parent:
- * @node: a #JsonNode
- * @parent: (transfer none): the parent #JsonNode of @node
+ * @node: the node to change
+ * @parent: (transfer none) (nullable): the parent node
  *
- * Sets the parent #JsonNode of @node.
+ * Sets the parent node for the given `node`.
  *
  * It is an error to call this with an immutable @parent.
  *
@@ -982,11 +1000,11 @@ json_node_set_parent (JsonNode *node,
 
 /**
  * json_node_get_parent:
- * @node: a #JsonNode
+ * @node: the node to query
  *
- * Retrieves the parent #JsonNode of @node.
+ * Retrieves the parent node of the given @node.
  *
- * Return value: (transfer none) (nullable): the parent node, or %NULL if @node
+ * Return value: (transfer none) (nullable): the parent node, or `NULL` if @node
  *   is the root node
  */
 JsonNode *
@@ -999,7 +1017,7 @@ json_node_get_parent (JsonNode *node)
 
 /**
  * json_node_set_string:
- * @node: a #JsonNode initialized to %JSON_NODE_VALUE
+ * @node: a node initialized to `JSON_NODE_VALUE`
  * @value: a string value
  *
  * Sets @value as the string content of the @node, replacing any existing
@@ -1026,10 +1044,11 @@ json_node_set_string (JsonNode    *node,
 
 /**
  * json_node_get_string:
- * @node: a #JsonNode of type %JSON_NODE_VALUE
+ * @node: a node holding a string
  *
- * Gets the string value stored inside a #JsonNode. If the node does not hold a
- * string value, %NULL is returned.
+ * Gets the string value stored inside a node.
+ *
+ * If the node does not hold a string value, `NULL` is returned.
  *
  * Return value: (nullable): a string value.
  */
@@ -1049,11 +1068,11 @@ json_node_get_string (JsonNode *node)
 
 /**
  * json_node_dup_string:
- * @node: a #JsonNode of type %JSON_NODE_VALUE
+ * @node: a node holding a string
  *
- * Gets a copy of the string value stored inside a #JsonNode.
+ * Gets a copy of the string value stored inside a node.
  *
- * If the node does not hold a string value, %NULL is returned.
+ * If the node does not hold a string value, `NULL` is returned.
  *
  * Return value: (transfer full) (nullable): a copy of the string
  *   inside the node
@@ -1068,7 +1087,7 @@ json_node_dup_string (JsonNode *node)
 
 /**
  * json_node_set_int:
- * @node: a #JsonNode of type %JSON_NODE_VALUE
+ * @node: a node initialized to `JSON_NODE_VALUE`
  * @value: an integer value
  *
  * Sets @value as the integer content of the @node, replacing any existing
@@ -1095,16 +1114,16 @@ json_node_set_int (JsonNode *node,
 
 /**
  * json_node_get_int:
- * @node: a #JsonNode of type %JSON_NODE_VALUE
+ * @node: a node holding an integer
  *
- * Gets the integer value stored inside a #JsonNode.
+ * Gets the integer value stored inside a node.
  *
  * If the node holds a double value, its integer component is returned.
  *
- * If the node holds a %FALSE boolean value, `0` is returned; otherwise,
+ * If the node holds a `FALSE` boolean value, `0` is returned; otherwise,
  * a non-zero integer is returned.
  *
- * If the node holds a %JSON_NODE_NULL value or a value of another
+ * If the node holds a `JSON_NODE_NULL` value or a value of another
  * non-integer type, `0` is returned.
  *
  * Return value: an integer value.
@@ -1131,7 +1150,7 @@ json_node_get_int (JsonNode *node)
 
 /**
  * json_node_set_double:
- * @node: a #JsonNode of type %JSON_NODE_VALUE
+ * @node: a node initialized to `JSON_NODE_VALUE`
  * @value: a double value
  *
  * Sets @value as the double content of the @node, replacing any existing
@@ -1158,16 +1177,16 @@ json_node_set_double (JsonNode *node,
 
 /**
  * json_node_get_double:
- * @node: a #JsonNode of type %JSON_NODE_VALUE
+ * @node: a node holding a floating point value
  *
- * Gets the double value stored inside a #JsonNode.
+ * Gets the double value stored inside a node.
  *
  * If the node holds an integer value, it is returned as a double.
  *
- * If the node holds a %FALSE boolean value, `0.0` is returned; otherwise
+ * If the node holds a `FALSE` boolean value, `0.0` is returned; otherwise
  * a non-zero double is returned.
  *
- * If the node holds a %JSON_NODE_NULL value or a value of another
+ * If the node holds a `JSON_NODE_NULL` value or a value of another
  * non-double type, `0.0` is returned.
  *
  * Return value: a double value.
@@ -1194,7 +1213,7 @@ json_node_get_double (JsonNode *node)
 
 /**
  * json_node_set_boolean:
- * @node: a #JsonNode of type %JSON_NODE_VALUE
+ * @node: a node initialized to `JSON_NODE_VALUE`
  * @value: a boolean value
  *
  * Sets @value as the boolean content of the @node, replacing any existing
@@ -1221,15 +1240,15 @@ json_node_set_boolean (JsonNode *node,
 
 /**
  * json_node_get_boolean:
- * @node: a #JsonNode of type %JSON_NODE_VALUE
+ * @node: a node holding a boolean value
  *
- * Gets the boolean value stored inside a #JsonNode.
+ * Gets the boolean value stored inside a node.
  *
- * If the node holds an integer or double value which is zero, %FALSE is
- * returned; otherwise %TRUE is returned.
+ * If the node holds an integer or double value which is zero, `FALSE` is
+ * returned; otherwise `TRUE` is returned.
  *
- * If the node holds a %JSON_NODE_NULL value or a value of another
- * non-boolean type, %FALSE is returned.
+ * If the node holds a `JSON_NODE_NULL` value or a value of another
+ * non-boolean type, `FALSE` is returned.
  *
  * Return value: a boolean value.
  */
@@ -1255,9 +1274,9 @@ json_node_get_boolean (JsonNode *node)
 
 /**
  * json_node_get_node_type:
- * @node: a #JsonNode
+ * @node: the node to check
  *
- * Retrieves the #JsonNodeType of @node
+ * Retrieves the type of a @node.
  *
  * Return value: the type of the node
  *
@@ -1273,14 +1292,14 @@ json_node_get_node_type (JsonNode *node)
 
 /**
  * json_node_is_null:
- * @node: a #JsonNode
+ * @node: the node to check
  *
- * Checks whether @node is a %JSON_NODE_NULL.
+ * Checks whether @node is a `JSON_NODE_NULL`.
  *
- * A %JSON_NODE_NULL node is not the same as a %NULL #JsonNode; a
- * %JSON_NODE_NULL represents a 'null' value in the JSON tree.
+ * A `JSON_NODE_NULL` node is not the same as a `NULL` node; a `JSON_NODE_NULL`
+ * represents a literal `null` value in the JSON tree.
  *
- * Return value: %TRUE if the node is null
+ * Return value: `TRUE` if the node is null
  *
  * Since: 0.8
  */
@@ -1292,7 +1311,7 @@ json_node_is_null (JsonNode *node)
   return node->type == JSON_NODE_NULL;
 }
 
-/**
+/*< private >
  * json_type_is_a:
  * @sub: sub-type
  * @super: super-type
@@ -1306,7 +1325,7 @@ json_node_is_null (JsonNode *node)
  *
  * Reference: http://json-schema.org/latest/json-schema-core.html#rfc.section.3.5
  *
- * Returns: %TRUE if @sub is a sub-type of, or equal to, @super; %FALSE otherwise
+ * Returns: `TRUE` if @sub is a sub-type of, or equal to, @super; `FALSE` otherwise
  * Since: 1.2
  */
 static gboolean
@@ -1357,7 +1376,7 @@ json_string_hash (gconstpointer key)
  *
  * Check whether @a and @b are equal UTF-8 JSON strings.
  *
- * Returns: %TRUE if @a and @b are equal; %FALSE otherwise
+ * Returns: `TRUE` if @a and @b are equal; `FALSE` otherwise
  * Since: 1.2
  */
 gboolean
@@ -1391,12 +1410,12 @@ json_string_compare (gconstpointer  a,
  * json_node_hash:
  * @key: (type JsonNode): a JSON node to hash
  *
- * Calculate a hash value for the given @key (a #JsonNode).
+ * Calculate a hash value for the given @key.
  *
  * The hash is calculated over the node and its value, recursively. If the node
  * is immutable, this is a fast operation; otherwise, it scales proportionally
  * with the size of the node’s value (for example, with the number of members
- * in the #JsonObject if this node contains an object).
+ * in the JSON object if this node contains an object).
  *
  * Returns: hash value for @key
  * Since: 1.2
@@ -1436,13 +1455,13 @@ json_node_hash (gconstpointer key)
  * @a: (type JsonNode): a JSON node
  * @b: (type JsonNode): another JSON node
  *
- * Check whether @a and @b are equal #JsonNodes, meaning they have the same
+ * Check whether @a and @b are equal node, meaning they have the same
  * type and same values (checked recursively).
  *
  * Note that integer values are compared numerically, ignoring type, so a
  * double value 4.0 is equal to the integer value 4.
  *
- * Returns: %TRUE if @a and @b are equal; %FALSE otherwise
+ * Returns: `TRUE` if @a and @b are equal; `FALSE` otherwise
  * Since: 1.2
  */
 gboolean

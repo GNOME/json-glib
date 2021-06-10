@@ -35,18 +35,18 @@ G_BEGIN_DECLS
 
 /**
  * JSON_NODE_TYPE:
- * @node: a #JsonNode
+ * @node: (type Json.Node): the [struct@Json.Node] to check
  *
- * Evaluates to the #JsonNodeType contained by @node
+ * Evaluates to the [enum@Json.NodeType] value contained by the node.
  */
 #define JSON_NODE_TYPE(node)    (json_node_get_node_type ((node)))
 
 /**
  * JSON_NODE_HOLDS:
- * @node: a #JsonNode
- * @t: a #JsonNodeType
+ * @node: (type Json.Node): the [struct@Json.Node] to check
+ * @t: (type Json.NodeType): the desired [enum@Json.NodeType]
  *
- * Evaluates to %TRUE if the @node holds type @t
+ * Evaluates to `TRUE` if the node holds the given type.
  *
  * Since: 0.10
  */
@@ -54,9 +54,9 @@ G_BEGIN_DECLS
 
 /**
  * JSON_NODE_HOLDS_VALUE:
- * @node: a #JsonNode
+ * @node: (type Json.Node): the [struct@Json.Node] to check
  *
- * Evaluates to %TRUE if @node holds a %JSON_NODE_VALUE
+ * Evaluates to `TRUE` if the node holds a scalar value.
  *
  * Since: 0.10
  */
@@ -64,9 +64,9 @@ G_BEGIN_DECLS
 
 /**
  * JSON_NODE_HOLDS_OBJECT:
- * @node: a #JsonNode
+ * @node: (type Json.Node): the [struct@Json.Node] to check
  *
- * Evaluates to %TRUE if @node holds a %JSON_NODE_OBJECT
+ * Evaluates to `TRUE` if the node holds a JSON object.
  *
  * Since: 0.10
  */
@@ -74,9 +74,9 @@ G_BEGIN_DECLS
 
 /**
  * JSON_NODE_HOLDS_ARRAY:
- * @node: a #JsonNode
+ * @node: (type Json.Node): the [struct@Json.Node] to check
  *
- * Evaluates to %TRUE if @node holds a %JSON_NODE_ARRAY
+ * Evaluates to `TRUE` if the node holds a JSON array.
  *
  * Since: 0.10
  */
@@ -84,9 +84,9 @@ G_BEGIN_DECLS
 
 /**
  * JSON_NODE_HOLDS_NULL:
- * @node: a #JsonNode
+ * @node: (type Json.Node): the [struct@Json.Node] to check
  *
- * Evaluates to %TRUE if @node holds a %JSON_NODE_NULL
+ * Evaluates to `TRUE` if the node holds `null`.
  *
  * Since: 0.10
  */
@@ -102,12 +102,12 @@ typedef struct _JsonArray       JsonArray;
 
 /**
  * JsonNodeType:
- * @JSON_NODE_OBJECT: The node contains a #JsonObject
- * @JSON_NODE_ARRAY: The node contains a #JsonArray
+ * @JSON_NODE_OBJECT: The node contains a JSON object
+ * @JSON_NODE_ARRAY: The node contains a JSON array
  * @JSON_NODE_VALUE: The node contains a fundamental type
  * @JSON_NODE_NULL: Special type, for nodes containing null
  *
- * Indicates the content of a #JsonNode.
+ * Indicates the content of a node.
  */
 typedef enum {
   JSON_NODE_OBJECT,
@@ -118,9 +118,9 @@ typedef enum {
 
 /**
  * JsonObjectForeach:
- * @object: the iterated #JsonObject
+ * @object: the iterated JSON object
  * @member_name: the name of the member
- * @member_node: a #JsonNode containing the @member_name value
+ * @member_node: the value of the member
  * @user_data: data passed to the function
  *
  * The function to be passed to [method@Json.Object.foreach_member].
@@ -139,9 +139,9 @@ typedef void (* JsonObjectForeach) (JsonObject  *object,
 
 /**
  * JsonArrayForeach:
- * @array: the iterated #JsonArray
+ * @array: the iterated JSON array
  * @index_: the index of the element
- * @element_node: a #JsonNode containing the value at @index_
+ * @element_node: the value of the element at the given @index_
  * @user_data: data passed to the function
  *
  * The function to be passed to [method@Json.Array.foreach_element].
@@ -408,12 +408,12 @@ gboolean              json_object_equal              (gconstpointer a,
 /**
  * JsonObjectIter:
  *
- * An iterator object used to iterate over the members of a #JsonObject.
+ * An iterator object used to iterate over the members of a JSON object.
  *
  * `JsonObjectIter` must be allocated on the stack and initialised using
  * [method@Json.ObjectIter.init] or [method@Json.ObjectIter.init_ordered].
  *
- * The iterator is invalidated if its `JsonObject` is modified during
+ * The iterator is invalidated if the object is modified during
  * iteration.
  *
  * All the fields in the `JsonObjectIter` structure are private and should
