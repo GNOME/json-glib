@@ -33,3 +33,15 @@ content_files = [
   'json-gobject.md',
   'json-gvariant.md',
 ]
+
+[[object]]
+pattern = "DEPRECATED_IN_*"
+hidden = true
+
+[[object]]
+name = "DEPRECATED_FOR"
+hidden = true
+
+[[object]]
+name = "UNAVAILABLE"
+hidden = true
