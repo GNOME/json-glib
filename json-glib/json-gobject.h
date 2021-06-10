@@ -38,10 +38,10 @@ typedef struct _JsonSerializableIface   JsonSerializableIface;
 
 /**
  * JsonSerializableIface:
- * @serialize_property: virtual function for serializing a #GObject property
- *   into a #JsonNode
- * @deserialize_property: virtual function for deserializing a #JsonNode
- *   into a #GObject property
+ * @serialize_property: virtual function for serializing an object property
+ *   into JSON
+ * @deserialize_property: virtual function for deserializing JSON
+ *   into an object property
  * @find_property: virtual function for finding a property definition using
  *   its name
  * @list_properties: virtual function for listing the installed property
@@ -49,9 +49,11 @@ typedef struct _JsonSerializableIface   JsonSerializableIface;
  * @set_property: virtual function for setting a property
  * @get_property: virtual function for getting a property
  *
- * Interface that allows serializing and deserializing #GObject instances
- * with properties storing complex data types. The json_serialize_gobject()
- * function will check if the passed #GObject implements this interface,
+ * Interface that allows serializing and deserializing object instances
+ * with properties storing complex data types.
+ *
+ * The [func@Json.gobject_from_data] and [func@Json.gobject_to_data]
+ * functions will check if the passed object type implements this interface,
  * so it can also be used to override the default property serialization
  * sequence.
  */
@@ -127,7 +129,7 @@ gboolean  json_serializable_default_deserialize_property (JsonSerializable *seri
 
 /**
  * JsonBoxedSerializeFunc:
- * @boxed: a #GBoxed
+ * @boxed: a boxed data structure
  *
  * Serializes the passed `GBoxed` and stores it inside a `JsonNode`, for instance:
  *
@@ -150,7 +152,7 @@ gboolean  json_serializable_default_deserialize_property (JsonSerializable *seri
  * }
  * ```
  *
- * Return value: the newly created #JsonNode
+ * Return value: the newly created JSON node tree representing the boxed data
  *
  * Since: 0.10
  */
@@ -158,7 +160,7 @@ typedef JsonNode *(* JsonBoxedSerializeFunc) (gconstpointer boxed);
 
 /**
  * JsonBoxedDeserializeFunc:
- * @node: a #JsonNode
+ * @node: a node tree representing a boxed data
  *
  * Deserializes the contents of the passed `JsonNode` into a `GBoxed`, for instance:
  *
@@ -191,7 +193,7 @@ typedef JsonNode *(* JsonBoxedSerializeFunc) (gconstpointer boxed);
  * }
  * ```
  *
- * Return value: the newly created boxed type
+ * Return value: the newly created boxed structure
  *
  * Since: 0.10
  */
