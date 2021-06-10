@@ -784,16 +784,14 @@ json_serialize_pspec (const GValue *real_value,
 
 /**
  * json_gobject_deserialize:
- * @gtype: the type of the #GObject to create
- * @node: a #JsonNode of type %JSON_NODE_OBJECT describing the
- *   instance of type @gtype
+ * @gtype: the type of the object to create
+ * @node: a node of type `JSON_NODE_OBJECT` describing the
+ *   object instance for the given type
  *
- * Creates a new #GObject of type @gtype, and constructs it
- * using the members of the passed #JsonObject
+ * Creates a new `GObject` instance of the given type, and constructs it
+ * using the members of the object in the given node.
  *
- * Return value: (transfer full): The newly created #GObject
- *   instance. Use g_object_unref() to free the resources
- *   allocated by this function
+ * Return value: (transfer full): The newly created instance
  *
  * Since: 0.10
  */
@@ -809,15 +807,17 @@ json_gobject_deserialize (GType     gtype,
 
 /**
  * json_gobject_serialize:
- * @gobject: a #GObject
+ * @gobject: the object to serialize
  *
- * Creates a #JsonNode representing the passed #GObject
- * instance. Each member of the returned JSON object will
- * map to a property of the #GObject
+ * Creates a JSON tree representing the passed object instance.
  *
- * Return value: (transfer full): the newly created #JsonNode
- *   of type %JSON_NODE_OBJECT. Use json_node_unref() to free
- *   the resources allocated by this function
+ * Each member of the returned JSON object will map to a property of
+ * the object type.
+ *
+ * The returned JSON tree will be returned as a `JsonNode` with a type
+ * of `JSON_NODE_OBJECT`.
+ *
+ * Return value: (transfer full): the newly created JSON tree
  *
  * Since: 0.10
  */
@@ -836,22 +836,22 @@ json_gobject_serialize (GObject *gobject)
 
 /**
  * json_construct_gobject:
- * @gtype: the #GType of object to construct
+ * @gtype: the type of the object to construct
  * @data: a JSON data stream
  * @length: length of the data stream
  * @error: return location for a #GError, or %NULL
  *
- * Deserializes a JSON data stream and creates the corresponding
- * #GObject class.
+ * Deserializes a JSON data stream and creates an instance of the given
+ * type
  *
- * If @gtype implements the #JsonSerializableIface interface, it will be
- * asked to deserialize all the JSON members into the respective properties;
- * otherwise, the default implementation will be used to translate the
- * compatible JSON native types.
+ * If the given type implements the [iface@Json.Serializable] interface, it
+ * will be asked to deserialize all the JSON members into their respective
+ * properties; otherwise, the default implementation will be used to translate
+ * the compatible JSON native types.
  *
- * **Note**: the JSON data stream must be an object declaration.
+ * **Note**: the JSON data stream must be an object.
  *
- * Return value: (transfer full) (nullable): a #GObject instance of the given type
+ * Return value: (transfer full) (nullable): a new object instance of the given type
  *
  * Since: 0.4
  *
@@ -868,22 +868,22 @@ json_construct_gobject (GType         gtype,
 
 /**
  * json_gobject_from_data:
- * @gtype: the #GType of object to construct
+ * @gtype: the type of the object to construct
  * @data: a JSON data stream
- * @length: length of the data stream, or -1 if it is NUL-terminated
+ * @length: length of the data stream, or -1 if it is `NUL`-terminated
  * @error: return location for a #GError, or %NULL
  *
- * Deserializes a JSON data stream and creates the corresponding
- * #GObject class.
+ * Deserializes a JSON data stream and creates an instance of the
+ * given type.
  *
- * If @gtype implements the #JsonSerializableIface interface, it will be asked
- * to deserialize all the JSON members into the respective properties;
+ * If the type implements the [iface@Json.Serializable] interface, it will
+ * be asked to deserialize all the JSON members into their respective properties;
  * otherwise, the default implementation will be used to translate the
  * compatible JSON native types.
  *
- * Note: the JSON data stream must be an object declaration.
+ * **Note**: the JSON data stream must be an object
  *
- * Return value: (transfer full) (nullable): a #GObject of the given type
+ * Return value: (transfer full) (nullable): a new object instance of the given type
  *
  * Since: 0.10
  */
@@ -936,12 +936,12 @@ json_gobject_from_data (GType         gtype,
 
 /**
  * json_serialize_gobject:
- * @gobject: a #GObject
+ * @gobject: the object to serialize
  * @length: (out) (optional): return value for the length of the buffer
  *
- * Serializes a #GObject into a JSON data stream.
+ * Serializes a `GObject` instance into a JSON data stream.
  *
- * If @gobject implements the #JsonSerializableIface interface, it will be
+ * If the object implements the [iface@Json.Serializable] interface, it will be
  * asked to serizalize all its properties; otherwise, the default
  * implementation will be use to translate the compatible types into JSON
  * native types.
@@ -959,18 +959,18 @@ json_serialize_gobject (GObject *gobject,
 
 /**
  * json_gobject_to_data:
- * @gobject: a #GObject
+ * @gobject: the object to serialize
  * @length: (out) (optional): return value for the length of the buffer
  *
- * Serializes a #GObject into a JSON data stream, iterating recursively
- * over each property.
+ * Serializes a `GObject` instance into a JSON data stream, iterating
+ * recursively over each property.
  *
- * If @gobject implements the #JsonSerializableIface interface, it will
- * be asked to serialize all its properties; otherwise, the default
+ * If the given object implements the [iface@Json.Serializable] interface,
+ * it will be asked to serialize all its properties; otherwise, the default
  * implementation will be use to translate the compatible types into
  * JSON native types.
  *
- * Return value: a JSON data stream representing the passed #GObject
+ * Return value: a JSON data stream representing the given object
  *
  * Since: 0.10
  */

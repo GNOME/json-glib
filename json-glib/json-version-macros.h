@@ -41,12 +41,32 @@
 #endif
 
 /* XXX: Each new cycle should add a new version symbol here */
+/**
+ * JSON_VERSION_1_0:
+ *
+ * The encoded representation of JSON-GLib version "1.0".
+ */
 #define JSON_VERSION_1_0        (G_ENCODE_VERSION (1, 0))
 
+/**
+ * JSON_VERSION_1_2:
+ *
+ * The encoded representation of JSON-GLib version "1.2".
+ */
 #define JSON_VERSION_1_2        (G_ENCODE_VERSION (1, 2))
 
+/**
+ * JSON_VERSION_1_4:
+ *
+ * The encoded representation of JSON-GLib version "1.4".
+ */
 #define JSON_VERSION_1_4        (G_ENCODE_VERSION (1, 4))
 
+/**
+ * JSON_VERSION_1_6:
+ *
+ * The encoded representation of JSON-GLib version "1.6".
+ */
 #define JSON_VERSION_1_6        (G_ENCODE_VERSION (1, 6))
 
 /* evaluates to the current stable version; for development cycles,
@@ -73,9 +93,10 @@
  * JSON_VERSION_MIN_REQUIRED:
  *
  * A macro that should be defined by the user prior to including
- * the gdk.h header.
- * The definition should be one of the predefined JSON version
- * macros: %JSON_VERSION_1_0, %JSON_VERSION_1_2,...
+ * the `json-glib/json-glib.h` header.
+ *
+ * The definition should be one of the predefined JSON-GLib version
+ * macros: `JSON_VERSION_1_0`, `JSON_VERSION_1_2`, ...
  *
  * This macro defines the lower bound for the JSON-GLib API to use.
  *
@@ -93,10 +114,10 @@
  * JSON_VERSION_MAX_ALLOWED:
  *
  * A macro that should be defined by the user prior to including
- * the json-glib.h header.
+ * the `json-glib/json-glib.h` header.
 
  * The definition should be one of the predefined JSON-GLib version
- * macros: %JSON_VERSION_1_0, %JSON_VERSION_1_2,...
+ * macros: `JSON_VERSION_1_0`, `JSON_VERSION_1_2`, ...
  *
  * This macro defines the upper bound for the JSON API-GLib to use.
  *

@@ -167,15 +167,13 @@ json_value_free (JsonValue *value)
     }
 }
 
-/**
+/*< private >
  * json_value_seal:
- * @value: a #JsonValue
+ * @value: a JSON scalar value
  *
- * Seals the #JsonValue, making it immutable to further changes.
+ * Seals the value, making it immutable to further changes.
  *
- * If the @value is already immutable, this is a no-op.
- *
- * Since: 1.2
+ * If the value is already immutable, this is a no-op.
  */
 void
 json_value_seal (JsonValue *value)

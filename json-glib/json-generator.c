@@ -234,7 +234,7 @@ json_generator_class_init (JsonGeneratorClass *klass)
   /**
    * JsonGenerator:root: (attributes org.gtk.Property.get=json_generator_get_root org.gtk.Property.set=json_generator_set_root)
    *
-   * The root #JsonNode to be used when constructing a JSON data
+   * The root node to be used when constructing a JSON data
    * stream.
    *
    * Since: 0.4
@@ -471,12 +471,12 @@ dump_object (JsonGenerator *generator,
 /**
  * json_generator_new:
  * 
- * Creates a new #JsonGenerator.
+ * Creates a new `JsonGenerator`.
  *
  * You can use this object to generate a JSON data stream starting from a
- * data object model composed by `JsonNode`s.
+ * data object model composed by [struct@Json.Node]s.
  *
- * Return value: the newly created #JsonGenerator instance
+ * Return value: the newly created generator instance
  */
 JsonGenerator *
 json_generator_new (void)
@@ -486,13 +486,13 @@ json_generator_new (void)
 
 /**
  * json_generator_to_gstring:
- * @generator: a #JsonGenerator
- * @string: a #GString
+ * @generator: a generator
+ * @string: a string buffer
  *
- * Generates a JSON data stream from @generator and appends it to @string.
+ * Generates a JSON data stream and appends it to the string buffer.
  *
- * Return value: (transfer none): a #GString holding a JSON data stream.
- *   Use g_string_free() to free the allocated resources.
+ * Return value: (transfer none): the passed string, updated with
+ *   the generated JSON data
  *
  * Since: 1.4
  */
@@ -514,7 +514,7 @@ json_generator_to_gstring (JsonGenerator *generator,
 
 /**
  * json_generator_to_data:
- * @generator: a #JsonGenerator
+ * @generator: a generator
  * @length: (out) (optional): return location for the length of the returned
  *   buffer
  *
@@ -542,14 +542,15 @@ json_generator_to_data (JsonGenerator *generator,
 
 /**
  * json_generator_to_file:
- * @generator: a #JsonGenerator
- * @filename: path to the target file
+ * @generator: a generator
+ * @filename: (type filename): the path to the target file
  * @error: return location for a #GError, or %NULL
  *
- * Creates a JSON data stream and puts it inside @filename, overwriting the
- * current file contents.
+ * Creates a JSON data stream and puts it inside `filename`, overwriting
+ * the file's current contents.
  *
- * This operation is atomic.
+ * This operation is atomic, in the sense that the data is written to a
+ * temporary file which is then renamed to the given `filename`.
  *
  * Return value: %TRUE if saving was successful.
  */
@@ -574,12 +575,12 @@ json_generator_to_file (JsonGenerator  *generator,
 
 /**
  * json_generator_to_stream:
- * @generator: a #JsonGenerator
- * @stream: a #GOutputStream
- * @cancellable: (nullable): a #GCancellable
+ * @generator: a generator
+ * @stream: the output stream used to write the JSON data
+ * @cancellable: (nullable): a `GCancellable`
  * @error: return location for a #GError, or %NULL
  *
- * Outputs JSON data and streams it (synchronously) to @stream.
+ * Outputs JSON data and writes it (synchronously) to the given stream.
  *
  * Return value: whether the write operation was successful
  *
@@ -610,13 +611,13 @@ json_generator_to_stream (JsonGenerator  *generator,
 
 /**
  * json_generator_set_root: (attributes org.gtk.Method.set_property=root)
- * @generator: a #JsonGenerator
- * @node: a #JsonNode
+ * @generator: a generator
+ * @node: the root node
  *
- * Sets @node as the root of the JSON data stream to be serialized by
- * the #JsonGenerator.
+ * Sets the root of the JSON data stream to be serialized by
+ * the given generator.
  *
- * The passed @node is copied by the generator object, so it can be
+ * The passed `node` is copied by the generator object, so it can be
  * safely freed after calling this function.
  */
 void
@@ -642,7 +643,7 @@ json_generator_set_root (JsonGenerator *generator,
 
 /**
  * json_generator_get_root: (attributes org.gtk.Method.get_property=root)
- * @generator: a #JsonGenerator
+ * @generator: a generator
  *
  * Retrieves a pointer to the root node set using
  * [method@Json.Generator.set_root].
@@ -661,7 +662,7 @@ json_generator_get_root (JsonGenerator *generator)
 
 /**
  * json_generator_set_pretty: (attributes org.gtk.Method.set_property=pretty)
- * @generator: a #JsonGenerator
+ * @generator: a generator
  * @is_pretty: whether the generated string should be pretty printed
  *
  * Sets whether the generated JSON should be pretty printed.
@@ -694,12 +695,12 @@ json_generator_set_pretty (JsonGenerator *generator,
 
 /**
  * json_generator_get_pretty: (attributes org.gtk.Method.get_property=pretty)
- * @generator: a #JsonGenerator
+ * @generator: a generator
  *
  * Retrieves the value set using [method@Json.Generator.set_pretty].
  *
- * Return value: %TRUE if the generated JSON should be pretty-printed, and
- *   %FALSE otherwise
+ * Return value: `TRUE` if the generated JSON should be pretty-printed, and
+ *   `FALSE` otherwise
  *
  * Since: 0.14
  */
@@ -713,7 +714,7 @@ json_generator_get_pretty (JsonGenerator *generator)
 
 /**
  * json_generator_set_indent: (attributes org.gtk.Method.set_property=indent)
- * @generator: a #JsonGenerator
+ * @generator: a generator
  * @indent_level: the number of repetitions of the indentation character
  *   that should be applied when pretty printing
  *
@@ -741,7 +742,7 @@ json_generator_set_indent (JsonGenerator *generator,
 
 /**
  * json_generator_get_indent: (attributes org.gtk.Method.get_property=indent)
- * @generator: a #JsonGenerator
+ * @generator: a generator
  *
  * Retrieves the value set using [method@Json.Generator.set_indent].
  *
@@ -759,10 +760,10 @@ json_generator_get_indent (JsonGenerator *generator)
 
 /**
  * json_generator_set_indent_char: (attributes org.gtk.Method.set_property=indent-char)
- * @generator: a #JsonGenerator
+ * @generator: a generator
  * @indent_char: a Unicode character to be used when indenting
  *
- * Sets the character to be used when indenting
+ * Sets the character to be used when indenting.
  *
  * Since: 0.14
  */
@@ -786,7 +787,7 @@ json_generator_set_indent_char (JsonGenerator *generator,
 
 /**
  * json_generator_get_indent_char: (attributes org.gtk.Method.get_property=indent-char)
- * @generator: a #JsonGenerator
+ * @generator: a generator
  *
  * Retrieves the value set using [method@Json.Generator.set_indent_char].
  *

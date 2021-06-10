@@ -58,7 +58,7 @@ G_DEFINE_BOXED_TYPE (JsonObject, json_object, json_object_ref, json_object_unref
  * 
  * Creates a new object.
  *
- * Return value: (transfer full): the newly created object
+ * Returns: (transfer full): the newly created object
  */
 JsonObject *
 json_object_new (void)
@@ -79,11 +79,11 @@ json_object_new (void)
 
 /**
  * json_object_ref:
- * @object: an object
+ * @object: a JSON object
  *
  * Acquires a reference on the given object.
  *
- * Return value: (transfer none): the given object, with the reference count
+ * Returns: (transfer none): the given object, with the reference count
  *   increased by one.
  */
 JsonObject *
@@ -99,7 +99,7 @@ json_object_ref (JsonObject *object)
 
 /**
  * json_object_unref:
- * @object: an object
+ * @object: a JSON object
  *
  * Releases a reference on the given object.
  *
@@ -124,7 +124,7 @@ json_object_unref (JsonObject *object)
 
 /**
  * json_object_seal:
- * @object: an object
+ * @object: a JSON object
  *
  * Seals the object, making it immutable to further changes.
  *
@@ -158,7 +158,7 @@ json_object_seal (JsonObject *object)
 
 /**
  * json_object_is_immutable:
- * @object: an object
+ * @object: a JSON object
  *
  * Checks whether the given object has been marked as immutable by calling
  * [method@Json.Object.seal] on it.
@@ -205,7 +205,7 @@ object_set_member_internal (JsonObject  *object,
 
 /**
  * json_object_add_member:
- * @object: an object
+ * @object: a JSON object
  * @member_name: the name of the member
  * @node: (transfer full): the value of the member
  *
@@ -238,7 +238,7 @@ json_object_add_member (JsonObject  *object,
 
 /**
  * json_object_set_member:
- * @object: an object
+ * @object: a JSON object
  * @member_name: the name of the member
  * @node: (transfer full): the value of the member
  *
@@ -276,7 +276,7 @@ set_member:
 
 /**
  * json_object_set_int_member:
- * @object: an object
+ * @object: a JSON object
  * @member_name: the name of the member
  * @value: the value of the member
  *
@@ -299,7 +299,7 @@ json_object_set_int_member (JsonObject  *object,
 
 /**
  * json_object_set_double_member:
- * @object: an object
+ * @object: a JSON object
  * @member_name: the name of the member
  * @value: the value of the member
  *
@@ -322,7 +322,7 @@ json_object_set_double_member (JsonObject  *object,
 
 /**
  * json_object_set_boolean_member:
- * @object: an object
+ * @object: a JSON object
  * @member_name: the name of the member
  * @value: the value of the member
  *
@@ -345,7 +345,7 @@ json_object_set_boolean_member (JsonObject  *object,
 
 /**
  * json_object_set_string_member:
- * @object: an object
+ * @object: a JSON object
  * @member_name: the name of the member
  * @value: the value of the member
  *
@@ -377,7 +377,7 @@ json_object_set_string_member (JsonObject  *object,
 
 /**
  * json_object_set_null_member:
- * @object: an object
+ * @object: a JSON object
  * @member_name: the name of the member
  *
  * Convenience function for setting an object member with a `null` value.
@@ -398,7 +398,7 @@ json_object_set_null_member (JsonObject  *object,
 
 /**
  * json_object_set_array_member:
- * @object: an bject
+ * @object: a JSON object
  * @member_name: the name of the member
  * @value: (transfer full): the value of the member
  *
@@ -433,7 +433,7 @@ json_object_set_array_member (JsonObject  *object,
 
 /**
  * json_object_set_object_member:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @member_name: the name of the member
  * @value: (transfer full): the value of the member
  *
@@ -468,14 +468,14 @@ json_object_set_object_member (JsonObject  *object,
 
 /**
  * json_object_get_members:
- * @object: an object
+ * @object: a JSON object
  *
  * Retrieves all the names of the members of an object.
  *
  * You can obtain the value for each member by iterating the returned list
  * and calling [method@Json.Object.get_member].
  *
- * Return value: (element-type utf8) (transfer container) (nullable): the
+ * Returns: (element-type utf8) (transfer container) (nullable): the
  *   member names of the object
  */
 GList *
@@ -497,11 +497,11 @@ json_object_get_members_internal (JsonObject *object)
 
 /**
  * json_object_get_values:
- * @object: an object
+ * @object: a JSON object
  *
  * Retrieves all the values of the members of an object.
  *
- * Return value: (element-type JsonNode) (transfer container) (nullable): the
+ * Returns: (element-type JsonNode) (transfer container) (nullable): the
  *   member values of the object
  */
 GList *
@@ -520,12 +520,12 @@ json_object_get_values (JsonObject *object)
 
 /**
  * json_object_dup_member:
- * @object: an object
+ * @object: a JSON object
  * @member_name: the name of the JSON object member to access
  *
  * Retrieves a copy of the value of the given member inside an object.
  *
- * Return value: (transfer full) (nullable): a copy of the value for the
+ * Returns: (transfer full) (nullable): a copy of the value for the
  *   requested object member
  *
  * Since: 0.6
@@ -555,12 +555,12 @@ object_get_member_internal (JsonObject  *object,
 
 /**
  * json_object_get_member:
- * @object: an object
+ * @object: a JSON object
  * @member_name: the name of the JSON object member to access
  *
  * Retrieves the value of the given member inside an object.
  *
- * Return value: (transfer none) (nullable): the value for the
+ * Returns: (transfer none) (nullable): the value for the
  *   requested object member
  */
 JsonNode *
@@ -615,17 +615,17 @@ json_object_get_ ##type_name## _member_with_default (JsonObject *object, \
 
 /**
  * json_object_get_int_member:
- * @object: a #JsonObject
- * @member_name: the name of the @object member
+ * @object: a JSON object
+ * @member_name: the name of the object member
  *
  * Convenience function that retrieves the integer value
  * stored in @member_name of @object. It is an error to specify a
  * @member_name which does not exist.
  *
- * See also: json_object_get_int_member_with_default(),
- * json_object_get_member() and json_object_has_member()
+ * See also: [method@Json.Object.get_int_member_with_default],
+ *   [method@Json.Object.get_member], [method@Json.Object.has_member]
  *
- * Return value: the integer value of the object's member
+ * Returns: the integer value of the object's member
  *
  * Since: 0.8
  */
@@ -633,8 +633,8 @@ JSON_OBJECT_GET (gint64, int)
 
 /**
  * json_object_get_int_member_with_default:
- * @object: a #JsonObject
- * @member_name: the name of the @object member
+ * @object: a JSON object
+ * @member_name: the name of the object member
  * @default_value: the value to return if @member_name is not valid
  *
  * Convenience function that retrieves the integer value
@@ -652,17 +652,17 @@ JSON_OBJECT_GET_DEFAULT (gint64, int)
 
 /**
  * json_object_get_double_member:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @member_name: the name of the member
  *
  * Convenience function that retrieves the floating point value
  * stored in @member_name of @object. It is an error to specify a
  * @member_name which does not exist.
  *
- * See also: json_object_get_double_member_with_default(),
- * json_object_get_member() and json_object_has_member()
+ * See also: [method@Json.Object.get_double_member_with_default],
+ *   [method@Json.Object.get_member], [method@Json.Object.has_member]
  *
- * Return value: the floating point value of the object's member
+ * Returns: the floating point value of the object's member
  *
  * Since: 0.8
  */
@@ -670,7 +670,7 @@ JSON_OBJECT_GET (gdouble, double)
 
 /**
  * json_object_get_double_member_with_default:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @member_name: the name of the @object member
  * @default_value: the value to return if @member_name is not valid
  *
@@ -689,17 +689,17 @@ JSON_OBJECT_GET_DEFAULT (double, double)
 
 /**
  * json_object_get_boolean_member:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @member_name: the name of the member
  *
  * Convenience function that retrieves the boolean value
  * stored in @member_name of @object. It is an error to specify a
  * @member_name which does not exist.
  *
- * See also: json_object_get_boolean_member_with_default(),
- * json_object_get_member() and json_object_has_member()
+ * See also: [method@Json.Object.get_boolean_member_with_default],
+ *   [method@Json.Object.get_member], [method@Json.Object.has_member]
  *
- * Return value: the boolean value of the object's member
+ * Returns: the boolean value of the object's member
  *
  * Since: 0.8
  */
@@ -707,7 +707,7 @@ JSON_OBJECT_GET (gboolean, boolean)
 
 /**
  * json_object_get_boolean_member_with_default:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @member_name: the name of the @object member
  * @default_value: the value to return if @member_name is not valid
  *
@@ -726,17 +726,17 @@ JSON_OBJECT_GET_DEFAULT (gboolean, boolean)
 
 /**
  * json_object_get_string_member:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @member_name: the name of the member
  *
  * Convenience function that retrieves the string value
  * stored in @member_name of @object. It is an error to specify a
  * @member_name that does not exist.
  *
- * See also: json_object_get_string_member_with_default(),
- * json_object_get_member() and json_object_has_member()
+ * See also: [method@Json.Object.get_string_member_with_default],
+ *   [method@Json.Object.get_member], [method@Json.Object.has_member]
  *
- * Return value: the string value of the object's member
+ * Returns: the string value of the object's member
  *
  * Since: 0.8
  */
@@ -744,7 +744,7 @@ JSON_OBJECT_GET (const gchar *, string)
 
 /**
  * json_object_get_string_member_with_default:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @member_name: the name of the @object member
  * @default_value: the value to return if @member_name is not valid
  *
@@ -763,16 +763,16 @@ JSON_OBJECT_GET_DEFAULT (const char *, string)
 
 /**
  * json_object_get_null_member:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @member_name: the name of the member
  *
  * Convenience function that checks whether the value
  * stored in @member_name of @object is null. It is an error to
  * specify a @member_name which does not exist.
  *
- * See also: json_object_get_member() and json_object_has_member()
+ * See also: [method@Json.Object.get_member], [method@Json.Object.has_member]
  *
- * Return value: %TRUE if the value is null
+ * Returns: `TRUE` if the value is `null`
  *
  * Since: 0.8
  */
@@ -802,16 +802,18 @@ json_object_get_null_member (JsonObject  *object,
 
 /**
  * json_object_get_array_member:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @member_name: the name of the member
  *
  * Convenience function that retrieves the array
  * stored in @member_name of @object. It is an error to specify a
  * @member_name which does not exist.
  *
- * See also: json_object_get_member() and json_object_has_member()
+ * If @member_name contains `null`, then this function will return `NULL`.
  *
- * Return value: (transfer none): the array inside the object's member
+ * See also: [method@Json.Object.get_member], [method@Json.Object.has_member]
+ *
+ * Returns: (transfer none) (nullable): the array inside the object's member
  *
  * Since: 0.8
  */
@@ -836,17 +838,18 @@ json_object_get_array_member (JsonObject  *object,
 
 /**
  * json_object_get_object_member:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @member_name: the name of the member
  *
  * Convenience function that retrieves the object
  * stored in @member_name of @object. It is an error to specify a @member_name
  * which does not exist.
  *
- * See also: json_object_get_member() and json_object_has_member()
+ * If @member_name contains `null`, then this function will return `NULL`.
  *
- * Return value: (transfer none) (nullable): the object inside the object’s
- *    member, or %NULL if the value for the member is `null`
+ * See also: [method@Json.Object.get_member], [method@Json.Object.has_member]
+ *
+ * Returns: (transfer none) (nullable): the object inside the object's member
  *
  * Since: 0.8
  */
@@ -871,12 +874,12 @@ json_object_get_object_member (JsonObject  *object,
 
 /**
  * json_object_has_member:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @member_name: the name of a JSON object member
  *
  * Checks whether @object has a member named @member_name.
  *
- * Return value: %TRUE if the JSON object has the requested member
+ * Returns: `TRUE` if the JSON object has the requested member
  */
 gboolean
 json_object_has_member (JsonObject *object,
@@ -890,11 +893,11 @@ json_object_has_member (JsonObject *object,
 
 /**
  * json_object_get_size:
- * @object: a #JsonObject
+ * @object: a JSON object
  *
- * Retrieves the number of members of a #JsonObject.
+ * Retrieves the number of members of a JSON object.
  *
- * Return value: the number of members
+ * Returns: the number of members
  */
 guint
 json_object_get_size (JsonObject *object)
@@ -906,7 +909,7 @@ json_object_get_size (JsonObject *object)
 
 /**
  * json_object_remove_member:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @member_name: the name of the member to remove
  *
  * Removes @member_name from @object, freeing its allocated resources.
@@ -936,18 +939,18 @@ json_object_remove_member (JsonObject  *object,
 
 /**
  * json_object_foreach_member:
- * @object: a #JsonObject
+ * @object: a JSON object
  * @func: (scope call): the function to be called on each member
  * @data: (closure): data to be passed to the function
  *
  * Iterates over all members of @object and calls @func on
  * each one of them.
  *
- * It is safe to change the value of a #JsonNode of the @object
- * from within the iterator @func, but it is not safe to add or
- * remove members from the @object.
+ * It is safe to change the value of a member of the oobject
+ * from within the iterator function, but it is not safe to add or
+ * remove members from the object.
  *
- * The order in which the @object members are iterated is the
+ * The order in which the object members are iterated is the
  * insertion order.
  *
  * Since: 0.8
@@ -980,7 +983,7 @@ json_object_foreach_member (JsonObject        *object,
  * json_object_hash:
  * @key: (type JsonObject): a JSON object to hash
  *
- * Calculate a hash value for the given @key (a #JsonObject).
+ * Calculate a hash value for the given @key (a JSON object).
  *
  * The hash is calculated over the object and all its members, recursively. If
  * the object is immutable, this is a fast operation; otherwise, it scales
@@ -1018,10 +1021,10 @@ json_object_hash (gconstpointer key)
  * @a: (type JsonObject): a JSON object
  * @b: (type JsonObject): another JSON object
  *
- * Check whether @a and @b are equal #JsonObjects, meaning they have the same
+ * Check whether @a and @b are equal objects, meaning they have the same
  * set of members, and the values of corresponding members are equal.
  *
- * Returns: %TRUE if @a and @b are equal; %FALSE otherwise
+ * Returns: `TRUE` if @a and @b are equal, and `FALSE` otherwise
  * Since: 1.2
  */
 gboolean
@@ -1074,8 +1077,8 @@ json_object_equal (gconstpointer  a,
 
 /**
  * json_object_iter_init:
- * @iter: an uninitialised #JsonObjectIter
- * @object: the #JsonObject to iterate over
+ * @iter: an uninitialised JSON object iterator
+ * @object: the JSON object to iterate over
  *
  * Initialises the @iter and associate it with @object.
  *
@@ -1114,20 +1117,20 @@ json_object_iter_init (JsonObjectIter  *iter,
 
 /**
  * json_object_iter_next:
- * @iter: a #JsonObjectIter
+ * @iter: a JSON object iterator
  * @member_name: (out callee-allocates) (transfer none) (optional): return
  *    location for the member name, or %NULL to ignore
  * @member_node: (out callee-allocates) (transfer none) (optional): return
  *    location for the member value, or %NULL to ignore
  *
- * Advances @iter and retrieves the next member in the object.
+ * Advances the iterator and retrieves the next member in the object.
  *
- * If the end of the object is reached, %FALSE is returned and @member_name
+ * If the end of the object is reached, `FALSE` is returned and @member_name
  * and @member_node are set to invalid values. After that point, the @iter
  * is invalid.
  *
  * The order in which members are returned by the iterator is undefined. The
- * iterator is invalidated if its #JsonObject is modified during iteration.
+ * iterator is invalidated if the object is modified during iteration.
  *
  * You must use this function with an iterator initialized with
  * [method@Json.ObjectIter.init]; using this function with an iterator
@@ -1136,8 +1139,8 @@ json_object_iter_init (JsonObjectIter  *iter,
  *
  * See also: [method@Json.ObjectIter.next_ordered]
  *
- * Returns: %TRUE if @member_name and @member_node are valid; %FALSE if the end
- *   of the object has been reached
+ * Returns: `TRUE` if @member_name and @member_node are valid; `FALSE` if
+ *   there are no more members
  *
  * Since: 1.2
  */
@@ -1159,8 +1162,8 @@ json_object_iter_next (JsonObjectIter  *iter,
 
 /**
  * json_object_iter_init_ordered:
- * @iter: an uninitialised #JsonObjectIter
- * @object: the #JsonObject to iterate over
+ * @iter: an uninitialised iterator
+ * @object: the JSON object to iterate over
  *
  * Initialises the @iter and associate it with @object.
  *
@@ -1198,15 +1201,15 @@ json_object_iter_init_ordered (JsonObjectIter  *iter,
 
 /**
  * json_object_iter_next_ordered:
- * @iter: a #JsonObjectIter
+ * @iter: an ordered JSON object iterator
  * @member_name: (out callee-allocates) (transfer none) (optional): return
  *    location for the member name, or %NULL to ignore
  * @member_node: (out callee-allocates) (transfer none) (optional): return
  *    location for the member value, or %NULL to ignore
  *
- * Advances @iter and retrieves the next member in the object.
+ * Advances the iterator and retrieves the next member in the object.
  *
- * If the end of the object is reached, %FALSE is returned and @member_name and
+ * If the end of the object is reached, `FALSE` is returned and @member_name and
  * @member_node are set to invalid values. After that point, the @iter is invalid.
  *
  * The order in which members are returned by the iterator is the same order in
@@ -1219,7 +1222,7 @@ json_object_iter_init_ordered (JsonObjectIter  *iter,
  *
  * See also: [method@Json.ObjectIter.next]
  *
- * Returns: %TRUE if @member_name and @member_node are valid; %FALSE if the end
+ * Returns: `TRUE `if @member_name and @member_node are valid; `FALSE` if the end
  *    of the object has been reached
  *
  * Since: 1.6

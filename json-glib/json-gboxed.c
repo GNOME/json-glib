@@ -90,11 +90,10 @@ lookup_boxed_transform (GSList       *transforms,
  * json_boxed_register_serialize_func: (skip)
  * @gboxed_type: a boxed type
  * @node_type: a node type
- * @serialize_func: serialization function for @boxed_type into
- *   a #JsonNode of type @node_type
+ * @serialize_func: serialization function
  *
- * Registers a serialization function for a #GBoxed of type @gboxed_type
- * to a #JsonNode of type @node_type.
+ * Registers a serialization function for a `GBoxed` of type `gboxed_type`
+ * to a [struct@Json.Node] of type `node_type`.
  *
  * Since: 0.10
  */
@@ -135,11 +134,10 @@ json_boxed_register_serialize_func (GType                  gboxed_type,
  * json_boxed_register_deserialize_func: (skip)
  * @gboxed_type: a boxed type
  * @node_type: a node type
- * @deserialize_func: deserialization function for @boxed_type from
- *   a #JsonNode of type @node_type
+ * @deserialize_func: deserialization function
  *
- * Registers a deserialization function for a #GBoxed of type @gboxed_type
- * from a #JsonNode of type @node_type
+ * Registers a deserialization function for a `GBoxed` of type `gboxed_type`
+ * from a [struct@Json.Node] of type `node_type`.
  *
  * Since: 0.10
  */
@@ -179,17 +177,16 @@ json_boxed_register_deserialize_func (GType                    gboxed_type,
 /**
  * json_boxed_can_serialize:
  * @gboxed_type: a boxed type
- * @node_type: (out) (optional): the #JsonNode type to which the boxed type
+ * @node_type: (out) (optional): the node type to which the boxed type
  *   can be serialized into
  *
- * Checks whether it is possible to serialize a #GBoxed of
- * type @gboxed_type into a #JsonNode.
+ * Checks whether it is possible to serialize a `GBoxed` of
+ * type `gboxed_type` into a [struct@Json.Node].
  *
- * The type of the #JsonNode is placed inside @node_type if the function
- * returns %TRUE and it's undefined otherwise.
+ * The type of the node is placed inside `node_type` if the function
+ * returns `TRUE`, and it's undefined otherwise.
  *
- * Return value: %TRUE if the type can be serialized,
- *   and %FALSE otherwise.
+ * Return value: `TRUE` if the type can be serialized, and `FALSE` otherwise
  *
  * Since: 0.10
  */
@@ -217,12 +214,12 @@ json_boxed_can_serialize (GType         gboxed_type,
 /**
  * json_boxed_can_deserialize:
  * @gboxed_type: a boxed type
- * @node_type: a #JsonNode type
+ * @node_type: a node type
  *
- * Checks whether it is possible to deserialize a #GBoxed of
- * type @gboxed_type from a #JsonNode of type @node_type
+ * Checks whether it is possible to deserialize a `GBoxed` of
+ * type `gboxed_type` from a [struct@Json.Node] of type `node_type`.
  *
- * Return value: %TRUE if the type can be deserialized, %FALSE otherwise
+ * Return value: `TRUE` if the type can be deserialized, and `FALSE` otherwise
  *
  * Since: 0.10
  */
@@ -245,12 +242,13 @@ json_boxed_can_deserialize (GType        gboxed_type,
 /**
  * json_boxed_serialize:
  * @gboxed_type: a boxed type
- * @boxed: a pointer to a #GBoxed of type @gboxed_type
+ * @boxed: a pointer to a boxed of type `gboxed_type`
  *
- * Serializes a pointer to a #GBoxed of type @gboxed_type into a #JsonNode
+ * Serializes a pointer to a `GBoxed` of the given type into a [struct@Json.Node].
  *
- * Return value: (nullable) (transfer full): a #JsonNode with the serialization of
- *   the boxed type, or %NULL if serialization either failed or was not possible
+ * If the serialization is not possible, this function will return `NULL`.
+ *
+ * Return value: (nullable) (transfer full): a node with the serialized boxed type
  *
  * Since: 0.10
  */
@@ -274,13 +272,11 @@ json_boxed_serialize (GType         gboxed_type,
 /**
  * json_boxed_deserialize:
  * @gboxed_type: a boxed type
- * @node: a #JsonNode
+ * @node: a node
  *
- * Deserializes @node into a #GBoxed of @gboxed_type.
+ * Deserializes the given [struct@Json.Node] into a `GBoxed` of the given type.
  *
- * Return value: (transfer full): the newly allocated #GBoxed. Use
- *   g_boxed_free() to release the resources allocated by this
- *   function
+ * Return value: (transfer full): the newly allocated boxed data
  *
  * Since: 0.10
  */

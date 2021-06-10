@@ -27,14 +27,40 @@
  *
  * `JsonBuilder` provides an object for generating a JSON tree.
  *
- * You can generate only one tree with one `JsonBuilder` instance.
- *
  * The root of the JSON tree can be either a [struct@Json.Object] or a [struct@Json.Array].
  * Thus the first call must necessarily be either
  * [method@Json.Builder.begin_object] or [method@Json.Builder.begin_array].
  *
  * For convenience to language bindings, most `JsonBuilder` method return the
  * instance, making it easy to chain function calls.
+ *
+ * ## Using `JsonBuilder`
+ *
+ * ```c
+ * g_autoptr(JsonBuilder) builder = json_builder_new ();
+ *
+ * json_builder_begin_object (builder);
+ *
+ * json_builder_set_member_name (builder, "url");
+ * json_builder_add_string_value (builder, "http://www.gnome.org/img/flash/two-thirty.png");
+ *
+ * json_builder_set_member_name (builder, "size");
+ * json_builder_begin_array (builder);
+ * json_builder_add_int_value (builder, 652);
+ * json_builder_add_int_value (builder, 242);
+ * json_builder_end_array (builder);
+ *
+ * json_builder_end_object (builder);
+ *
+ * g_autoptr(JsonNode) root root = json_builder_get_root (builder);
+ *
+ * g_autoptr(JsonGenerator) gen = json_generator_new ();
+ * json_generator_set_root (gen, root);
+ * g_autofree char *str = json_generator_to_data (gen, NULL);
+ *
+ * // str now contains the following JSON data
+ * // { "url" : "http://www.gnome.org/img/flash/two-thirty.png", "size" : [ 652, 242 ] }
+ * ```
  */
 
 #include "config.h"
@@ -188,8 +214,7 @@ json_builder_class_init (JsonBuilderClass *klass)
   /**
    * JsonBuilder:immutable:
    *
-   * Whether the #JsonNode tree built by the #JsonBuilder should be immutable
-   * when created.
+   * Whether the tree should be immutable when created.
    *
    * Making the output immutable on creation avoids the expense
    * of traversing it to make it immutable later.
@@ -256,7 +281,7 @@ json_builder_new (void)
  * Creates a new, immutable `JsonBuilder` instance.
  *
  * It is equivalent to setting the [property@Json.Builder:immutable] property
- * set to `TRUE`.
+ * set to `TRUE` at construction time.
  *
  * Since: 1.2
  * Returns: (transfer full): the newly create builder instance
@@ -271,7 +296,7 @@ json_builder_new_immutable (void)
  * json_builder_get_root:
  * @builder: a builder
  *
- * Returns the root of the current constructed tree.
+ * Returns the root of the currently constructed tree.
  *
  * if the build is incomplete (ie: if there are any opened objects, or any
  * open object members and array elements) then this function will return
@@ -299,9 +324,9 @@ json_builder_get_root (JsonBuilder *builder)
 
 /**
  * json_builder_reset:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  *
- * Resets the state of the @builder back to its initial state.
+ * Resets the state of the builder back to its initial state.
  */
 void
 json_builder_reset (JsonBuilder *builder)
@@ -313,11 +338,14 @@ json_builder_reset (JsonBuilder *builder)
 
 /**
  * json_builder_begin_object:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  *
- * Opens a subobject inside the given builder.
+ * Opens an object inside the given builder.
  *
- * Once you added all members to the object, you must call [method@Json.Builder.end_object].
+ * You can add a new member to the object by using [method@Json.Builder.set_member_name],
+ * followed by [method@Json.Builder.add_value].
+ *
+ * Once you added all members to the object, you must call [method@Json.Builder.end_object]
  * to close the object.
  *
  * If the builder is in an inconsistent state, this function will return `NULL`.
@@ -368,15 +396,14 @@ json_builder_begin_object (JsonBuilder *builder)
 
 /**
  * json_builder_end_object:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  *
- * Closes the subobject inside the given @builder that was opened by the most
- * recent call to json_builder_begin_object().
+ * Closes the object inside the given builder that was opened by the most
+ * recent call to [method@Json.Builder.begin_object].
  *
- * Cannot be called after json_builder_set_member_name().
+ * This function cannot be called after [method@Json.Builder.set_member_name].
  *
- * Return value: (nullable) (transfer none): the #JsonBuilder, or %NULL if the
- * call was inconsistent
+ * Return value: (nullable) (transfer none): the builder instance
  */
 JsonBuilder *
 json_builder_end_object (JsonBuilder *builder)
@@ -408,16 +435,16 @@ json_builder_end_object (JsonBuilder *builder)
 
 /**
  * json_builder_begin_array:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  *
- * Opens a subarray inside the given @builder. When done adding members to
- * the subarray, json_builder_end_array() must be called.
+ * Opens an array inside the given builder.
  *
- * Can be called for first or only if the call is associated to an object member
- * or an array element.
+ * You can add a new element to the array by using [method@Json.Builder.add_value].
  *
- * Return value: (nullable) (transfer none): the #JsonBuilder, or %NULL if the
- * call was inconsistent
+ * Once you added all elements to the array, you must call
+ * [method@Json.Builder.end_array] to close the array.
+ *
+ * Return value: (nullable) (transfer none): the builder instance
  */
 JsonBuilder *
 json_builder_begin_array (JsonBuilder *builder)
@@ -462,15 +489,14 @@ json_builder_begin_array (JsonBuilder *builder)
 
 /**
  * json_builder_end_array:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  *
- * Closes the subarray inside the given @builder that was opened by the most
- * recent call to json_builder_begin_array().
+ * Closes the array inside the given builder that was opened by the most
+ * recent call to [method@Json.Builder.begin_array].
  *
- * Cannot be called after json_builder_set_member_name().
+ * This function cannot be called after [method@Json.Builder.set_member_name].
  *
- * Return value: (nullable) (transfer none): the #JsonBuilder, or %NULL if the
- * call was inconsistent
+ * Return value: (nullable) (transfer none): the builder instance
  */
 JsonBuilder *
 json_builder_end_array (JsonBuilder *builder)
@@ -502,16 +528,20 @@ json_builder_end_array (JsonBuilder *builder)
 
 /**
  * json_builder_set_member_name:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  * @member_name: the name of the member
  *
- * Set the name of the next member in an object. The next call must add a value,
- * open an object or an array.
+ * Sets the name of the member in an object.
  *
- * Can be called only if the call is associated to an object.
+ * This function must be followed by of these functions:
  *
- * Return value: (nullable) (transfer none): the #JsonBuilder, or %NULL if the
- * call was inconsistent
+ *  - [method@Json.Builder.add_value], to add a scalar value to the member
+ *  - [method@Json.Builder.begin_object], to add an object to the member
+ *  - [method@Json.Builder.begin_array], to add an array to the member
+ *
+ * This function can only be called within an open object.
+ *
+ * Return value: (nullable) (transfer none): the builder instance
  */
 JsonBuilder *
 json_builder_set_member_name (JsonBuilder *builder,
@@ -533,17 +563,18 @@ json_builder_set_member_name (JsonBuilder *builder,
 
 /**
  * json_builder_add_value:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  * @node: (transfer full): the value of the member or element
  *
- * If called after json_builder_set_member_name(), sets @node as member of the
- * most recent opened object, otherwise @node is added as element of the most
- * recent opened array.
+ * Adds a value to the currently open object member or array.
  *
- * The builder will take ownership of the #JsonNode.
+ * If called after [method@Json.Builder.set_member_name], sets the given node
+ * as the value of the current member in the open object; otherwise, the node
+ * is appended to the elements of the open array.
  *
- * Return value: (nullable) (transfer none): the #JsonBuilder, or %NULL if the
- * call was inconsistent
+ * The builder will take ownership of the node.
+ *
+ * Return value: (nullable) (transfer none): the builder instance
  */
 JsonBuilder *
 json_builder_add_value (JsonBuilder *builder,
@@ -583,17 +614,18 @@ json_builder_add_value (JsonBuilder *builder,
 
 /**
  * json_builder_add_int_value:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  * @value: the value of the member or element
  *
- * If called after json_builder_set_member_name(), sets @value as member of the
- * most recent opened object, otherwise @value is added as element of the most
- * recent opened array.
+ * Adds an integer value to the currently open object member or array.
  *
- * See also: json_builder_add_value()
+ * If called after [method@Json.Builder.set_member_name], sets the given value
+ * as the value of the current member in the open object; otherwise, the value
+ * is appended to the elements of the open array.
  *
- * Return value: (nullable) (transfer none): the #JsonBuilder, or %NULL if the
- * call was inconsistent
+ * See also: [method@Json.Builder.add_value]
+ *
+ * Return value: (nullable) (transfer none): the builder instance
  */
 JsonBuilder *
 json_builder_add_int_value (JsonBuilder *builder,
@@ -628,17 +660,18 @@ json_builder_add_int_value (JsonBuilder *builder,
 
 /**
  * json_builder_add_double_value:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  * @value: the value of the member or element
  *
- * If called after json_builder_set_member_name(), sets @value as member of the
- * most recent opened object, otherwise @value is added as element of the most
- * recent opened array.
+ * Adds a floating point value to the currently open object member or array.
  *
- * See also: json_builder_add_value()
+ * If called after [method@Json.Builder.set_member_name], sets the given value
+ * as the value of the current member in the open object; otherwise, the value
+ * is appended to the elements of the open array.
  *
- * Return value: (nullable) (transfer none): the #JsonBuilder, or %NULL if the
- * call was inconsistent
+ * See also: [method@Json.Builder.add_value]
+ *
+ * Return value: (nullable) (transfer none): the builder instance
  */
 JsonBuilder *
 json_builder_add_double_value (JsonBuilder *builder,
@@ -674,17 +707,18 @@ json_builder_add_double_value (JsonBuilder *builder,
 
 /**
  * json_builder_add_boolean_value:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  * @value: the value of the member or element
  *
- * If called after json_builder_set_member_name(), sets @value as member of the
- * most recent opened object, otherwise @value is added as element of the most
- * recent opened array.
+ * Adds a boolean value to the currently open object member or array.
  *
- * See also: json_builder_add_value()
+ * If called after [method@Json.Builder.set_member_name], sets the given value
+ * as the value of the current member in the open object; otherwise, the value
+ * is appended to the elements of the open array.
  *
- * Return value: (nullable) (transfer none): the #JsonBuilder, or %NULL if the
- * call was inconsistent
+ * See also: [method@Json.Builder.add_value]
+ *
+ * Return value: (nullable) (transfer none): the builder instance
  */
 JsonBuilder *
 json_builder_add_boolean_value (JsonBuilder *builder,
@@ -720,17 +754,18 @@ json_builder_add_boolean_value (JsonBuilder *builder,
 
 /**
  * json_builder_add_string_value:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  * @value: the value of the member or element
  *
- * If called after json_builder_set_member_name(), sets @value as member of the
- * most recent opened object, otherwise @value is added as element of the most
- * recent opened array.
+ * Adds a boolean value to the currently open object member or array.
  *
- * See also: json_builder_add_value()
+ * If called after [method@Json.Builder.set_member_name], sets the given value
+ * as the value of the current member in the open object; otherwise, the value
+ * is appended to the elements of the open array.
  *
- * Return value: (nullable) (transfer none): the #JsonBuilder, or %NULL if the
- * call was inconsistent
+ * See also: [method@Json.Builder.add_value]
+ *
+ * Return value: (nullable) (transfer none): the builder instance
  */
 JsonBuilder *
 json_builder_add_string_value (JsonBuilder *builder,
@@ -766,16 +801,17 @@ json_builder_add_string_value (JsonBuilder *builder,
 
 /**
  * json_builder_add_null_value:
- * @builder: a #JsonBuilder
+ * @builder: a builder
  *
- * If called after json_builder_set_member_name(), sets null as member of the
- * most recent opened object, otherwise null is added as element of the most
- * recent opened array.
+ * Adds a null value to the currently open object member or array.
  *
- * See also: json_builder_add_value()
+ * If called after [method@Json.Builder.set_member_name], sets the given value
+ * as the value of the current member in the open object; otherwise, the value
+ * is appended to the elements of the open array.
  *
- * Return value: (nullable) (transfer none): the #JsonBuilder, or %NULL if
- * the call was inconsistent
+ * See also: [method@Json.Builder.add_value]
+ *
+ * Return value: (nullable) (transfer none): the builder instance
  */
 JsonBuilder *
 json_builder_add_null_value (JsonBuilder *builder)

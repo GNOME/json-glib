@@ -38,7 +38,7 @@ G_BEGIN_DECLS
 /**
  * JSON_PATH_ERROR:
  *
- * Error domain for #JsonPath errors
+ * Error domain for `JsonPath`.
  *
  * Since: 0.14
  */
@@ -48,7 +48,9 @@ G_BEGIN_DECLS
  * JsonPathError:
  * @JSON_PATH_ERROR_INVALID_QUERY: Invalid query
  *
- * Error code enumeration for the %JSON_PATH_ERROR domain.
+ * Error codes for `JSON_PATH_ERROR`.
+ *
+ * This enumeration can be extended at later date
  *
  * Since: 0.14
  */

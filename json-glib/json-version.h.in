@@ -31,35 +31,35 @@
 /**
  * JSON_MAJOR_VERSION:
  *
- * Json major version component (e.g. 1 if %JSON_VERSION is 1.2.3)
+ * Json major version component (e.g. 1 if `JSON_VERSION` is "1.2.3")
  */
 #define JSON_MAJOR_VERSION              (@JSON_MAJOR_VERSION@)
 
 /**
  * JSON_MINOR_VERSION:
  *
- * Json minor version component (e.g. 2 if %JSON_VERSION is 1.2.3)
+ * Json minor version component (e.g. 2 if `JSON_VERSION` is "1.2.3")
  */
 #define JSON_MINOR_VERSION              (@JSON_MINOR_VERSION@)
 
 /**
  * JSON_MICRO_VERSION:
  *
- * Json micro version component (e.g. 3 if %JSON_VERSION is 1.2.3)
+ * Json micro version component (e.g. 3 if `JSON_VERSION` is "1.2.3")
  */
 #define JSON_MICRO_VERSION              (@JSON_MICRO_VERSION@)
 
 /**
  * JSON_VERSION
  *
- * Json version.
+ * The version of JSON-GLib.
  */
 #define JSON_VERSION                    (@JSON_VERSION@)
 
 /**
  * JSON_VERSION_S:
  *
- * JSON-GLib version, encoded as a string, useful for printing and
+ * The version of JSON-GLib, encoded as a string, useful for printing and
  * concatenation.
  */
 #define JSON_VERSION_S                  "@JSON_VERSION@"
@@ -70,7 +70,7 @@
 /**
  * JSON_VERSION_HEX:
  *
- * JSON-GLib version, encoded as an hexadecimal number, useful for
+ * The version of JSON-GLib, encoded as an hexadecimal number, useful for
  * integer comparisons.
  */
 #define JSON_VERSION_HEX \
@@ -82,8 +82,8 @@
  * @minor: required minor version
  * @micro: required micro version
  *
- * Compile-time version checking. Evaluates to %TRUE if the version
- * of Json is greater than the required one.
+ * Compile-time version checking. Evaluates to `TRUE` if the version
+ * of JSON-GLib is greater than the required one.
  */
 #define JSON_CHECK_VERSION(major,minor,micro)   \
         (JSON_MAJOR_VERSION > (major) || \

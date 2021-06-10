@@ -23,6 +23,7 @@ search_index = true
 [theme]
 name = "basic"
 show_index_summary = true
+show_class_hierarchy = true
 
 [source-location]
 base_url = "https://gitlab.gnome.org/GNOME/json-glib/-/blob/master/"
@@ -33,3 +34,15 @@ content_files = [
   'json-gobject.md',
   'json-gvariant.md',
 ]
+
+[[object]]
+pattern = "DEPRECATED_IN_*"
+hidden = true
+
+[[object]]
+name = "DEPRECATED_FOR"
+hidden = true
+
+[[object]]
+name = "UNAVAILABLE"
+hidden = true

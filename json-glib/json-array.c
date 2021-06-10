@@ -171,7 +171,7 @@ json_array_seal (JsonArray *array)
 
 /**
  * json_array_is_immutable:
- * @array: an array
+ * @array: a JSON array
  *
  * Check whether the given `array` has been marked as immutable by calling
  * [method@Json.Array.seal] on it.
@@ -190,7 +190,7 @@ json_array_is_immutable (JsonArray *array)
 
 /**
  * json_array_get_elements:
- * @array: an array
+ * @array: a JSON array
  *
  * Retrieves all the elements of an array as a list of nodes.
  *
@@ -215,7 +215,7 @@ json_array_get_elements (JsonArray *array)
 
 /**
  * json_array_dup_element:
- * @array: an array
+ * @array: a JSON array
  * @index_: the index of the element to retrieve
  *
  * Retrieves a copy of the element at the given position in the array.
@@ -242,7 +242,7 @@ json_array_dup_element (JsonArray *array,
 
 /**
  * json_array_get_element:
- * @array: a #JsonArray
+ * @array: a JSON array
  * @index_: the index of the element to retrieve
  *
  * Retrieves the element at the given position in the array.
@@ -261,7 +261,7 @@ json_array_get_element (JsonArray *array,
 
 /**
  * json_array_get_int_element:
- * @array: an array
+ * @array: a JSON array
  * @index_: the index of the element to retrieve
  *
  * Conveniently retrieves the integer value of the element at the given
@@ -291,7 +291,7 @@ json_array_get_int_element (JsonArray *array,
 
 /**
  * json_array_get_double_element:
- * @array: an array
+ * @array: a JSON array
  * @index_: the index of the element to retrieve
  *
  * Conveniently retrieves the floating point value of the element at
@@ -321,7 +321,7 @@ json_array_get_double_element (JsonArray *array,
 
 /**
  * json_array_get_boolean_element:
- * @array: an array
+ * @array: a JSON array
  * @index_: the index of the element to retrieve
  *
  * Conveniently retrieves the boolean value of the element at the given
@@ -351,7 +351,7 @@ json_array_get_boolean_element (JsonArray *array,
 
 /**
  * json_array_get_string_element:
- * @array: an array
+ * @array: a JSON array
  * @index_: the index of the element to retrieve
  *
  * Conveniently retrieves the string value of the element at the given
@@ -384,7 +384,7 @@ json_array_get_string_element (JsonArray *array,
 
 /**
  * json_array_get_null_element:
- * @array: an array
+ * @array: a JSON array
  * @index_: the index of the element to retrieve
  *
  * Conveniently checks whether the element at the given position inside the
@@ -422,7 +422,7 @@ json_array_get_null_element (JsonArray *array,
 
 /**
  * json_array_get_array_element:
- * @array: an array
+ * @array: a JSON array
  * @index_: the index of the element to retrieve
  *
  * Conveniently retrieves the array at the given position inside an array.
@@ -454,7 +454,7 @@ json_array_get_array_element (JsonArray *array,
 
 /**
  * json_array_get_object_element:
- * @array: a #JsonArray
+ * @array: a JSON array
  * @index_: the index of the element to retrieve
  *
  * Conveniently retrieves the object at the given position inside an array.
@@ -486,7 +486,7 @@ json_array_get_object_element (JsonArray *array,
 
 /**
  * json_array_get_length:
- * @array: an array
+ * @array: a JSON array
  *
  * Retrieves the length of the given array
  *
@@ -502,7 +502,7 @@ json_array_get_length (JsonArray *array)
 
 /**
  * json_array_add_element:
- * @array: an array
+ * @array: a JSON array
  * @node: (transfer full): the element to add
  *
  * Appends the given `node` inside an array.
@@ -519,7 +519,7 @@ json_array_add_element (JsonArray *array,
 
 /**
  * json_array_add_int_element:
- * @array: an array
+ * @array: a JSON array
  * @value: the integer value to add
  *
  * Conveniently adds the given integer value into an array.
@@ -539,7 +539,7 @@ json_array_add_int_element (JsonArray *array,
 
 /**
  * json_array_add_double_element:
- * @array: an array
+ * @array: a JSON array
  * @value: the floating point value to add
  *
  * Conveniently adds the given floating point value into an array.
@@ -559,7 +559,7 @@ json_array_add_double_element (JsonArray *array,
 
 /**
  * json_array_add_boolean_element:
- * @array: an array
+ * @array: a JSON array
  * @value: the boolean value to add
  *
  * Conveniently adds the given boolean value into an array.
@@ -579,7 +579,7 @@ json_array_add_boolean_element (JsonArray *array,
 
 /**
  * json_array_add_string_element:
- * @array: an array
+ * @array: a JSON array
  * @value: the string value to add
  *
  * Conveniently adds the given string value into an array.
@@ -608,7 +608,7 @@ json_array_add_string_element (JsonArray   *array,
 
 /**
  * json_array_add_null_element:
- * @array: an array
+ * @array: a JSON array
  *
  * Conveniently adds a `null` element into an array
  *
@@ -626,10 +626,10 @@ json_array_add_null_element (JsonArray *array)
 
 /**
  * json_array_add_array_element:
- * @array: an array
+ * @array: a JSON array
  * @value: (nullable) (transfer full): the array to add
  *
- * Conveniently adds an array into an array.
+ * Conveniently adds an array element into an array.
  *
  * If `value` is `NULL`, a `null` element will be added instead.
  *
@@ -660,7 +660,7 @@ json_array_add_array_element (JsonArray *array,
 
 /**
  * json_array_add_object_element:
- * @array: an array
+ * @array: a JSON array
  * @value: (transfer full) (nullable): the object to add
  *
  * Conveniently adds an object into an array.
@@ -694,7 +694,7 @@ json_array_add_object_element (JsonArray  *array,
 
 /**
  * json_array_remove_element:
- * @array: a #JsonArray
+ * @array: a JSON array
  * @index_: the position of the element to be removed
  *
  * Removes the element at the given position inside an array.
@@ -713,7 +713,7 @@ json_array_remove_element (JsonArray *array,
 
 /**
  * json_array_foreach_element:
- * @array: an array
+ * @array: a JSON array
  * @func: (scope call): the function to be called on each element
  * @data: (closure): data to be passed to the function
  *
