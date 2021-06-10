@@ -1232,9 +1232,9 @@ out:
 
 /**
  * json_gvariant_deserialize:
- * @json_node: A #JsonNode to convert
- * @signature: (nullable): A valid `GVariant` type string
- * @error: A pointer to a #GError
+ * @json_node: the node to convert
+ * @signature: (nullable): a valid `GVariant` type string
+ * @error: (nullable): return location for a #GError, or `NULL`
  *
  * Converts a JSON data structure to a `GVariant`.
  *
