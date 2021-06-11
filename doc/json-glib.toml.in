@@ -46,3 +46,22 @@ hidden = true
 [[object]]
 name = "UNAVAILABLE"
 hidden = true
+
+[[object]]
+name = "ParserError"
+  [[object.function]]
+  name = "quark"
+  check_ignore = true
+
+
+[[object]]
+name = "PathError"
+  [[object.function]]
+  name = "quark"
+  check_ignore = true
+
+[[object]]
+name = "ReaderError"
+  [[object.function]]
+  name = "quark"
+  check_ignore = true
