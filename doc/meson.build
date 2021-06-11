@@ -42,6 +42,21 @@ if get_option('gtk_doc').enabled()
     install: true,
     install_dir: json_docdir,
   )
+
+  if get_option('tests')
+    test('doc-check',
+      gidocgen,
+      args: [
+        'check',
+        '--config', json_toml,
+        '--add-include-path=@0@'.format(meson.current_build_dir() / '../json-glib'),
+        json_glib_gir[0],
+      ],
+      depends: json_glib_gir[0],
+      suite: ['docs'],
+    )
+  endif
+
 endif
 
 xsltproc = find_program('xsltproc', required: false)

@@ -64,6 +64,15 @@
  */
 #define JSON_VERSION_S                  "@JSON_VERSION@"
 
+/**
+ * JSON_ENCODE_VERSION:
+ * @major: (type int): the major version to encode
+ * @minor: (type int): the minor version to encode
+ * @micro: (type int): the micro version to encode
+ *
+ * Encodes a JSON-GLib version in an hexadecimal number, useful for
+ * integer comparisons.
+ */
 #define JSON_ENCODE_VERSION(major,minor,micro) \
         ((major) << 24 | (minor) << 16 | (micro) << 8)
 
