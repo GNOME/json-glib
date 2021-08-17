@@ -26,6 +26,10 @@ Overview of changes for 1.6
 • Fix build reproducibility [!33, Alexander Kanavin]
 • #26 - Fix parsing of UTF-16 surrogate pairs [James Westman]
 • #56 - Ignore UTF-8 BOM [Jan-Michael Brummer]
+• Discover linker flags on all toolchains
+• #58 - Fix memory leak [Richard Hughes]
+• Use gi-docgen instead of gtk-doc for generating the API reference
+• Build against newer versions of GLib
 
 Overview of changes for 1.4
 ==============================
