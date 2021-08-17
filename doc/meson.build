@@ -1,4 +1,4 @@
-if get_option('gtk_doc').enabled()
+if get_option('gtk_doc').enabled() and get_option('introspection').enabled()
   dependency('gi-docgen', version: '>= 2021.6',
     fallback: ['gi-docgen', 'dummy_dep'],
   )
