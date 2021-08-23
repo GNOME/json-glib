@@ -155,6 +155,10 @@ subdir('json-glib')
 subdir('po')
 subdir('doc')
 
+if not meson.is_subproject()
+    meson.add_dist_script('build-aux/dist-docs.py')
+endif
+
 summary({
     'prefix': get_option('prefix'),
     'includedir': json_includedir,
