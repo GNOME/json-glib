@@ -2,13 +2,10 @@
 
 import os
 import shutil
-import subprocess
-
-from pathlib import PurePath
 
 
 references = [
-    'docs/json-glib/json-glib-1.0',
+    'doc/json-glib-1.0',
 ]
 
 sourceroot = os.environ.get('MESON_SOURCE_ROOT')
