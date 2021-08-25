@@ -21,6 +21,28 @@ stages:
     paths:
       - "${CI_PROJECT_DIR}/_build/meson-logs"
 
+.gidocgen-build:
+  image: fedora:latest
+  before_script:
+    - export PATH="$HOME/.local/bin:$PATH"
+    - dnf install -y python3 python3-pip python3-wheel gobject-introspection-devel graphviz ninja-build redhat-rpm-config
+    - dnf install -y ${PROJECT_DEPS}
+    - pip3 install --user meson==${MESON_VERSION} gi-docgen jinja2 Markdown markupsafe pygments toml typogrify
+  script:
+    - meson setup ${MESON_EXTRA_FLAGS} ${DOCS_FLAGS} _docs .
+    - meson compile -C _docs
+    - |
+      pushd "_docs/${DOCS_PATH}" > /dev/null
+      tar cf ${CI_PROJECT_NAME}-docs.tar .
+      popd > /dev/null
+    - mv _docs/${DOCS_PATH}/${CI_PROJECT_NAME}-docs.tar .
+  artifacts:
+    when: always
+    name: 'Documentation'
+    expose_as: 'Download the API reference'
+    paths:
+      - ${CI_PROJECT_NAME}-docs.tar
+
 fedora-x86_64:
   extends: .build-default
   stage: build
@@ -41,46 +63,18 @@ fedora-x86_64:
     MESON_EXTRA_FLAGS: "--buildtype=debug --default-library=both -Dwerror=true -Dglib:werror=false -Dintrospection=enabled"
 
 reference:
-  extends: .build-default
+  extends: .gidocgen-build
   stage: docs
   needs: []
   variables:
-    FEDORA_DEPS:
+    PROJECT_DEPS:
       docbook-style-xsl
       gcc
       gettext
       git
       glib2-devel
-      gobject-introspection-devel
-      graphviz
-      ninja-build
-      python3
-      python3-jinja2
-      python3-markdown
-      python3-markupsafe
-      python3-pip
-      python3-pygments
-      python3-toml
-      python3-typogrify
-      python3-wheel
-      redhat-rpm-config
       libxslt
     MESON_VERSION: "0.55.3"
-    MESON_EXTRA_FLAGS: "-Dgtk_doc=enabled -Dman=true -Dintrospection=enabled"
-  after_script:
-    - mkdir _reference
-    - mv _build/doc/json-glib-1.0/ _reference/
-  artifacts:
-    paths:
-      - _reference
-
-pages:
-  stage: deploy
-  needs: ['reference']
-  script:
-    - mv _reference public
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
+    MESON_EXTRA_FLAGS: "-Dman=true -Dintrospection=enabled"
+    DOCS_FLAGS: -Dgtk_doc=enabled
+    DOCS_PATH: doc/json-glib-1.0
