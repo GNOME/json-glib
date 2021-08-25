@@ -63,9 +63,9 @@ fedora-x86_64:
     MESON_EXTRA_FLAGS: "--buildtype=debug --default-library=both -Dwerror=true -Dglib:werror=false -Dintrospection=enabled"
 
 reference:
-  extends: .gidocgen-build
   stage: docs
   needs: []
+  extends: .gidocgen-build
   variables:
     PROJECT_DEPS:
       docbook-style-xsl
@@ -78,3 +78,15 @@ reference:
     MESON_EXTRA_FLAGS: "-Dman=true -Dintrospection=enabled"
     DOCS_FLAGS: -Dgtk_doc=enabled
     DOCS_PATH: doc/json-glib-1.0
+
+pages:
+  stage: deploy
+  needs: ['reference']
+  script:
+    - mkdir public && cd public
+    - tar xf ${CI_PROJECT_NAME}-docs.tar
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
