@@ -84,7 +84,7 @@ pages:
   needs: ['reference']
   script:
     - mkdir public && cd public
-    - tar xf ${CI_PROJECT_NAME}-docs.tar
+    - tar xf ../${CI_PROJECT_NAME}-docs.tar
   artifacts:
     paths:
       - public
