@@ -54,7 +54,7 @@ test_node_reinit (void)
   array = json_array_new ();
   node = json_node_init_array (json_node_alloc (), array);
 
-  json_node_init_int(node, 1);
+  json_node_init_int (node, 1);
 
   json_node_free (node);
   json_array_unref (array);
@@ -560,7 +560,6 @@ test_immutable_parent (void)
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*Json-CRITICAL **: json_node_set_parent: *");
 }
-
 
 int
 main (int   argc,
