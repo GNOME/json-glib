@@ -144,18 +144,15 @@ json_node_unset (JsonNode *node)
   switch (node->type)
     {
     case JSON_NODE_OBJECT:
-      if (node->data.object)
-        json_object_unref (node->data.object);
+      g_clear_pointer (&(node->data.object), json_object_unref);
       break;
 
     case JSON_NODE_ARRAY:
-      if (node->data.array)
-        json_array_unref (node->data.array);
+      g_clear_pointer (&(node->data.array), json_array_unref);
       break;
 
     case JSON_NODE_VALUE:
-      if (node->data.value)
-        json_value_unref (node->data.value);
+      g_clear_pointer (&(node->data.value), json_value_unref);
       break;
 
     case JSON_NODE_NULL:

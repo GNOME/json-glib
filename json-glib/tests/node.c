@@ -44,6 +44,22 @@ test_init_string (void)
   json_node_free (node);
 }
 
+/* Test that reinit used node */
+static void
+test_node_reinit (void)
+{
+  JsonNode *node = NULL;
+  JsonArray *array = NULL;
+
+  array = json_array_new ();
+  node = json_node_init_array (json_node_alloc (), array);
+
+  json_node_init_int (node, 1);
+
+  json_node_free (node);
+  json_array_unref (array);
+}
+
 static void
 test_copy_null (void)
 {
@@ -556,6 +572,7 @@ main (int   argc,
   g_test_add_func ("/nodes/init/boolean", test_init_boolean);
   g_test_add_func ("/nodes/init/string", test_init_string);
   g_test_add_func ("/nodes/init/null", test_null);
+  g_test_add_func ("/nodes/init/reinit", test_node_reinit);
   g_test_add_func ("/nodes/copy/null", test_copy_null);
   g_test_add_func ("/nodes/copy/value", test_copy_value);
   g_test_add_func ("/nodes/copy/object", test_copy_object);
