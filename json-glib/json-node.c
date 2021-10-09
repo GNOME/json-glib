@@ -143,7 +143,7 @@ json_node_unset (JsonNode *node)
     case JSON_NODE_OBJECT:
       if (node->data.object)
         json_object_unref (node->data.object);
-      node->data.object = NULL;
+      g_clear_pointer (&(node->data.object), json_object_unref);
       break;
 
     case JSON_NODE_ARRAY:
