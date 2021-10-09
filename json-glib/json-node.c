@@ -141,8 +141,6 @@ json_node_unset (JsonNode *node)
   switch (node->type)
     {
     case JSON_NODE_OBJECT:
-      if (node->data.object)
-        json_object_unref (node->data.object);
       g_clear_pointer (&(node->data.object), json_object_unref);
       break;
 
