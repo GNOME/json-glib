@@ -315,9 +315,9 @@ json_builder_get_root (JsonBuilder *builder)
     root = json_node_copy (builder->priv->root);
 
   /* Sanity check. */
-  g_return_val_if_fail (!builder->priv->immutable ||
-                        root == NULL ||
-                        json_node_is_immutable (root), NULL);
+  g_assert (!builder->priv->immutable ||
+            root == NULL ||
+            json_node_is_immutable (root));
 
   return root;
 }
