@@ -1316,7 +1316,10 @@ json_gvariant_deserialize_data (const gchar  *json,
   parser = json_parser_new ();
 
   if (! json_parser_load_from_data (parser, json, length, error))
-    return NULL;
+    {
+      g_object_unref (parser);
+      return NULL;
+    }
 
   root = json_parser_get_root (parser);
   if (root == NULL)
