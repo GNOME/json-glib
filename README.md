@@ -42,8 +42,8 @@ Build and installation
 To build JSON-GLib just run:
 
 ```sh
-  $ meson _build .
-  $ meson -C _build
+  $ meson setup _build .
+  $ meson compile -C _build
   $ meson test -C _build
   $ meson install -C _build
 ```
