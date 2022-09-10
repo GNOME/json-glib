@@ -1117,3 +1117,22 @@ json_reader_get_member_name (JsonReader *reader)
   return g_ptr_array_index (reader->priv->members,
                             reader->priv->members->len - 1);
 }
+
+/**
+ * json_reader_get_current_node:
+ * @reader: a reader
+ *
+ * Retrieves the reader node at the current position.
+ *
+ * Return value: (nullable) (transfer none): the current node of the reader
+ *
+ * Since: 1.8
+ */
+JsonNode *
+json_reader_get_current_node (JsonReader *reader)
+{
+  g_return_val_if_fail (JSON_IS_READER (reader), NULL);
+  json_reader_return_val_if_error_set (reader, NULL);
+
+  return reader->priv->current_node;
+}
