@@ -1557,35 +1557,41 @@ json_parser_load_from_stream_finish (JsonParser    *parser,
 }
 
 static void
-read_from_stream (GTask *task,
-                  gpointer source_obj,
-                  gpointer task_data,
-                  GCancellable *cancellable)
+read_from_stream (GObject      *object,
+                  GAsyncResult *result,
+                  gpointer      user_data)
 {
-  LoadData *data = task_data;
+  GTask *task = user_data;
   GError *error = NULL;
+  LoadData *data;
   gssize res;
 
-  data->pos = 0;
-  g_byte_array_set_size (data->content, data->pos + GET_DATA_BLOCK_SIZE + 1);
-  while ((res = g_input_stream_read (data->stream,
-                                     data->content->data + data->pos,
-                                     GET_DATA_BLOCK_SIZE,
-                                     cancellable, &error)) > 0)
-    {
-      data->pos += res;
-      g_byte_array_set_size (data->content, data->pos + GET_DATA_BLOCK_SIZE + 1);
-    }
+  data = g_task_get_task_data (task);
+  res = g_input_stream_read_finish (G_INPUT_STREAM (object), result, &error);
 
   if (res < 0)
     {
       g_task_return_error (task, error);
-      return;
+      g_object_unref (task);
     }
-
-  /* zero-terminate the content; we allocated an extra byte for this */
-  data->content->data[data->pos] = 0;
-  g_task_return_boolean (task, TRUE);
+  else if (res > 0)
+    {
+      data->pos += res;
+      g_byte_array_set_size (data->content, data->pos + GET_DATA_BLOCK_SIZE + 1);
+      g_input_stream_read_async (data->stream,
+                                 data->content->data + data->pos,
+                                 GET_DATA_BLOCK_SIZE,
+                                 G_PRIORITY_DEFAULT,
+                                 g_task_get_cancellable (task),
+                                 read_from_stream, task);
+    }
+  else
+    {
+      /* zero-terminate the content; we allocated an extra byte for this */
+      data->content->data[data->pos] = 0;
+      g_task_return_boolean (task, TRUE);
+      g_object_unref (task);
+    }
 }
 
 /**
@@ -1629,6 +1635,11 @@ json_parser_load_from_stream_async (JsonParser          *parser,
   task = g_task_new (parser, cancellable, callback, user_data);
   g_task_set_task_data (task, data, load_data_free);
 
-  g_task_run_in_thread (task, read_from_stream);
-  g_object_unref (task);
+  g_byte_array_set_size (data->content, data->pos + GET_DATA_BLOCK_SIZE + 1);
+  g_input_stream_read_async (data->stream,
+                             data->content->data + data->pos,
+                             GET_DATA_BLOCK_SIZE,
+                             G_PRIORITY_DEFAULT,
+                             cancellable,
+                             read_from_stream, task);
 }
