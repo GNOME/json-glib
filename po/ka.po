@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues\n"
 "POT-Creation-Date: 2022-09-18 08:04+0000\n"
-"PO-Revision-Date: 2022-09-22 10:47+0200\n"
+"PO-Revision-Date: 2022-09-23 19:37+0200\n"
 "Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
 "Language-Team: \n"
 "Language: ka\n"
@@ -133,11 +133,11 @@ msgstr "JSON-ის კვანძის მოულოდნელი ტი�
 
 #: json-glib/json-gvariant.c:552
 msgid "Missing elements in JSON array to conform to a tuple"
-msgstr ""
+msgstr "JSON მასივს კორტეჟთან შესათანხმებლად ელემენტები აკლია"
 
 #: json-glib/json-gvariant.c:580
 msgid "Missing closing symbol “)” in the GVariant tuple type"
-msgstr ""
+msgstr "GVariant-ის კორტეჟის ტიპში დამხურავი \")\" აკლია"
 
 #: json-glib/json-gvariant.c:588
 msgid "Unexpected extra elements in JSON array"
@@ -257,7 +257,7 @@ msgstr "მიმდინარე კვანძის ტიპია \"%s\"
 #: json-glib/json-reader.c:712
 #, c-format
 msgid "The member “%s” is not defined in the object at the current position."
-msgstr ""
+msgstr "წევრი \"%s\" ობიექტში მიმდინარე პოზიციაზე აღწერილი არაა."
 
 #: json-glib/json-reader.c:796 json-glib/json-reader.c:845
 #, c-format
