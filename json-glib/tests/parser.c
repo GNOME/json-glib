@@ -189,7 +189,6 @@ test_empty (void)
 static void
 test_base_value (void)
 {
-  gint i;
   JsonParser *parser;
 
   parser = json_parser_new ();
@@ -198,7 +197,7 @@ test_base_value (void)
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with base-values...\n");
 
-  for (i = 0; i < n_test_base_values; i++)
+  for (guint i = 0; i < n_test_base_values; i++)
     {
       GError *error = NULL;
 
@@ -283,7 +282,6 @@ test_empty_array (void)
 static void
 test_simple_array (void)
 {
-  gint i;
   JsonParser *parser;
 
   parser = json_parser_new ();
@@ -292,7 +290,7 @@ test_simple_array (void)
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with simple arrays...\n");
 
-  for (i = 0; i < n_test_simple_arrays; i++)
+  for (guint i = 0; i < n_test_simple_arrays; i++)
     {
       GError *error = NULL;
 
@@ -347,7 +345,6 @@ test_simple_array (void)
 static void
 test_nested_array (void)
 {
-  gint i;
   JsonParser *parser;
 
   parser = json_parser_new ();
@@ -356,7 +353,7 @@ test_nested_array (void)
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with nested arrays...\n");
 
-  for (i = 0; i < n_test_nested_arrays; i++)
+  for (guint i = 0; i < n_test_nested_arrays; i++)
     {
       GError *error = NULL;
 
@@ -442,7 +439,6 @@ test_empty_object (void)
 static void
 test_simple_object (void)
 {
-  gint i;
   JsonParser *parser;
 
   parser = json_parser_new ();
@@ -451,7 +447,7 @@ test_simple_object (void)
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with simple objects...\n");
 
-  for (i = 0; i < n_test_simple_objects; i++)
+  for (guint i = 0; i < n_test_simple_objects; i++)
     {
       GError *error = NULL;
 
@@ -503,7 +499,6 @@ test_simple_object (void)
 static void
 test_nested_object (void)
 {
-  gint i;
   JsonParser *parser;
 
   parser = json_parser_new ();
@@ -512,7 +507,7 @@ test_nested_object (void)
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with nested objects...\n");
 
-  for (i = 0; i < n_test_nested_objects; i++)
+  for (guint i = 0; i < n_test_nested_objects; i++)
     {
       GError *error = NULL;
 
@@ -553,7 +548,6 @@ test_nested_object (void)
 static void
 test_assignment (void)
 {
-  gint i;
   JsonParser *parser;
 
   parser = json_parser_new ();
@@ -562,7 +556,7 @@ test_assignment (void)
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with assignments...\n");
 
-  for (i = 0; i < n_test_assignments; i++)
+  for (guint i = 0; i < n_test_assignments; i++)
     {
       GError *error = NULL;
 
@@ -595,7 +589,6 @@ test_assignment (void)
 static void
 test_unicode_escape (void)
 {
-  gint i;
   JsonParser *parser;
 
   parser = json_parser_new ();
@@ -604,7 +597,7 @@ test_unicode_escape (void)
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with unicode escape...\n");
 
-  for (i = 0; i < n_test_unicode; i++)
+  for (guint i = 0; i < n_test_unicode; i++)
     {
       GError *error = NULL;
 

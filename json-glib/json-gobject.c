@@ -406,7 +406,7 @@ json_gobject_dump (GObject *gobject)
 
 gboolean
 json_deserialize_pspec (GValue     *value,
-                        GParamSpec *pspec,
+                        GParamSpec *pspec G_GNUC_UNUSED,
                         JsonNode   *node)
 {
   GValue node_value = { 0, };
@@ -655,7 +655,7 @@ json_deserialize_pspec (GValue     *value,
 
 JsonNode *
 json_serialize_pspec (const GValue *real_value,
-                      GParamSpec   *pspec)
+                      GParamSpec   *pspec G_GNUC_UNUSED)
 {
   JsonNode *retval = NULL;
   JsonNodeType node_type;
@@ -838,11 +838,11 @@ json_gobject_serialize (GObject *gobject)
  * json_construct_gobject:
  * @gtype: the type of the object to construct
  * @data: a JSON data stream
- * @length: length of the data stream
+ * @length: length of the data stream (unused)
  * @error: return location for a #GError, or %NULL
  *
  * Deserializes a JSON data stream and creates an instance of the given
- * type
+ * type.
  *
  * If the given type implements the [iface@Json.Serializable] interface, it
  * will be asked to deserialize all the JSON members into their respective
@@ -851,7 +851,11 @@ json_gobject_serialize (GObject *gobject)
  *
  * **Note**: the JSON data stream must be an object.
  *
- * Return value: (transfer full) (nullable): a new object instance of the given type
+ * For historical reasons, the `length` argument is unused. The given `data`
+ * must be a `NUL`-terminated string.
+ *
+ * Returns: (transfer full) (nullable): a new object instance of the given
+ *   type
  *
  * Since: 0.4
  *
@@ -860,7 +864,7 @@ json_gobject_serialize (GObject *gobject)
 GObject *
 json_construct_gobject (GType         gtype,
                         const gchar  *data,
-                        gsize         length,
+                        gsize         length G_GNUC_UNUSED,
                         GError      **error)
 {
   return json_gobject_from_data (gtype, data, strlen (data), error);

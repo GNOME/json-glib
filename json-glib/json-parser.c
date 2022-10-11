@@ -950,7 +950,6 @@ static JsonScanner *
 json_scanner_create (JsonParser *parser)
 {
   JsonScanner *scanner;
-  gint i;
 
   scanner = json_scanner_new ();
   scanner->msg_handler = json_scanner_msg_handler;
@@ -960,7 +959,7 @@ json_scanner_create (JsonParser *parser)
    * we cannot move them into JsonScanner without moving a bunch of code
    * as well
    */
-  for (i = 0; i < n_symbols; i++)
+  for (guint i = 0; i < n_symbols; i++)
     {
       json_scanner_scope_add_symbol (scanner, 0,
                                      symbol_names + symbols[i].name_offset,
@@ -1011,7 +1010,6 @@ json_parser_load (JsonParser   *parser,
   JsonScanner *scanner;
   gboolean done;
   gboolean retval = TRUE;
-  gint i;
   gchar *data = input_data;
 
   json_parser_clear (parser);
@@ -1053,7 +1051,7 @@ json_parser_load (JsonParser   *parser,
       else
         {
           guint expected_token;
-          gint cur_token;
+          guint cur_token;
 
           /* we try to show the expected token, if possible */
           expected_token = json_parse_statement (parser, scanner);
@@ -1071,7 +1069,7 @@ json_parser_load (JsonParser   *parser,
                   if (expected_token > JSON_TOKEN_INVALID &&
                       expected_token < JSON_TOKEN_LAST)
                     {
-                      for (i = 0; i < n_symbols; i++)
+                      for (guint i = 0; i < n_symbols; i++)
                         if (symbols[i].token == expected_token)
                           symbol_name = symbol_names + symbols[i].name_offset;
 
@@ -1084,7 +1082,7 @@ json_parser_load (JsonParser   *parser,
                     {
                       symbol_name = "???";
 
-                      for (i = 0; i < n_symbols; i++)
+                      for (guint i = 0; i < n_symbols; i++)
                         if (symbols[i].token == cur_token)
                           symbol_name = symbol_names + symbols[i].name_offset;
                     }
@@ -1558,7 +1556,7 @@ json_parser_load_from_stream_finish (JsonParser    *parser,
 
 static void
 read_from_stream (GTask *task,
-                  gpointer source_obj,
+                  gpointer source_obj G_GNUC_UNUSED,
                   gpointer task_data,
                   GCancellable *cancellable)
 {

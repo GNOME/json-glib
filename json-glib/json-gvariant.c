@@ -490,24 +490,27 @@ json_node_assert_type (JsonNode       *json_node,
 }
 
 static void
-json_to_gvariant_foreach_add (gpointer data, gpointer user_data)
+json_to_gvariant_foreach_add (gpointer data,
+                              gpointer user_data)
 {
-  GVariantBuilder *builder = (GVariantBuilder *) user_data;
-  GVariant *child = (GVariant *) data;
+  GVariantBuilder *builder = user_data;
+  GVariant *child = data;
 
   g_variant_builder_add_value (builder, child);
 }
 
 static void
-json_to_gvariant_foreach_free (gpointer data, gpointer user_data)
+json_to_gvariant_foreach_free (gpointer data,
+                               gpointer user_data G_GNUC_UNUSED)
 {
-  GVariant *child = (GVariant *) data;
+  GVariant *child = data;
 
   g_variant_unref (child);
 }
 
 static GVariant *
-json_to_gvariant_build_from_glist (GList *list, const gchar *signature)
+json_to_gvariant_build_from_glist (GList      *list,
+                                   const char *signature)
 {
   GVariantBuilder *builder;
   GVariant *result;
@@ -529,7 +532,7 @@ json_to_gvariant_tuple (JsonNode     *json_node,
 {
   GVariant *variant = NULL;
   JsonArray *array;
-  gint i;
+  guint i;
   GList *children = NULL;
   gboolean roll_back = FALSE;
   const gchar *initial_signature;
@@ -737,7 +740,7 @@ json_to_gvariant_array (JsonNode     *json_node,
 
   if (json_array_get_length (array) > 0)
     {
-      gint i;
+      guint i;
       guint len;
 
       len = json_array_get_length (array);

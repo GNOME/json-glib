@@ -199,7 +199,7 @@ struct _PathNode
 
   union {
     /* JSON_PATH_NODE_CHILD_ELEMENT */
-    int element_index;
+    guint element_index;
 
     /* JSON_PATH_NODE_CHILD_MEMBER */
     char *member_name;
@@ -258,7 +258,7 @@ json_path_class_init (JsonPathClass *klass)
 }
 
 static void
-json_path_init (JsonPath *self)
+json_path_init (JsonPath *self G_GNUC_UNUSED)
 {
 }
 
@@ -302,7 +302,7 @@ json_path_foreach_print (gpointer data,
       break;
 
     case JSON_PATH_NODE_CHILD_ELEMENT:
-      g_string_append_printf (buf, "<element '%d'", cur_node->data.element_index);
+      g_string_append_printf (buf, "<element '%u'", cur_node->data.element_index);
       break;
 
     case JSON_PATH_NODE_RECURSIVE_DESCENT:
@@ -781,7 +781,7 @@ walk_path_node (GList      *path,
             {
               JsonArray *array = json_node_get_array (root);
               GList *members, *l;
-              int i;
+              guint i;
 
               members = json_array_get_elements (array);
               for (l = members, i = 0; l != NULL; l = l->next, i += 1)

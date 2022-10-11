@@ -1,11 +1,13 @@
-project('json-glib', 'c', version: '1.6.7',
-        license: 'LGPLv2.1+',
-        default_options: [
-          'warning_level=1',
-          'buildtype=debugoptimized',
-          'c_std=c99',
-        ],
-        meson_version: '>= 0.55.3')
+project('json-glib', 'c',
+  version: '1.7.1',
+  license: 'LGPL-2.1-or-later',
+  default_options: [
+    'warning_level=2',
+    'buildtype=debugoptimized',
+    'c_std=gnu99',
+  ],
+  meson_version: '>= 0.62.0',
+)
 
 # Versioning
 json_version = meson.project_version()

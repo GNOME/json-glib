@@ -98,72 +98,84 @@ static const struct {
     "$.store.book[0].title",
     "[\"Sayings of the Century\"]",
     TRUE,
+    0,
   },
   {
     "Title of the first book in the store, using array notation.",
     "$['store']['book'][0]['title']",
     "[\"Sayings of the Century\"]",
     TRUE,
+    0,
   },
   {
     "All the authors from the every book.",
     "$.store.book[*].author",
     "[\"Nigel Rees\",\"Evelyn Waugh\",\"Herman Melville\",\"J. R. R. Tolkien\"]",
     TRUE,
+    0,
   },
   {
     "All the authors.",
     "$..author",
     "[\"Nigel Rees\",\"Evelyn Waugh\",\"Herman Melville\",\"J. R. R. Tolkien\"]",
     TRUE,
+    0,
   },
   {
     "Everything inside the store.",
     "$.store.*",
     NULL,
     TRUE,
+    0,
   },
   {
     "All the prices in the store.",
     "$.store..price",
     "[\"8.95\",\"12.99\",\"8.99\",\"22.99\",\"19.95\"]",
     TRUE,
+    0,
   },
   {
     "The third book.",
     "$..book[2]",
     "[{\"category\":\"fiction\",\"author\":\"Herman Melville\",\"title\":\"Moby Dick\",\"isbn\":\"0-553-21311-3\",\"price\":\"8.99\"}]",
     TRUE,
+    0,
   },
   {
     "The last book.",
     "$..book[-1:]",
     "[{\"category\":\"fiction\",\"author\":\"J. R. R. Tolkien\",\"title\":\"The Lord of the Rings\",\"isbn\":\"0-395-19395-8\",\"price\":\"22.99\"}]",
     TRUE,
+    0,
   },
   {
     "The first two books.",
     "$..book[0,1]",
     "[{\"category\":\"reference\",\"author\":\"Nigel Rees\",\"title\":\"Sayings of the Century\",\"price\":\"8.95\"},{\"category\":\"fiction\",\"author\":\"Evelyn Waugh\",\"title\":\"Sword of Honour\",\"price\":\"12.99\"}]",
     TRUE,
+    0,
   },
   {
     "The first two books, using a slice.",
     "$..book[:2]",
     "[{\"category\":\"reference\",\"author\":\"Nigel Rees\",\"title\":\"Sayings of the Century\",\"price\":\"8.95\"},{\"category\":\"fiction\",\"author\":\"Evelyn Waugh\",\"title\":\"Sword of Honour\",\"price\":\"12.99\"}]",
     TRUE,
+    0,
   },
   {
     "All the books.",
     "$['store']['book'][*]",
     "[{\"category\":\"reference\",\"author\":\"Nigel Rees\",\"title\":\"Sayings of the Century\",\"price\":\"8.95\"},{\"category\":\"fiction\",\"author\":\"Evelyn Waugh\",\"title\":\"Sword of Honour\",\"price\":\"12.99\"},{\"category\":\"fiction\",\"author\":\"Herman Melville\",\"title\":\"Moby Dick\",\"isbn\":\"0-553-21311-3\",\"price\":\"8.99\"},{\"category\":\"fiction\",\"author\":\"J. R. R. Tolkien\",\"title\":\"The Lord of the Rings\",\"isbn\":\"0-395-19395-8\",\"price\":\"22.99\"}]",
     TRUE,
+    0,
   },
   {
     "All the members of the bicycle object.",
     "$.store.bicycle.*",
     "[\"red\",\"19.95\"]",
     TRUE,
+    0,
   },
   {
     "The root node.",
@@ -174,7 +186,8 @@ static const struct {
                            "{\"category\":\"fiction\",\"author\":\"J. R. R. Tolkien\",\"title\":\"The Lord of the Rings\",\"isbn\":\"0-395-19395-8\",\"price\":\"22.99\"}],"
                  "\"bicycle\":{\"color\":\"red\",\"price\":\"19.95\"}}}]",
     TRUE,
-  }
+    0,
+  },
 };
 
 static void
@@ -212,7 +225,7 @@ path_expressions_invalid (gconstpointer data)
 
 
   g_assert_false (json_path_compile (path, expr, &error));
-  g_assert_error (error, JSON_PATH_ERROR, code);
+  g_assert_error (error, JSON_PATH_ERROR, (int) code);
 
   g_object_unref (path);
   g_clear_error (&error);
@@ -268,7 +281,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  int i, j;
+  guint i, j;
 
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("http://bugzilla.gnome.org/show_bug.cgi?id=");

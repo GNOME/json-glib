@@ -123,7 +123,7 @@ static const struct {
 };
 
 static void
-verify_foreach (JsonObject  *object,
+verify_foreach (JsonObject  *object G_GNUC_UNUSED,
                 const gchar *member_name,
                 JsonNode    *member_node,
                 gpointer     user_data)
@@ -140,9 +140,7 @@ verify_foreach (JsonObject  *object,
     }
   else
     {
-      int i;
-
-      for (i = 0; i < G_N_ELEMENTS (type_verify); i++)
+      for (guint i = 0; i < G_N_ELEMENTS (type_verify); i++)
         {
           if (strcmp (member_name, type_verify[i].member_name) == 0)
             {

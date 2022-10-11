@@ -113,8 +113,8 @@ json_serializable_deserialize_property (JsonSerializable *serializable,
 }
 
 static gboolean
-json_serializable_real_deserialize (JsonSerializable *serializable,
-                                    const gchar      *name,
+json_serializable_real_deserialize (JsonSerializable *serializable G_GNUC_UNUSED,
+                                    const gchar      *name G_GNUC_UNUSED,
                                     GValue           *value,
                                     GParamSpec       *pspec,
                                     JsonNode         *node)
@@ -128,8 +128,8 @@ json_serializable_real_deserialize (JsonSerializable *serializable,
 }
 
 static JsonNode *
-json_serializable_real_serialize (JsonSerializable *serializable,
-                                  const gchar      *name,
+json_serializable_real_serialize (JsonSerializable *serializable G_GNUC_UNUSED,
+                                  const gchar      *name G_GNUC_UNUSED,
                                   const GValue     *value,
                                   GParamSpec       *pspec)
 {

@@ -252,11 +252,9 @@ int
 main (int   argc,
       char *argv[])
 {
-  int i;
-
   g_test_init (&argc, &argv, NULL);
 
-  for (i = 0; i < n_test_invalid; i++)
+  for (guint i = 0; i < n_test_invalid; i++)
     {
       char *test_path = g_strconcat ("/invalid/json/", test_invalid[i].path, NULL);
 

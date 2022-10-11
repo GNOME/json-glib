@@ -216,17 +216,13 @@ test_json_to_gvariant (gconstpointer test_data)
 gint
 main (gint argc, gchar *argv[])
 {
-  gint i;
-  TestCase test_case;
-  gchar *test_name;
-
   g_test_init (&argc, &argv, NULL);
 
   /* GVariant to JSON */
-  for (i = 0; i < G_N_ELEMENTS (two_way_test_cases); i++)
+  for (guint i = 0; i < G_N_ELEMENTS (two_way_test_cases); i++)
     {
-      test_case = two_way_test_cases[i];
-      test_name = g_strdup_printf ("/gvariant/to-json/%s", test_case.test_name);
+      TestCase test_case = two_way_test_cases[i];
+      char *test_name = g_strdup_printf ("/gvariant/to-json/%s", test_case.test_name);
 
       g_test_add_data_func (test_name, &two_way_test_cases[i], test_gvariant_to_json);
 
@@ -234,10 +230,10 @@ main (gint argc, gchar *argv[])
     }
 
   /* JSON to GVariant */
-  for (i = 0; i < G_N_ELEMENTS (two_way_test_cases); i++)
+  for (guint i = 0; i < G_N_ELEMENTS (two_way_test_cases); i++)
     {
-      test_case = two_way_test_cases[i];
-      test_name = g_strdup_printf ("/gvariant/from-json/%s", test_case.test_name);
+      TestCase test_case = two_way_test_cases[i];
+      char *test_name = g_strdup_printf ("/gvariant/from-json/%s", test_case.test_name);
 
       g_test_add_data_func (test_name, &two_way_test_cases[i], test_json_to_gvariant);
 
@@ -245,10 +241,10 @@ main (gint argc, gchar *argv[])
     }
 
   /* JSON to GVariant one way tests */
-  for (i = 0; i < G_N_ELEMENTS (json_to_gvariant_test_cases); i++)
+  for (guint i = 0; i < G_N_ELEMENTS (json_to_gvariant_test_cases); i++)
     {
-      test_case = json_to_gvariant_test_cases[i];
-      test_name = g_strdup_printf ("/gvariant/from-json/%s", test_case.test_name);
+      TestCase test_case = json_to_gvariant_test_cases[i];
+      char *test_name = g_strdup_printf ("/gvariant/from-json/%s", test_case.test_name);
 
       g_test_add_data_func (test_name, &json_to_gvariant_test_cases[i], test_json_to_gvariant);
 
