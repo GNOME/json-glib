@@ -61,7 +61,6 @@ enum
 };
 
 static void   dump_value  (GString       *buffer,
-                           gint           level,
                            JsonNode      *node);
 static void   dump_array  (JsonGenerator *generator,
                            GString       *buffer,
@@ -316,7 +315,7 @@ dump_node (JsonGenerator *generator,
       break;
 
     case JSON_NODE_VALUE:
-      dump_value (buffer, level, node);
+      dump_value (buffer, node);
       break;
 
     case JSON_NODE_ARRAY:
@@ -333,7 +332,6 @@ dump_node (JsonGenerator *generator,
 
 static void
 dump_value (GString  *buffer,
-            gint      level,
             JsonNode *node)
 {
   const JsonValue *value;

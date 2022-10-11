@@ -258,7 +258,7 @@ json_path_class_init (JsonPathClass *klass)
 }
 
 static void
-json_path_init (JsonPath *self)
+json_path_init (JsonPath *self G_GNUC_UNUSED)
 {
 }
 

@@ -123,7 +123,7 @@ static const struct {
 };
 
 static void
-verify_foreach (JsonObject  *object,
+verify_foreach (JsonObject  *object G_GNUC_UNUSED,
                 const gchar *member_name,
                 JsonNode    *member_node,
                 gpointer     user_data)

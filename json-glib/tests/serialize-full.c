@@ -158,7 +158,7 @@ G_DEFINE_TYPE_WITH_CODE (TestObject, test_object, G_TYPE_OBJECT,
                                                 json_serializable_iface_init));
 
 static JsonNode *
-test_object_serialize_property (JsonSerializable *serializable,
+test_object_serialize_property (JsonSerializable *serializable G_GNUC_UNUSED,
                                 const gchar      *name,
                                 const GValue     *value,
                                 GParamSpec       *pspec)

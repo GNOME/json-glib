@@ -94,7 +94,7 @@ static const struct {
 };
 
 static void
-verify_foreach (JsonArray *array,
+verify_foreach (JsonArray *array G_GNUC_UNUSED,
                 guint      index_,
                 JsonNode  *element_node,
                 gpointer   user_data)

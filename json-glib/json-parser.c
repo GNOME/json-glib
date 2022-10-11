@@ -1556,7 +1556,7 @@ json_parser_load_from_stream_finish (JsonParser    *parser,
 
 static void
 read_from_stream (GTask *task,
-                  gpointer source_obj,
+                  gpointer source_obj G_GNUC_UNUSED,
                   gpointer task_data,
                   GCancellable *cancellable)
 {
