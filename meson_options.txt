@@ -10,3 +10,6 @@ option('man',
 option('tests',
        type: 'boolean', value: true,
        description: 'Build the tests')
+option('nls',
+       type: 'feature', value: 'auto', yield: true,
+       description: 'Enable native language support (translations)')
