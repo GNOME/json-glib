@@ -1297,9 +1297,9 @@ json_parser_get_root (JsonParser *parser)
   g_return_val_if_fail (JSON_IS_PARSER (parser), NULL);
 
   /* Sanity check. */
-  g_return_val_if_fail (parser->priv->root == NULL ||
-                        !parser->priv->is_immutable ||
-                        json_node_is_immutable (parser->priv->root), NULL);
+  g_assert (parser->priv->root == NULL ||
+            !parser->priv->is_immutable ||
+            json_node_is_immutable (parser->priv->root));
 
   return parser->priv->root;
 }
@@ -1325,9 +1325,9 @@ json_parser_steal_root (JsonParser *parser)
   g_return_val_if_fail (JSON_IS_PARSER (parser), NULL);
 
   /* Sanity check. */
-  g_return_val_if_fail (parser->priv->root == NULL ||
-                        !parser->priv->is_immutable ||
-                        json_node_is_immutable (parser->priv->root), NULL);
+  g_assert (parser->priv->root == NULL ||
+            !parser->priv->is_immutable ||
+            json_node_is_immutable (parser->priv->root));
 
   return g_steal_pointer (&priv->root);
 }
