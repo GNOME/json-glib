@@ -84,7 +84,7 @@ test_empty_array (void)
   g_assert_cmpint (len, ==, strlen (empty_array));
   g_assert_cmpstr (data, ==, empty_array);
 
-  g_assert (json_generator_get_pretty (gen) == FALSE);
+  g_assert_false (json_generator_get_pretty (gen));
   g_assert_cmpint (json_generator_get_indent (gen), ==, 0);
   g_assert_cmpint (json_generator_get_indent_char (gen), ==, ' ');
 
@@ -319,12 +319,12 @@ test_decimal_separator (void)
                  json_node_get_double (node),
                  str);
 
-      g_assert (str != NULL);
+      g_assert_nonnull (str);
       expected = strstr (str, decimal_separator[i].sep);
       if (decimal_separator[i].matches)
-        g_assert (expected != NULL);
+        g_assert_nonnull (expected);
       else
-        g_assert (expected == NULL);
+        g_assert_null (expected);
 
       g_free (str);
    }
@@ -373,10 +373,10 @@ test_pretty (void)
       char *data;
       gsize len;
 
-      g_assert (json_parser_load_from_data (parser, pretty_examples[i], -1, NULL));
+      g_assert_true (json_parser_load_from_data (parser, pretty_examples[i], -1, NULL));
 
       root = json_parser_get_root (parser);
-      g_assert (root != NULL);
+      g_assert_nonnull (root);
 
       json_generator_set_root (generator, root);
 

@@ -421,20 +421,20 @@ test_deserialize (void)
              TEST_OBJECT (object)->m_enum == TEST_ENUM_BAZ ? "<true>" : "<false>");
 
   g_assert_cmpint (TEST_OBJECT (object)->m_int, ==, 42);
-  g_assert (TEST_OBJECT (object)->m_bool);
+  g_assert_true (TEST_OBJECT (object)->m_bool);
   g_assert_cmpstr (TEST_OBJECT (object)->m_str, ==, "hello");
   g_assert_cmpint (TEST_OBJECT (object)->m_enum, ==, TEST_ENUM_BAZ);
 
-  g_assert (TEST_OBJECT (object)->m_strv != NULL);
+  g_assert_nonnull (TEST_OBJECT (object)->m_strv);
   g_assert_cmpint (g_strv_length (TEST_OBJECT (object)->m_strv), ==, 4);
 
   str = g_strjoinv (NULL, TEST_OBJECT (object)->m_strv);
   g_assert_cmpstr (str, ==, "hello, world!");
   g_free (str);
 
-  g_assert (TEST_IS_OBJECT (TEST_OBJECT (object)->m_obj));
+  g_assert_true (TEST_IS_OBJECT (TEST_OBJECT (object)->m_obj));
   test = TEST_OBJECT (TEST_OBJECT (object)->m_obj);
-  g_assert (test->m_bool);
+  g_assert_true (test->m_bool);
   g_assert_cmpstr (test->m_str, ==, "world");
   g_assert_cmpint (test->m_enum, ==, TEST_ENUM_FOO);
   g_assert_cmpint (test->m_flags, ==, TEST_FLAGS_FOO | TEST_FLAGS_BAR);

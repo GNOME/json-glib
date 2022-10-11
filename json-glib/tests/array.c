@@ -6,7 +6,7 @@ test_empty_array (void)
   JsonArray *array = json_array_new ();
 
   g_assert_cmpint (json_array_get_length (array), ==, 0);
-  g_assert (json_array_get_elements (array) == NULL);
+  g_assert_null (json_array_get_elements (array));
 
   json_array_unref (array);
 }
@@ -24,7 +24,7 @@ test_add_element (void)
 
   node = json_array_get_element (array, 0);
   g_assert_cmpint (JSON_NODE_TYPE (node), ==, JSON_NODE_NULL);
-  g_assert (json_array_get_null_element (array, 0));
+  g_assert_true (json_array_get_null_element (array, 0));
 
   json_array_add_int_element (array, 42);
   g_assert_cmpint (json_array_get_length (array), ==, 2);
@@ -36,7 +36,7 @@ test_add_element (void)
 
   json_array_add_boolean_element (array, TRUE);
   g_assert_cmpint (json_array_get_length (array), ==, 4);
-  g_assert (json_array_get_boolean_element (array, 3));
+  g_assert_true (json_array_get_boolean_element (array, 3));
 
   json_array_add_string_element (array, "Hello");
   g_assert_cmpint (json_array_get_length (array), ==, 5);
@@ -44,20 +44,20 @@ test_add_element (void)
 
   json_array_add_string_element (array, NULL);
   g_assert_cmpint (json_array_get_length (array), ==, 6);
-  g_assert (json_array_get_string_element (array, 5) == NULL);
-  g_assert (json_array_get_element (array, 5) != NULL);
-  g_assert (json_array_get_null_element (array, 5));
+  g_assert_null (json_array_get_string_element (array, 5));
+  g_assert_nonnull (json_array_get_element (array, 5));
+  g_assert_true (json_array_get_null_element (array, 5));
 
   json_array_add_array_element (array, NULL);
-  g_assert (json_array_get_array_element (array, 6) == NULL);
-  g_assert (json_array_get_null_element (array, 6));
+  g_assert_null (json_array_get_array_element (array, 6));
+  g_assert_true (json_array_get_null_element (array, 6));
 
   json_array_add_object_element (array, json_object_new ());
-  g_assert (json_array_get_object_element (array, 7) != NULL);
+  g_assert_nonnull (json_array_get_object_element (array, 7));
 
   json_array_add_object_element (array, NULL);
-  g_assert (json_array_get_object_element (array, 8) == NULL);
-  g_assert (json_array_get_null_element (array, 8));
+  g_assert_null (json_array_get_object_element (array, 8));
+  g_assert_true (json_array_get_null_element (array, 8));
 
   json_array_unref (array);
 }
@@ -101,9 +101,9 @@ verify_foreach (JsonArray *array,
 {
   TestForeachFixture *fixture = user_data;
 
-  g_assert (g_list_find (fixture->elements, element_node));
-  g_assert (json_node_get_node_type (element_node) == type_verify[index_].element_type);
-  g_assert (json_node_get_value_type (element_node) == type_verify[index_].element_gtype);
+  g_assert_nonnull (g_list_find (fixture->elements, element_node));
+  g_assert_true (json_node_get_node_type (element_node) == type_verify[index_].element_type);
+  g_assert_true (json_node_get_value_type (element_node) == type_verify[index_].element_gtype);
 
   fixture->iterations += 1;
 }
@@ -120,7 +120,7 @@ test_foreach_element (void)
   json_array_add_null_element (array);
 
   fixture.elements = json_array_get_elements (array);
-  g_assert (fixture.elements != NULL);
+  g_assert_nonnull (fixture.elements);
 
   fixture.n_elements = json_array_get_length (array);
   g_assert_cmpint (fixture.n_elements, ==, g_list_length (fixture.elements));

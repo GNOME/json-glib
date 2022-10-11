@@ -243,9 +243,9 @@ test_deserialize_boxed (void)
   GObject *obj;
 
   obj = json_gobject_from_data (TEST_TYPE_OBJECT, serialize_data, -1, NULL);
-  g_assert (TEST_IS_OBJECT (obj));
+  g_assert_true (TEST_IS_OBJECT (obj));
   g_assert_cmpint (TEST_OBJECT (obj)->blah.foo, ==, 42);
-  g_assert (TEST_OBJECT (obj)->blah.bar);
+  g_assert_true (TEST_OBJECT (obj)->blah.bar);
 
   g_object_unref (obj);
 }

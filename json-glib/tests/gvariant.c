@@ -176,7 +176,7 @@ test_gvariant_to_json (gconstpointer test_data)
                              NULL);
 
   json_data = json_gvariant_serialize_data (variant, &len);
-  g_assert (json_data != NULL);
+  g_assert_nonnull (json_data);
 
   g_assert_cmpstr (test_case->json_data, ==, json_data);
 

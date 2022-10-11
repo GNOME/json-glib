@@ -28,7 +28,7 @@ test_init_boolean (void)
   JsonNode *node = json_node_new (JSON_NODE_VALUE);
 
   json_node_set_boolean (node, TRUE);
-  g_assert (json_node_get_boolean (node));
+  g_assert_true (json_node_get_boolean (node));
 
   json_node_free (node);
 }
@@ -107,7 +107,7 @@ test_copy_object (void)
   copy = json_node_copy (node);
 
   g_assert_cmpint (json_node_get_node_type (node), ==, json_node_get_node_type (copy));
-  g_assert (json_node_get_object (node) == json_node_get_object (copy));
+  g_assert_true (json_node_get_object (node) == json_node_get_object (copy));
 
   json_node_free (copy);
   json_node_free (node);
@@ -118,8 +118,8 @@ test_null (void)
 {
   JsonNode *node = json_node_new (JSON_NODE_NULL);
 
-  g_assert (JSON_NODE_HOLDS_NULL (node));
-  g_assert (json_node_is_null (node));
+  g_assert_true (JSON_NODE_HOLDS_NULL (node));
+  g_assert_true (json_node_is_null (node));
   g_assert_cmpint (json_node_get_value_type (node), ==, G_TYPE_INVALID);
   g_assert_cmpstr (json_node_type_name (node), ==, "NULL");
 
@@ -134,14 +134,14 @@ test_get_int (void)
   json_node_set_int (node, 0);
   g_assert_cmpint (json_node_get_int (node), ==, 0);
   json_assert_almost_equals (json_node_get_double (node), 0.0);
-  g_assert (!json_node_get_boolean (node));
-  g_assert (!json_node_is_null (node));
+  g_assert_false (json_node_get_boolean (node));
+  g_assert_false (json_node_is_null (node));
 
   json_node_set_int (node, 42);
   g_assert_cmpint (json_node_get_int (node), ==, 42);
   json_assert_almost_equals (json_node_get_double (node), 42.0);
-  g_assert (json_node_get_boolean (node));
-  g_assert (!json_node_is_null (node));
+  g_assert_true (json_node_get_boolean (node));
+  g_assert_false (json_node_is_null (node));
 
   json_node_free (node);
 }
@@ -154,7 +154,7 @@ test_get_double (void)
   json_node_set_double (node, 3.14);
   json_assert_fuzzy_equals (json_node_get_double (node), 3.14, 0.001);
   g_assert_cmpint (json_node_get_int (node), ==, 3);
-  g_assert (json_node_get_boolean (node));
+  g_assert_true (json_node_get_boolean (node));
 
   json_node_free (node);
 }

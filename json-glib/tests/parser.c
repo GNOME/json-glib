@@ -164,7 +164,7 @@ test_empty_with_parser (JsonParser *parser)
       if (g_test_verbose ())
         g_print ("checking json_parser_get_root...\n");
 
-      g_assert (NULL == json_parser_get_root (parser));
+      g_assert_null (json_parser_get_root (parser));
     }
 }
 
@@ -176,12 +176,12 @@ test_empty (void)
   /* Check with and without immutability enabled, as there have been bugs with
    * NULL root nodes on immutable parsers. */
   parser = json_parser_new ();
-  g_assert (JSON_IS_PARSER (parser));
+  g_assert_true (JSON_IS_PARSER (parser));
   test_empty_with_parser (parser);
   g_object_unref (parser);
 
   parser = json_parser_new_immutable ();
-  g_assert (JSON_IS_PARSER (parser));
+  g_assert_true (JSON_IS_PARSER (parser));
   test_empty_with_parser (parser);
   g_object_unref (parser);
 }
@@ -193,7 +193,7 @@ test_base_value (void)
   JsonParser *parser;
 
   parser = json_parser_new ();
-  g_assert (JSON_IS_PARSER (parser));
+  g_assert_true (JSON_IS_PARSER (parser));
 
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with base-values...\n");
@@ -215,11 +215,11 @@ test_base_value (void)
         {
           JsonNode *root;
 
-          g_assert (NULL != json_parser_get_root (parser));
+          g_assert_nonnull (json_parser_get_root (parser));
 
           root = json_parser_get_root (parser);
-          g_assert (root != NULL);
-          g_assert (json_node_get_parent (root) == NULL);
+          g_assert_nonnull (root);
+          g_assert_null (json_node_get_parent (root));
 
           if (g_test_verbose ())
             g_print ("checking root node is of the desired type %s...\n",
@@ -243,7 +243,7 @@ test_empty_array (void)
   GError *error = NULL;
 
   parser = json_parser_new ();
-  g_assert (JSON_IS_PARSER (parser));
+  g_assert_true (JSON_IS_PARSER (parser));
 
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with empty array...\n");
@@ -261,16 +261,16 @@ test_empty_array (void)
       JsonNode *root;
       JsonArray *array;
 
-      g_assert (NULL != json_parser_get_root (parser));
+      g_assert_nonnull (json_parser_get_root (parser));
 
       if (g_test_verbose ())
         g_print ("checking root node is an array...\n");
       root = json_parser_get_root (parser);
       g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_ARRAY);
-      g_assert (json_node_get_parent (root) == NULL);
+      g_assert_null (json_node_get_parent (root));
 
       array = json_node_get_array (root);
-      g_assert (array != NULL);
+      g_assert_nonnull (array);
 
       if (g_test_verbose ())
         g_print ("checking array is empty...\n");
@@ -287,7 +287,7 @@ test_simple_array (void)
   JsonParser *parser;
 
   parser = json_parser_new ();
-  g_assert (JSON_IS_PARSER (parser));
+  g_assert_true (JSON_IS_PARSER (parser));
 
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with simple arrays...\n");
@@ -313,16 +313,16 @@ test_simple_array (void)
           JsonNode *root, *node;
           JsonArray *array;
 
-          g_assert (NULL != json_parser_get_root (parser));
+          g_assert_nonnull (json_parser_get_root (parser));
 
           if (g_test_verbose ())
             g_print ("checking root node is an array...\n");
           root = json_parser_get_root (parser);
           g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_ARRAY);
-          g_assert (json_node_get_parent (root) == NULL);
+          g_assert_null (json_node_get_parent (root));
 
           array = json_node_get_array (root);
-          g_assert (array != NULL);
+          g_assert_nonnull (array);
 
           if (g_test_verbose ())
             g_print ("checking array is of the desired length (%d)...\n",
@@ -334,8 +334,8 @@ test_simple_array (void)
                      test_simple_arrays[i].element,
                      g_type_name (test_simple_arrays[i].gtype));
           node = json_array_get_element (array, test_simple_arrays[i].element);
-          g_assert (node != NULL);
-          g_assert (json_node_get_parent (node) == root);
+          g_assert_nonnull (node);
+          g_assert_true (json_node_get_parent (node) == root);
           g_assert_cmpint (JSON_NODE_TYPE (node), ==, test_simple_arrays[i].type);
           g_assert_cmpint (json_node_get_value_type (node), ==, test_simple_arrays[i].gtype);
         }
@@ -351,7 +351,7 @@ test_nested_array (void)
   JsonParser *parser;
 
   parser = json_parser_new ();
-  g_assert (JSON_IS_PARSER (parser));
+  g_assert_true (JSON_IS_PARSER (parser));
 
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with nested arrays...\n");
@@ -374,16 +374,16 @@ test_nested_array (void)
           JsonNode *root;
           JsonArray *array;
 
-          g_assert (NULL != json_parser_get_root (parser));
+          g_assert_nonnull (json_parser_get_root (parser));
 
           if (g_test_verbose ())
             g_print ("checking root node is an array...\n");
           root = json_parser_get_root (parser);
           g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_ARRAY);
-          g_assert (json_node_get_parent (root) == NULL);
+          g_assert_null (json_node_get_parent (root));
 
           array = json_node_get_array (root);
-          g_assert (array != NULL);
+          g_assert_nonnull (array);
 
           if (g_test_verbose ())
             g_print ("checking array is not empty...\n");
@@ -401,7 +401,7 @@ test_empty_object (void)
   GError *error = NULL;
 
   parser = json_parser_new ();
-  g_assert (JSON_IS_PARSER (parser));
+  g_assert_true (JSON_IS_PARSER (parser));
 
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with empty object...\n");
@@ -419,17 +419,17 @@ test_empty_object (void)
       JsonNode *root;
       JsonObject *object;
 
-      g_assert (NULL != json_parser_get_root (parser));
+      g_assert_nonnull (json_parser_get_root (parser));
 
       if (g_test_verbose ())
         g_print ("checking root node is an object...\n");
       root = json_parser_get_root (parser);
-      g_assert (json_node_get_parent (root) == NULL);
+      g_assert_null (json_node_get_parent (root));
       g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_OBJECT);
-      g_assert (json_node_get_parent (root) == NULL);
+      g_assert_null (json_node_get_parent (root));
 
       object = json_node_get_object (root);
-      g_assert (object != NULL);
+      g_assert_nonnull (object);
 
       if (g_test_verbose ())
         g_print ("checking object is empty...\n");
@@ -446,7 +446,7 @@ test_simple_object (void)
   JsonParser *parser;
 
   parser = json_parser_new ();
-  g_assert (JSON_IS_PARSER (parser));
+  g_assert_true (JSON_IS_PARSER (parser));
 
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with simple objects...\n");
@@ -469,16 +469,16 @@ test_simple_object (void)
           JsonNode *root, *node;
           JsonObject *object;
 
-          g_assert (NULL != json_parser_get_root (parser));
+          g_assert_nonnull (json_parser_get_root (parser));
 
           if (g_test_verbose ())
             g_print ("checking root node is an object...\n");
           root = json_parser_get_root (parser);
           g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_OBJECT);
-          g_assert (json_node_get_parent (root) == NULL);
+          g_assert_null (json_node_get_parent (root));
 
           object = json_node_get_object (root);
-          g_assert (object != NULL);
+          g_assert_nonnull (object);
 
           if (g_test_verbose ())
             g_print ("checking object is of the desired size (%d)...\n",
@@ -490,8 +490,8 @@ test_simple_object (void)
                      test_simple_objects[i].member,
                      g_type_name (test_simple_objects[i].gtype));
           node = json_object_get_member (object, test_simple_objects[i].member);
-          g_assert (node != NULL);
-          g_assert (json_node_get_parent (node) == root);
+          g_assert_nonnull (node);
+          g_assert_true (json_node_get_parent (node) == root);
           g_assert_cmpint (JSON_NODE_TYPE (node), ==, test_simple_objects[i].type);
           g_assert_cmpint (json_node_get_value_type (node), ==, test_simple_objects[i].gtype);
         }
@@ -507,7 +507,7 @@ test_nested_object (void)
   JsonParser *parser;
 
   parser = json_parser_new ();
-  g_assert (JSON_IS_PARSER (parser));
+  g_assert_true (JSON_IS_PARSER (parser));
 
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with nested objects...\n");
@@ -530,16 +530,16 @@ test_nested_object (void)
           JsonNode *root;
           JsonObject *object;
 
-          g_assert (NULL != json_parser_get_root (parser));
+          g_assert_nonnull (json_parser_get_root (parser));
 
           if (g_test_verbose ())
             g_print ("checking root node is an object...\n");
           root = json_parser_get_root (parser);
           g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_OBJECT);
-          g_assert (json_node_get_parent (root) == NULL);
+          g_assert_null (json_node_get_parent (root));
 
           object = json_node_get_object (root);
-          g_assert (object != NULL);
+          g_assert_nonnull (object);
 
           if (g_test_verbose ())
             g_print ("checking object is not empty...\n");
@@ -557,7 +557,7 @@ test_assignment (void)
   JsonParser *parser;
 
   parser = json_parser_new ();
-  g_assert (JSON_IS_PARSER (parser));
+  g_assert_true (JSON_IS_PARSER (parser));
 
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with assignments...\n");
@@ -582,10 +582,10 @@ test_assignment (void)
           if (g_test_verbose ())
             g_print ("checking assignment...\n");
 
-          g_assert (json_parser_has_assignment (parser, &var) == TRUE);
-          g_assert (var != NULL);
+          g_assert_true (json_parser_has_assignment (parser, &var));
+          g_assert_nonnull (var);
           g_assert_cmpstr (var, ==, test_assignments[i].var);
-          g_assert (NULL != json_parser_get_root (parser));
+          g_assert_nonnull (json_parser_get_root (parser));
         }
     }
 
@@ -599,7 +599,7 @@ test_unicode_escape (void)
   JsonParser *parser;
 
   parser = json_parser_new ();
-  g_assert (JSON_IS_PARSER (parser));
+  g_assert_true (JSON_IS_PARSER (parser));
 
   if (g_test_verbose ())
     g_print ("checking json_parser_load_from_data with unicode escape...\n");
@@ -622,7 +622,7 @@ test_unicode_escape (void)
           JsonNode *root, *node;
           JsonObject *object;
 
-          g_assert (NULL != json_parser_get_root (parser));
+          g_assert_nonnull (json_parser_get_root (parser));
 
           if (g_test_verbose ())
             g_print ("checking root node is an object...\n");
@@ -630,7 +630,7 @@ test_unicode_escape (void)
           g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_OBJECT);
 
           object = json_node_get_object (root);
-          g_assert (object != NULL);
+          g_assert_true (object);
 
           if (g_test_verbose ())
             g_print ("checking object is not empty...\n");
@@ -645,7 +645,7 @@ test_unicode_escape (void)
 
           if (g_test_verbose ())
             g_print ("checking for valid UTF-8...\n");
-          g_assert (g_utf8_validate (json_node_get_string (node), -1, NULL));
+          g_assert_true (g_utf8_validate (json_node_get_string (node), -1, NULL));
         }
     }
 
@@ -669,19 +669,19 @@ test_stream_sync (void)
   file = g_file_new_for_path (path);
   stream = g_file_read (file, NULL, &error);
   g_assert_no_error (error);
-  g_assert (stream != NULL);
+  g_assert_nonnull (stream);
 
   json_parser_load_from_stream (parser, G_INPUT_STREAM (stream), NULL, &error);
   g_assert_no_error (error);
 
   root = json_parser_get_root (parser);
-  g_assert (root != NULL);
-  g_assert (JSON_NODE_HOLDS_ARRAY (root));
+  g_assert_nonnull (root);
+  g_assert_true (JSON_NODE_HOLDS_ARRAY (root));
 
   array = json_node_get_array (root);
   g_assert_cmpint (json_array_get_length (array), ==, 1);
-  g_assert (JSON_NODE_HOLDS_OBJECT (json_array_get_element (array, 0)));
-  g_assert (json_object_has_member (json_array_get_object_element (array, 0), "hello"));
+  g_assert_true (JSON_NODE_HOLDS_OBJECT (json_array_get_element (array, 0)));
+  g_assert_true (json_object_has_member (json_array_get_object_element (array, 0), "hello"));
 
   g_object_unref (stream);
   g_object_unref (file);
@@ -697,13 +697,13 @@ assert_stream_load_json_correct (JsonParser *parser)
   JsonArray *array;
 
   root = json_parser_get_root (parser);
-  g_assert (root != NULL);
-  g_assert (JSON_NODE_HOLDS_ARRAY (root));
+  g_assert_nonnull (root);
+  g_assert_true (JSON_NODE_HOLDS_ARRAY (root));
 
   array = json_node_get_array (root);
   g_assert_cmpint (json_array_get_length (array), ==, 1);
-  g_assert (JSON_NODE_HOLDS_OBJECT (json_array_get_element (array, 0)));
-  g_assert (json_object_has_member (json_array_get_object_element (array, 0), "hello"));
+  g_assert_true (JSON_NODE_HOLDS_OBJECT (json_array_get_element (array, 0)));
+  g_assert_true (json_object_has_member (json_array_get_object_element (array, 0), "hello"));
 }
 
 static void
@@ -736,8 +736,8 @@ test_stream_async (void)
   path = g_test_build_filename (G_TEST_DIST, "stream-load.json", NULL);
   file = g_file_new_for_path (path);
   stream = g_file_read (file, NULL, &error);
-  g_assert (error == NULL);
-  g_assert (stream != NULL);
+  g_assert_null (error);
+  g_assert_nonnull (stream);
 
   main_loop = g_main_loop_new (NULL, FALSE);
 
