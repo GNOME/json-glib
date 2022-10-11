@@ -731,12 +731,10 @@ json_array_foreach_element (JsonArray        *array,
                             JsonArrayForeach  func,
                             gpointer          data)
 {
-  gint i;
-
   g_return_if_fail (array != NULL);
   g_return_if_fail (func != NULL);
 
-  for (i = 0; i < array->elements->len; i++)
+  for (guint i = 0; i < array->elements->len; i++)
     {
       JsonNode *element_node;
 

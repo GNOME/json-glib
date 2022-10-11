@@ -212,7 +212,7 @@ path_expressions_invalid (gconstpointer data)
 
 
   g_assert_false (json_path_compile (path, expr, &error));
-  g_assert_error (error, JSON_PATH_ERROR, code);
+  g_assert_error (error, JSON_PATH_ERROR, (int) code);
 
   g_object_unref (path);
   g_clear_error (&error);
@@ -268,7 +268,7 @@ int
 main (int   argc,
       char *argv[])
 {
-  int i, j;
+  guint i, j;
 
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("http://bugzilla.gnome.org/show_bug.cgi?id=");

@@ -529,7 +529,7 @@ json_to_gvariant_tuple (JsonNode     *json_node,
 {
   GVariant *variant = NULL;
   JsonArray *array;
-  gint i;
+  guint i;
   GList *children = NULL;
   gboolean roll_back = FALSE;
   const gchar *initial_signature;
@@ -737,7 +737,7 @@ json_to_gvariant_array (JsonNode     *json_node,
 
   if (json_array_get_length (array) > 0)
     {
-      gint i;
+      guint i;
       guint len;
 
       len = json_array_get_length (array);

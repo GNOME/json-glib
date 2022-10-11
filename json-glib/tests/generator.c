@@ -297,7 +297,6 @@ test_decimal_separator (void)
   JsonNode *node = json_node_new (JSON_NODE_VALUE);
   JsonGenerator *generator = json_generator_new ();
   gchar *old_locale;
-  gint i;
 
   json_node_set_double (node, 3.14);
 
@@ -305,7 +304,7 @@ test_decimal_separator (void)
 
   old_locale = setlocale (LC_NUMERIC, NULL);
 
-  for (i = 0; i < G_N_ELEMENTS (decimal_separator); i++)
+  for (guint i = 0; i < G_N_ELEMENTS (decimal_separator); i++)
     {
       gchar *str, *expected;
 
@@ -434,10 +433,6 @@ int
 main (int   argc,
       char *argv[])
 {
-  gchar *escaped;
-  gchar *name;
-  gint i;
-
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/generator/empty-array", test_empty_array);
@@ -450,10 +445,10 @@ main (int   argc,
   g_test_add_func ("/generator/double-stays-double", test_double_stays_double);
   g_test_add_func ("/generator/pretty", test_pretty);
 
-  for (i = 0; i < G_N_ELEMENTS (string_fixtures); i++)
+  for (guint i = 0; i < G_N_ELEMENTS (string_fixtures); i++)
     {
-      escaped = g_strescape (string_fixtures[i].str, NULL);
-      name = g_strdup_printf ("/generator/string/%s", escaped);
+      char *escaped = g_strescape (string_fixtures[i].str, NULL);
+      char *name = g_strdup_printf ("/generator/string/%s", escaped);
       g_test_add_data_func (name, string_fixtures + i, test_string_encode);
       g_free (escaped);
       g_free (name);
