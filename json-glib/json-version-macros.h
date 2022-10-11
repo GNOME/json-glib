@@ -45,6 +45,8 @@
  * JSON_VERSION_1_0:
  *
  * The encoded representation of JSON-GLib version "1.0".
+ *
+ * Since: 1.0
  */
 #define JSON_VERSION_1_0        (G_ENCODE_VERSION (1, 0))
 
@@ -52,6 +54,8 @@
  * JSON_VERSION_1_2:
  *
  * The encoded representation of JSON-GLib version "1.2".
+ *
+ * Since: 1.2
  */
 #define JSON_VERSION_1_2        (G_ENCODE_VERSION (1, 2))
 
@@ -59,6 +63,8 @@
  * JSON_VERSION_1_4:
  *
  * The encoded representation of JSON-GLib version "1.4".
+ *
+ * Since: 1.4
  */
 #define JSON_VERSION_1_4        (G_ENCODE_VERSION (1, 4))
 
@@ -66,8 +72,19 @@
  * JSON_VERSION_1_6:
  *
  * The encoded representation of JSON-GLib version "1.6".
+ *
+ * Since: 1.6
  */
 #define JSON_VERSION_1_6        (G_ENCODE_VERSION (1, 6))
+
+/**
+ * JSON_VERSION_1_8:
+ *
+ * The encoded representation of JSON-GLib version "1.8".
+ *
+ * Since: 1.8
+ */
+#define JSON_VERSION_1_8        (G_ENCODE_VERSION (1, 8))
 
 /* evaluates to the current stable version; for development cycles,
  * this means the next stable target
@@ -203,6 +220,21 @@
 # define JSON_AVAILABLE_IN_1_6                 JSON_UNAVAILABLE(1, 6)
 #else
 # define JSON_AVAILABLE_IN_1_6                 _JSON_EXTERN
+#endif
+
+/* 1.8 */
+#if JSON_VERSION_MIN_REQUIRED >= JSON_VERSION_1_8
+# define JSON_DEPRECATED_IN_1_8                JSON_DEPRECATED
+# define JSON_DEPRECATED_IN_1_8_FOR(f)         JSON_DEPRECATED_FOR(f)
+#else
+# define JSON_DEPRECATED_IN_1_8                _JSON_EXTERN
+# define JSON_DEPRECATED_IN_1_8_FOR(f)         _JSON_EXTERN
+#endif
+
+#if JSON_VERSION_MAX_ALLOWED < JSON_VERSION_1_8
+# define JSON_AVAILABLE_IN_1_8                 JSON_UNAVAILABLE(1, 8)
+#else
+# define JSON_AVAILABLE_IN_1_8                 _JSON_EXTERN
 #endif
 
 #endif /* __JSON_VERSION_MACROS_H__ */
