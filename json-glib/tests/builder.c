@@ -134,7 +134,7 @@ test_builder_reset (void)
   node = json_builder_get_root (builder);
   json_generator_set_root (generator, node);
   data = json_generator_to_data (generator, &length);
-  g_assert (strncmp (data, reset_object, length) == 0);
+  g_assert_true (strncmp (data, reset_object, length) == 0);
 
   g_free (data);
   json_node_free (node);
@@ -148,7 +148,7 @@ test_builder_reset (void)
   node = json_builder_get_root (builder);
   json_generator_set_root (generator, node);
   data = json_generator_to_data (generator, &length);
-  g_assert (strncmp (data, reset_array, length) == 0);
+  g_assert_true (strncmp (data, reset_array, length) == 0);
 
   g_free (data);
   json_node_free (node);

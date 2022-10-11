@@ -278,19 +278,19 @@ test_serialize (void)
 
   parser = json_parser_new ();
   json_parser_load_from_data (parser, data, -1, &error);
-  g_assert (error == NULL);
+  g_assert_null (error);
 
   node = json_parser_get_root (parser);
-  g_assert (json_node_get_node_type (node) == JSON_NODE_OBJECT);
+  g_assert_true (json_node_get_node_type (node) == JSON_NODE_OBJECT);
 
   object = json_node_get_object (node);
   g_assert_cmpint (json_object_get_int_member (object, "foo"), ==, 47);
-  g_assert (!json_object_get_boolean_member (object, "bar"));
+  g_assert_false (json_object_get_boolean_member (object, "bar"));
   g_assert_cmpstr (json_object_get_string_member (object, "baz"), ==, "Hello, World!");
   g_assert_cmpfloat (json_object_get_double_member (object, "meh"), ==, 0.5);
 
   /* blah is read-only */
-  g_assert (json_object_has_member (object, "blah"));
+  g_assert_true (json_object_has_member (object, "blah"));
 
   g_free (data);
   g_object_unref (parser);

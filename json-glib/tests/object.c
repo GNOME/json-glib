@@ -11,7 +11,7 @@ test_empty_object (void)
   JsonObject *object = json_object_new ();
 
   g_assert_cmpint (json_object_get_size (object), ==, 0);
-  g_assert (json_object_get_members (object) == NULL);
+  g_assert_null (json_object_get_members (object));
 
   json_object_unref (object);
 }
@@ -62,10 +62,10 @@ test_set_member (void)
   g_assert_cmpint (JSON_NODE_TYPE (json_object_get_member (object, "Array")), ==, JSON_NODE_NULL);
 
   json_object_set_object_member (object, "Object", NULL);
-  g_assert (json_object_get_null_member (object, "Object") == TRUE);
+  g_assert_true (json_object_get_null_member (object, "Object"));
 
   json_object_set_object_member (object, "", NULL);
-  g_assert (json_object_get_null_member (object, "") == TRUE);
+  g_assert_true (json_object_get_null_member (object, ""));
 
   json_object_unref (object);
 }
@@ -238,19 +238,19 @@ test_empty_member (void)
   JsonObject *object = json_object_new ();
 
   json_object_set_string_member (object, "string", "");
-  g_assert (json_object_has_member (object, "string"));
+  g_assert_true (json_object_has_member (object, "string"));
   g_assert_cmpstr (json_object_get_string_member (object, "string"), ==, "");
 
   json_object_set_string_member (object, "null", NULL);
-  g_assert (json_object_has_member (object, "null"));
-  g_assert (json_object_get_string_member (object, "null") == NULL);
+  g_assert_true (json_object_has_member (object, "null"));
+  g_assert_null (json_object_get_string_member (object, "null"));
 
   json_object_set_null_member (object, "array");
-  g_assert (json_object_get_array_member (object, "array") == NULL);
+  g_assert_null (json_object_get_array_member (object, "array"));
 
   json_object_set_object_member (object, "object", NULL);
-  g_assert (json_object_get_member (object, "object") != NULL);
-  g_assert (json_object_get_object_member (object, "object") == NULL);
+  g_assert_nonnull (json_object_get_member (object, "object"));
+  g_assert_null (json_object_get_object_member (object, "object"));
 
   json_object_unref (object);
 }

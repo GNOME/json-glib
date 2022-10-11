@@ -190,7 +190,7 @@ path_expressions_valid (gconstpointer data)
   if (g_test_verbose ())
     g_print ("* %s ('%s')\n", desc, expr);
 
-  g_assert (json_path_compile (path, expr, &error));
+  g_assert_true (json_path_compile (path, expr, &error));
   g_assert_no_error (error);
 
   g_object_unref (path);
@@ -211,7 +211,7 @@ path_expressions_invalid (gconstpointer data)
     g_print ("* %s ('%s')\n", desc, expr);
 
 
-  g_assert (!json_path_compile (path, expr, &error));
+  g_assert_false (json_path_compile (path, expr, &error));
   g_assert_error (error, JSON_PATH_ERROR, code);
 
   g_object_unref (path);
@@ -236,10 +236,10 @@ path_match (gconstpointer data)
   json_parser_load_from_data (parser, test_json, -1, NULL);
   root = json_parser_get_root (parser);
 
-  g_assert (json_path_compile (path, expr, NULL));
+  g_assert_true (json_path_compile (path, expr, NULL));
 
   matches = json_path_match (path, root);
-  g_assert (JSON_NODE_HOLDS_ARRAY (matches));
+  g_assert_true (JSON_NODE_HOLDS_ARRAY (matches));
 
   json_generator_set_root (gen, matches);
   str = json_generator_to_data (gen, NULL);
