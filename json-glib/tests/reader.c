@@ -9,6 +9,9 @@ static const gchar *test_base_object_data =
 static const gchar *test_reader_level_data =
 " { \"list\": { \"181195771\": { \"given_url\": \"http://www.gnome.org/json-glib-test\" } } }";
 
+static const gchar *test_reader_current_node_data =
+" { \"object\": { \"subobject\": { \"key\": \"value\" } } }";
+
 /* https://bugzilla.gnome.org/show_bug.cgi?id=758580 */
 static const char *test_reader_null_value_data =
 "{ \"v\": null }";
@@ -239,6 +242,41 @@ test_reader_skip_bom (void)
   g_object_unref (parser);
 }
 
+static void
+test_reader_current_node (void)
+{
+  JsonParser *parser = json_parser_new ();
+  JsonReader *reader = json_reader_new (NULL);
+  JsonNode *current = NULL;
+  gchar* node_string = NULL;
+  const gchar* expected_data = "{\"subobject\":{\"key\":\"value\"}}";
+  GError *error = NULL;
+
+  g_assert_null (json_reader_get_current_node (reader));
+
+  json_parser_load_from_data (parser, test_reader_current_node_data, -1, &error);
+  g_assert_no_error (error);
+
+  json_reader_set_root (reader, json_parser_get_root (parser));
+
+  /* Grab the list */
+  g_assert_true (json_reader_read_member (reader, "object"));
+
+  /* Get the node at the current position */
+  current = json_reader_get_current_node (reader);
+  g_assert_nonnull (current);
+
+  /* Check that it contains the data waited */
+  node_string = json_to_string (current, FALSE);
+  g_assert_cmpstr (node_string, ==, expected_data);
+  g_free (node_string);
+
+  json_reader_end_member (reader);
+
+  g_clear_object (&reader);
+  g_clear_object (&parser);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -251,6 +289,7 @@ main (int   argc,
   g_test_add_func ("/reader/level", test_reader_level);
   g_test_add_func ("/reader/null-value", test_reader_null_value);
   g_test_add_func ("/reader/bom", test_reader_skip_bom);
+  g_test_add_func ("/reader/currrent-node", test_reader_current_node);
 
   return g_test_run ();
 }

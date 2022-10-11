@@ -152,6 +152,8 @@ JSON_AVAILABLE_IN_1_0
 gboolean               json_reader_get_boolean_value (JsonReader   *reader);
 JSON_AVAILABLE_IN_1_0
 gboolean               json_reader_get_null_value    (JsonReader   *reader);
+JSON_AVAILABLE_IN_1_8
+JsonNode *             json_reader_get_current_node  (JsonReader *reader);
 
 #ifdef G_DEFINE_AUTOPTR_CLEANUP_FUNC
 G_DEFINE_AUTOPTR_CLEANUP_FUNC (JsonReader, g_object_unref)
