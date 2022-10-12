@@ -86,7 +86,8 @@ json_serializable_serialize_property (JsonSerializable *serializable,
  *   property description (since JSON-GLib 1.6)
  * - a `GValue` initialized with the expected type of the property
  *
- * This will not be called for properties that are `G_PARAM_CONSTRUCT_ONLY`.
+ * This function will not be called for properties that are marked as
+ * as `G_PARAM_CONSTRUCT_ONLY`.
  *
  * Returns: `TRUE` if the property was successfully deserialized
  */
