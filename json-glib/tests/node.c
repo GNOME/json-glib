@@ -213,17 +213,14 @@ test_gvalue_autopromotion (void)
 
   g_assert_cmpint (JSON_NODE_TYPE (node), ==, JSON_NODE_VALUE);
 
-  if (g_test_verbose ())
-    g_print ("Autopromotion of int to int64\n");
-
+  g_test_message ("Autopromotion of int to int64");
   g_value_init (&value, G_TYPE_INT);
   g_value_set_int (&value, 42);
 
   json_node_set_value (node, &value);
   json_node_get_value (node, &check);
 
-  if (g_test_verbose ())
-    g_print ("Expecting an gint64, got a %s\n", g_type_name (G_VALUE_TYPE (&check)));
+  g_test_message ("Expecting an gint64, got a '%s'", g_type_name (G_VALUE_TYPE (&check)));
 
   g_assert_cmpint (G_VALUE_TYPE (&check), ==, G_TYPE_INT64);
   g_assert_cmpint (g_value_get_int64 (&check), ==, 42);
@@ -233,17 +230,14 @@ test_gvalue_autopromotion (void)
   g_value_unset (&value);
   g_value_unset (&check);
 
-  if (g_test_verbose ())
-    g_print ("Autopromotion of float to double\n");
-
+  g_test_message ("Autopromotion of float to double");
   g_value_init (&value, G_TYPE_FLOAT);
   g_value_set_float (&value, 3.14159f);
 
   json_node_set_value (node, &value);
   json_node_get_value (node, &check);
 
-  if (g_test_verbose ())
-    g_print ("Expecting a gdouble, got a %s\n", g_type_name (G_VALUE_TYPE (&check))); 
+  g_test_message ("Expecting a gdouble, got a '%s'", g_type_name (G_VALUE_TYPE (&check))); 
 
   g_assert_cmpint (G_VALUE_TYPE (&check), ==, G_TYPE_DOUBLE);
   json_assert_fuzzy_equals (g_value_get_double (&check), 3.14159, 0.00001);

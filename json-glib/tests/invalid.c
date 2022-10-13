@@ -18,16 +18,11 @@ test_invalid_bareword (gconstpointer user_data)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("invalid data: '%s'...", json);
+  g_test_message ("invalid data: '%s'...", json);
 
   res = json_parser_load_from_data (parser, json, -1, &error);
-
   g_assert_false (res);
   g_assert_error (error, JSON_PARSER_ERROR, JSON_PARSER_ERROR_INVALID_BAREWORD);
-
-  if (g_test_verbose ())
-    g_print ("expected error: %s\n", error->message);
 
   g_clear_error (&error);
 
@@ -45,16 +40,13 @@ test_invalid_assignment (gconstpointer user_data)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("invalid data: '%s'...", json);
+  g_test_message ("invalid data: '%s'...", json);
 
   res = json_parser_load_from_data (parser, json, -1, &error);
 
   g_assert_false (res);
   g_assert_nonnull (error);
-
-  if (g_test_verbose ())
-    g_print ("expected error: %s\n", error->message);
+  g_test_message ("error: %s", error->message);
 
   g_clear_error (&error);
 
@@ -72,16 +64,13 @@ test_invalid_value (gconstpointer user_data)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("invalid data: '%s'...", json);
+  g_test_message ("invalid data: '%s'...", json);
 
   res = json_parser_load_from_data (parser, json, -1, &error);
 
   g_assert_false (res);
   g_assert_nonnull (error);
-
-  if (g_test_verbose ())
-    g_print ("expected error: %s\n", error->message);
+  g_test_message ("error: %s", error->message);
 
   g_clear_error (&error);
 
@@ -99,16 +88,13 @@ test_invalid_array (gconstpointer user_data)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("invalid data: '%s'...", json);
+  g_test_message ("invalid data: '%s'...", json);
 
   res = json_parser_load_from_data (parser, json, -1, &error);
 
   g_assert_false (res);
   g_assert_nonnull (error);
-
-  if (g_test_verbose ())
-    g_print ("expected error: %s\n", error->message);
+  g_test_message ("error: %s", error->message);
 
   g_clear_error (&error);
 
@@ -126,16 +112,13 @@ test_invalid_object (gconstpointer user_data)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("invalid data: '%s'...", json);
+  g_test_message ("invalid data: '%s'...", json);
 
   res = json_parser_load_from_data (parser, json, -1, &error);
 
   g_assert_false (res);
   g_assert_nonnull (error);
-
-  if (g_test_verbose ())
-    g_print ("expected error: %s\n", error->message);
+  g_test_message ("error: %s", error->message);
 
   g_clear_error (&error);
 
@@ -153,16 +136,12 @@ test_missing_comma (gconstpointer user_data)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("invalid data: '%s'...", json);
+  g_test_message ("invalid data: '%s'...", json);
 
   res = json_parser_load_from_data (parser, json, -1, &error);
 
   g_assert_false (res);
   g_assert_error (error, JSON_PARSER_ERROR, JSON_PARSER_ERROR_MISSING_COMMA);
-
-  if (g_test_verbose ())
-    g_print ("expected error: %s\n", error->message);
 
   g_clear_error (&error);
 
@@ -180,16 +159,12 @@ test_trailing_comma (gconstpointer user_data)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("invalid data: '%s'...", json);
+  g_test_message ("invalid data: '%s'...", json);
 
   res = json_parser_load_from_data (parser, json, -1, &error);
 
   g_assert_false (res);
   g_assert_error (error, JSON_PARSER_ERROR, JSON_PARSER_ERROR_TRAILING_COMMA);
-
-  if (g_test_verbose ())
-    g_print ("expected error: %s\n", error->message);
 
   g_clear_error (&error);
 

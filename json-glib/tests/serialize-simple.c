@@ -146,8 +146,7 @@ test_serialize (void)
   g_assert_cmpint (len, >, 0);
   g_assert_cmpint (len, ==, strlen (data));
 
-  if (g_test_verbose ())
-    g_print ("TestObject:\n%s\n", data);
+  g_test_message ("TestObject: %s", data);
 
   g_free (data);
   g_object_unref (obj);

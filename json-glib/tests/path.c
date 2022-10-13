@@ -200,8 +200,7 @@ path_expressions_valid (gconstpointer data)
   JsonPath *path = json_path_new ();
   GError *error = NULL;
 
-  if (g_test_verbose ())
-    g_print ("* %s ('%s')\n", desc, expr);
+  g_test_message ("* %s ('%s')", desc, expr);
 
   g_assert_true (json_path_compile (path, expr, &error));
   g_assert_no_error (error);
@@ -220,9 +219,7 @@ path_expressions_invalid (gconstpointer data)
   JsonPath *path = json_path_new ();
   GError *error = NULL;
 
-  if (g_test_verbose ())
-    g_print ("* %s ('%s')\n", desc, expr);
-
+  g_test_message ("* %s ('%s')", desc, expr);
 
   g_assert_false (json_path_compile (path, expr, &error));
   g_assert_error (error, JSON_PATH_ERROR, (int) code);
@@ -257,15 +254,12 @@ path_match (gconstpointer data)
   json_generator_set_root (gen, matches);
   str = json_generator_to_data (gen, NULL);
 
-  if (g_test_verbose ())
-    {
-      g_print ("* %s ('%s') =>\n"
-               "- result:   %s\n"
-               "- expected: %s\n",
-               desc, expr,
-               str,
-               res);
-    }
+  g_test_message ("* %s ('%s') =>\n"
+                  "- result:   %s\n"
+                  "- expected: %s",
+                  desc, expr,
+                  str,
+                  res);
 
   g_assert_cmpstr (str, ==, res);
 
