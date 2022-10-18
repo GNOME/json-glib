@@ -120,10 +120,11 @@ static const gchar *test_nested_objects[] = {
 static const struct {
   const gchar *str;
   const gchar *var;
+  JsonNodeType type;
 } test_assignments[] = {
-  { "var foo = [ false, false, true ]", "foo" },
-  { "var bar = [ true, 42 ];", "bar" },
-  { "var baz = { \"foo\" : false }", "baz" }
+  { "var foo = [ false, false, true ]", "foo", JSON_NODE_ARRAY },
+  { "var bar = [ true, 42 ];", "bar", JSON_NODE_ARRAY },
+  { "var baz = { \"foo\" : false }", "baz", JSON_NODE_OBJECT }
 };
 
 static const struct
@@ -148,24 +149,9 @@ test_empty_with_parser (JsonParser *parser)
 {
   GError *error = NULL;
 
-  if (g_test_verbose ())
-    g_print ("checking json_parser_load_from_data with empty string...\n");
-
-  if (!json_parser_load_from_data (parser, test_empty_string, -1, &error))
-    {
-      if (g_test_verbose ())
-        g_print ("Error: %s\n", error->message);
-      g_error_free (error);
-      g_object_unref (parser);
-      exit (1);
-    }
-  else
-    {
-      if (g_test_verbose ())
-        g_print ("checking json_parser_get_root...\n");
-
-      g_assert_null (json_parser_get_root (parser));
-    }
+  json_parser_load_from_data (parser, test_empty_string, -1, &error);
+  g_assert_no_error (error);
+  g_assert_null (json_parser_get_root (parser));
 }
 
 static void
@@ -194,42 +180,25 @@ test_base_value (void)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("checking json_parser_load_from_data with base-values...\n");
-
   for (guint i = 0; i < n_test_base_values; i++)
     {
       GError *error = NULL;
 
-      if (!json_parser_load_from_data (parser, test_base_values[i].str, -1, &error))
-        {
-          if (g_test_verbose ())
-            g_print ("Error: %s\n", error->message);
+      json_parser_load_from_data (parser, test_base_values[i].str, -1, &error);
+      g_assert_no_error (error);
 
-          g_error_free (error);
-          g_object_unref (parser);
-          exit (1);
-        }
-      else
-        {
-          JsonNode *root;
+      JsonNode *root = json_parser_get_root (parser);
 
-          g_assert_nonnull (json_parser_get_root (parser));
+      g_assert_nonnull (root);
+      g_assert_null (json_node_get_parent (root));
 
-          root = json_parser_get_root (parser);
-          g_assert_nonnull (root);
-          g_assert_null (json_node_get_parent (root));
+      g_test_message ("Checking root node type '%s'...",
+                      json_node_type_name (root));
+      g_assert_cmpint (JSON_NODE_TYPE (root), ==, test_base_values[i].type);
+      g_assert_cmpint (json_node_get_value_type (root), ==, test_base_values[i].gtype);
 
-          if (g_test_verbose ())
-            g_print ("checking root node is of the desired type %s...\n",
-                     test_base_values[i].gtype == G_TYPE_INVALID ? "<null>"
-                                                                 : g_type_name (test_base_values[i].gtype));
-          g_assert_cmpint (JSON_NODE_TYPE (root), ==, test_base_values[i].type);
-          g_assert_cmpint (json_node_get_value_type (root), ==, test_base_values[i].gtype);
-
-          if (test_base_values[i].verify_value)
-            test_base_values[i].verify_value (root);
-       }
+      if (test_base_values[i].verify_value)
+        test_base_values[i].verify_value (root);
     }
 
   g_object_unref (parser);
@@ -244,37 +213,19 @@ test_empty_array (void)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("checking json_parser_load_from_data with empty array...\n");
+  json_parser_load_from_data (parser, test_empty_array_string, -1, &error);
 
-  if (!json_parser_load_from_data (parser, test_empty_array_string, -1, &error))
-    {
-      if (g_test_verbose ())
-        g_print ("Error: %s\n", error->message);
-      g_error_free (error);
-      g_object_unref (parser);
-      exit (1);
-    }
-  else
-    {
-      JsonNode *root;
-      JsonArray *array;
+  g_assert_no_error (error);
 
-      g_assert_nonnull (json_parser_get_root (parser));
+  JsonNode *root = json_parser_get_root (parser);
+  g_assert_nonnull (root);
+  g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_ARRAY);
+  g_assert_null (json_node_get_parent (root));
 
-      if (g_test_verbose ())
-        g_print ("checking root node is an array...\n");
-      root = json_parser_get_root (parser);
-      g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_ARRAY);
-      g_assert_null (json_node_get_parent (root));
+  JsonArray *array = json_node_get_array (root);
+  g_assert_nonnull (array);
 
-      array = json_node_get_array (root);
-      g_assert_nonnull (array);
-
-      if (g_test_verbose ())
-        g_print ("checking array is empty...\n");
-      g_assert_cmpint (json_array_get_length (array), ==, 0);
-    }
+  g_assert_cmpint (json_array_get_length (array), ==, 0);
 
   g_object_unref (parser);
 }
@@ -287,56 +238,34 @@ test_simple_array (void)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("checking json_parser_load_from_data with simple arrays...\n");
-
   for (guint i = 0; i < n_test_simple_arrays; i++)
     {
       GError *error = NULL;
 
-      if (g_test_verbose ())
-        g_print ("Parsing: '%s'\n", test_simple_arrays[i].str);
+      g_test_message ("Parsing: '%s'", test_simple_arrays[i].str);
 
-      if (!json_parser_load_from_data (parser, test_simple_arrays[i].str, -1, &error))
-        {
-          if (g_test_verbose ())
-            g_print ("Error: %s\n", error->message);
+      json_parser_load_from_data (parser, test_simple_arrays[i].str, -1, &error);
 
-          g_error_free (error);
-          g_object_unref (parser);
-          exit (1);
-        }
-      else
-        {
-          JsonNode *root, *node;
-          JsonArray *array;
+      JsonNode *root = json_parser_get_root (parser);
+      g_assert_nonnull (root);
 
-          g_assert_nonnull (json_parser_get_root (parser));
+      g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_ARRAY);
+      g_assert_null (json_node_get_parent (root));
 
-          if (g_test_verbose ())
-            g_print ("checking root node is an array...\n");
-          root = json_parser_get_root (parser);
-          g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_ARRAY);
-          g_assert_null (json_node_get_parent (root));
+      JsonArray *array = json_node_get_array (root);
+      g_assert_nonnull (array);
 
-          array = json_node_get_array (root);
-          g_assert_nonnull (array);
+      g_assert_cmpint (json_array_get_length (array), ==, test_simple_arrays[i].len);
 
-          if (g_test_verbose ())
-            g_print ("checking array is of the desired length (%d)...\n",
-                     test_simple_arrays[i].len);
-          g_assert_cmpint (json_array_get_length (array), ==, test_simple_arrays[i].len);
+      g_test_message ("checking element %d is of the desired type %s...",
+                      test_simple_arrays[i].element,
+                      g_type_name (test_simple_arrays[i].gtype));
 
-          if (g_test_verbose ())
-            g_print ("checking element %d is of the desired type %s...\n",
-                     test_simple_arrays[i].element,
-                     g_type_name (test_simple_arrays[i].gtype));
-          node = json_array_get_element (array, test_simple_arrays[i].element);
-          g_assert_nonnull (node);
-          g_assert_true (json_node_get_parent (node) == root);
-          g_assert_cmpint (JSON_NODE_TYPE (node), ==, test_simple_arrays[i].type);
-          g_assert_cmpint (json_node_get_value_type (node), ==, test_simple_arrays[i].gtype);
-        }
+      JsonNode *node = json_array_get_element (array, test_simple_arrays[i].element);
+      g_assert_nonnull (node);
+      g_assert_true (json_node_get_parent (node) == root);
+      g_assert_cmpint (JSON_NODE_TYPE (node), ==, test_simple_arrays[i].type);
+      g_assert_cmpint (json_node_get_value_type (node), ==, test_simple_arrays[i].gtype);
     }
 
   g_object_unref (parser);
@@ -350,42 +279,21 @@ test_nested_array (void)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("checking json_parser_load_from_data with nested arrays...\n");
-
   for (guint i = 0; i < n_test_nested_arrays; i++)
     {
       GError *error = NULL;
 
-      if (!json_parser_load_from_data (parser, test_nested_arrays[i], -1, &error))
-        {
-          if (g_test_verbose ())
-            g_print ("Error: %s\n", error->message);
+      json_parser_load_from_data (parser, test_nested_arrays[i], -1, &error);
+      g_assert_no_error (error);
 
-          g_error_free (error);
-          g_object_unref (parser);
-          exit (1);
-        }
-      else
-        {
-          JsonNode *root;
-          JsonArray *array;
+      JsonNode *root = json_parser_get_root (parser);
+      g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_ARRAY);
+      g_assert_null (json_node_get_parent (root));
 
-          g_assert_nonnull (json_parser_get_root (parser));
+      JsonArray *array = json_node_get_array (root);
+      g_assert_nonnull (array);
 
-          if (g_test_verbose ())
-            g_print ("checking root node is an array...\n");
-          root = json_parser_get_root (parser);
-          g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_ARRAY);
-          g_assert_null (json_node_get_parent (root));
-
-          array = json_node_get_array (root);
-          g_assert_nonnull (array);
-
-          if (g_test_verbose ())
-            g_print ("checking array is not empty...\n");
-          g_assert_cmpint (json_array_get_length (array), >, 0);
-        }
+      g_assert_cmpint (json_array_get_length (array), >, 0);
     }
 
   g_object_unref (parser);
@@ -400,38 +308,17 @@ test_empty_object (void)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("checking json_parser_load_from_data with empty object...\n");
+  json_parser_load_from_data (parser, test_empty_object_string, -1, &error);
+  g_assert_no_error (error);
 
-  if (!json_parser_load_from_data (parser, test_empty_object_string, -1, &error))
-    {
-      if (g_test_verbose ())
-        g_print ("Error: %s\n", error->message);
-      g_error_free (error);
-      g_object_unref (parser);
-      exit (1);
-    }
-  else
-    {
-      JsonNode *root;
-      JsonObject *object;
+  JsonNode *root = json_parser_get_root (parser);
+  g_assert_nonnull (root);
+  g_assert_null (json_node_get_parent (root));
+  g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_OBJECT);
 
-      g_assert_nonnull (json_parser_get_root (parser));
-
-      if (g_test_verbose ())
-        g_print ("checking root node is an object...\n");
-      root = json_parser_get_root (parser);
-      g_assert_null (json_node_get_parent (root));
-      g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_OBJECT);
-      g_assert_null (json_node_get_parent (root));
-
-      object = json_node_get_object (root);
-      g_assert_nonnull (object);
-
-      if (g_test_verbose ())
-        g_print ("checking object is empty...\n");
-      g_assert_cmpint (json_object_get_size (object), ==, 0);
-    }
+  JsonObject *object = json_node_get_object (root);
+  g_assert_nonnull (object);
+  g_assert_cmpint (json_object_get_size (object), ==, 0);
 
   g_object_unref (parser);
 }
@@ -444,53 +331,35 @@ test_simple_object (void)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("checking json_parser_load_from_data with simple objects...\n");
-
   for (guint i = 0; i < n_test_simple_objects; i++)
     {
       GError *error = NULL;
 
-      if (!json_parser_load_from_data (parser, test_simple_objects[i].str, -1, &error))
-        {
-          if (g_test_verbose ())
-            g_print ("Error: %s\n", error->message);
+      json_parser_load_from_data (parser, test_simple_objects[i].str, -1, &error);
+      g_assert_no_error (error);
 
-          g_error_free (error);
-          g_object_unref (parser);
-          exit (1);
-        }
-      else
-        {
-          JsonNode *root, *node;
-          JsonObject *object;
+      JsonNode *root = json_parser_get_root (parser);
+      g_assert_nonnull (root);
 
-          g_assert_nonnull (json_parser_get_root (parser));
+      g_test_message ("checking root node is an object...");
+      g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_OBJECT);
+      g_assert_null (json_node_get_parent (root));
 
-          if (g_test_verbose ())
-            g_print ("checking root node is an object...\n");
-          root = json_parser_get_root (parser);
-          g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_OBJECT);
-          g_assert_null (json_node_get_parent (root));
+      JsonObject *object = json_node_get_object (root);
+      g_assert_nonnull (object);
 
-          object = json_node_get_object (root);
-          g_assert_nonnull (object);
+      g_test_message ("checking object is of the desired size '%d'...",
+                      test_simple_objects[i].size);
+      g_assert_cmpint (json_object_get_size (object), ==, test_simple_objects[i].size);
 
-          if (g_test_verbose ())
-            g_print ("checking object is of the desired size (%d)...\n",
-                     test_simple_objects[i].size);
-          g_assert_cmpint (json_object_get_size (object), ==, test_simple_objects[i].size);
-
-          if (g_test_verbose ())
-            g_print ("checking member '%s' is of the desired type %s...\n",
-                     test_simple_objects[i].member,
-                     g_type_name (test_simple_objects[i].gtype));
-          node = json_object_get_member (object, test_simple_objects[i].member);
-          g_assert_nonnull (node);
-          g_assert_true (json_node_get_parent (node) == root);
-          g_assert_cmpint (JSON_NODE_TYPE (node), ==, test_simple_objects[i].type);
-          g_assert_cmpint (json_node_get_value_type (node), ==, test_simple_objects[i].gtype);
-        }
+      g_test_message ("checking member '%s' exists and is of the desired type '%s'...",
+                      test_simple_objects[i].member,
+                      g_type_name (test_simple_objects[i].gtype));
+      JsonNode *node = json_object_get_member (object, test_simple_objects[i].member);
+      g_assert_nonnull (node);
+      g_assert_true (json_node_get_parent (node) == root);
+      g_assert_cmpint (JSON_NODE_TYPE (node), ==, test_simple_objects[i].type);
+      g_assert_cmpint (json_node_get_value_type (node), ==, test_simple_objects[i].gtype);
     }
 
   g_object_unref (parser);
@@ -504,42 +373,25 @@ test_nested_object (void)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("checking json_parser_load_from_data with nested objects...\n");
-
   for (guint i = 0; i < n_test_nested_objects; i++)
     {
       GError *error = NULL;
 
-      if (!json_parser_load_from_data (parser, test_nested_objects[i], -1, &error))
-        {
-          if (g_test_verbose ())
-            g_print ("Error: %s\n", error->message);
+      json_parser_load_from_data (parser, test_nested_objects[i], -1, &error);
+      g_assert_no_error (error);
 
-          g_error_free (error);
-          g_object_unref (parser);
-          exit (1);
-        }
-      else
-        {
-          JsonNode *root;
-          JsonObject *object;
+      JsonNode *root = json_parser_get_root (parser);
+      g_assert_nonnull (root);
 
-          g_assert_nonnull (json_parser_get_root (parser));
+      g_test_message ("checking root node is an object...");
+      g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_OBJECT);
+      g_assert_null (json_node_get_parent (root));
 
-          if (g_test_verbose ())
-            g_print ("checking root node is an object...\n");
-          root = json_parser_get_root (parser);
-          g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_OBJECT);
-          g_assert_null (json_node_get_parent (root));
+      JsonObject *object = json_node_get_object (root);
+      g_assert_nonnull (object);
 
-          object = json_node_get_object (root);
-          g_assert_nonnull (object);
-
-          if (g_test_verbose ())
-            g_print ("checking object is not empty...\n");
-          g_assert_cmpint (json_object_get_size (object), >, 0);
-        }
+      g_test_message ("checking object is not empty...");
+      g_assert_cmpint (json_object_get_size (object), >, 0);
     }
 
   g_object_unref (parser);
@@ -553,34 +405,25 @@ test_assignment (void)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("checking json_parser_load_from_data with assignments...\n");
-
   for (guint i = 0; i < n_test_assignments; i++)
     {
       GError *error = NULL;
 
-      if (!json_parser_load_from_data (parser, test_assignments[i].str, -1, &error))
-        {
-          if (g_test_verbose ())
-            g_print ("Error: %s\n", error->message);
+      json_parser_load_from_data (parser, test_assignments[i].str, -1, &error);
+      g_assert_no_error (error);
 
-          g_error_free (error);
-          g_object_unref (parser);
-          exit (1);
-        }
-      else
-        {
-          gchar *var;
+      g_test_message ("checking variable '%s' is assigned...",
+                      test_assignments[i].var);
 
-          if (g_test_verbose ())
-            g_print ("checking assignment...\n");
+      char *var = NULL;
+      g_assert_true (json_parser_has_assignment (parser, &var));
+      g_assert_nonnull (var);
+      g_assert_cmpstr (var, ==, test_assignments[i].var);
 
-          g_assert_true (json_parser_has_assignment (parser, &var));
-          g_assert_nonnull (var);
-          g_assert_cmpstr (var, ==, test_assignments[i].var);
-          g_assert_nonnull (json_parser_get_root (parser));
-        }
+      g_test_message ("checking for a root of the desired type...");
+      JsonNode *root = json_parser_get_root (parser);
+      g_assert_nonnull (root);
+      g_assert_cmpint (JSON_NODE_TYPE (root), ==, test_assignments[i].type);
     }
 
   g_object_unref (parser);
@@ -594,52 +437,33 @@ test_unicode_escape (void)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  if (g_test_verbose ())
-    g_print ("checking json_parser_load_from_data with unicode escape...\n");
-
   for (guint i = 0; i < n_test_unicode; i++)
     {
       GError *error = NULL;
 
-      if (!json_parser_load_from_data (parser, test_unicode[i].str, -1, &error))
-        {
-          if (g_test_verbose ())
-            g_print ("Error: %s\n", error->message);
+      json_parser_load_from_data (parser, test_unicode[i].str, -1, &error);
+      g_assert_no_error (error);
 
-          g_error_free (error);
-          g_object_unref (parser);
-          exit (1);
-        }
-      else
-        {
-          JsonNode *root, *node;
-          JsonObject *object;
+      g_test_message ("checking root node is an object...");
+      JsonNode *root = json_parser_get_root (parser);
+      g_assert_nonnull (root);
+      g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_OBJECT);
 
-          g_assert_nonnull (json_parser_get_root (parser));
+      JsonObject *object = json_node_get_object (root);
+      g_assert_nonnull (object);
 
-          if (g_test_verbose ())
-            g_print ("checking root node is an object...\n");
-          root = json_parser_get_root (parser);
-          g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_OBJECT);
+      g_test_message ("checking object is not empty...");
+      g_assert_cmpint (json_object_get_size (object), >, 0);
 
-          object = json_node_get_object (root);
-          g_assert_true (object);
+      g_test_message ("checking for object member '%s'...", test_unicode[i].member);
+      JsonNode *node = json_object_get_member (object, test_unicode[i].member);
+      g_assert_cmpint (JSON_NODE_TYPE (node), ==, JSON_NODE_VALUE);
 
-          if (g_test_verbose ())
-            g_print ("checking object is not empty...\n");
-          g_assert_cmpint (json_object_get_size (object), >, 0);
+      g_test_message ("checking simple string equality...");
+      g_assert_cmpstr (json_node_get_string (node), ==, test_unicode[i].match);
 
-          node = json_object_get_member (object, test_unicode[i].member);
-          g_assert_cmpint (JSON_NODE_TYPE (node), ==, JSON_NODE_VALUE);
-
-          if (g_test_verbose ())
-            g_print ("checking simple string equality...\n");
-          g_assert_cmpstr (json_node_get_string (node), ==, test_unicode[i].match);
-
-          if (g_test_verbose ())
-            g_print ("checking for valid UTF-8...\n");
-          g_assert_true (g_utf8_validate (json_node_get_string (node), -1, NULL));
-        }
+      g_test_message ("checking for valid UTF-8...");
+      g_assert_true (g_utf8_validate (json_node_get_string (node), -1, NULL));
     }
 
   g_object_unref (parser);

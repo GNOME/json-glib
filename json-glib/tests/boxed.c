@@ -72,12 +72,9 @@ test_boxed_serialize (gconstpointer boxed)
 
   json_node_take_object (node, object);
 
-  if (g_test_verbose ())
-    {
-      g_print ("Serialize: { foo: %" G_GINT64_FORMAT ", bar: %s }\n",
-               json_object_get_int_member (object, "foo"),
-               json_object_get_boolean_member (object, "bar") ? "true" : "false");
-    }
+  g_test_message ("Serialize: { foo: %" G_GINT64_FORMAT ", bar: %s }",
+                  json_object_get_int_member (object, "foo"),
+                  json_object_get_boolean_member (object, "bar") ? "true" : "false");
 
   return node;
 }
@@ -97,12 +94,9 @@ test_boxed_deserialize (JsonNode *node)
   test->foo = json_object_get_int_member (object, "foo");
   test->bar = json_object_get_boolean_member (object, "bar");
 
-  if (g_test_verbose ())
-    {
-      g_print ("Deserialize: { foo: %d, bar: %s }\n",
-               test->foo,
-               test->bar ? "true" : "false");
-    }
+  g_test_message ("Deserialize: { foo: %d, bar: %s }",
+                  test->foo,
+                  test->bar ? "true" : "false");
 
   return test;
 }
@@ -118,8 +112,7 @@ test_boxed_get_type (void)
                                              test_boxed_copy,
                                              test_boxed_free);
 
-      if (g_test_verbose ())
-        g_print ("Registering transform functions\n");
+      g_test_message ("Registering transform functions");
 
       json_boxed_register_serialize_func (b_type, JSON_NODE_OBJECT,
                                           test_boxed_serialize);
@@ -229,8 +222,7 @@ test_serialize_boxed (void)
   g_assert_cmpint (len, ==, strlen (serialize_data));
   g_assert_cmpstr (data, ==, serialize_data);
 
-  if (g_test_verbose ())
-    g_print ("TestObject:\n%s\n", data);
+  g_test_message ("TestObject: %s", data);
 
   g_free (data);
   g_object_unref (obj);

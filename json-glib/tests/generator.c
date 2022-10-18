@@ -141,10 +141,9 @@ test_simple_array (void)
   g_object_set (generator, "pretty", FALSE, NULL);
   data = json_generator_to_data (generator, &len);
 
-  if (g_test_verbose ())
-    g_print ("checking simple array `%s' (expected: %s)\n",
-             data,
-             simple_array);
+  g_test_message ("checking simple array '%s' (expected: '%s')",
+                  data,
+                  simple_array);
 
   g_assert_cmpint (len, ==, strlen (simple_array));
   g_assert_cmpstr (data, ==, simple_array);
@@ -218,10 +217,9 @@ test_simple_object (void)
   g_object_set (generator, "pretty", FALSE, NULL);
   data = json_generator_to_data (generator, &len);
 
-  if (g_test_verbose ())
-    g_print ("checking simple object `%s' (expected: %s)\n",
-             data,
-             simple_object);
+  g_test_message ("checking simple object '%s' (expected: '%s')",
+                  data,
+                  simple_object);
 
   g_assert_cmpint (len, ==, strlen (simple_object));
   g_assert_cmpstr (data, ==, simple_object);
@@ -278,10 +276,9 @@ test_nested_object (void)
   g_object_set (generator, "pretty", FALSE, NULL);
   data = json_generator_to_data (generator, &len);
 
-  if (g_test_verbose ())
-    g_print ("checking nested object `%s' (expected: %s)\n",
-             data,
-             nested_object);
+  g_test_message ("checking nested object '%s' (expected: '%s')",
+                  data,
+                  nested_object);
 
   g_assert_cmpint (len, ==, strlen (nested_object));
   g_assert_cmpstr (data, ==, nested_object);
@@ -312,11 +309,10 @@ test_decimal_separator (void)
 
       str = json_generator_to_data (generator, NULL);
 
-      if (g_test_verbose ())
-        g_print ("%s: value: %.2f - string: '%s'\n",
-                 G_STRFUNC,
-                 json_node_get_double (node),
-                 str);
+      g_test_message ("%s: value: '%.2f' - string: '%s'",
+                      G_STRFUNC,
+                      json_node_get_double (node),
+                      str);
 
       g_assert_nonnull (str);
       expected = strstr (str, decimal_separator[i].sep);

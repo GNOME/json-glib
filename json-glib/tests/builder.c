@@ -70,8 +70,7 @@ test_builder_complex (void)
   json_generator_set_root (generator, node);
   data = json_generator_to_data (generator, &length);
 
-  if (g_test_verbose ())
-    g_print ("Builder complex: '%*s'\n", (int)length, data);
+  g_test_message ("Builder complex: '%*s'", (int)length, data);
 
   g_assert_cmpint (length, ==, strlen (complex_object));
   g_assert_cmpstr (data, ==, complex_object);
@@ -106,8 +105,7 @@ test_builder_empty (void)
   json_generator_set_root (generator, node);
   data = json_generator_to_data (generator, &length);
 
-  if (g_test_verbose ())
-    g_print ("Builder empty: '%*s'\n", (int)length, data);
+  g_test_message ("Builder empty: '%*s'", (int)length, data);
 
   g_assert_cmpint (length, ==, strlen (empty_object));
   g_assert_cmpstr (data, ==, empty_object);

@@ -406,19 +406,17 @@ test_deserialize (void)
 
   error = NULL;
   object = json_gobject_from_data (TEST_TYPE_OBJECT, var_test, -1, &error);
-  if (error)
-    g_error ("*** Unable to parse buffer: %s\n", error->message);
+  g_assert_no_error (error);
 
-  if (g_test_verbose ())
-    g_print ("*** TestObject ***\n"
-             " foo: %s\n"
-             " bar: %s\n"
-             " baz: %s\n"
-             " meh: %s\n",
-             TEST_OBJECT (object)->m_int == 42             ? "<true>" : "<false>",
-             TEST_OBJECT (object)->m_bool == TRUE          ? "<true>" : "<false>",
-             TEST_OBJECT (object)->m_str != NULL           ? "<true>" : "<false>",
-             TEST_OBJECT (object)->m_enum == TEST_ENUM_BAZ ? "<true>" : "<false>");
+  g_test_message ("*** TestObject ***\n"
+                  " foo: %s\n"
+                  " bar: %s\n"
+                  " baz: %s\n"
+                  " meh: %s",
+                  TEST_OBJECT (object)->m_int == 42             ? "<true>" : "<false>",
+                  TEST_OBJECT (object)->m_bool == TRUE          ? "<true>" : "<false>",
+                  TEST_OBJECT (object)->m_str != NULL           ? "<true>" : "<false>",
+                  TEST_OBJECT (object)->m_enum == TEST_ENUM_BAZ ? "<true>" : "<false>");
 
   g_assert_cmpint (TEST_OBJECT (object)->m_int, ==, 42);
   g_assert_true (TEST_OBJECT (object)->m_bool);

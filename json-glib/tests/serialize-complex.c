@@ -273,8 +273,7 @@ test_serialize (void)
   data = json_gobject_to_data (G_OBJECT (obj), &len);
 
   g_assert_cmpint (len, >, 0);
-  if (g_test_verbose ())
-    g_print ("TestObject:\n%s\n", data);
+  g_test_message ("TestObject: %s", data);
 
   parser = json_parser_new ();
   json_parser_load_from_data (parser, data, -1, &error);
