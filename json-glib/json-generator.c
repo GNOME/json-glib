@@ -360,7 +360,12 @@ dump_value (GString  *buffer,
                          g_ascii_dtostr (buf, sizeof (buf),
                                          json_value_get_double (value)));
 	/* ensure doubles don't become ints */
-	if (g_strstr_len (buf, G_ASCII_DTOSTR_BUF_SIZE, ".") == NULL)
+        /* also make sure not to append .0 that results in invalid exponential notation
+         * since the numbers should be decimal, a hex 'e' or "E" can not be mistaken
+         */
+	if (g_strstr_len (buf, G_ASCII_DTOSTR_BUF_SIZE, ".") == NULL &&
+            g_strstr_len (buf, G_ASCII_DTOSTR_BUF_SIZE, "e") == NULL &&
+            g_strstr_len (buf, G_ASCII_DTOSTR_BUF_SIZE, "E") == NULL)
 	  {
 	    g_string_append (buffer, ".0");
           }
