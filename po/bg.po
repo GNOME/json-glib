@@ -93,13 +93,13 @@ msgstr "„json-glib-format“ форматира JSON."
 #: json-glib/json-glib-format.c:219 json-glib/json-glib-validate.c:136
 #, c-format
 msgid "Error parsing commandline options: %s\n"
-msgstr "Грешка при анализ на опциите от командния ред: %s\n"
+msgstr "Грешка при анализа на опциите на командния ред: %s\n"
 
 #: json-glib/json-glib-format.c:221 json-glib/json-glib-format.c:235
 #: json-glib/json-glib-validate.c:138 json-glib/json-glib-validate.c:152
 #, c-format
 msgid "Try “%s --help” for more information."
-msgstr "За повече информация ползвайте „%s --help“."
+msgstr "За повече информация изпълнете „%s --help“."
 
 #. Translators: the %s is the program name. This error message
 #. * means the user is calling json-glib-validate without any
