@@ -46,28 +46,29 @@ static gboolean
 validate (JsonParser *parser,
           GFile      *file)
 {
-  GInputStream *in;
+  GBytes *bytes;
   GError *error;
   gboolean res = TRUE;
-  gboolean parse_res;
-  gboolean close_res;
 
   error = NULL;
 
-  in = (GInputStream *) g_file_read (file, NULL, &error);
-  if (in == NULL)
+  bytes = g_file_load_bytes (file, NULL, NULL, &error);
+  if (bytes == NULL)
     {
       /* Translators: the first %s is the program name, the second one
        * is the URI of the file, the third is the error message.
        */
-      g_printerr (_("%s: %s: error opening file: %s\n"),
+      g_printerr (_("%s: %s: error reading file: %s\n"),
                   g_get_prgname (), g_file_get_uri (file), error->message);
       g_error_free (error);
       return FALSE;
     }
 
-  parse_res = json_parser_load_from_stream (parser, in, NULL, &error);
-  if (!parse_res)
+  res = json_parser_load_from_data (parser,
+                                    g_bytes_get_data (bytes, NULL),
+                                    g_bytes_get_size (bytes),
+                                    &error);
+  if (!res)
     {
       /* Translators: the first %s is the program name, the second one
        * is the URI of the file, the third is the error message.
@@ -75,20 +76,9 @@ validate (JsonParser *parser,
       g_printerr (_("%s: %s: error parsing file: %s\n"),
                   g_get_prgname (), g_file_get_uri (file), error->message);
       g_clear_error (&error);
-      res = FALSE;
     }
 
-  close_res = g_input_stream_close (in, NULL, &error);
-  if (!close_res)
-    {
-      /* Translators: the first %s is the program name, the second one
-       * is the URI of the file, the third is the error message.
-       */
-      g_printerr (_("%s: %s: error closing: %s\n"),
-                  g_get_prgname (), g_file_get_uri (file), error->message);
-      g_clear_error (&error);
-      res = FALSE;
-    }
+  g_bytes_unref (bytes);
 
   return res;
 }
