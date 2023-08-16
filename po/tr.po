@@ -1,5 +1,5 @@
 # Turkish translation for json-glib.
-# Copyright (C) 2011-2022 json-glib's COPYRIGHT HOLDER
+# Copyright (C) 2011-2023 json-glib's COPYRIGHT HOLDER
 # This file is distributed under the same license as the json-glib package.
 #
 # Yaşar Şentürk <yasarix@gmail.com>, 2014.
@@ -10,10 +10,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: json-glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues\n"
-"POT-Creation-Date: 2022-07-14 11:02+0000\n"
+"POT-Creation-Date: 2023-05-05 13:30+0000\n"
 "PO-Revision-Date: 2018-08-09 16:12+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
-"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
+"Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -123,7 +123,7 @@ msgid "json-glib-validate validates JSON data at the given URI."
 msgstr "json-glib-validate verilen URIʼdeki JSON verisini doğrular."
 
 #. translators: the %s is the name of the data structure
-#: json-glib/json-gobject.c:924
+#: json-glib/json-gobject.c:928
 #, c-format
 msgid "Expecting a JSON object, but the root node is of type “%s”"
 msgstr "Bir JSON nesnesi bekleniyor, ama kök düğümü “%s” türünde"
@@ -134,38 +134,38 @@ msgstr "Bir JSON nesnesi bekleniyor, ama kök düğümü “%s” türünde"
 msgid "Unexpected type “%s” in JSON node"
 msgstr "JSON düğümünde beklenmeyen “%s” türü"
 
-#: json-glib/json-gvariant.c:552
+#: json-glib/json-gvariant.c:555
 msgid "Missing elements in JSON array to conform to a tuple"
 msgstr "JSON dizisinin bir demete uyması için gereken ögeler eksik"
 
-#: json-glib/json-gvariant.c:580
+#: json-glib/json-gvariant.c:583
 msgid "Missing closing symbol “)” in the GVariant tuple type"
 msgstr "GVariant demeti türünde kapatma sembolü “)” eksik"
 
-#: json-glib/json-gvariant.c:588
+#: json-glib/json-gvariant.c:591
 msgid "Unexpected extra elements in JSON array"
 msgstr "JSON dizisinde beklenmeyen ek ögeler"
 
-#: json-glib/json-gvariant.c:889
+#: json-glib/json-gvariant.c:892
 msgid "Invalid string value converting to GVariant"
 msgstr "GVariantʼa dönüştürmede geçersiz dizge değeri"
 
-#: json-glib/json-gvariant.c:944
+#: json-glib/json-gvariant.c:947
 msgid ""
 "A GVariant dictionary entry expects a JSON object with exactly one member"
 msgstr ""
 "Bir GVariant sözlük girdisi, tam olarak bir üyesi olan JSON nesnesi bekler"
 
-#: json-glib/json-gvariant.c:1222
+#: json-glib/json-gvariant.c:1225
 #, c-format
 msgid "GVariant class “%c” not supported"
 msgstr "GVariant sınıfı “%c” desteklenmiyor"
 
-#: json-glib/json-gvariant.c:1276
+#: json-glib/json-gvariant.c:1279
 msgid "Invalid GVariant signature"
 msgstr "Geçersiz GVariant imzası"
 
-#: json-glib/json-gvariant.c:1327
+#: json-glib/json-gvariant.c:1333
 msgid "JSON data is empty"
 msgstr "JSON verisi boş"
 
@@ -178,7 +178,7 @@ msgstr "JSON verisi boş"
 msgid "%s:%d:%d: Parse error: %s"
 msgstr "%s:%d:%d: Ayrıştırma hatası: %s"
 
-#: json-glib/json-parser.c:1023
+#: json-glib/json-parser.c:1021
 msgid "JSON data must be UTF-8 encoded"
 msgstr "JSON verisi UTF-8 ile kodlanmış olmalıdır"
 
