@@ -1,5 +1,5 @@
 project('json-glib', 'c',
-  version: '1.7.1',
+  version: '1.8.0',
   license: 'LGPL-2.1-or-later',
   default_options: [
     'warning_level=2',

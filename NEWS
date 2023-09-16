@@ -1,3 +1,13 @@
+Overview of changes for 1.8
+==============================
+• Build fixes [!55]
+• Add current node accessor to JsonReader [#9]
+• Make xgettext optional [!50]
+• Avoid leaking memory in error paths [!46]
+• Update test suite to conform with TAP [!48]
+• Ensure valid output for exponential notation of numbers [#67]
+• Translation updates
+
 Overview of changes for 1.6
 ==============================
 • Add getters with default fallback for JsonObject [Emmanuele Bassi]
