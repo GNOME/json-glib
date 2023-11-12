@@ -562,7 +562,7 @@ json_to_gvariant_tuple (JsonNode     *json_node,
       variant_child = json_to_gvariant_recurse (json_child, signature, error);
       if (variant_child != NULL)
         {
-          children = g_list_append (children, variant_child);
+          children = g_list_prepend (children, variant_child);
         }
       else
         {
@@ -572,6 +572,7 @@ json_to_gvariant_tuple (JsonNode     *json_node,
 
       i++;
     }
+  children = g_list_reverse (children);
 
   if (! roll_back)
     {
@@ -758,7 +759,7 @@ json_to_gvariant_array (JsonNode     *json_node,
                                                     error);
           if (variant_child != NULL)
             {
-              children = g_list_append (children, variant_child);
+              children = g_list_prepend (children, variant_child);
             }
           else
             {
@@ -766,6 +767,7 @@ json_to_gvariant_array (JsonNode     *json_node,
               break;
             }
         }
+      children = g_list_reverse (children);
     }
 
   if (!roll_back)
