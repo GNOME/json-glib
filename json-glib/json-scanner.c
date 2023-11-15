@@ -76,7 +76,6 @@ struct _JsonScannerConfig
   bool scan_string_sq;      /* string: 'anything' */
   bool scan_string_dq;      /* string: "\\-escapes!\n" */
   bool numbers_2_int;       /* bin, octal, hex => int */
-  bool int_2_float;         /* int => G_TOKEN_FLOAT? */
   bool identifier_2_string;
   bool char_2_token;        /* return G_TOKEN_CHAR? */
   bool symbol_2_token;
@@ -250,7 +249,6 @@ json_scanner_new (void)
     .scan_string_sq = true,
     .scan_string_dq = true,
     .numbers_2_int = true,
-    .int_2_float = false,
     .identifier_2_string = false,
     .char_2_token = true,
     .symbol_2_token = true,
@@ -961,23 +959,6 @@ json_scanner_get_token_i (JsonScanner	*scanner,
       
     default:
       break;
-    }
-  
-  if (*token_p == G_TOKEN_INT &&
-      scanner->config.int_2_float)
-    {
-      *token_p = G_TOKEN_FLOAT;
-      if (scanner->config.store_int64)
-        {
-#ifdef _MSC_VER
-          /* work around error C2520, see gvaluetransform.c */
-          value_p->v_float = (__int64)value_p->v_int64;
-#else
-          value_p->v_float = value_p->v_int64;
-#endif
-        }
-      else
-	value_p->v_float = value_p->v_int;
     }
   
   errno = 0;
