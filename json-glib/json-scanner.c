@@ -78,7 +78,6 @@ struct _JsonScannerConfig
   bool numbers_2_int;       /* bin, octal, hex => int */
   bool char_2_token;        /* return G_TOKEN_CHAR? */
   bool symbol_2_token;
-  bool scope_0_fallback;    /* try scope 0 on lookups? */
   bool store_int64;         /* use value.v_int64 rather than v_int */
 };
 
@@ -250,7 +249,6 @@ json_scanner_new (void)
     .numbers_2_int = true,
     .char_2_token = true,
     .symbol_2_token = true,
-    .scope_0_fallback = false,
     .store_int64 = true,
   };
 
@@ -1507,9 +1505,6 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 	  
 	  scope_id = scanner->scope_id;
 	  key = json_scanner_lookup_internal (scanner, scope_id, value.v_identifier);
-	  if (!key && scope_id && scanner->config.scope_0_fallback)
-	    key = json_scanner_lookup_internal (scanner, 0, value.v_identifier);
-	  
 	  if (key)
 	    {
 	      g_free (value.v_identifier);
