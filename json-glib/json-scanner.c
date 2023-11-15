@@ -67,7 +67,6 @@ struct _JsonScannerConfig
   bool scan_comment_multi;  /* scan multi line comments? */
   bool scan_identifier;
   bool scan_identifier_1char;
-  bool scan_identifier_NULL;
   bool scan_symbols;
   bool scan_binary;
   bool scan_octal;
@@ -242,7 +241,6 @@ json_scanner_new (void)
     .scan_comment_multi = false,
     .scan_identifier = true,
     .scan_identifier_1char = true,
-    .scan_identifier_NULL = false,
     .scan_symbols = true,
     .scan_binary = true,
     .scan_octal = true,
@@ -1540,35 +1538,6 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 	      g_free (value.v_identifier);
 	      token = G_TOKEN_SYMBOL;
 	      value.v_symbol = key->value;
-	    }
-	}
-      
-      if (token == G_TOKEN_IDENTIFIER &&
-	  config->scan_identifier_NULL &&
-	  strlen (value.v_identifier) == 4)
-	{
-	  const char *null_upper = "NULL";
-	  const char *null_lower = "null";
-	  
-	  if (scanner->config.case_sensitive)
-	    {
-	      if (value.v_identifier[0] == null_upper[0] &&
-		  value.v_identifier[1] == null_upper[1] &&
-		  value.v_identifier[2] == null_upper[2] &&
-		  value.v_identifier[3] == null_upper[3])
-		token = G_TOKEN_IDENTIFIER_NULL;
-	    }
-	  else
-	    {
-	      if ((value.v_identifier[0] == null_upper[0] ||
-		   value.v_identifier[0] == null_lower[0]) &&
-		  (value.v_identifier[1] == null_upper[1] ||
-		   value.v_identifier[1] == null_lower[1]) &&
-		  (value.v_identifier[2] == null_upper[2] ||
-		   value.v_identifier[2] == null_lower[2]) &&
-		  (value.v_identifier[3] == null_upper[3] ||
-		   value.v_identifier[3] == null_lower[3]))
-		token = G_TOKEN_IDENTIFIER_NULL;
 	    }
 	}
     }
