@@ -64,7 +64,6 @@ struct _JsonScannerConfig
    */
   bool skip_comment_multi;  /* C like comment */
   bool skip_comment_single; /* single line comment */
-  bool scan_comment_multi;  /* scan multi line comments? */
   bool scan_identifier;
   bool scan_identifier_1char;
   bool scan_symbols;
@@ -235,7 +234,6 @@ json_scanner_new (void)
     .case_sensitive = true,
     .skip_comment_multi = true,
     .skip_comment_single = true,
-    .scan_comment_multi = false,
     .scan_identifier = true,
     .scan_identifier_1char = true,
     .scan_symbols = true,
@@ -1014,8 +1012,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 	  break;
 	  
 	case '/':
-	  if (!config->scan_comment_multi ||
-	      json_scanner_peek_next_char (scanner) != '*')
+	  if (json_scanner_peek_next_char (scanner) != '*')
 	    goto default_case;
 	  json_scanner_get_char (scanner, line_p, position_p);
 	  token = G_TOKEN_COMMENT_MULTI;
