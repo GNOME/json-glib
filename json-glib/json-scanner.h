@@ -37,13 +37,12 @@
 G_BEGIN_DECLS
 
 typedef struct _JsonScanner       JsonScanner;
-typedef struct _JsonScannerConfig JsonScannerConfig;
 
 typedef void (* JsonScannerMsgFunc) (JsonScanner *scanner,
                                      const char  *message,
                                      gpointer     user_data);
 
-/**
+/*< private >
  * JsonTokenType:
  * @JSON_TOKEN_INVALID: marker
  * @JSON_TOKEN_TRUE: symbol for 'true' bareword
@@ -64,52 +63,6 @@ typedef enum {
 
   JSON_TOKEN_LAST
 } JsonTokenType;
-
-/**
- * JsonScanner:
- *
- * Tokenizer scanner for JSON. See #GScanner
- *
- * Since: 0.6
- */
-struct _JsonScanner
-{
-  /*< private >*/
-  /* unused fields */
-  gpointer user_data;
-  guint max_parse_errors;
-  
-  /* json_scanner_error() increments this field */
-  guint parse_errors;
-  
-  /* name of input stream, featured by the default message handler */
-  const char *input_name;
-  
-  /* link into the scanner configuration */
-  JsonScannerConfig *config;
-  
-  /* fields filled in after json_scanner_get_next_token() */
-  GTokenType token;
-  GTokenValue value;
-  guint line;
-  guint position;
-  
-  /* fields filled in after json_scanner_peek_next_token() */
-  GTokenType next_token;
-  GTokenValue next_value;
-  guint next_line;
-  guint next_position;
-  
-  /* to be considered private */
-  GHashTable *symbol_table;
-  const char *text;
-  const char *text_end;
-  char *buffer;
-  guint scope_id;
-  
-  /* handler function for _warn and _error */
-  JsonScannerMsgFunc msg_handler;
-};
 
 G_GNUC_INTERNAL
 JsonScanner *json_scanner_new                  (void);

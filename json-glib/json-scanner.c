@@ -46,10 +46,11 @@ enum {
   JSON_ERR_MALFORMED_SURROGATE_PAIR = G_TOKEN_LAST + 1,
 };
 
+typedef struct _JsonScannerConfig JsonScannerConfig;
+
 struct _JsonScannerConfig
 {
-  /* Character sets
-   */
+  /* Character sets */
   const char *cset_skip_characters; /* default: " \t\n" */
   const char *cset_identifier_first;
   const char *cset_identifier_nth;
@@ -124,6 +125,51 @@ static JsonScannerConfig json_scanner_config_template =
   .scope_0_fallback = false,
   .store_int64 = true,
   .padding_dummy = 0,
+};
+
+/*< private >
+ * JsonScanner:
+ *
+ * Tokenizer scanner for JSON. See #GScanner
+ *
+ * Since: 0.6
+ */
+struct _JsonScanner
+{
+  /* unused fields */
+  gpointer user_data;
+  guint max_parse_errors;
+
+  /* json_scanner_error() increments this field */
+  guint parse_errors;
+
+  /* name of input stream, featured by the default message handler */
+  const char *input_name;
+
+  /* link into the scanner configuration */
+  JsonScannerConfig *config;
+
+  /* fields filled in after json_scanner_get_next_token() */
+  GTokenType token;
+  GTokenValue value;
+  guint line;
+  guint position;
+
+  /* fields filled in after json_scanner_peek_next_token() */
+  GTokenType next_token;
+  GTokenValue next_value;
+  guint next_line;
+  guint next_position;
+
+  /* to be considered private */
+  GHashTable *symbol_table;
+  const char *text;
+  const char *text_end;
+  char *buffer;
+  guint scope_id;
+
+  /* handler function for _warn and _error */
+  JsonScannerMsgFunc msg_handler;
 };
 
 /* --- defines --- */
