@@ -82,10 +82,7 @@ struct _JsonScanner
   guint parse_errors;
   
   /* name of input stream, featured by the default message handler */
-  const gchar *input_name;
-  
-  /* quarked data */
-  GData *qdata;
+  const char *input_name;
   
   /* link into the scanner configuration */
   JsonScannerConfig *config;
@@ -104,9 +101,9 @@ struct _JsonScanner
   
   /* to be considered private */
   GHashTable *symbol_table;
-  const gchar *text;
-  const gchar *text_end;
-  gchar *buffer;
+  const char *text;
+  const char *text_end;
+  char *buffer;
   guint scope_id;
   
   /* handler function for _warn and _error */
