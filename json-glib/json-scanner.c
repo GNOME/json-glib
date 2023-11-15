@@ -311,6 +311,17 @@ json_scanner_destroy (JsonScanner *scanner)
 }
 
 void
+json_scanner_set_msg_handler (JsonScanner        *scanner,
+                              JsonScannerMsgFunc  msg_handler,
+                              gpointer            user_data)
+{
+  g_return_if_fail (scanner != NULL);
+
+  scanner->msg_handler = msg_handler;
+  scanner->user_data = user_data;
+}
+
+void
 json_scanner_error (JsonScanner *scanner,
                     const char  *format,
                     ...)
@@ -329,7 +340,7 @@ json_scanner_error (JsonScanner *scanner,
       string = g_strdup_vprintf (format, args);
       va_end (args);
       
-      scanner->msg_handler (scanner, string);
+      scanner->msg_handler (scanner, string, scanner->user_data);
       
       g_free (string);
     }
@@ -1557,4 +1568,64 @@ json_scanner_get_token_ll (JsonScanner *scanner,
   
   *token_p = token;
   *value_p = value;
+}
+
+gint64
+json_scanner_get_int64_value (const JsonScanner *scanner)
+{
+  return scanner->value.v_int64;
+}
+
+double
+json_scanner_get_float_value (const JsonScanner *scanner)
+{
+  return scanner->value.v_float;
+}
+
+const char *
+json_scanner_get_string_value (const JsonScanner *scanner)
+{
+  return scanner->value.v_string;
+}
+
+char *
+json_scanner_dup_string_value (const JsonScanner *scanner)
+{
+  return g_strdup (scanner->value.v_string);
+}
+
+const char *
+json_scanner_get_identifier (const JsonScanner *scanner)
+{
+  return scanner->value.v_identifier;
+}
+
+char *
+json_scanner_dup_identifier (const JsonScanner *scanner)
+{
+  return g_strdup (scanner->value.v_identifier);
+}
+
+guint
+json_scanner_get_current_line (const JsonScanner *scanner)
+{
+  return scanner->line;
+}
+
+guint
+json_scanner_get_current_position (const JsonScanner *scanner)
+{
+  return scanner->position;
+}
+
+GTokenType
+json_scanner_get_current_token (const JsonScanner *scanner)
+{
+  return scanner->token;
+}
+
+guint
+json_scanner_get_current_scope_id (const JsonScanner *scanner)
+{
+  return scanner->scope_id;
 }

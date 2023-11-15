@@ -40,7 +40,8 @@ typedef struct _JsonScanner       JsonScanner;
 typedef struct _JsonScannerConfig JsonScannerConfig;
 
 typedef void (* JsonScannerMsgFunc) (JsonScanner *scanner,
-                                     gchar       *message);
+                                     const char  *message,
+                                     gpointer     user_data);
 
 /**
  * JsonTokenType:
@@ -135,9 +136,35 @@ void         json_scanner_unexp_token          (JsonScanner *scanner,
                                                 const gchar *symbol_name,
                                                 const gchar *message);
 G_GNUC_INTERNAL
+void         json_scanner_set_msg_handler      (JsonScanner        *scanner,
+                                                JsonScannerMsgFunc  msg_handler,
+                                                gpointer            user_data);
+G_GNUC_INTERNAL
 void         json_scanner_error                (JsonScanner *scanner,
                                                 const gchar *format,
                                                 ...) G_GNUC_PRINTF (2,3);
+
+G_GNUC_INTERNAL
+gint64       json_scanner_get_int64_value      (const JsonScanner *scanner);
+G_GNUC_INTERNAL
+double       json_scanner_get_float_value      (const JsonScanner *scanner);
+G_GNUC_INTERNAL
+const char * json_scanner_get_string_value     (const JsonScanner *scanner);
+G_GNUC_INTERNAL
+char *       json_scanner_dup_string_value     (const JsonScanner *scanner);
+G_GNUC_INTERNAL
+const char * json_scanner_get_identifier       (const JsonScanner *scanner);
+G_GNUC_INTERNAL
+char *       json_scanner_dup_identifier       (const JsonScanner *scanner);
+
+G_GNUC_INTERNAL
+guint        json_scanner_get_current_line     (const JsonScanner *scanner);
+G_GNUC_INTERNAL
+guint        json_scanner_get_current_position (const JsonScanner *scanner);
+G_GNUC_INTERNAL
+GTokenType   json_scanner_get_current_token    (const JsonScanner *scanner);
+G_GNUC_INTERNAL
+guint        json_scanner_get_current_scope_id (const JsonScanner *scanner);
 
 G_END_DECLS
 
