@@ -436,27 +436,35 @@ json_parse_value (JsonParser   *parser,
   switch (token)
     {
     case G_TOKEN_INT:
-      JSON_NOTE (PARSER, "abs(node): %" G_GINT64_FORMAT " (sign: %s)",
-                 scanner->value.v_int64,
-                 is_negative ? "negative" : "positive");
-      *node = json_node_init_int (json_node_alloc (),
-                                  is_negative ? scanner->value.v_int64 * -1
-                                              : scanner->value.v_int64);
+      {
+        gint64 value = json_scanner_get_int64_value (scanner);
+
+        JSON_NOTE (PARSER, "abs(node): %" G_GINT64_FORMAT " (sign: %s)",
+                   value,
+                   is_negative ? "negative" : "positive");
+        *node = json_node_init_int (json_node_alloc (), is_negative ? value * -1 : value);
+      }
       break;
 
     case G_TOKEN_FLOAT:
-      JSON_NOTE (PARSER, "abs(node): %.6f (sign: %s)",
-                 scanner->value.v_float,
-                 is_negative ? "negative" : "positive");
-      *node = json_node_init_double (json_node_alloc (),
-                                     is_negative ? scanner->value.v_float * -1.0
-                                                 : scanner->value.v_float);
+      {
+        double value = json_scanner_get_float_value (scanner);
+
+        JSON_NOTE (PARSER, "abs(node): %.6f (sign: %s)",
+                   value,
+                   is_negative ? "negative" : "positive");
+
+        *node = json_node_init_double (json_node_alloc (), is_negative ? value * -1.0 : value);
+      }
       break;
 
     case G_TOKEN_STRING:
-      JSON_NOTE (PARSER, "node: '%s'",
-                 scanner->value.v_string);
-      *node = json_node_init_string (json_node_alloc (), scanner->value.v_string);
+      {
+        const char *value = json_scanner_get_string_value (scanner);
+
+        JSON_NOTE (PARSER, "node: '%s'", value);
+        *node = json_node_init_string (json_node_alloc (), value);
+      }
       break;
 
     case JSON_TOKEN_TRUE:
@@ -472,7 +480,7 @@ json_parse_value (JsonParser   *parser,
       break;
 
     case G_TOKEN_IDENTIFIER:
-      JSON_NOTE (PARSER, "node: identifier '%s'", scanner->value.v_identifier);
+      JSON_NOTE (PARSER, "node: identifier '%s'", json_scanner_get_identifier (scanner));
       priv->error_code = JSON_PARSER_ERROR_INVALID_BAREWORD;
       *node = NULL;
       return G_TOKEN_SYMBOL;
@@ -687,7 +695,7 @@ json_parse_object (JsonParser   *parser,
 
       /* member name */
       token = json_scanner_get_next_token (scanner);
-      name = g_strdup (scanner->value.v_string);
+      name = json_scanner_dup_string_value (scanner);
       if (name == NULL)
         {
           JSON_NOTE (PARSER, "Empty object member name");
@@ -864,7 +872,7 @@ json_parse_statement (JsonParser  *parser,
             return G_TOKEN_IDENTIFIER;
           }
 
-        name = g_strdup (scanner->value.v_identifier);
+        name = json_scanner_dup_identifier (scanner);
 
         /* ... and finally swallow the '=' */
         next_token = json_scanner_get_next_token (scanner);
@@ -924,9 +932,10 @@ json_parse_statement (JsonParser  *parser,
 
 static void
 json_scanner_msg_handler (JsonScanner *scanner,
-                          gchar       *message)
+                          const char  *message,
+                          gpointer     user_data)
 {
-  JsonParser *parser = scanner->user_data;
+  JsonParser *parser = user_data;
   JsonParserPrivate *priv = parser->priv;
   GError *error = NULL;
 
@@ -938,8 +947,8 @@ json_scanner_msg_handler (JsonScanner *scanner,
                 */
                _("%s:%d:%d: Parse error: %s"),
                priv->is_filename ? priv->filename : "<data>",
-               scanner->line,
-               scanner->position,
+               json_scanner_get_current_line (scanner),
+               json_scanner_get_current_position (scanner),
                message);
       
   parser->priv->last_error = error;
@@ -952,8 +961,7 @@ json_scanner_create (JsonParser *parser)
   JsonScanner *scanner;
 
   scanner = json_scanner_new ();
-  scanner->msg_handler = json_scanner_msg_handler;
-  scanner->user_data = parser;
+  json_scanner_set_msg_handler (scanner, json_scanner_msg_handler, parser);
 
   /* XXX: this is eminently stupid, but we use the symbols later on, so
    * we cannot move them into JsonScanner without moving a bunch of code
@@ -1057,14 +1065,14 @@ json_parser_load (JsonParser   *parser,
           expected_token = json_parse_statement (parser, scanner);
           if (expected_token != G_TOKEN_NONE)
             {
-              const gchar *symbol_name;
-              gchar *msg;
+              const char *symbol_name;
+              char *msg;
 
-              cur_token = scanner->token;
+              cur_token = json_scanner_get_current_token (scanner);
               msg = NULL;
               symbol_name = NULL;
 
-              if (scanner->scope_id == 0)
+              if (json_scanner_get_current_scope_id (scanner) == 0)
                 {
                   if (expected_token > JSON_TOKEN_INVALID &&
                       expected_token < JSON_TOKEN_LAST)
@@ -1350,7 +1358,7 @@ json_parser_get_current_line (JsonParser *parser)
   g_return_val_if_fail (JSON_IS_PARSER (parser), 0);
 
   if (parser->priv->scanner != NULL)
-    return parser->priv->scanner->line;
+    return json_scanner_get_current_line (parser->priv->scanner);
 
   return 0;
 }
@@ -1374,7 +1382,7 @@ json_parser_get_current_pos (JsonParser *parser)
   g_return_val_if_fail (JSON_IS_PARSER (parser), 0);
 
   if (parser->priv->scanner != NULL)
-    return parser->priv->scanner->position;
+    return json_scanner_get_current_position (parser->priv->scanner);
 
   return 0;
 }
