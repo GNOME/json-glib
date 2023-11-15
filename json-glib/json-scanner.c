@@ -76,7 +76,6 @@ struct _JsonScannerConfig
   bool scan_string_sq;      /* string: 'anything' */
   bool scan_string_dq;      /* string: "\\-escapes!\n" */
   bool numbers_2_int;       /* bin, octal, hex => int */
-  bool identifier_2_string;
   bool char_2_token;        /* return G_TOKEN_CHAR? */
   bool symbol_2_token;
   bool scope_0_fallback;    /* try scope 0 on lookups? */
@@ -249,7 +248,6 @@ json_scanner_new (void)
     .scan_string_sq = true,
     .scan_string_dq = true,
     .numbers_2_int = true,
-    .identifier_2_string = false,
     .char_2_token = true,
     .symbol_2_token = true,
     .scope_0_fallback = false,
@@ -941,8 +939,6 @@ json_scanner_get_token_i (JsonScanner	*scanner,
   switch (*token_p)
     {
     case G_TOKEN_IDENTIFIER:
-      if (scanner->config.identifier_2_string)
-	*token_p = G_TOKEN_STRING;
       break;
       
     case G_TOKEN_SYMBOL:
