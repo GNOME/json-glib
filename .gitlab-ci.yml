@@ -1,4 +1,4 @@
-image: fedora:34
+image: fedora:39
 
 stages:
   - build
