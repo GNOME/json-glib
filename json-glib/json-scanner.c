@@ -62,22 +62,16 @@ struct _JsonScannerConfig
   /* Boolean values to be adjusted "on the fly"
    * to configure scanning behaviour.
    */
-  bool skip_comment_multi;  /* C like comment */
-  bool skip_comment_single; /* single line comment */
   bool scan_identifier;
-  bool scan_identifier_1char;
   bool scan_symbols;
   bool scan_binary;
   bool scan_octal;
   bool scan_float;
   bool scan_hex;            /* `0x0ff0' */
-  bool scan_hex_dollar;     /* `$0ff0' */
-  bool scan_string_sq;      /* string: 'anything' */
   bool scan_string_dq;      /* string: "\\-escapes!\n" */
   bool numbers_2_int;       /* bin, octal, hex => int */
   bool char_2_token;        /* return G_TOKEN_CHAR? */
   bool symbol_2_token;
-  bool store_int64;         /* use value.v_int64 rather than v_int */
 };
 
 /*< private >
@@ -232,22 +226,16 @@ json_scanner_new (void)
     ),
     .cpair_comment_single = ( "//\n" ),
     .case_sensitive = true,
-    .skip_comment_multi = true,
-    .skip_comment_single = true,
     .scan_identifier = true,
-    .scan_identifier_1char = true,
     .scan_symbols = true,
     .scan_binary = true,
     .scan_octal = true,
     .scan_float = true,
     .scan_hex = true,
-    .scan_hex_dollar = true,
-    .scan_string_sq = true,
     .scan_string_dq = true,
     .numbers_2_int = true,
     .char_2_token = true,
     .symbol_2_token = true,
-    .store_int64 = true,
   };
 
   scanner->token = G_TOKEN_NONE;
@@ -725,10 +713,7 @@ json_scanner_unexp_token (JsonScanner *scanner,
     case G_TOKEN_OCTAL:
     case G_TOKEN_INT:
     case G_TOKEN_HEX:
-      if (scanner->config.store_int64)
-	g_snprintf (token_string, token_string_len, "number `%" G_GUINT64_FORMAT "'", scanner->value.v_int64);
-      else
-	g_snprintf (token_string, token_string_len, "number `%lu'", scanner->value.v_int);
+      g_snprintf (token_string, token_string_len, "number `%" G_GUINT64_FORMAT "'", scanner->value.v_int64);
       break;
       
     case G_TOKEN_FLOAT:
@@ -927,10 +912,8 @@ json_scanner_get_token_i (JsonScanner	*scanner,
 	  strchr (scanner->config.cset_skip_characters, *token_p)) ||
 	 (*token_p == G_TOKEN_CHAR &&
 	  strchr (scanner->config.cset_skip_characters, value_p->v_char)) ||
-	 (*token_p == G_TOKEN_COMMENT_MULTI &&
-	  scanner->config.skip_comment_multi) ||
-	 (*token_p == G_TOKEN_COMMENT_SINGLE &&
-	  scanner->config.skip_comment_single));
+	 *token_p == G_TOKEN_COMMENT_MULTI ||
+	 *token_p == G_TOKEN_COMMENT_SINGLE);
   
   switch (*token_p)
     {
@@ -1024,25 +1007,6 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 		{
 		  json_scanner_get_char (scanner, line_p, position_p);
 		  in_comment_multi = false;
-		  break;
-		}
-	      else
-		gstring = g_string_append_c (gstring, ch);
-	    }
-	  ch = 0;
-	  break;
-	  
-	case '\'':
-	  if (!config->scan_string_sq)
-	    goto default_case;
-	  token = G_TOKEN_STRING;
-	  in_string_sq = true;
-	  gstring = g_string_new (NULL);
-	  while ((ch = json_scanner_get_char (scanner, line_p, position_p)) != 0)
-	    {
-	      if (ch == '\'')
-		{
-		  in_string_sq = FALSE;
 		  break;
 		}
 	      else
@@ -1185,13 +1149,6 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 	    goto default_case;
 	  token = G_TOKEN_FLOAT;
 	  dotted_float = true;
-	  ch = json_scanner_get_char (scanner, line_p, position_p);
-	  goto number_parsing;
-	  
-	case '$':
-	  if (!config->scan_hex_dollar)
-	    goto default_case;
-	  token = G_TOKEN_HEX;
 	  ch = json_scanner_get_char (scanner, line_p, position_p);
 	  goto number_parsing;
 	  
@@ -1378,10 +1335,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 		  break;
 		default: ;
 		}
-	      if (scanner->config.store_int64)
-		value.v_int64 = ui64;
-	      else
-		value.v_int = ui64;
+              value.v_int64 = ui64;
 	    }
 	  if (endptr && *endptr)
 	    {
@@ -1443,13 +1397,6 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 		      ch = json_scanner_peek_next_char (scanner);
 		    }
 		  while (ch && strchr (config->cset_identifier_nth, ch));
-		  ch = 0;
-		}
-	      else if (config->scan_identifier_1char)
-		{
-		  token = G_TOKEN_IDENTIFIER;
-		  value.v_identifier = g_new0 (char, 2);
-		  value.v_identifier[0] = ch;
 		  ch = 0;
 		}
 	    }
