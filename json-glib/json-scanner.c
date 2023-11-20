@@ -70,8 +70,6 @@ struct _JsonScannerConfig
   bool scan_hex;            /* `0x0ff0' */
   bool scan_string_dq;      /* string: "\\-escapes!\n" */
   bool numbers_2_int;       /* bin, octal, hex => int */
-  bool char_2_token;        /* return G_TOKEN_CHAR? */
-  bool symbol_2_token;
 };
 
 /*< private >
@@ -234,8 +232,6 @@ json_scanner_new (void)
     .scan_hex = true,
     .scan_string_dq = true,
     .numbers_2_int = true,
-    .char_2_token = true,
-    .symbol_2_token = true,
   };
 
   scanner->token = G_TOKEN_NONE;
@@ -625,16 +621,9 @@ json_scanner_unexp_token (JsonScanner *scanner,
 	    g_snprintf (token_string, token_string_len, "character `\\%o'", scanner->token);
 	  break;
 	}
-      else if (!scanner->config.symbol_2_token)
-	{
-	  g_snprintf (token_string, token_string_len, "(unknown) token <%d>", scanner->token);
-	  break;
-	}
       /* fall through */
     case G_TOKEN_SYMBOL:
-      if (expected_token == G_TOKEN_SYMBOL ||
-	  (scanner->config.symbol_2_token &&
-	   expected_token > G_TOKEN_LAST))
+      if (expected_token == G_TOKEN_SYMBOL || expected_token > G_TOKEN_LAST)
 	print_unexp = false;
       if (symbol_name)
 	g_snprintf (token_string, token_string_len,
@@ -767,21 +756,13 @@ json_scanner_unexp_token (JsonScanner *scanner,
 	    g_snprintf (expected_string, expected_string_len, "character `\\%o'", expected_token);
 	  break;
 	}
-      else if (!scanner->config.symbol_2_token)
-	{
-	  g_snprintf (expected_string, expected_string_len, "(unknown) token <%d>", expected_token);
-	  break;
-	}
       /* fall through */
     case G_TOKEN_SYMBOL:
-      need_valid = (scanner->token == G_TOKEN_SYMBOL ||
-		    (scanner->config.symbol_2_token &&
-		     scanner->token > G_TOKEN_LAST));
+      need_valid = (scanner->token == G_TOKEN_SYMBOL || scanner->token > G_TOKEN_LAST);
       g_snprintf (expected_string, expected_string_len,
                   "%s%s",
                   need_valid ? "valid " : "",
                   symbol_spec);
-      /* FIXME: should we attempt to lookup the symbol_name for symbol_2_token? */
       break;
     case G_TOKEN_CHAR:
       g_snprintf (expected_string, expected_string_len, "%scharacter",
@@ -921,8 +902,7 @@ json_scanner_get_token_i (JsonScanner	*scanner,
       break;
       
     case G_TOKEN_SYMBOL:
-      if (scanner->config.symbol_2_token)
-	*token_p = GPOINTER_TO_INT (value_p->v_symbol);
+      *token_p = GPOINTER_TO_INT (value_p->v_symbol);
       break;
       
     case G_TOKEN_BINARY:
@@ -1025,7 +1005,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 	    {
 	      if (ch == '"' || token == G_TOKEN_ERROR)
 		{
-		  in_string_dq = FALSE;
+		  in_string_dq = false;
 		  break;
 		}
 	      else
@@ -1301,7 +1281,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 			{
 			  token = G_TOKEN_ERROR;
 			  value.v_error = G_ERR_NON_DIGIT_IN_CONST;
-			  in_number = FALSE;
+			  in_number = false;
 			}
 		      else
 			gstring = g_string_append_c (gstring, ch);
@@ -1309,7 +1289,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 		    }
 		}
 	      else
-		in_number = FALSE;
+		in_number = false;
 	    }
 	  while (in_number);
 	  
@@ -1376,7 +1356,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 	      /* ignore a missing newline at EOF for single line comments */
 	      if (in_comment_single &&
 		  config->cpair_comment_single[1] == '\n')
-		in_comment_single = FALSE;
+		in_comment_single = false;
 	    }
 	  else if (config->scan_identifier && ch &&
 		   strchr (config->cset_identifier_first, ch))
@@ -1402,13 +1382,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 	    }
 	  if (ch)
 	    {
-	      if (config->char_2_token)
-		token = ch;
-	      else
-		{
-		  token = G_TOKEN_CHAR;
-		  value.v_char = ch;
-		}
+              token = ch;
 	      ch = 0;
 	    }
 	} /* default_case:... */
