@@ -59,7 +59,6 @@ struct _JsonScannerConfig
   /* Boolean values to be adjusted "on the fly"
    * to configure scanning behaviour.
    */
-  bool scan_octal;
   bool scan_float;
   bool scan_hex;            /* `0x0ff0' */
   bool scan_string_dq;      /* string: "\\-escapes!\n" */
@@ -217,7 +216,6 @@ json_scanner_new (void)
       G_CSET_A_2_Z
     ),
     .cpair_comment_single = ( "//\n" ),
-    .scan_octal = true,
     .scan_float = true,
     .scan_hex = true,
     .scan_string_dq = true,
@@ -1091,10 +1089,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 	  goto number_parsing;
 	  
 	case '0':
-	  if (config->scan_octal)
-	    token = G_TOKEN_OCTAL;
-	  else
-	    token = G_TOKEN_INT;
+	  token = G_TOKEN_OCTAL;
 	  ch = json_scanner_peek_next_char (scanner);
 	  if (config->scan_hex && (ch == 'x' || ch == 'X'))
 	    {
