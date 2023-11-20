@@ -59,7 +59,6 @@ struct _JsonScannerConfig
   /* Boolean values to be adjusted "on the fly"
    * to configure scanning behaviour.
    */
-  bool scan_binary;
   bool scan_octal;
   bool scan_float;
   bool scan_hex;            /* `0x0ff0' */
@@ -218,7 +217,6 @@ json_scanner_new (void)
       G_CSET_A_2_Z
     ),
     .cpair_comment_single = ( "//\n" ),
-    .scan_binary = true,
     .scan_octal = true,
     .scan_float = true,
     .scan_hex = true,
@@ -1118,7 +1116,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 		  break;
 		}
 	    }
-	  else if (config->scan_binary && (ch == 'b' || ch == 'B'))
+	  else if (ch == 'b' || ch == 'B')
 	    {
 	      token = G_TOKEN_BINARY;
 	      json_scanner_get_char (scanner, line_p, position_p);
