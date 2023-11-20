@@ -55,11 +55,6 @@ struct _JsonScannerConfig
   const char *cset_identifier_first;
   const char *cset_identifier_nth;
   const char *cpair_comment_single; /* default: "#\n" */
-  
-  /* Boolean values to be adjusted "on the fly"
-   * to configure scanning behaviour.
-   */
-  bool numbers_2_int;       /* bin, octal, hex => int */
 };
 
 /*< private >
@@ -213,7 +208,6 @@ json_scanner_new (void)
       G_CSET_A_2_Z
     ),
     .cpair_comment_single = ( "//\n" ),
-    .numbers_2_int = true,
   };
 
   scanner->token = G_TOKEN_NONE;
@@ -860,8 +854,7 @@ json_scanner_get_token_i (JsonScanner	*scanner,
     case G_TOKEN_BINARY:
     case G_TOKEN_OCTAL:
     case G_TOKEN_HEX:
-      if (scanner->config.numbers_2_int)
-	*token_p = G_TOKEN_INT;
+      *token_p = G_TOKEN_INT;
       break;
       
     default:
