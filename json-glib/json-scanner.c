@@ -59,7 +59,6 @@ struct _JsonScannerConfig
   /* Boolean values to be adjusted "on the fly"
    * to configure scanning behaviour.
    */
-  bool scan_identifier;
   bool scan_symbols;
   bool scan_binary;
   bool scan_octal;
@@ -220,7 +219,6 @@ json_scanner_new (void)
       G_CSET_A_2_Z
     ),
     .cpair_comment_single = ( "//\n" ),
-    .scan_identifier = true,
     .scan_symbols = true,
     .scan_binary = true,
     .scan_octal = true,
@@ -927,9 +925,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
        * we first check for identifier first character, because	 it
        * might interfere with other key chars like slashes or numbers
        */
-      if (config->scan_identifier &&
-	  ch != 0 &&
-          strchr (config->cset_identifier_first, ch))
+      if (ch != 0 && strchr (config->cset_identifier_first, ch))
 	goto identifier_precedence;
       
       switch (ch)
@@ -1324,8 +1320,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 		  config->cpair_comment_single[1] == '\n')
 		in_comment_single = false;
 	    }
-	  else if (config->scan_identifier && ch &&
-		   strchr (config->cset_identifier_first, ch))
+	  else if (ch && strchr (config->cset_identifier_first, ch))
 	    {
 	    identifier_precedence:
 	      
