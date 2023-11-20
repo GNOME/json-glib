@@ -59,7 +59,6 @@ struct _JsonScannerConfig
   /* Boolean values to be adjusted "on the fly"
    * to configure scanning behaviour.
    */
-  bool scan_symbols;
   bool scan_binary;
   bool scan_octal;
   bool scan_float;
@@ -219,7 +218,6 @@ json_scanner_new (void)
       G_CSET_A_2_Z
     ),
     .cpair_comment_single = ( "//\n" ),
-    .scan_symbols = true,
     .scan_binary = true,
     .scan_octal = true,
     .scan_float = true,
@@ -1377,20 +1375,15 @@ json_scanner_get_token_ll (JsonScanner *scanner,
   
   if (token == G_TOKEN_IDENTIFIER)
     {
-      if (config->scan_symbols)
-	{
-	  JsonScannerKey *key;
-	  guint scope_id;
-	  
-	  scope_id = scanner->scope_id;
-	  key = json_scanner_lookup_internal (scanner, scope_id, value.v_identifier);
-	  if (key)
-	    {
-	      g_free (value.v_identifier);
-	      token = G_TOKEN_SYMBOL;
-	      value.v_symbol = key->value;
-	    }
-	}
+      JsonScannerKey *key =
+        json_scanner_lookup_internal (scanner, scanner->scope_id, value.v_identifier);
+
+      if (key)
+        {
+          g_free (value.v_identifier);
+          token = G_TOKEN_SYMBOL;
+          value.v_symbol = key->value;
+        }
     }
   
   *token_p = token;
