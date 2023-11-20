@@ -59,7 +59,6 @@ struct _JsonScannerConfig
   /* Boolean values to be adjusted "on the fly"
    * to configure scanning behaviour.
    */
-  bool scan_string_dq;      /* string: "\\-escapes!\n" */
   bool numbers_2_int;       /* bin, octal, hex => int */
 };
 
@@ -214,7 +213,6 @@ json_scanner_new (void)
       G_CSET_A_2_Z
     ),
     .cpair_comment_single = ( "//\n" ),
-    .scan_string_dq = true,
     .numbers_2_int = true,
   };
 
@@ -948,8 +946,6 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 	  break;
 	  
 	case '"':
-	  if (!config->scan_string_dq)
-	    goto default_case;
 	  token = G_TOKEN_STRING;
 	  in_string_dq = true;
 	  gstring = g_string_new (NULL);
