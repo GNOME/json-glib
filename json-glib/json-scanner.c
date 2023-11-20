@@ -56,9 +56,6 @@ struct _JsonScannerConfig
   const char *cset_identifier_nth;
   const char *cpair_comment_single; /* default: "#\n" */
   
-  /* Should symbol lookup work case sensitive? */
-  bool case_sensitive;
-  
   /* Boolean values to be adjusted "on the fly"
    * to configure scanning behaviour.
    */
@@ -223,7 +220,6 @@ json_scanner_new (void)
       G_CSET_A_2_Z
     ),
     .cpair_comment_single = ( "//\n" ),
-    .case_sensitive = true,
     .scan_identifier = true,
     .scan_symbols = true,
     .scan_binary = true,
@@ -357,30 +353,12 @@ json_scanner_lookup_internal (JsonScanner *scanner,
                               guint        scope_id,
                               const char  *symbol)
 {
-  JsonScannerKey *key_p;
-  JsonScannerKey key;
-  
-  key.scope_id = scope_id;
-  
-  if (!scanner->config.case_sensitive)
-    {
-      char *d;
-      const char *c;
-      
-      key.symbol = g_new (char, strlen (symbol) + 1);
-      for (d = key.symbol, c = symbol; *c; c++, d++)
-	*d = to_lower (*c);
-      *d = 0;
-      key_p = g_hash_table_lookup (scanner->symbol_table, &key);
-      g_free (key.symbol);
-    }
-  else
-    {
-      key.symbol = (char *) symbol;
-      key_p = g_hash_table_lookup (scanner->symbol_table, &key);
-    }
-  
-  return key_p;
+  JsonScannerKey key = {
+    .scope_id = scope_id,
+    .symbol = (char *) symbol,
+  };
+
+  return g_hash_table_lookup (scanner->symbol_table, &key);
 }
 
 void
@@ -401,18 +379,6 @@ json_scanner_scope_add_symbol (JsonScanner *scanner,
       key->scope_id = scope_id;
       key->symbol = g_strdup (symbol);
       key->value = value;
-      if (!scanner->config.case_sensitive)
-	{
-	  char *c;
-
-	  c = key->symbol;
-	  while (*c != 0)
-	    {
-	      *c = to_lower (*c);
-	      c++;
-	    }
-	}
-
       g_hash_table_add (scanner->symbol_table, key);
     }
   else
