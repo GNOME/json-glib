@@ -59,7 +59,6 @@ struct _JsonScannerConfig
   /* Boolean values to be adjusted "on the fly"
    * to configure scanning behaviour.
    */
-  bool scan_float;
   bool scan_string_dq;      /* string: "\\-escapes!\n" */
   bool numbers_2_int;       /* bin, octal, hex => int */
 };
@@ -215,7 +214,6 @@ json_scanner_new (void)
       G_CSET_A_2_Z
     ),
     .cpair_comment_single = ( "//\n" ),
-    .scan_float = true,
     .scan_string_dq = true,
     .numbers_2_int = true,
   };
@@ -1079,8 +1077,6 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 	  break;
 	  
 	case '.':
-	  if (!config->scan_float)
-	    goto default_case;
 	  token = G_TOKEN_FLOAT;
 	  dotted_float = true;
 	  ch = json_scanner_get_char (scanner, line_p, position_p);
@@ -1161,7 +1157,7 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 	      ch = json_scanner_peek_next_char (scanner);
 	      
 	      if (json_scanner_char_2_num (ch, 36) >= 0 ||
-		  (config->scan_float && ch == '.') ||
+		  ch == '.' ||
 		  (is_E && (ch == '+' || ch == '-')))
 		{
 		  ch = json_scanner_get_char (scanner, line_p, position_p);
@@ -1209,11 +1205,10 @@ json_scanner_get_token_ll (JsonScanner *scanner,
 		      
 		    case 'e':
 		    case 'E':
-		      if ((token != G_TOKEN_HEX && !config->scan_float) ||
-			  (token != G_TOKEN_HEX &&
-			   token != G_TOKEN_OCTAL &&
-			   token != G_TOKEN_FLOAT &&
-			   token != G_TOKEN_INT))
+                      if (token != G_TOKEN_HEX &&
+                          token != G_TOKEN_OCTAL &&
+                          token != G_TOKEN_FLOAT &&
+                          token != G_TOKEN_INT)
 			{
 			  token = G_TOKEN_ERROR;
 			  value.v_error = G_ERR_NON_DIGIT_IN_CONST;
