@@ -429,11 +429,7 @@ json_scanner_input_text (JsonScanner *scanner,
   scanner->text = text;
   scanner->text_end = text + text_len;
 
-  if (scanner->buffer)
-    {
-      g_free (scanner->buffer);
-      scanner->buffer = NULL;
-    }
+  g_clear_pointer (&scanner->buffer, g_free);
 }
 
 static guchar
