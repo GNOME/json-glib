@@ -38,9 +38,8 @@ json_localedir = join_paths(get_option('prefix'), get_option('localedir'))
 json_libexecdir = join_paths(get_option('prefix'), get_option('libexecdir'))
 
 # Dependencies
-glib_req_version = '>= 2.54.0'
-gio_dep = dependency('gio-2.0', version: glib_req_version,
-  fallback: ['glib', 'libgio_dep'])
+glib_req_version = '>= 2.72.0'
+gio_dep = dependency('gio-2.0', version: glib_req_version)
 
 # Configurations
 cc = meson.get_compiler('c')
