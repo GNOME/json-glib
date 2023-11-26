@@ -113,7 +113,7 @@ if gir.found()
     header: 'json-glib/json-glib.h',
     install: true,
     extra_args: gir_args,
-    fatal_warnings: true,
+    fatal_warnings: get_option('werror'),
   )
 else
   json_glib_gir = []
