@@ -149,6 +149,8 @@ root_dir = include_directories('.')
 
 gnome = import('gnome')
 
+gir = find_program('g-ir-scanner', required : get_option('introspection'))
+
 python3 = import('python').find_installation()
 gen_installed_test = files('build-aux/gen-installed-test.py')
 
@@ -162,7 +164,7 @@ endif
 subdir('doc')
 
 if not meson.is_subproject()
-    meson.add_dist_script('build-aux/dist-docs.py')
+  meson.add_dist_script('build-aux/dist-docs.py')
 endif
 
 summary({

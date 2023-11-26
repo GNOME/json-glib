@@ -1,7 +1,6 @@
-if get_option('gtk_doc').enabled() and get_option('introspection').enabled()
-  dependency('gi-docgen', version: '>= 2021.6',
-    fallback: ['gi-docgen', 'dummy_dep'],
-  )
+build_docs = get_option('gtk_doc').allowed() and get_option('introspection').allowed() and gir.found()
+if build_docs
+  dependency('gi-docgen', version: '>= 2021.6')
 
   gidocgen = find_program('gi-docgen', required: get_option('gtk_doc'))
 

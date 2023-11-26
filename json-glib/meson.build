@@ -93,7 +93,6 @@ pkgg.generate(
   requires: 'gio-2.0',
 )
 
-gir = find_program('g-ir-scanner', required : get_option('introspection'))
 if gir.found()
   gir_args = [
     '--quiet',
