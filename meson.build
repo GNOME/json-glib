@@ -149,7 +149,13 @@ root_dir = include_directories('.')
 
 gnome = import('gnome')
 
-gir = find_program('g-ir-scanner', required : get_option('introspection'))
+gir = find_program('g-ir-scanner', required: get_option('introspection'))
+build_gir = gir.found() and get_option('introspection').allowed() and meson.can_run_host_binaries()
+build_doc = build_gir and get_option('gtk_doc').allowed()
+
+if get_option('introspection').disabled() and get_option('gtk_doc').enabled()
+  error('Cannot build documentation without introspection')
+endif
 
 python3 = import('python').find_installation()
 gen_installed_test = files('build-aux/gen-installed-test.py')
@@ -177,8 +183,8 @@ summary({
 )
 
 summary({
-    'Introspection': get_option('introspection').enabled() or get_option('introspection').auto(),
-    'Documentation': get_option('gtk_doc').enabled() or get_option('gtk_doc').auto(),
+    'Introspection': build_gir,
+    'Documentation': build_doc,
     'Manual pages': get_option('man'),
     'Tests': get_option('tests'),
   },
