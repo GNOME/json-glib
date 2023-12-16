@@ -1,9 +1,13 @@
 option('introspection',
        type: 'feature', value: 'auto', yield: true,
        description: 'Build the introspection data (requires gobject-introspection)')
+option('documentation',
+       type: 'feature', value: 'auto', yield: true,
+       description: 'Build the API reference (requires gi-docgen)')
 option('gtk_doc',
        type: 'feature', value: 'auto', yield: true,
-       description: 'Build the API reference (requires gtk-doc)')
+       deprecated: 'documentation',
+       description: 'Build the API reference (requires gi-docgen)')
 option('man',
        type: 'boolean', value: false,
        description: 'Build the man pages (requires xsltproc)')

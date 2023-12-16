@@ -151,9 +151,9 @@ gnome = import('gnome')
 
 gir = find_program('g-ir-scanner', required: get_option('introspection'))
 build_gir = gir.found() and get_option('introspection').allowed() and meson.can_run_host_binaries()
-build_doc = build_gir and get_option('gtk_doc').allowed()
+build_doc = build_gir and get_option('documentation').allowed()
 
-if get_option('introspection').disabled() and get_option('gtk_doc').enabled()
+if get_option('introspection').disabled() and get_option('documentation').enabled()
   error('Cannot build documentation without introspection')
 endif
 

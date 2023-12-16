@@ -1,7 +1,7 @@
 if build_doc
   dependency('gi-docgen', version: '>= 2021.6')
 
-  gidocgen = find_program('gi-docgen', required: get_option('gtk_doc'))
+  gidocgen = find_program('gi-docgen', required: get_option('documentation'))
 
   json_docdir = json_datadir / 'doc'
 
