@@ -6,7 +6,7 @@ project('json-glib', 'c',
     'buildtype=debugoptimized',
     'c_std=gnu99',
   ],
-  meson_version: '>= 0.62.0',
+  meson_version: '>= 0.63.0',
 )
 
 # Versioning

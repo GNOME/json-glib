@@ -59,7 +59,7 @@ fedora-x86_64:
       python3-pip
       python3-wheel
       redhat-rpm-config
-    MESON_VERSION: "0.62"
+    MESON_VERSION: "0.63"
     MESON_EXTRA_FLAGS: "--buildtype=debug --default-library=both -Dwerror=true -Dglib:werror=false -Dintrospection=enabled"
 
 reference:
@@ -74,7 +74,7 @@ reference:
       git
       glib2-devel
       libxslt
-    MESON_VERSION: "0.62"
+    MESON_VERSION: "0.63"
     MESON_EXTRA_FLAGS: "-Dman=true -Dintrospection=enabled"
     DOCS_FLAGS: -Dgtk_doc=enabled
     DOCS_PATH: doc/json-glib-1.0
