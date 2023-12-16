@@ -76,7 +76,7 @@ reference:
       libxslt
     MESON_VERSION: "0.63"
     MESON_EXTRA_FLAGS: "-Dman=true -Dintrospection=enabled"
-    DOCS_FLAGS: -Dgtk_doc=enabled
+    DOCS_FLAGS: -Ddocumentation=enabled
     DOCS_PATH: doc/json-glib-1.0
 
 pages:
