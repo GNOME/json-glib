@@ -61,7 +61,7 @@ fedora-x86_64:
       python3-wheel
       redhat-rpm-config
     MESON_VERSION: "0.63"
-    MESON_EXTRA_FLAGS: "--buildtype=debug --default-library=both -Dwerror=true -Dglib:werror=false -Dintrospection=enabled -Dman=true"
+    MESON_EXTRA_FLAGS: "--buildtype=debug --default-library=both -Dwerror=true -Dglib:werror=false -Dintrospection=enabled -Ddocumentation=disabled"
 
 reference:
   stage: docs
