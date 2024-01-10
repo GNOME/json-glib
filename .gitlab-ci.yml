@@ -56,11 +56,12 @@ fedora-x86_64:
       gobject-introspection-devel
       ninja-build
       python3
+      python3-docutils
       python3-pip
       python3-wheel
       redhat-rpm-config
     MESON_VERSION: "0.63"
-    MESON_EXTRA_FLAGS: "--buildtype=debug --default-library=both -Dwerror=true -Dglib:werror=false -Dintrospection=enabled"
+    MESON_EXTRA_FLAGS: "--buildtype=debug --default-library=both -Dwerror=true -Dglib:werror=false -Dintrospection=enabled -Dman=true"
 
 reference:
   stage: docs
@@ -68,12 +69,11 @@ reference:
   extends: .gidocgen-build
   variables:
     PROJECT_DEPS:
-      docbook-style-xsl
       gcc
       gettext
       git
       glib2-devel
-      libxslt
+      python3-docutils
     MESON_VERSION: "0.63"
     MESON_EXTRA_FLAGS: "-Dman=true -Dintrospection=enabled"
     DOCS_FLAGS: -Ddocumentation=enabled
