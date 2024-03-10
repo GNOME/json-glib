@@ -47,6 +47,15 @@ G_BEGIN_DECLS
  */
 #define JSON_PARSER_ERROR               (json_parser_error_quark ())
 
+/**
+ * JSON_PARSER_MAX_RECURSION_DEPTH:
+ *
+ * The maximum recursion depth for a JSON tree.
+ *
+ * Since: 1.10
+ */
+#define JSON_PARSER_MAX_RECURSION_DEPTH (1024)
+
 typedef struct _JsonParser              JsonParser;
 typedef struct _JsonParserPrivate       JsonParserPrivate;
 typedef struct _JsonParserClass         JsonParserClass;
@@ -61,6 +70,7 @@ typedef struct _JsonParserClass         JsonParserClass;
  * @JSON_PARSER_ERROR_EMPTY_MEMBER_NAME: empty member name (Since: 0.16)
  * @JSON_PARSER_ERROR_INVALID_DATA: invalid data (Since: 0.18)
  * @JSON_PARSER_ERROR_UNKNOWN: unknown error
+ * @JSON_PARSER_ERROR_NESTING: too many levels of nesting (Since: 1.10)
  *
  * Error codes for `JSON_PARSER_ERROR`.
  *
@@ -74,8 +84,8 @@ typedef enum {
   JSON_PARSER_ERROR_INVALID_BAREWORD,
   JSON_PARSER_ERROR_EMPTY_MEMBER_NAME,
   JSON_PARSER_ERROR_INVALID_DATA,
-
-  JSON_PARSER_ERROR_UNKNOWN
+  JSON_PARSER_ERROR_UNKNOWN,
+  JSON_PARSER_ERROR_NESTING
 } JsonParserError;
 
 struct _JsonParser

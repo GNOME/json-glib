@@ -143,12 +143,14 @@ G_DEFINE_QUARK (json-parser-error-quark, json_parser_error)
 
 G_DEFINE_TYPE_WITH_PRIVATE (JsonParser, json_parser, G_TYPE_OBJECT)
 
-static guint json_parse_array  (JsonParser   *parser,
-                                JsonScanner  *scanner,
-                                JsonNode    **node);
-static guint json_parse_object (JsonParser   *parser,
-                                JsonScanner  *scanner,
-                                JsonNode    **node);
+static guint json_parse_array  (JsonParser    *parser,
+                                JsonScanner   *scanner,
+                                JsonNode     **node,
+                                unsigned int   nesting);
+static guint json_parse_object (JsonParser    *parser,
+                                JsonScanner   *scanner,
+                                JsonNode     **node,
+                                unsigned int   nesting);
 
 static inline void
 json_parser_clear (JsonParser *parser)
@@ -520,15 +522,22 @@ json_parse_value (JsonParser   *parser,
 }
 
 static guint
-json_parse_array (JsonParser   *parser,
-                  JsonScanner  *scanner,
-                  JsonNode    **node)
+json_parse_array (JsonParser    *parser,
+                  JsonScanner   *scanner,
+                  JsonNode     **node,
+                  unsigned int   nesting_level)
 {
   JsonParserPrivate *priv = parser->priv;
   JsonNode *old_current;
   JsonArray *array;
   guint token;
   gint idx;
+
+  if (nesting_level >= JSON_PARSER_MAX_RECURSION_DEPTH)
+    {
+      priv->error_code = JSON_PARSER_ERROR_NESTING;
+      return G_TOKEN_RIGHT_BRACE;
+    }
 
   old_current = priv->current_node;
   priv->current_node = json_node_init_array (json_node_alloc (), NULL);
@@ -551,12 +560,12 @@ json_parse_array (JsonParser   *parser,
         {
         case G_TOKEN_LEFT_BRACE:
           JSON_NOTE (PARSER, "Nested array at index %d", idx);
-          token = json_parse_array (parser, scanner, &element);
+          token = json_parse_array (parser, scanner, &element, nesting_level + 1);
           break;
 
         case G_TOKEN_LEFT_CURLY:
           JSON_NOTE (PARSER, "Nested object at index %d", idx);
-          token = json_parse_object (parser, scanner, &element);
+          token = json_parse_object (parser, scanner, &element, nesting_level + 1);
           break;
 
         case G_TOKEN_RIGHT_BRACE:
@@ -648,14 +657,21 @@ array_done:
 }
 
 static guint
-json_parse_object (JsonParser   *parser,
-                   JsonScanner  *scanner,
-                   JsonNode    **node)
+json_parse_object (JsonParser    *parser,
+                   JsonScanner   *scanner,
+                   JsonNode     **node,
+                   unsigned int   nesting)
 {
   JsonParserPrivate *priv = parser->priv;
   JsonObject *object;
   JsonNode *old_current;
   guint token;
+
+  if (nesting >= JSON_PARSER_MAX_RECURSION_DEPTH)
+    {
+      priv->error_code = JSON_PARSER_ERROR_NESTING;
+      return G_TOKEN_RIGHT_CURLY;
+    }
 
   old_current = priv->current_node;
   priv->current_node = json_node_init_object (json_node_alloc (), NULL);
@@ -737,12 +753,12 @@ json_parse_object (JsonParser   *parser,
         {
         case G_TOKEN_LEFT_BRACE:
           JSON_NOTE (PARSER, "Nested array at member %s", name);
-          token = json_parse_array (parser, scanner, &member);
+          token = json_parse_array (parser, scanner, &member, nesting + 1);
           break;
 
         case G_TOKEN_LEFT_CURLY:
           JSON_NOTE (PARSER, "Nested object at member %s", name);
-          token = json_parse_object (parser, scanner, &member);
+          token = json_parse_object (parser, scanner, &member, nesting + 1);
           break;
 
         default:
@@ -843,11 +859,11 @@ json_parse_statement (JsonParser  *parser,
     {
     case G_TOKEN_LEFT_CURLY:
       JSON_NOTE (PARSER, "Statement is object declaration");
-      return json_parse_object (parser, scanner, &priv->root);
+      return json_parse_object (parser, scanner, &priv->root, 0);
 
     case G_TOKEN_LEFT_BRACE:
       JSON_NOTE (PARSER, "Statement is array declaration");
-      return json_parse_array (parser, scanner, &priv->root);
+      return json_parse_array (parser, scanner, &priv->root, 0);
 
     /* some web APIs are not only passing the data structures: they are
      * also passing an assigment, which makes parsing horribly complicated
