@@ -92,7 +92,6 @@ struct _JsonScanner
   guint next_position;
 
   /* to be considered private */
-  GHashTable *symbol_table;
   const char *text;
   const char *text_end;
   char *buffer;
@@ -102,7 +101,6 @@ struct _JsonScanner
   JsonScannerMsgFunc msg_handler;
 };
 
-/* --- defines --- */
 #define	to_lower(c)				( \
 	(guchar) (							\
 	  ( (((guchar)(c))>='A' && ((guchar)(c))<='Z') * ('a'-'A') ) |	\
@@ -131,25 +129,6 @@ static const struct
   { 16, JSON_TOKEN_VAR   }
 };
 
-/* --- typedefs --- */
-typedef	struct	_JsonScannerKey JsonScannerKey;
-
-struct	_JsonScannerKey
-{
-  guint scope_id;
-  char *symbol;
-  gpointer value;
-};
-
-/* --- prototypes --- */
-static gboolean json_scanner_key_equal (gconstpointer v1,
-                                        gconstpointer v2);
-static guint    json_scanner_key_hash  (gconstpointer v);
-
-static inline
-JsonScannerKey *json_scanner_lookup_internal (JsonScanner *scanner,
-                                              guint        scope_id,
-                                              const char  *symbol);
 static void     json_scanner_get_token_ll    (JsonScanner *scanner,
                                               GTokenType  *token_p,
                                               GTokenValue *value_p,
@@ -168,17 +147,6 @@ static guchar   json_scanner_get_char        (JsonScanner *scanner,
 static gunichar json_scanner_get_unichar     (JsonScanner *scanner,
                                               guint       *line_p,
                                               guint       *position_p);
-
-/* --- functions --- */
-
-static void
-json_scanner_key_free (gpointer _key)
-{
-  JsonScannerKey *key = _key;
-
-  g_free (key->symbol);
-  g_free (key);
-}
 
 static inline gint
 json_scanner_char_2_num (guchar c,
@@ -237,21 +205,10 @@ json_scanner_new (void)
   scanner->next_line = 1;
   scanner->next_position = 0;
 
-  scanner->symbol_table = g_hash_table_new_full (json_scanner_key_hash,
-                                                 json_scanner_key_equal,
-                                                 json_scanner_key_free,
-                                                 NULL);
   scanner->text = NULL;
   scanner->text_end = NULL;
   scanner->buffer = NULL;
   scanner->scope_id = 0;
-
-  for (unsigned i = 0; i < G_N_ELEMENTS (json_symbols); i++)
-    {
-      json_scanner_scope_add_symbol (scanner, 0,
-                                     json_symbol_names + json_symbols[i].name_offset,
-                                     GINT_TO_POINTER (json_symbols[i].token));
-    }
 
   return scanner;
 }
@@ -282,8 +239,6 @@ json_scanner_destroy (JsonScanner *scanner)
 {
   g_return_if_fail (scanner != NULL);
   
-  g_hash_table_unref (scanner->symbol_table);
-
   json_scanner_free_value (&scanner->token, &scanner->value);
   json_scanner_free_value (&scanner->next_token, &scanner->next_value);
 
@@ -325,68 +280,6 @@ json_scanner_error (JsonScanner *scanner,
       
       g_free (string);
     }
-}
-
-static gboolean
-json_scanner_key_equal (gconstpointer v1,
-                        gconstpointer v2)
-{
-  const JsonScannerKey *key1 = v1;
-  const JsonScannerKey *key2 = v2;
-  
-  return (key1->scope_id == key2->scope_id) &&
-         (strcmp (key1->symbol, key2->symbol) == 0);
-}
-
-static guint
-json_scanner_key_hash (gconstpointer v)
-{
-  const JsonScannerKey *key = v;
-  char *c;
-  guint h;
-  
-  h = key->scope_id;
-  for (c = key->symbol; *c; c++)
-    h = (h << 5) - h + *c;
-  
-  return h;
-}
-
-static inline JsonScannerKey *
-json_scanner_lookup_internal (JsonScanner *scanner,
-                              guint        scope_id,
-                              const char  *symbol)
-{
-  JsonScannerKey key = {
-    .scope_id = scope_id,
-    .symbol = (char *) symbol,
-  };
-
-  return g_hash_table_lookup (scanner->symbol_table, &key);
-}
-
-void
-json_scanner_scope_add_symbol (JsonScanner *scanner,
-                               guint        scope_id,
-                               const char  *symbol,
-                               gpointer     value)
-{
-  JsonScannerKey *key;
-
-  g_return_if_fail (scanner != NULL);
-  g_return_if_fail (symbol != NULL);
-
-  key = json_scanner_lookup_internal (scanner, scope_id, symbol);
-  if (!key)
-    {
-      key = g_new (JsonScannerKey, 1);
-      key->scope_id = scope_id;
-      key->symbol = g_strdup (symbol);
-      key->value = value;
-      g_hash_table_add (scanner->symbol_table, key);
-    }
-  else
-    key->value = value;
 }
 
 GTokenType
@@ -1370,14 +1263,16 @@ json_scanner_get_token_ll (JsonScanner *scanner,
   
   if (token == G_TOKEN_IDENTIFIER)
     {
-      JsonScannerKey *key =
-        json_scanner_lookup_internal (scanner, scanner->scope_id, value.v_identifier);
-
-      if (key)
+      for (unsigned i = 0; i < G_N_ELEMENTS (json_symbols); i++)
         {
-          g_free (value.v_identifier);
-          token = G_TOKEN_SYMBOL;
-          value.v_symbol = key->value;
+          const char *symbol = json_symbol_names + json_symbols[i].name_offset;
+          if (strcmp (value.v_identifier, symbol) == 0)
+            {
+              g_free (value.v_identifier);
+              token = G_TOKEN_SYMBOL;
+              value.v_symbol = json_symbols[i].token;
+              break;
+            }
         }
     }
   
