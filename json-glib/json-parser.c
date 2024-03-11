@@ -95,25 +95,6 @@ struct _JsonParserPrivate
   guint is_immutable   : 1;
 };
 
-static const gchar symbol_names[] =
-  "true\0"
-  "false\0"
-  "null\0"
-  "var\0";
-
-static const struct
-{
-  guint name_offset;
-  guint token;
-} symbols[] = {
-  {  0, JSON_TOKEN_TRUE  },
-  {  5, JSON_TOKEN_FALSE },
-  { 11, JSON_TOKEN_NULL  },
-  { 16, JSON_TOKEN_VAR   }
-};
-
-static const guint n_symbols = G_N_ELEMENTS (symbols);
-
 enum
 {
   PARSE_START,
@@ -1063,50 +1044,16 @@ json_parser_load (JsonParser   *parser,
         done = TRUE;
       else
         {
-          guint expected_token;
-          guint cur_token;
+          unsigned int expected_token;
 
           /* we try to show the expected token, if possible */
           expected_token = json_parse_statement (parser, scanner);
           if (expected_token != G_TOKEN_NONE)
             {
-              const char *symbol_name;
-              char *msg;
-
-              cur_token = json_scanner_get_current_token (scanner);
-              msg = NULL;
-              symbol_name = NULL;
-
-              if (json_scanner_get_current_scope_id (scanner) == 0)
-                {
-                  if (expected_token > JSON_TOKEN_INVALID &&
-                      expected_token < JSON_TOKEN_LAST)
-                    {
-                      for (guint i = 0; i < n_symbols; i++)
-                        if (symbols[i].token == expected_token)
-                          symbol_name = symbol_names + symbols[i].name_offset;
-
-                      if (!msg)
-                        msg = g_strconcat ("e.g. '", symbol_name, "'", NULL);
-                    }
-
-                  if (cur_token > JSON_TOKEN_INVALID &&
-                      cur_token < JSON_TOKEN_LAST)
-                    {
-                      symbol_name = "???";
-
-                      for (guint i = 0; i < n_symbols; i++)
-                        if (symbols[i].token == cur_token)
-                          symbol_name = symbol_names + symbols[i].name_offset;
-                    }
-                }
-
               /* this will emit the ::error signal via the custom
                * message handler we install
                */
-              json_scanner_unexp_token (scanner, expected_token,
-                                        NULL, "value",
-                                        symbol_name, msg);
+              json_scanner_unknown_token (scanner, expected_token);
 
               /* and this will propagate the error we create in the
                * same message handler
@@ -1118,8 +1065,6 @@ json_parser_load (JsonParser   *parser,
                 }
 
               retval = FALSE;
-
-              g_free (msg);
               done = TRUE;
             }
         }

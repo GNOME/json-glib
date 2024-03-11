@@ -82,13 +82,6 @@ void         json_scanner_scope_add_symbol     (JsonScanner *scanner,
                                                 const gchar *symbol,
                                                 gpointer     value);
 G_GNUC_INTERNAL
-void         json_scanner_unexp_token          (JsonScanner *scanner,
-                                                GTokenType   expected_token,
-                                                const gchar *identifier_spec,
-                                                const gchar *symbol_spec,
-                                                const gchar *symbol_name,
-                                                const gchar *message);
-G_GNUC_INTERNAL
 void         json_scanner_set_msg_handler      (JsonScanner        *scanner,
                                                 JsonScannerMsgFunc  msg_handler,
                                                 gpointer            user_data);
@@ -96,6 +89,10 @@ G_GNUC_INTERNAL
 void         json_scanner_error                (JsonScanner *scanner,
                                                 const gchar *format,
                                                 ...) G_GNUC_PRINTF (2,3);
+
+G_GNUC_INTERNAL
+void         json_scanner_unknown_token        (JsonScanner  *scanner,
+                                                unsigned int  token);
 
 G_GNUC_INTERNAL
 gint64       json_scanner_get_int64_value      (const JsonScanner *scanner);

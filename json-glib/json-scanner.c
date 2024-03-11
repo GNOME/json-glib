@@ -435,7 +435,7 @@ decode_utf16_surrogate_pair (const gunichar units[2])
   return ucs;
 }
 
-void
+static void
 json_scanner_unexp_token (JsonScanner *scanner,
                           GTokenType   expected_token,
                           const char  *identifier_spec,
@@ -734,6 +734,47 @@ json_scanner_unexp_token (JsonScanner *scanner,
   
   g_free (token_string);
   g_free (expected_string);
+}
+
+void
+json_scanner_unknown_token (JsonScanner  *scanner,
+                            unsigned int  token)
+{
+  const char *symbol_name;
+  char *msg;
+  unsigned int cur_token;
+
+  cur_token = json_scanner_get_current_token (scanner);
+  msg = NULL;
+  symbol_name = NULL;
+
+  if (token > JSON_TOKEN_INVALID &&
+      token < JSON_TOKEN_LAST)
+    {
+      for (unsigned i = 0; i < G_N_ELEMENTS (json_symbols); i++)
+        if (json_symbols[i].token == token)
+          symbol_name = json_symbol_names + json_symbols[i].name_offset;
+
+      if (!msg)
+        msg = g_strconcat ("e.g. '", symbol_name, "'", NULL);
+    }
+
+  if (cur_token > JSON_TOKEN_INVALID &&
+      cur_token < JSON_TOKEN_LAST)
+    {
+      symbol_name = "???";
+
+      for (unsigned i = 0; i < G_N_ELEMENTS (json_symbols); i++)
+        if (json_symbols[i].token == cur_token)
+          symbol_name = json_symbol_names + json_symbols[i].name_offset;
+    }
+
+  json_scanner_unexp_token (scanner, token,
+                            NULL, "value",
+                            symbol_name,
+                            msg);
+
+  g_free (msg);
 }
 
 static void
