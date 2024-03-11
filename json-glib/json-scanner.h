@@ -77,11 +77,6 @@ GTokenType   json_scanner_get_next_token       (JsonScanner *scanner);
 G_GNUC_INTERNAL
 GTokenType   json_scanner_peek_next_token      (JsonScanner *scanner);
 G_GNUC_INTERNAL
-void         json_scanner_scope_add_symbol     (JsonScanner *scanner,
-                                                guint        scope_id,
-                                                const gchar *symbol,
-                                                gpointer     value);
-G_GNUC_INTERNAL
 void         json_scanner_set_msg_handler      (JsonScanner        *scanner,
                                                 JsonScannerMsgFunc  msg_handler,
                                                 gpointer            user_data);
@@ -113,8 +108,6 @@ G_GNUC_INTERNAL
 guint        json_scanner_get_current_position (const JsonScanner *scanner);
 G_GNUC_INTERNAL
 GTokenType   json_scanner_get_current_token    (const JsonScanner *scanner);
-G_GNUC_INTERNAL
-guint        json_scanner_get_current_scope_id (const JsonScanner *scanner);
 
 G_END_DECLS
 

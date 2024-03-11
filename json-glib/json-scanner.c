@@ -95,7 +95,6 @@ struct _JsonScanner
   const char *text;
   const char *text_end;
   char *buffer;
-  guint scope_id;
 
   /* handler function for _warn and _error */
   JsonScannerMsgFunc msg_handler;
@@ -208,7 +207,6 @@ json_scanner_new (void)
   scanner->text = NULL;
   scanner->text_end = NULL;
   scanner->buffer = NULL;
-  scanner->scope_id = 0;
 
   return scanner;
 }
@@ -1373,10 +1371,4 @@ GTokenType
 json_scanner_get_current_token (const JsonScanner *scanner)
 {
   return scanner->token;
-}
-
-guint
-json_scanner_get_current_scope_id (const JsonScanner *scanner)
-{
-  return scanner->scope_id;
 }
