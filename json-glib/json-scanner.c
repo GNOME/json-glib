@@ -114,6 +114,23 @@ struct _JsonScanner
 
 #define	READ_BUFFER_SIZE	(4000)
 
+static const gchar json_symbol_names[] =
+  "true\0"
+  "false\0"
+  "null\0"
+  "var\0";
+
+static const struct
+{
+  guint name_offset;
+  guint token;
+} json_symbols[] = {
+  {  0, JSON_TOKEN_TRUE  },
+  {  5, JSON_TOKEN_FALSE },
+  { 11, JSON_TOKEN_NULL  },
+  { 16, JSON_TOKEN_VAR   }
+};
+
 /* --- typedefs --- */
 typedef	struct	_JsonScannerKey JsonScannerKey;
 
@@ -228,6 +245,13 @@ json_scanner_new (void)
   scanner->text_end = NULL;
   scanner->buffer = NULL;
   scanner->scope_id = 0;
+
+  for (unsigned i = 0; i < G_N_ELEMENTS (json_symbols); i++)
+    {
+      json_scanner_scope_add_symbol (scanner, 0,
+                                     json_symbol_names + json_symbols[i].name_offset,
+                                     GINT_TO_POINTER (json_symbols[i].token));
+    }
 
   return scanner;
 }

@@ -979,17 +979,6 @@ json_scanner_create (JsonParser *parser)
   scanner = json_scanner_new ();
   json_scanner_set_msg_handler (scanner, json_scanner_msg_handler, parser);
 
-  /* XXX: this is eminently stupid, but we use the symbols later on, so
-   * we cannot move them into JsonScanner without moving a bunch of code
-   * as well
-   */
-  for (guint i = 0; i < n_symbols; i++)
-    {
-      json_scanner_scope_add_symbol (scanner, 0,
-                                     symbol_names + symbols[i].name_offset,
-                                     GINT_TO_POINTER (symbols[i].token));
-    }
-
   return scanner;
 }
 
