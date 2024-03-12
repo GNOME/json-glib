@@ -81,11 +81,6 @@ void         json_scanner_set_msg_handler      (JsonScanner        *scanner,
                                                 JsonScannerMsgFunc  msg_handler,
                                                 gpointer            user_data);
 G_GNUC_INTERNAL
-void         json_scanner_error                (JsonScanner *scanner,
-                                                const gchar *format,
-                                                ...) G_GNUC_PRINTF (2,3);
-
-G_GNUC_INTERNAL
 void         json_scanner_unknown_token        (JsonScanner  *scanner,
                                                 unsigned int  token);
 

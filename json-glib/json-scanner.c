@@ -66,10 +66,6 @@ struct _JsonScannerConfig
  */
 struct _JsonScanner
 {
-  /* unused fields */
-  gpointer user_data;
-  guint max_parse_errors;
-
   /* json_scanner_error() increments this field */
   guint parse_errors;
 
@@ -98,6 +94,7 @@ struct _JsonScanner
 
   /* handler function for _warn and _error */
   JsonScannerMsgFunc msg_handler;
+  gpointer user_data;
 };
 
 #define	to_lower(c)				( \
@@ -146,6 +143,9 @@ static guchar   json_scanner_get_char        (JsonScanner *scanner,
 static gunichar json_scanner_get_unichar     (JsonScanner *scanner,
                                               guint       *line_p,
                                               guint       *position_p);
+static void     json_scanner_error           (JsonScanner *scanner,
+                                              const char  *format,
+                                              ...) G_GNUC_PRINTF (2,3);
 
 static inline gint
 json_scanner_char_2_num (guchar c,
@@ -173,11 +173,6 @@ json_scanner_new (void)
   
   scanner = g_new0 (JsonScanner, 1);
   
-  scanner->user_data = NULL;
-  scanner->max_parse_errors = 1;
-  scanner->parse_errors	= 0;
-  scanner->input_name = NULL;
-  
   scanner->config = (JsonScannerConfig) {
     .cset_skip_characters = ( " \t\r\n" ),
     .cset_identifier_first = (
@@ -203,10 +198,6 @@ json_scanner_new (void)
   scanner->next_value.v_int64 = 0;
   scanner->next_line = 1;
   scanner->next_position = 0;
-
-  scanner->text = NULL;
-  scanner->text_end = NULL;
-  scanner->buffer = NULL;
 
   return scanner;
 }
@@ -255,7 +246,7 @@ json_scanner_set_msg_handler (JsonScanner        *scanner,
   scanner->user_data = user_data;
 }
 
-void
+static void
 json_scanner_error (JsonScanner *scanner,
                     const char  *format,
                     ...)
