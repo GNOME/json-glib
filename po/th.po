@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: json-glib master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues/\n"
 "POT-Creation-Date: 2024-02-29 12:11+0000\n"
-"PO-Revision-Date: 2024-03-12 17:15+0700\n"
+"PO-Revision-Date: 2024-03-12 17:25+0700\n"
 "Last-Translator: \n"
 "Language-Team: Thai <thai-l10n@googlegroups.com>\n"
 "Language: th\n"
@@ -122,34 +122,34 @@ msgstr "json-glib-validate ตรวจสอบความถูกต้อ�
 #: json-glib/json-gobject.c:928
 #, c-format
 msgid "Expecting a JSON object, but the root node is of type “%s”"
-msgstr ""
+msgstr "ต้องการวัตถุ JSON แต่ปมรากมีชนิดเป็น “%s”"
 
 #. translators: the '%s' is the type name
 #: json-glib/json-gvariant.c:482
 #, c-format
 msgid "Unexpected type “%s” in JSON node"
-msgstr ""
+msgstr "มีชนิด “%s” ซึ่งไม่ต้องการในปม JSON"
 
 #: json-glib/json-gvariant.c:555
 msgid "Missing elements in JSON array to conform to a tuple"
-msgstr ""
+msgstr "สมาชิกขาดไปในอาร์เรย์ JSON ที่จะสอดคล้องกับทูเพิล"
 
 #: json-glib/json-gvariant.c:584
 msgid "Missing closing symbol “)” in the GVariant tuple type"
-msgstr ""
+msgstr "สัญลักษณ์ปิด “)” ขาดไปในชนิดทูเพิล GVariant"
 
 #: json-glib/json-gvariant.c:592
 msgid "Unexpected extra elements in JSON array"
-msgstr ""
+msgstr "มีสมาชิกเพิ่มเติมซึ่งไม่ต้องการในอาร์เรย์ JSON"
 
 #: json-glib/json-gvariant.c:894
 msgid "Invalid string value converting to GVariant"
-msgstr ""
+msgstr "ค่าสายอักขระที่จะแปลงเป็น GVariant ไม่ถูกต้อง"
 
 #: json-glib/json-gvariant.c:949
 msgid ""
 "A GVariant dictionary entry expects a JSON object with exactly one member"
-msgstr ""
+msgstr "รายการในพจนานุกรม GVariant ต้องการวัตถุ JSON ที่มีสมาชิกเพียงตัวเดียว"
 
 #: json-glib/json-gvariant.c:1227
 #, c-format
@@ -194,46 +194,46 @@ msgstr "ขาดชื่อสมาชิกหรืออักขระต
 #: json-glib/json-path.c:512
 #, c-format
 msgid "Malformed slice expression “%*s”"
-msgstr ""
+msgstr "นิพจน์ slice “%*s”ผิดรูปแบบ"
 
 #: json-glib/json-path.c:556
 #, c-format
 msgid "Invalid set definition “%*s”"
-msgstr ""
+msgstr "ค่ากำหนดเซต “%*s” ไม่ถูกต้อง"
 
 #: json-glib/json-path.c:609
 #, c-format
 msgid "Invalid slice definition “%*s”"
-msgstr ""
+msgstr "ค่ากำหนด slice “%*s” ไม่ถูกต้อง"
 
 #: json-glib/json-path.c:637
 #, c-format
 msgid "Invalid array index definition “%*s”"
-msgstr ""
+msgstr "ค่ากำหนดดัชนีอาร์เรย์ “%*s” ไม่ถูกต้อง"
 
 #: json-glib/json-path.c:656
 #, c-format
 msgid "Invalid first character “%c”"
-msgstr ""
+msgstr "อักขระตัวแรก “%c” ไม่ถูกต้อง"
 
 #: json-glib/json-reader.c:504
 #, c-format
 msgid ""
 "The current node is of type “%s”, but an array or an object was expected."
-msgstr ""
+msgstr "ปมปัจจุบันมีชนิดเป็น “%s” แต่ต้องการอาร์เรย์หรือวัตถุ"
 
 #: json-glib/json-reader.c:516
 #, c-format
 msgid ""
 "The index “%d” is greater than the size of the array at the current position."
-msgstr ""
+msgstr "ดัชนี “%d” มีค่ามากกว่าขนาดของอาร์เรย์ที่ตำแหน่งปัจจุบัน"
 
 #: json-glib/json-reader.c:533
 #, c-format
 msgid ""
 "The index “%d” is greater than the size of the object at the current "
 "position."
-msgstr ""
+msgstr "ดัชนี “%d” มีค่ามากกว่าขนาดของวัตถุที่ตำแหน่งปัจจุบัน"
 
 #: json-glib/json-reader.c:616 json-glib/json-reader.c:789
 #: json-glib/json-reader.c:838 json-glib/json-reader.c:877
@@ -241,35 +241,35 @@ msgstr ""
 #: json-glib/json-reader.c:997 json-glib/json-reader.c:1044
 #: json-glib/json-reader.c:1082 json-glib/json-reader.c:1110
 msgid "No node available at the current position"
-msgstr ""
+msgstr "ไม่มีปมที่ตำแหน่งปัจจุบัน"
 
 #: json-glib/json-reader.c:623
 #, c-format
 msgid "The current position holds a “%s” and not an array"
-msgstr ""
+msgstr "ตำแหน่งปัจจุบันเก็บ “%s” และไม่ใช่อาร์เรย์"
 
 #: json-glib/json-reader.c:705
 #, c-format
 msgid "The current node is of type “%s”, but an object was expected."
-msgstr ""
+msgstr "ปมปัจจุบันมีชนิดเป็น “%s” แต่ต้องการวัตถุ"
 
 #: json-glib/json-reader.c:712
 #, c-format
 msgid "The member “%s” is not defined in the object at the current position."
-msgstr ""
+msgstr "ไม่ได้กำหนดสมาชิก “%s” ในวัตถุที่ตำแหน่งปัจจุบัน"
 
 #: json-glib/json-reader.c:796 json-glib/json-reader.c:845
 #, c-format
 msgid "The current position holds a “%s” and not an object"
-msgstr ""
+msgstr "ตำแหน่งปัจจุบันเก็บ “%s” และไม่ใช่วัตถุ"
 
 #: json-glib/json-reader.c:886 json-glib/json-reader.c:926
 #: json-glib/json-reader.c:966 json-glib/json-reader.c:1006
 #: json-glib/json-reader.c:1053
 #, c-format
 msgid "The current position holds a “%s” and not a value"
-msgstr ""
+msgstr "ตำแหน่งปัจจุบันเก็บ “%s” และไม่ใช่ค่า"
 
 #: json-glib/json-reader.c:1014
 msgid "The current position does not hold a string type"
-msgstr ""
+msgstr "ตำแหน่งปัจจุบันไม่ได้เก็บชนิดสายอักขระ"
