@@ -1,0 +1,275 @@
+# Thai translation for json-glib.
+# Copyright (C) 2024 json-glib's COPYRIGHT HOLDER
+# This file is distributed under the same license as the json-glib package.
+# Aefgh Threenine <aefgh39622@gmail.com>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: json-glib master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues/\n"
+"POT-Creation-Date: 2024-02-29 12:11+0000\n"
+"PO-Revision-Date: 2024-03-12 17:15+0700\n"
+"Last-Translator: \n"
+"Language-Team: Thai <thai-l10n@googlegroups.com>\n"
+"Language: th\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#: json-glib/json-glib-format.c:58
+msgid "Prettify output"
+msgstr "จัดเอาต์พุตให้สวยงาม"
+
+#: json-glib/json-glib-format.c:59
+msgid "Indentation spaces"
+msgstr "ช่องว่างการเยื้อง"
+
+#: json-glib/json-glib-format.c:59
+msgid "SPACES"
+msgstr "ช่องว่าง"
+
+#: json-glib/json-glib-format.c:60
+msgid "Output file"
+msgstr "ไฟล์เอาต์พุต"
+
+#: json-glib/json-glib-format.c:60 json-glib/json-glib-validate.c:115
+msgid "FILE"
+msgstr "ไฟล์"
+
+#: json-glib/json-glib-format.c:61
+msgid "FILE…"
+msgstr "ไฟล์…"
+
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-format.c:87 json-glib/json-glib-format.c:123
+#: json-glib/json-glib-validate.c:63
+#, c-format
+msgid "%s: %s: error opening file: %s\n"
+msgstr "%s: %s: เกิดข้อผิดพลาดขณะเปิดไฟล์: %s\n"
+
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-format.c:101 json-glib/json-glib-validate.c:75
+#, c-format
+msgid "%s: %s: error parsing file: %s\n"
+msgstr "%s: %s: เกิดข้อผิดพลาดขณะแจงไฟล์: %s\n"
+
+#. Translators: the first %s is the program name, the
+#. * second one is the URI of the file.
+#.
+#: json-glib/json-glib-format.c:143
+#, c-format
+msgid "%s: %s: error writing to stdout"
+msgstr "%s: %s: เกิดข้อผิดพลาดขณะเขียนลงใน stdout"
+
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-format.c:167 json-glib/json-glib-validate.c:87
+#, c-format
+msgid "%s: %s: error closing: %s\n"
+msgstr "%s: %s: เกิดข้อผิดพลาดขณะปิด: %s\n"
+
+#. Translators: this message will appear after the usage string
+#. and before the list of options.
+#: json-glib/json-glib-format.c:203
+msgid "Format JSON files."
+msgstr "จัดรูปแบบไฟล์ JSON"
+
+#: json-glib/json-glib-format.c:204
+msgid "json-glib-format formats JSON resources."
+msgstr "json-glib-format จัดรูปแบบทรัพยากร JSON"
+
+#. Translators: the %s is the program name. This error message
+#. * means the user is calling json-glib-validate without any
+#. * argument.
+#.
+#: json-glib/json-glib-format.c:219 json-glib/json-glib-validate.c:136
+#, c-format
+msgid "Error parsing commandline options: %s\n"
+msgstr "เกิดข้อผิดพลาดขณะแจงตัวเลือกบรรทัดคำสั่ง: %s\n"
+
+#: json-glib/json-glib-format.c:221 json-glib/json-glib-format.c:235
+#: json-glib/json-glib-validate.c:138 json-glib/json-glib-validate.c:152
+#, c-format
+msgid "Try “%s --help” for more information."
+msgstr "ลองเรียก “%s —help” เพื่อดูข้อมูลเพิ่มเติม"
+
+#. Translators: the %s is the program name. This error message
+#. * means the user is calling json-glib-validate without any
+#. * argument.
+#.
+#: json-glib/json-glib-format.c:233 json-glib/json-glib-validate.c:150
+#, c-format
+msgid "%s: missing files"
+msgstr "%s: ไฟล์ขาดไป"
+
+#. Translators: this message will appear after the usage string
+#. and before the list of options.
+#: json-glib/json-glib-validate.c:118
+msgid "Validate JSON files."
+msgstr "ตรวจสอบความถูกต้องของไฟล์ JSON"
+
+#: json-glib/json-glib-validate.c:119
+msgid "json-glib-validate validates JSON data at the given URI."
+msgstr "json-glib-validate ตรวจสอบความถูกต้องของข้อมูล JSON ที่ URI ที่ระบุ"
+
+#. translators: the %s is the name of the data structure
+#: json-glib/json-gobject.c:928
+#, c-format
+msgid "Expecting a JSON object, but the root node is of type “%s”"
+msgstr ""
+
+#. translators: the '%s' is the type name
+#: json-glib/json-gvariant.c:482
+#, c-format
+msgid "Unexpected type “%s” in JSON node"
+msgstr ""
+
+#: json-glib/json-gvariant.c:555
+msgid "Missing elements in JSON array to conform to a tuple"
+msgstr ""
+
+#: json-glib/json-gvariant.c:584
+msgid "Missing closing symbol “)” in the GVariant tuple type"
+msgstr ""
+
+#: json-glib/json-gvariant.c:592
+msgid "Unexpected extra elements in JSON array"
+msgstr ""
+
+#: json-glib/json-gvariant.c:894
+msgid "Invalid string value converting to GVariant"
+msgstr ""
+
+#: json-glib/json-gvariant.c:949
+msgid ""
+"A GVariant dictionary entry expects a JSON object with exactly one member"
+msgstr ""
+
+#: json-glib/json-gvariant.c:1227
+#, c-format
+msgid "GVariant class “%c” not supported"
+msgstr "ไม่รองรับคลาส GVariant “%c”"
+
+#: json-glib/json-gvariant.c:1281
+msgid "Invalid GVariant signature"
+msgstr "ลายเซ็น GVariant ไม่ถูกต้อง"
+
+#: json-glib/json-gvariant.c:1335
+msgid "JSON data is empty"
+msgstr "ข้อมูล JSON ว่างเปล่า"
+
+#. translators: %s: is the file name, the first %d is the line
+#. * number, the second %d is the position on the line, and %s is
+#. * the error message
+#.
+#: json-glib/json-parser.c:939
+#, c-format
+msgid "%s:%d:%d: Parse error: %s"
+msgstr "%s:%d:%d: ข้อผิดพลาดการแจง: %s"
+
+#: json-glib/json-parser.c:1021
+msgid "JSON data must be UTF-8 encoded"
+msgstr "ข้อมูล JSON ต้องเข้ารหัสด้วย UTF-8"
+
+#: json-glib/json-path.c:389
+msgid "Only one root node is allowed in a JSONPath expression"
+msgstr "ในนิพจน์ JSONPath สามารถมีปมรากได้เพียงปมเดียวเท่านั้น"
+
+#. translators: the %c is the invalid character
+#: json-glib/json-path.c:398
+#, c-format
+msgid "Root node followed by invalid character “%c”"
+msgstr "ปมรากตามด้วยอักขระที่ไม่ถูกต้อง “%c”"
+
+#: json-glib/json-path.c:438
+msgid "Missing member name or wildcard after . character"
+msgstr "ขาดชื่อสมาชิกหรืออักขระตัวแทนหลังอักขระ ."
+
+#: json-glib/json-path.c:512
+#, c-format
+msgid "Malformed slice expression “%*s”"
+msgstr ""
+
+#: json-glib/json-path.c:556
+#, c-format
+msgid "Invalid set definition “%*s”"
+msgstr ""
+
+#: json-glib/json-path.c:609
+#, c-format
+msgid "Invalid slice definition “%*s”"
+msgstr ""
+
+#: json-glib/json-path.c:637
+#, c-format
+msgid "Invalid array index definition “%*s”"
+msgstr ""
+
+#: json-glib/json-path.c:656
+#, c-format
+msgid "Invalid first character “%c”"
+msgstr ""
+
+#: json-glib/json-reader.c:504
+#, c-format
+msgid ""
+"The current node is of type “%s”, but an array or an object was expected."
+msgstr ""
+
+#: json-glib/json-reader.c:516
+#, c-format
+msgid ""
+"The index “%d” is greater than the size of the array at the current position."
+msgstr ""
+
+#: json-glib/json-reader.c:533
+#, c-format
+msgid ""
+"The index “%d” is greater than the size of the object at the current "
+"position."
+msgstr ""
+
+#: json-glib/json-reader.c:616 json-glib/json-reader.c:789
+#: json-glib/json-reader.c:838 json-glib/json-reader.c:877
+#: json-glib/json-reader.c:917 json-glib/json-reader.c:957
+#: json-glib/json-reader.c:997 json-glib/json-reader.c:1044
+#: json-glib/json-reader.c:1082 json-glib/json-reader.c:1110
+msgid "No node available at the current position"
+msgstr ""
+
+#: json-glib/json-reader.c:623
+#, c-format
+msgid "The current position holds a “%s” and not an array"
+msgstr ""
+
+#: json-glib/json-reader.c:705
+#, c-format
+msgid "The current node is of type “%s”, but an object was expected."
+msgstr ""
+
+#: json-glib/json-reader.c:712
+#, c-format
+msgid "The member “%s” is not defined in the object at the current position."
+msgstr ""
+
+#: json-glib/json-reader.c:796 json-glib/json-reader.c:845
+#, c-format
+msgid "The current position holds a “%s” and not an object"
+msgstr ""
+
+#: json-glib/json-reader.c:886 json-glib/json-reader.c:926
+#: json-glib/json-reader.c:966 json-glib/json-reader.c:1006
+#: json-glib/json-reader.c:1053
+#, c-format
+msgid "The current position holds a “%s” and not a value"
+msgstr ""
+
+#: json-glib/json-reader.c:1014
+msgid "The current position does not hold a string type"
+msgstr ""
