@@ -169,6 +169,7 @@ test_gvariant_to_json (gconstpointer test_data)
   gchar *json_data;
   gsize len;
 
+  g_test_message ("Serializing: '%s' (signature: '%s')", test_case->variant_data, test_case->signature);
   variant = g_variant_parse (G_VARIANT_TYPE (test_case->signature),
                              test_case->variant_data,
                              NULL,
@@ -192,6 +193,7 @@ test_json_to_gvariant (gconstpointer test_data)
   gchar *variant_data;
   GError *error = NULL;
 
+  g_test_message ("Deserializing: '%s' (signature: '%s')", test_case->json_data, test_case->signature);
   variant = json_gvariant_deserialize_data (test_case->json_data,
                                             -1,
                                             test_case->signature,
