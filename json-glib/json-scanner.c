@@ -79,9 +79,6 @@ typedef union
  */
 struct _JsonScanner
 {
-  /* json_scanner_error() increments this field */
-  guint parse_errors;
-
   /* name of input stream, featured by the default message handler */
   const char *input_name;
 
@@ -263,9 +260,7 @@ json_scanner_error (JsonScanner *scanner,
 {
   g_return_if_fail (scanner != NULL);
   g_return_if_fail (format != NULL);
-  
-  scanner->parse_errors++;
-  
+
   if (scanner->msg_handler)
     {
       va_list args;
