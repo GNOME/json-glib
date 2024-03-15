@@ -62,18 +62,12 @@ typedef struct
 
 typedef union
 {
-  gpointer	v_symbol;
-  gchar		*v_identifier;
-  gulong	v_binary;
-  gulong	v_octal;
-  gulong	v_int;
-  guint64       v_int64;
-  gdouble	v_float;
-  gulong	v_hex;
-  gchar		*v_string;
-  gchar		*v_comment;
-  guchar	v_char;
-  guint		v_error;
+  gpointer v_symbol;
+  char *v_identifier;
+  guint64 v_int64;
+  double v_float;
+  char *v_string;
+  unsigned int v_error;
 } JsonTokenValue;
 
 /*< private >
@@ -227,7 +221,6 @@ json_scanner_free_value (JsonTokenType  *token_p,
     {
     case JSON_TOKEN_STRING:
     case JSON_TOKEN_IDENTIFIER:
-    case JSON_TOKEN_IDENTIFIER_NULL:
     case JSON_TOKEN_COMMENT_SINGLE:
     case JSON_TOKEN_COMMENT_MULTI:
       g_free (value_p->v_string);
@@ -547,26 +540,17 @@ json_scanner_unexp_token (JsonScanner  *scanner,
 	}
       break;
       
-    case JSON_TOKEN_CHAR:
-      g_snprintf (token_string, token_string_len, "character `%c'", scanner->value.v_char);
-      break;
-      
     case JSON_TOKEN_IDENTIFIER:
-    case JSON_TOKEN_IDENTIFIER_NULL:
-      if (expected_token == JSON_TOKEN_IDENTIFIER ||
-	  expected_token == JSON_TOKEN_IDENTIFIER_NULL)
+      if (expected_token == JSON_TOKEN_IDENTIFIER)
 	print_unexp = false;
       g_snprintf (token_string, token_string_len,
                   "%s%s `%s'",
                   print_unexp ? "" : "invalid ",
                   identifier_spec,
-                  scanner->token == JSON_TOKEN_IDENTIFIER ? scanner->value.v_string : "null");
+                  scanner->value.v_string);
       break;
       
-    case JSON_TOKEN_BINARY:
-    case JSON_TOKEN_OCTAL:
     case JSON_TOKEN_INT:
-    case JSON_TOKEN_HEX:
       g_snprintf (token_string, token_string_len, "number `%" G_GUINT64_FORMAT "'", scanner->value.v_int64);
       break;
       
@@ -605,8 +589,6 @@ json_scanner_unexp_token (JsonScanner  *scanner,
   
   switch (expected_token)
     {
-      const char *tstring;
-      bool need_valid;
     case JSON_TOKEN_EOF:
       g_snprintf (expected_string, expected_string_len, "end of file");
       break;
@@ -623,40 +605,25 @@ json_scanner_unexp_token (JsonScanner  *scanner,
 	}
       /* fall through */
     case JSON_TOKEN_SYMBOL:
-      need_valid = (scanner->token == JSON_TOKEN_SYMBOL || scanner->token > JSON_TOKEN_LAST);
-      g_snprintf (expected_string, expected_string_len,
-                  "%s%s",
-                  need_valid ? "valid " : "",
-                  symbol_spec);
-      break;
-    case JSON_TOKEN_CHAR:
-      g_snprintf (expected_string, expected_string_len, "%scharacter",
-		  scanner->token == JSON_TOKEN_CHAR ? "valid " : "");
-      break;
-    case JSON_TOKEN_BINARY:
-      tstring = "binary";
-      g_snprintf (expected_string, expected_string_len, "%snumber (%s)",
-		  scanner->token == expected_token ? "valid " : "", tstring);
-      break;
-    case JSON_TOKEN_OCTAL:
-      tstring = "octal";
-      g_snprintf (expected_string, expected_string_len, "%snumber (%s)",
-		  scanner->token == expected_token ? "valid " : "", tstring);
+      {
+        bool need_valid = (scanner->token == JSON_TOKEN_SYMBOL || scanner->token > JSON_TOKEN_LAST);
+        g_snprintf (expected_string, expected_string_len,
+                    "%s%s",
+                    need_valid ? "valid " : "",
+                    symbol_spec);
+      }
       break;
     case JSON_TOKEN_INT:
-      tstring = "integer";
-      g_snprintf (expected_string, expected_string_len, "%snumber (%s)",
-		  scanner->token == expected_token ? "valid " : "", tstring);
-      break;
-    case JSON_TOKEN_HEX:
-      tstring = "hexadecimal";
-      g_snprintf (expected_string, expected_string_len, "%snumber (%s)",
-		  scanner->token == expected_token ? "valid " : "", tstring);
+      g_snprintf (expected_string,
+                  expected_string_len,
+                  "%snumber (integer)",
+		  scanner->token == expected_token ? "valid " : "");
       break;
     case JSON_TOKEN_FLOAT:
-      tstring = "float";
-      g_snprintf (expected_string, expected_string_len, "%snumber (%s)",
-		  scanner->token == expected_token ? "valid " : "", tstring);
+      g_snprintf (expected_string,
+                  expected_string_len,
+                  "%snumber (float)",
+		  scanner->token == expected_token ? "valid " : "");
       break;
     case JSON_TOKEN_STRING:
       g_snprintf (expected_string,
@@ -665,24 +632,23 @@ json_scanner_unexp_token (JsonScanner  *scanner,
 		  scanner->token == JSON_TOKEN_STRING ? "valid " : "");
       break;
     case JSON_TOKEN_IDENTIFIER:
-    case JSON_TOKEN_IDENTIFIER_NULL:
-      need_valid = (scanner->token == JSON_TOKEN_IDENTIFIER_NULL ||
-		    scanner->token == JSON_TOKEN_IDENTIFIER);
       g_snprintf (expected_string,
 		  expected_string_len,
 		  "%s%s",
-		  need_valid ? "valid " : "",
+		  scanner->token == JSON_TOKEN_IDENTIFIER ? "valid " : "",
 		  identifier_spec);
       break;
     case JSON_TOKEN_COMMENT_SINGLE:
-      tstring = "single-line";
-      g_snprintf (expected_string, expected_string_len, "%scomment (%s)",
-		  scanner->token == expected_token ? "valid " : "", tstring);
+      g_snprintf (expected_string,
+                  expected_string_len,
+                  "%scomment (single-line)",
+		  scanner->token == expected_token ? "valid " : "");
       break;
     case JSON_TOKEN_COMMENT_MULTI:
-      tstring = "multi-line";
-      g_snprintf (expected_string, expected_string_len, "%scomment (%s)",
-		  scanner->token == expected_token ? "valid " : "", tstring);
+      g_snprintf (expected_string,
+                  expected_string_len,
+                  "%scomment (multi-line)",
+		  scanner->token == expected_token ? "valid " : "");
       break;
     case JSON_TOKEN_NONE:
     case JSON_TOKEN_ERROR:
@@ -788,26 +754,18 @@ json_scanner_get_token_i (JsonScanner    *scanner,
     }
   while (((*token_p > 0 && *token_p < 256) &&
 	  strchr (scanner->config.cset_skip_characters, *token_p)) ||
-	 (*token_p == JSON_TOKEN_CHAR &&
-	  strchr (scanner->config.cset_skip_characters, value_p->v_char)) ||
 	 *token_p == JSON_TOKEN_COMMENT_MULTI ||
 	 *token_p == JSON_TOKEN_COMMENT_SINGLE);
-  
+
   switch (*token_p)
     {
     case JSON_TOKEN_IDENTIFIER:
       break;
-      
+
     case JSON_TOKEN_SYMBOL:
       *token_p = GPOINTER_TO_INT (value_p->v_symbol);
       break;
-      
-    case JSON_TOKEN_BINARY:
-    case JSON_TOKEN_OCTAL:
-    case JSON_TOKEN_HEX:
-      *token_p = JSON_TOKEN_INT;
-      break;
-      
+
     default:
       break;
     }
@@ -1023,51 +981,6 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	  goto number_parsing;
 	  
 	case '0':
-	  token = JSON_TOKEN_OCTAL;
-	  ch = json_scanner_peek_next_char (scanner);
-	  if (ch == 'x' || ch == 'X')
-	    {
-	      token = JSON_TOKEN_HEX;
-	      json_scanner_get_char (scanner, line_p, position_p);
-	      ch = json_scanner_get_char (scanner, line_p, position_p);
-	      if (ch == 0)
-		{
-		  token = JSON_TOKEN_ERROR;
-		  value.v_error = JSON_ERROR_TYPE_UNEXP_EOF;
-		  (*position_p)++;
-		  break;
-		}
-	      if (json_scanner_char_2_num (ch, 16) < 0)
-		{
-		  token = JSON_TOKEN_ERROR;
-		  value.v_error = JSON_ERROR_TYPE_DIGIT_RADIX;
-		  ch = 0;
-		  break;
-		}
-	    }
-	  else if (ch == 'b' || ch == 'B')
-	    {
-	      token = JSON_TOKEN_BINARY;
-	      json_scanner_get_char (scanner, line_p, position_p);
-	      ch = json_scanner_get_char (scanner, line_p, position_p);
-	      if (ch == 0)
-		{
-		  token = JSON_TOKEN_ERROR;
-		  value.v_error = JSON_ERROR_TYPE_UNEXP_EOF;
-		  (*position_p)++;
-		  break;
-		}
-	      if (json_scanner_char_2_num (ch, 10) < 0)
-		{
-		  token = JSON_TOKEN_ERROR;
-		  value.v_error = JSON_ERROR_TYPE_NON_DIGIT_IN_CONST;
-		  ch = 0;
-		  break;
-		}
-	    }
-	  else
-	    ch = '0';
-	  /* fall through */
 	case '1':
 	case '2':
 	case '3':
@@ -1105,9 +1018,11 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 		  switch (ch)
 		    {
 		    case '.':
-		      if (token != JSON_TOKEN_INT && token != JSON_TOKEN_OCTAL)
+		      if (token != JSON_TOKEN_INT)
 			{
-			  value.v_error = token == JSON_TOKEN_FLOAT ? JSON_ERROR_TYPE_FLOAT_MALFORMED : JSON_ERROR_TYPE_FLOAT_RADIX;
+			  value.v_error = token == JSON_TOKEN_FLOAT
+                                        ? JSON_ERROR_TYPE_FLOAT_MALFORMED
+                                        : JSON_ERROR_TYPE_FLOAT_RADIX;
 			  token = JSON_TOKEN_ERROR;
 			  in_number = false;
 			}
@@ -1145,9 +1060,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 		      
 		    case 'e':
 		    case 'E':
-                      if (token != JSON_TOKEN_HEX &&
-                          token != JSON_TOKEN_OCTAL &&
-                          token != JSON_TOKEN_FLOAT &&
+                      if (token != JSON_TOKEN_FLOAT &&
                           token != JSON_TOKEN_INT)
 			{
 			  token = JSON_TOKEN_ERROR;
@@ -1156,22 +1069,16 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 			}
 		      else
 			{
-			  if (token != JSON_TOKEN_HEX)
-			    token = JSON_TOKEN_FLOAT;
+			  token = JSON_TOKEN_FLOAT;
 			  gstring = g_string_append_c (gstring, ch);
 			}
 		      break;
 		      
 		    default:
-		      if (token != JSON_TOKEN_HEX)
-			{
-			  token = JSON_TOKEN_ERROR;
-			  value.v_error = JSON_ERROR_TYPE_NON_DIGIT_IN_CONST;
-			  in_number = false;
-			}
-		      else
-			gstring = g_string_append_c (gstring, ch);
-		      break;
+                      token = JSON_TOKEN_ERROR;
+                      value.v_error = JSON_ERROR_TYPE_NON_DIGIT_IN_CONST;
+                      in_number = false;
+                      break;
 		    }
 		}
 	      else
@@ -1180,31 +1087,12 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	  while (in_number);
 	  
 	  endptr = NULL;
-	  if (token == JSON_TOKEN_FLOAT)
-	    value.v_float = g_strtod (gstring->str, &endptr);
-	  else
-	    {
-	      guint64 ui64 = 0;
-	      switch (token)
-		{
-		case JSON_TOKEN_BINARY:
-		  ui64 = g_ascii_strtoull (gstring->str, &endptr, 2);
-		  break;
-		case JSON_TOKEN_OCTAL:
-		  ui64 = g_ascii_strtoull (gstring->str, &endptr, 8);
-		  break;
-		case JSON_TOKEN_INT:
-		  ui64 = g_ascii_strtoull (gstring->str, &endptr, 10);
-		  break;
-		case JSON_TOKEN_HEX:
-		  ui64 = g_ascii_strtoull (gstring->str, &endptr, 16);
-		  break;
-		default: ;
-		}
-              value.v_int64 = ui64;
-	    }
-	  if (endptr && *endptr)
-	    {
+          if (token == JSON_TOKEN_FLOAT)
+            value.v_float = g_strtod (gstring->str, &endptr);
+          else if (token == JSON_TOKEN_INT)
+            value.v_int64 = g_ascii_strtoull (gstring->str, &endptr, 10);
+          if (endptr && *endptr)
+            {
 	      token = JSON_TOKEN_ERROR;
 	      if (*endptr == 'e' || *endptr == 'E')
 		value.v_error = JSON_ERROR_TYPE_NON_DIGIT_IN_CONST;
