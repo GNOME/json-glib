@@ -799,20 +799,18 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
   
   do /* while (ch != 0) */
     {
-      bool dotted_float = false;
-      
       ch = json_scanner_get_char (scanner, line_p, position_p);
-      
+
       value.v_int64 = 0;
       token = JSON_TOKEN_NONE;
-      
+
       /* this is *evil*, but needed ;(
        * we first check for identifier first character, because	 it
        * might interfere with other key chars like slashes or numbers
        */
       if (ch != 0 && strchr (config->cset_identifier_first, ch))
 	goto identifier_precedence;
-      
+
       switch (ch)
 	{
 	case 0:
@@ -820,7 +818,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	  (*position_p)++;
 	  /* ch = 0; */
 	  break;
-	  
+
 	case '/':
 	  if (json_scanner_peek_next_char (scanner) != '*')
 	    goto default_case;
@@ -841,7 +839,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	    }
 	  ch = 0;
 	  break;
-	  
+
 	case '"':
 	  token = JSON_TOKEN_STRING;
 	  in_string_dq = true;
@@ -968,13 +966,8 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	    }
 	  ch = 0;
 	  break;
-	  
-	case '.':
-	  token = JSON_TOKEN_FLOAT;
-	  dotted_float = true;
-	  ch = json_scanner_get_char (scanner, line_p, position_p);
-	  goto number_parsing;
-	  
+
+        /* {{{ number parsing */
 	case '0':
 	case '1':
 	case '2':
@@ -985,7 +978,6 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	case '7':
 	case '8':
 	case '9':
-	number_parsing:
 	{
           bool in_number = true;
 	  char *endptr;
@@ -993,9 +985,9 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	  if (token == JSON_TOKEN_NONE)
 	    token = JSON_TOKEN_INT;
 	  
-	  gstring = g_string_new (dotted_float ? "0." : "");
+	  gstring = g_string_new ("");
 	  gstring = g_string_append_c (gstring, ch);
-	  
+
 	  do /* while (in_number) */
 	    {
 	      bool is_E;
@@ -1097,9 +1089,9 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	  g_string_free (gstring, TRUE);
 	  gstring = NULL;
 	  ch = 0;
-	} /* number_parsing:... */
-	break;
-	
+	}
+	break; /* number parsing }}} */
+
 	default:
 	default_case:
 	{
