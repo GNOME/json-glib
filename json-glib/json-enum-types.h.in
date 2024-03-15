@@ -1,6 +1,5 @@
 /*** BEGIN file-header ***/
-#ifndef __JSON_ENUM_TYPES_H__
-#define __JSON_ENUM_TYPES_H__
+#pragma once
 
 #if !defined(__JSON_GLIB_INSIDE__) && !defined(JSON_COMPILATION)
 #error "Only <json-glib/json-glib.h> can be included directly."
@@ -19,8 +18,6 @@ G_BEGIN_DECLS
 
 /*** BEGIN file-tail ***/
 G_END_DECLS
-
-#endif /* !__JSON_ENUM_TYPES_H__ */
 /*** END file-tail ***/
 
 /*** BEGIN value-header ***/
@@ -29,4 +26,3 @@ GType @enum_name@_get_type (void) G_GNUC_CONST;
 #define JSON_TYPE_@ENUMSHORT@ (@enum_name@_get_type())
 
 /*** END value-header ***/
-

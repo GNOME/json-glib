@@ -29,8 +29,7 @@
  * JsonScanner: modified by Emmanuele Bassi <ebassi@openedhand.com>
  */
 
-#ifndef __JSON_SCANNER_H__
-#define __JSON_SCANNER_H__
+#pragma once
 
 #include <glib.h>
 
@@ -120,5 +119,3 @@ G_GNUC_INTERNAL
 unsigned int json_scanner_get_current_token    (const JsonScanner *scanner);
 
 G_END_DECLS
-
-#endif /* __JSON_SCANNER_H__ */

@@ -17,8 +17,7 @@
  * License along with this library. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef __JSON_VERSION_MACROS_H__
-#define __JSON_VERSION_MACROS_H__
+#pragma once
 
 #if !defined(__JSON_GLIB_INSIDE__) && !defined(JSON_COMPILATION)
 #error "Only <json-glib/json-glib.h> can be included directly."
@@ -260,5 +259,3 @@
 #else
 # define JSON_AVAILABLE_IN_1_10                _JSON_EXTERN
 #endif
-
-#endif /* __JSON_VERSION_MACROS_H__ */
