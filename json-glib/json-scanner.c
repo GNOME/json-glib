@@ -48,7 +48,8 @@ typedef enum
   JSON_ERROR_TYPE_DIGIT_RADIX,
   JSON_ERROR_TYPE_FLOAT_RADIX,
   JSON_ERROR_TYPE_FLOAT_MALFORMED,
-  JSON_ERROR_TYPE_MALFORMED_SURROGATE_PAIR
+  JSON_ERROR_TYPE_MALFORMED_SURROGATE_PAIR,
+  JSON_ERROR_TYPE_LEADING_ZERO
 } JsonErrorType;
 
 typedef struct
@@ -528,6 +529,10 @@ json_scanner_unexp_token (JsonScanner  *scanner,
 	  g_snprintf (token_string, token_string_len, "scanner: malformed surrogate pair");
 	  break;
 
+        case JSON_ERROR_TYPE_LEADING_ZERO:
+          g_snprintf (token_string, token_string_len, "scanner: leading zero in number");
+          break;
+
 	case JSON_ERROR_TYPE_UNKNOWN:
 	default:
 	  g_snprintf (token_string, token_string_len, "scanner: unknown error");
@@ -980,6 +985,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	case '9':
 	{
           bool in_number = true;
+          bool leading_zero = ch == '0';
 	  char *endptr;
 	  
 	  if (token == JSON_TOKEN_NONE)
@@ -990,36 +996,36 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 
 	  do /* while (in_number) */
 	    {
-	      bool is_E;
-	      
-	      is_E = token == JSON_TOKEN_FLOAT && (ch == 'e' || ch == 'E');
-	      
+	      bool is_E = token == JSON_TOKEN_FLOAT && (ch == 'e' || ch == 'E');
+
 	      ch = json_scanner_peek_next_char (scanner);
-	      
+
 	      if (json_scanner_char_2_num (ch, 36) >= 0 ||
 		  ch == '.' ||
 		  (is_E && (ch == '+' || ch == '-')))
 		{
 		  ch = json_scanner_get_char (scanner, line_p, position_p);
-		  
+
 		  switch (ch)
 		    {
 		    case '.':
-		      if (token != JSON_TOKEN_INT)
-			{
-			  value.v_error = token == JSON_TOKEN_FLOAT
-                                        ? JSON_ERROR_TYPE_FLOAT_MALFORMED
-                                        : JSON_ERROR_TYPE_FLOAT_RADIX;
-			  token = JSON_TOKEN_ERROR;
-			  in_number = false;
-			}
-		      else
-			{
-			  token = JSON_TOKEN_FLOAT;
-			  gstring = g_string_append_c (gstring, ch);
-			}
-		      break;
-		      
+                      {
+                        unsigned int next_ch = json_scanner_peek_next_char (scanner);
+
+                        if (!g_ascii_isdigit (next_ch))
+                          {
+                            token = JSON_TOKEN_ERROR;
+                            value.v_error = JSON_ERROR_TYPE_FLOAT_MALFORMED;
+                            in_number = false;
+                          }
+                        else
+			  {
+                            token = JSON_TOKEN_FLOAT;
+                            gstring = g_string_append_c (gstring, ch);
+                          }
+                      }
+                      break;
+
 		    case '0':
 		    case '1':
 		    case '2':
@@ -1030,9 +1036,16 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 		    case '7':
 		    case '8':
 		    case '9':
-		      gstring = g_string_append_c (gstring, ch);
+                      if (leading_zero && token != JSON_TOKEN_FLOAT)
+                        {
+                          token = JSON_TOKEN_ERROR;
+                          value.v_error= JSON_ERROR_TYPE_LEADING_ZERO;
+                          in_number = false;
+                        }
+                      else
+                        gstring = g_string_append_c (gstring, ch);
 		      break;
-		      
+
 		    case '-':
 		    case '+':
 		      if (token != JSON_TOKEN_FLOAT)
@@ -1044,23 +1057,13 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 		      else
 			gstring = g_string_append_c (gstring, ch);
 		      break;
-		      
+
 		    case 'e':
 		    case 'E':
-                      if (token != JSON_TOKEN_FLOAT &&
-                          token != JSON_TOKEN_INT)
-			{
-			  token = JSON_TOKEN_ERROR;
-			  value.v_error = JSON_ERROR_TYPE_NON_DIGIT_IN_CONST;
-			  in_number = false;
-			}
-		      else
-			{
-			  token = JSON_TOKEN_FLOAT;
-			  gstring = g_string_append_c (gstring, ch);
-			}
+                      token = JSON_TOKEN_FLOAT;
+                      gstring = g_string_append_c (gstring, ch);
 		      break;
-		      
+
 		    default:
                       token = JSON_TOKEN_ERROR;
                       value.v_error = JSON_ERROR_TYPE_NON_DIGIT_IN_CONST;
@@ -1072,20 +1075,24 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 		in_number = false;
 	    }
 	  while (in_number);
-	  
-	  endptr = NULL;
-          if (token == JSON_TOKEN_FLOAT)
-            value.v_float = g_strtod (gstring->str, &endptr);
-          else if (token == JSON_TOKEN_INT)
-            value.v_int64 = g_ascii_strtoull (gstring->str, &endptr, 10);
-          if (endptr && *endptr)
+
+          if (token != JSON_TOKEN_ERROR)
             {
-	      token = JSON_TOKEN_ERROR;
-	      if (*endptr == 'e' || *endptr == 'E')
-		value.v_error = JSON_ERROR_TYPE_NON_DIGIT_IN_CONST;
-	      else
-		value.v_error = JSON_ERROR_TYPE_DIGIT_RADIX;
-	    }
+              endptr = NULL;
+              if (token == JSON_TOKEN_FLOAT)
+                value.v_float = g_strtod (gstring->str, &endptr);
+              else if (token == JSON_TOKEN_INT)
+                value.v_int64 = g_ascii_strtoull (gstring->str, &endptr, 10);
+
+              if (endptr && *endptr)
+                {
+                  token = JSON_TOKEN_ERROR;
+                  if (*endptr == 'e' || *endptr == 'E')
+                    value.v_error = JSON_ERROR_TYPE_NON_DIGIT_IN_CONST;
+                  else
+                    value.v_error = JSON_ERROR_TYPE_DIGIT_RADIX;
+                }
+            }
 	  g_string_free (gstring, TRUE);
 	  gstring = NULL;
 	  ch = 0;
