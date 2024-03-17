@@ -60,3 +60,7 @@ foreach t: tests
     ],
   )
 endforeach
+
+if get_option('conformance')
+  subdir('conformance')
+endif
