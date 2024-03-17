@@ -1,12 +1,12 @@
 project('json-glib', 'c',
-  version: '1.8.1',
+  version: '1.9.1',
   license: 'LGPL-2.1-or-later',
   default_options: [
     'warning_level=2',
     'buildtype=debugoptimized',
     'c_std=gnu99',
   ],
-  meson_version: '>= 0.62.0',
+  meson_version: '>= 0.63.0',
 )
 
 # Versioning
@@ -38,9 +38,8 @@ json_localedir = join_paths(get_option('prefix'), get_option('localedir'))
 json_libexecdir = join_paths(get_option('prefix'), get_option('libexecdir'))
 
 # Dependencies
-glib_req_version = '>= 2.54.0'
-gio_dep = dependency('gio-2.0', version: glib_req_version,
-  fallback: ['glib', 'libgio_dep'])
+glib_req_version = '>= 2.72.0'
+gio_dep = dependency('gio-2.0', version: glib_req_version)
 
 # Configurations
 cc = meson.get_compiler('c')
@@ -150,6 +149,14 @@ root_dir = include_directories('.')
 
 gnome = import('gnome')
 
+gir = find_program('g-ir-scanner', required: get_option('introspection'))
+build_gir = gir.found() and get_option('introspection').allowed() and meson.can_run_host_binaries()
+build_doc = build_gir and get_option('documentation').allowed()
+
+if get_option('introspection').disabled() and get_option('documentation').enabled()
+  error('Cannot build documentation without introspection')
+endif
+
 python3 = import('python').find_installation()
 gen_installed_test = files('build-aux/gen-installed-test.py')
 
@@ -163,7 +170,7 @@ endif
 subdir('doc')
 
 if not meson.is_subproject()
-    meson.add_dist_script('build-aux/dist-docs.py')
+  meson.add_dist_script('build-aux/dist-docs.py')
 endif
 
 summary({
@@ -176,8 +183,8 @@ summary({
 )
 
 summary({
-    'Introspection': get_option('introspection').enabled() or get_option('introspection').auto(),
-    'Documentation': get_option('gtk_doc').enabled() or get_option('gtk_doc').auto(),
+    'Introspection': build_gir,
+    'Documentation': build_doc,
     'Manual pages': get_option('man'),
     'Tests': get_option('tests'),
   },

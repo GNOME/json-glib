@@ -1,9 +1,5 @@
-if get_option('gtk_doc').enabled() and get_option('introspection').enabled()
-  dependency('gi-docgen', version: '>= 2021.6',
-    fallback: ['gi-docgen', 'dummy_dep'],
-  )
-
-  gidocgen = find_program('gi-docgen', required: get_option('gtk_doc'))
+if build_doc
+  gidocgen = find_program('gi-docgen', required: get_option('documentation'), native: true)
 
   json_docdir = json_datadir / 'doc'
 
@@ -59,36 +55,38 @@ if get_option('gtk_doc').enabled() and get_option('introspection').enabled()
 
 endif
 
-xsltproc = find_program('xsltproc', required: false)
-if get_option('man') and xsltproc.found()
-  xlstproc_flags = [
-    '--nonet',
-    '--stringparam', 'man.output.quietly', '1',
-    '--stringparam', 'funcsynopsis.style', 'ansi',
-    '--stringparam', 'man.th.extra1.suppress', '1',
-    '--stringparam', 'man.authors.section.enabled', '1',
-    '--stringparam', 'man.copyright.section.enabled', '1',
+rst2man = find_program('rst2man', 'rst2man.py', required: get_option('man'))
+
+if get_option('man') and rst2man.found()
+  rst_files = [
+    {
+      'name': 'json-glib-format',
+      'section': '1',
+    },
+    {
+      'name': 'json-glib-validate',
+      'section': '1',
+    },
   ]
 
-  man_files = [
-    'json-glib-format',
-    'json-glib-validate',
+  rst2man_flags = [
+    '--syntax-highlight=none',
   ]
 
-  foreach m: man_files
-    custom_target(
-      m + ' man page',
-      input: '@0@.xml'.format(m),
-      output: '@0@.1'.format(m),
+  foreach rst: rst_files
+    name = rst.get('name')
+    section = rst.get('section', '1')
+    custom_target('man-@0@'.format(name),
+      input: '@0@.rst'.format(name),
+      output: '@0@.@1@'.format(name, section),
       command: [
-        xsltproc,
-        xlstproc_flags,
-        '-o', '@OUTPUT@',
-        'http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl',
+        rst2man,
+        rst2man_flags,
         '@INPUT@',
       ],
+      capture: true,
       install: true,
-      install_dir: join_paths(json_mandir, 'man1'),
+      install_dir: get_option('mandir') / 'man@0@'.format(section),
     )
   endforeach
 endif
