@@ -11,11 +11,11 @@ P,i_number_very_big_negative_int.json
 X,i_object_key_lone_2nd_surrogate.json
 X,i_string_1st_surrogate_but_2nd_missing.json
 X,i_string_1st_valid_surrogate_2nd_invalid.json
-P,i_string_incomplete_surrogate_and_escape_valid.json
-P,i_string_incomplete_surrogate_pair.json
+X,i_string_incomplete_surrogate_and_escape_valid.json
+X,i_string_incomplete_surrogate_pair.json
 X,i_string_incomplete_surrogates_escape_valid.json
 X,i_string_invalid_lonely_surrogate.json
-P,i_string_invalid_surrogate.json
+X,i_string_invalid_surrogate.json
 X,i_string_invalid_utf-8.json
 X,i_string_inverted_surrogates_U+1D11E.json
 X,i_string_iso_latin_1.json
