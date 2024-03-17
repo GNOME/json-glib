@@ -87,6 +87,10 @@ main (int argc, char *argv[])
   char **lines = g_strsplit (input_data, "\n", -1);
   for (unsigned int i = 0; lines[i] != NULL && lines[i][0] != 0; i++)
     {
+      // Allow comments
+      if (lines[i][0] == '#')
+        continue;
+
       char **l = g_strsplit (lines[i], ",", 2);
       char *filename = g_build_filename (dirname, l[1], NULL);
       char *test_path = g_strconcat ("/conformance/", opt_type, "/", l[1], NULL);
