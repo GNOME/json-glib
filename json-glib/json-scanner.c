@@ -1036,6 +1036,14 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 			  break;
 			}
 		    }
+                  else if (ch == '\n' || ch == '\t' || ch == '\r' || ch == '\f' || ch == '\b')
+                    {
+                      token = JSON_TOKEN_ERROR;
+                      value.v_error = JSON_ERROR_TYPE_UNESCAPED_CTRL;
+                      g_string_free (gstring, TRUE);
+                      gstring = NULL;
+                      break;
+                    }
 		  else
 		    gstring = g_string_append_c (gstring, ch);
 		}
