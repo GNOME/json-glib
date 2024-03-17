@@ -405,8 +405,6 @@ json_scanner_get_unichar (JsonScanner *scanner,
         return false;
     }
 
-  g_assert (g_unichar_validate (uchar) || g_unichar_type (uchar) == G_UNICODE_SURROGATE);
-
   *ucs = uchar;
 
   return true;
@@ -426,6 +424,7 @@ decode_utf16_surrogate_pair (const gunichar units[2])
 {
   gunichar ucs;
 
+  /* Already checked by caller */
   g_assert (0xd800 <= units[0] && units[0] <= 0xdbff);
   g_assert (0xdc00 <= units[1] && units[1] <= 0xdfff);
 
@@ -931,8 +930,8 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
                                 }
 
                               /* resolve UTF-16 surrogates for Unicode characters not in the BMP,
-                                * as per ECMA 404, § 9, "String"
-                                */
+                               * as per ECMA 404, § 9, "String"
+                               */
                               if (g_unichar_type (ucs) == G_UNICODE_SURROGATE)
                                 {
                                   unsigned int next_ch;
@@ -981,12 +980,30 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
                                       0xd800 <= units[0] && units[0] <= 0xdbff)
                                     {
                                       ucs = decode_utf16_surrogate_pair (units);
-                                      g_assert (g_unichar_validate (ucs));
+                                      if (!g_unichar_validate (ucs))
+                                        {
+                                          token = JSON_TOKEN_ERROR;
+                                          value.v_error = JSON_ERROR_TYPE_MALFORMED_UNICODE;
+                                          g_string_free (gstring, TRUE);
+                                          gstring = NULL;
+                                          break;
+                                        }
                                     }
                                   else
                                     {
                                       token = JSON_TOKEN_ERROR;
                                       value.v_error = JSON_ERROR_TYPE_MALFORMED_SURROGATE_PAIR;
+                                      g_string_free (gstring, TRUE);
+                                      gstring = NULL;
+                                      break;
+                                    }
+                                }
+                              else
+                                {
+                                  if (!g_unichar_validate (ucs))
+                                    {
+                                      token = JSON_TOKEN_ERROR;
+                                      value.v_error = JSON_ERROR_TYPE_MALFORMED_UNICODE;
                                       g_string_free (gstring, TRUE);
                                       gstring = NULL;
                                       break;
