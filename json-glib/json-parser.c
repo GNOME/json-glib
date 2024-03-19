@@ -93,6 +93,7 @@ struct _JsonParserPrivate
   guint has_assignment : 1;
   guint is_filename    : 1;
   guint is_immutable   : 1;
+  guint is_strict      : 1;
 };
 
 enum
@@ -115,6 +116,7 @@ static guint parser_signals[LAST_SIGNAL] = { 0, };
 enum
 {
   PROP_IMMUTABLE = 1,
+  PROP_STRICT,
   PROP_LAST
 };
 
@@ -176,6 +178,12 @@ json_parser_set_property (GObject      *gobject,
       /* Construct-only. */
       priv->is_immutable = g_value_get_boolean (value);
       break;
+
+    case PROP_STRICT:
+      json_parser_set_strict (JSON_PARSER (gobject),
+                              g_value_get_boolean (value));
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -195,6 +203,11 @@ json_parser_get_property (GObject    *gobject,
     case PROP_IMMUTABLE:
       g_value_set_boolean (value, priv->is_immutable);
       break;
+
+    case PROP_STRICT:
+      g_value_set_boolean (value, priv->is_strict);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
       break;
@@ -223,11 +236,22 @@ json_parser_class_init (JsonParserClass *klass)
    * Since: 1.2
    */
   parser_props[PROP_IMMUTABLE] =
-    g_param_spec_boolean ("immutable",
-                          "Immutable Output",
-                          "Whether the parser output is immutable.",
+    g_param_spec_boolean ("immutable", NULL, NULL,
                           FALSE,
                           G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
+
+  /**
+   * JsonParser:strict:
+   *
+   * Whether the parser should be strictly conforming to the
+   * JSON format, or allow custom extensions like comments.
+   *
+   * Since: 1.10
+   */
+  parser_props[PROP_STRICT] =
+    g_param_spec_boolean ("strict", NULL, NULL, FALSE,
+                          G_PARAM_READWRITE |
+                          G_PARAM_EXPLICIT_NOTIFY);
 
   g_object_class_install_properties (gobject_class, PROP_LAST, parser_props);
 
@@ -1587,4 +1611,56 @@ json_parser_load_from_stream_async (JsonParser          *parser,
 
   g_task_run_in_thread (task, read_from_stream);
   g_object_unref (task);
+}
+
+/**
+ * json_parser_set_strict:
+ * @parser: the JSON parser
+ * @strict: whether the parser should be strict
+ *
+ * Sets whether the parser should operate in strict mode.
+ *
+ * If @strict is true, `JsonParser` will strictly conform to
+ * the JSON format.
+ *
+ * If @strict is false, `JsonParser` will allow custom extensions
+ * to the JSON format, like comments.
+ *
+ * Since: 1.10
+ */
+void
+json_parser_set_strict (JsonParser *parser,
+                        gboolean    strict)
+{
+  g_return_if_fail (JSON_IS_PARSER (parser));
+
+  JsonParserPrivate *priv = json_parser_get_instance_private (parser);
+
+  strict = !!strict;
+
+  if (priv->is_strict != strict)
+    {
+      priv->is_strict = strict;
+      g_object_notify_by_pspec (G_OBJECT (parser), parser_props[PROP_STRICT]);
+    }
+}
+
+/**
+ * json_parser_get_strict:
+ * @parser: the JSON parser
+ *
+ * Retrieves whether the parser is operating in strict mode.
+ *
+ * Returns: true if the parser is strict, and false otherwise
+ *
+ * Since: 1.10
+ */
+gboolean
+json_parser_get_strict (JsonParser *parser)
+{
+  g_return_val_if_fail (JSON_IS_PARSER (parser), FALSE);
+
+  JsonParserPrivate *priv = json_parser_get_instance_private (parser);
+
+  return priv->is_strict;
 }
