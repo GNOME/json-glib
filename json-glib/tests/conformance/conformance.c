@@ -38,6 +38,7 @@ parse_file (gconstpointer data)
 
   GError *error = NULL;
   JsonParser *parser = json_parser_new ();
+  json_parser_set_strict (parser, TRUE);
   json_parser_load_from_file (parser, f->filename, &error);
 
   if (f->xfail)
