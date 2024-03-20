@@ -56,11 +56,11 @@ typedef enum
 
 typedef struct
 {
-  /* Character sets */
-  const char *cset_skip_characters; /* default: " \t\n" */
+  const char *cset_skip_characters;
   const char *cset_identifier_first;
   const char *cset_identifier_nth;
-  const char *cpair_comment_single; /* default: "#\n" */
+  const char *cpair_comment_single;
+  bool strict;
 } JsonScannerConfig;
 
 typedef union
@@ -179,7 +179,7 @@ json_scanner_char_2_num (guchar c,
 }
 
 JsonScanner *
-json_scanner_new (void)
+json_scanner_new (bool strict)
 {
   JsonScanner *scanner;
   
@@ -199,6 +199,7 @@ json_scanner_new (void)
       G_CSET_A_2_Z
     ),
     .cpair_comment_single = ( "//\n" ),
+    .strict = strict,
   };
 
   scanner->token = JSON_TOKEN_NONE;
@@ -838,7 +839,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	  break;
 
 	case '/':
-	  if (json_scanner_peek_next_char (scanner) != '*')
+	  if (config->strict || json_scanner_peek_next_char (scanner) != '*')
 	    goto default_case;
 	  json_scanner_get_char (scanner, line_p, position_p);
 	  token = JSON_TOKEN_COMMENT_MULTI;
@@ -1198,7 +1199,8 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	default:
 	default_case:
 	{
-	  if (config->cpair_comment_single &&
+	  if (!config->strict &&
+              config->cpair_comment_single &&
 	      ch == config->cpair_comment_single[0])
 	    {
 	      token = JSON_TOKEN_COMMENT_SINGLE;

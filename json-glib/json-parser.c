@@ -863,10 +863,24 @@ json_parse_statement (JsonParser  *parser,
   switch (token)
     {
     case JSON_TOKEN_LEFT_CURLY:
+      if (priv->is_strict && priv->root != NULL)
+        {
+          JSON_NOTE (PARSER, "Only one top level object is possible");
+          json_scanner_get_next_token (scanner);
+          priv->error_code = JSON_PARSER_ERROR_INVALID_STRUCTURE;
+          return JSON_TOKEN_EOF;
+        }
       JSON_NOTE (PARSER, "Statement is object declaration");
       return json_parse_object (parser, scanner, &priv->root, 0);
 
     case JSON_TOKEN_LEFT_BRACE:
+      if (priv->is_strict && priv->root != NULL)
+        {
+          JSON_NOTE (PARSER, "Only one top level array is possible");
+          json_scanner_get_next_token (scanner);
+          priv->error_code = JSON_PARSER_ERROR_INVALID_STRUCTURE;
+          return JSON_TOKEN_EOF;
+        }
       JSON_NOTE (PARSER, "Statement is array declaration");
       return json_parse_array (parser, scanner, &priv->root, 0);
 
@@ -881,6 +895,13 @@ json_parse_statement (JsonParser  *parser,
         gchar *name;
 
         JSON_NOTE (PARSER, "Statement is an assignment");
+
+        if (priv->is_strict)
+          {
+            json_scanner_get_next_token (scanner);
+            priv->error_code = JSON_PARSER_ERROR_INVALID_ASSIGNMENT;
+            return JSON_TOKEN_EOF;
+          }
 
         /* swallow the 'var' token... */
         token = json_scanner_get_next_token (scanner);
@@ -979,9 +1000,10 @@ json_scanner_msg_handler (JsonScanner *scanner,
 static JsonScanner *
 json_scanner_create (JsonParser *parser)
 {
+  JsonParserPrivate *priv = json_parser_get_instance_private (parser);
   JsonScanner *scanner;
 
-  scanner = json_scanner_new ();
+  scanner = json_scanner_new (priv->is_strict);
   json_scanner_set_msg_handler (scanner, json_scanner_msg_handler, parser);
 
   return scanner;
@@ -1028,7 +1050,16 @@ json_parser_load (JsonParser   *parser,
   JsonScanner *scanner;
   gboolean done;
   gboolean retval = TRUE;
-  const gchar *data = input_data;
+  const char *data = input_data;
+
+  if (priv->is_strict && (length == 0 || data == NULL || *data == '\0'))
+    {
+      g_set_error_literal (error, JSON_PARSER_ERROR,
+                           JSON_PARSER_ERROR_INVALID_DATA,
+                           "JSON data must not be empty");
+      g_signal_emit (parser, parser_signals[ERROR], 0, *error);
+      return FALSE;
+    }
 
   json_parser_clear (parser);
 
@@ -1052,6 +1083,36 @@ json_parser_load (JsonParser   *parser,
            data += 3;
            length -= 3;
          }
+
+       if (priv->is_strict && length == 0)
+         {
+           g_set_error_literal (error, JSON_PARSER_ERROR,
+                                JSON_PARSER_ERROR_INVALID_DATA,
+                                "JSON data must not be empty after BOM character");
+           g_signal_emit (parser, parser_signals[ERROR], 0, *error);
+           return FALSE;
+         }
+    }
+
+  /* Skip leading space */
+  if (priv->is_strict)
+    {
+      const char *p = data;
+      while (length > 0 && (*p == ' ' || *p == '\t' || *p == '\r' || *p == '\n'))
+        {
+          length -= 1;
+          data += 1;
+          p = data;
+        }
+
+      if (length == 0)
+        {
+          g_set_error_literal (error, JSON_PARSER_ERROR,
+                               JSON_PARSER_ERROR_INVALID_DATA,
+                               "JSON data must not be empty after leading whitespace");
+          g_signal_emit (parser, parser_signals[ERROR], 0, *error);
+          return FALSE;
+        }
     }
 
   scanner = json_scanner_create (parser);
