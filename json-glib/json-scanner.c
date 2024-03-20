@@ -186,18 +186,18 @@ json_scanner_new (bool strict)
   scanner = g_new0 (JsonScanner, 1);
   
   scanner->config = (JsonScannerConfig) {
+    // Skip whitespace
     .cset_skip_characters = ( " \t\r\n" ),
+
+    // Identifiers can only be lower case
     .cset_identifier_first = (
-      "_"
       G_CSET_a_2_z
-      G_CSET_A_2_Z
     ),
     .cset_identifier_nth = (
-      G_CSET_DIGITS
-      "-_"
       G_CSET_a_2_z
-      G_CSET_A_2_Z
     ),
+
+    // Only used if strict = false
     .cpair_comment_single = ( "//\n" ),
     .strict = strict,
   };
