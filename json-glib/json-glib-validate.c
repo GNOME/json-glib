@@ -35,10 +35,12 @@
 #include <glib/gi18n.h>
 #include <json-glib/json-glib.h>
 
-static char **files = NULL;
+static char **opt_files = NULL;
+static gboolean opt_strict;
 
 static GOptionEntry entries[] = {
-  { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &files, NULL, NULL },
+  { "strict", 's', 0, G_OPTION_ARG_NONE, &opt_strict, NULL, NULL },
+  { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &opt_files, NULL, NULL },
   { NULL },
 };
 
@@ -141,7 +143,7 @@ main (int   argc,
       return 1;
     }
 
-  if (files == NULL)
+  if (opt_files == NULL)
     {
       /* Translators: the %s is the program name. This error message
        * means the user is calling json-glib-validate without any
@@ -155,17 +157,18 @@ main (int   argc,
     }
 
   parser = json_parser_new ();
+  json_parser_set_strict (parser, opt_strict);
+
   res = TRUE;
   i = 0;
-
   do
     {
-      GFile *file = g_file_new_for_commandline_arg (files[i]);
+      GFile *file = g_file_new_for_commandline_arg (opt_files[i]);
 
       res = validate (parser, file) && res;
       g_object_unref (file);
     }
-  while (files[++i] != NULL);
+  while (opt_files[++i] != NULL);
 
   g_object_unref (parser);
 

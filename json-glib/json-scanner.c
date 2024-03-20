@@ -56,18 +56,18 @@ typedef enum
 
 typedef struct
 {
-  /* Character sets */
-  const char *cset_skip_characters; /* default: " \t\n" */
+  const char *cset_skip_characters;
   const char *cset_identifier_first;
   const char *cset_identifier_nth;
-  const char *cpair_comment_single; /* default: "#\n" */
+  const char *cpair_comment_single;
+  bool strict;
 } JsonScannerConfig;
 
 typedef union
 {
   gpointer v_symbol;
   char *v_identifier;
-  guint64 v_int64;
+  gint64 v_int64;
   double v_float;
   char *v_string;
   unsigned int v_error;
@@ -179,26 +179,27 @@ json_scanner_char_2_num (guchar c,
 }
 
 JsonScanner *
-json_scanner_new (void)
+json_scanner_new (bool strict)
 {
   JsonScanner *scanner;
   
   scanner = g_new0 (JsonScanner, 1);
   
   scanner->config = (JsonScannerConfig) {
+    // Skip whitespace
     .cset_skip_characters = ( " \t\r\n" ),
+
+    // Identifiers can only be lower case
     .cset_identifier_first = (
-      "_"
       G_CSET_a_2_z
-      G_CSET_A_2_Z
     ),
     .cset_identifier_nth = (
-      G_CSET_DIGITS
-      "-_"
       G_CSET_a_2_z
-      G_CSET_A_2_Z
     ),
+
+    // Only used if strict = false
     .cpair_comment_single = ( "//\n" ),
+    .strict = strict,
   };
 
   scanner->token = JSON_TOKEN_NONE;
@@ -564,7 +565,7 @@ json_scanner_unexp_token (JsonScanner  *scanner,
       break;
       
     case JSON_TOKEN_INT:
-      g_snprintf (token_string, token_string_len, "number `%" G_GUINT64_FORMAT "'", scanner->value.v_int64);
+      g_snprintf (token_string, token_string_len, "number `%" G_GINT64_FORMAT "'", scanner->value.v_int64);
       break;
       
     case JSON_TOKEN_FLOAT:
@@ -838,7 +839,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	  break;
 
 	case '/':
-	  if (json_scanner_peek_next_char (scanner) != '*')
+	  if (config->strict || json_scanner_peek_next_char (scanner) != '*')
 	    goto default_case;
 	  json_scanner_get_char (scanner, line_p, position_p);
 	  token = JSON_TOKEN_COMMENT_MULTI;
@@ -1069,6 +1070,16 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	  break;
 
         /* {{{ number parsing */
+        case '-':
+          if (!g_ascii_isdigit (json_scanner_peek_next_char (scanner)))
+            {
+              token = JSON_TOKEN_ERROR;
+              value.v_error = JSON_ERROR_TYPE_NON_DIGIT_IN_CONST;
+              ch = 0;
+              break;
+            }
+            G_GNUC_FALLTHROUGH;
+
 	case '0':
 	case '1':
 	case '2':
@@ -1081,6 +1092,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	case '9':
 	{
           bool in_number = true;
+          bool leading_sign = ch == '-';
           bool leading_zero = ch == '0';
 	  char *endptr;
 	  
@@ -1089,6 +1101,13 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	  
 	  gstring = g_string_new ("");
 	  gstring = g_string_append_c (gstring, ch);
+
+          if (leading_sign)
+            {
+              ch = json_scanner_get_char (scanner, line_p, position_p);
+              leading_zero = ch == '0';
+              g_string_append_c (gstring, ch);
+            }
 
 	  do /* while (in_number) */
 	    {
@@ -1178,7 +1197,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
               if (token == JSON_TOKEN_FLOAT)
                 value.v_float = g_strtod (gstring->str, &endptr);
               else if (token == JSON_TOKEN_INT)
-                value.v_int64 = g_ascii_strtoull (gstring->str, &endptr, 10);
+                value.v_int64 = g_ascii_strtoll (gstring->str, &endptr, 10);
 
               if (endptr && *endptr)
                 {
@@ -1198,7 +1217,8 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	default:
 	default_case:
 	{
-	  if (config->cpair_comment_single &&
+	  if (!config->strict &&
+              config->cpair_comment_single &&
 	      ch == config->cpair_comment_single[0])
 	    {
 	      token = JSON_TOKEN_COMMENT_SINGLE;

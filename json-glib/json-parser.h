@@ -65,10 +65,7 @@ typedef struct _JsonParserClass         JsonParserClass;
  * @JSON_PARSER_ERROR_MISSING_COMMA: expected comma
  * @JSON_PARSER_ERROR_MISSING_COLON: expected colon
  * @JSON_PARSER_ERROR_INVALID_BAREWORD: invalid bareword
- * @JSON_PARSER_ERROR_EMPTY_MEMBER_NAME: empty member name (Since: 0.16)
- * @JSON_PARSER_ERROR_INVALID_DATA: invalid data (Since: 0.18)
  * @JSON_PARSER_ERROR_UNKNOWN: unknown error
- * @JSON_PARSER_ERROR_NESTING: too many levels of nesting (Since: 1.10)
  *
  * Error codes for `JSON_PARSER_ERROR`.
  *
@@ -80,10 +77,47 @@ typedef enum {
   JSON_PARSER_ERROR_MISSING_COMMA,
   JSON_PARSER_ERROR_MISSING_COLON,
   JSON_PARSER_ERROR_INVALID_BAREWORD,
+  /**
+   * JSON_PARSER_ERROR_EMPTY_MEMBER_NAME:
+   *
+   * Empty member name.
+   *
+   * Since: 0.16
+   */
   JSON_PARSER_ERROR_EMPTY_MEMBER_NAME,
+  /**
+   * JSON_PARSER_ERROR_INVALID_DATA:
+   *
+   * Invalid data.
+   *
+   * Since: 0.18
+   */
   JSON_PARSER_ERROR_INVALID_DATA,
   JSON_PARSER_ERROR_UNKNOWN,
-  JSON_PARSER_ERROR_NESTING
+  /**
+   * JSON_PARSER_ERROR_NESTING:
+   *
+   * Too many levels of nesting.
+   *
+   * Since: 1.10
+   */
+  JSON_PARSER_ERROR_NESTING,
+  /**
+   * JSON_PARSER_ERROR_INVALID_STRUCTURE:
+   *
+   * Invalid structure.
+   *
+   * Since: 1.10
+   */
+  JSON_PARSER_ERROR_INVALID_STRUCTURE,
+  /**
+   * JSON_PARSER_ERROR_INVALID_ASSIGNMENT:
+   *
+   * Invalid assignment.
+   *
+   * Since: 1.10
+   */
+  JSON_PARSER_ERROR_INVALID_ASSIGNMENT
 } JsonParserError;
 
 struct _JsonParser
@@ -156,6 +190,11 @@ JSON_AVAILABLE_IN_1_0
 JsonParser *json_parser_new                     (void);
 JSON_AVAILABLE_IN_1_2
 JsonParser *json_parser_new_immutable           (void);
+JSON_AVAILABLE_IN_1_10
+void        json_parser_set_strict              (JsonParser           *parser,
+                                                 gboolean              strict);
+JSON_AVAILABLE_IN_1_10
+gboolean    json_parser_get_strict              (JsonParser           *parser);
 JSON_AVAILABLE_IN_1_0
 gboolean    json_parser_load_from_file          (JsonParser           *parser,
                                                  const gchar          *filename,
