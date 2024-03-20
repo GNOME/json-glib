@@ -66,8 +66,7 @@ X,n_number_invalid-utf-8-in-exponent.json
 X,n_number_invalid-utf-8-in-int.json
 X,n_number_minus_infinity.json
 X,n_number_minus_sign_with_trailing_garbage.json
-# We skip spaces, tabs, and newlines outside of strings; requires negative number parsing inside JsonScanner
-P,n_number_minus_space_1.json
+X,n_number_minus_space_1.json
 X,n_number_NaN.json
 X,n_number_neg_int_starting_with_zero.json
 X,n_number_neg_real_without_int_part.json

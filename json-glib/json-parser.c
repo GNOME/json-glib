@@ -424,21 +424,6 @@ json_parse_value (JsonParser   *parser,
 {
   JsonParserPrivate *priv = parser->priv;
   JsonNode *current_node = priv->current_node;
-  gboolean is_negative = FALSE;
-
-  if (token == '-')
-    {
-      guint next_token = json_scanner_peek_next_token (scanner);
-
-      if (next_token == JSON_TOKEN_INT ||
-          next_token == JSON_TOKEN_FLOAT)
-        {
-           is_negative = TRUE;
-           token = json_scanner_get_next_token (scanner);
-        }
-      else
-        return JSON_TOKEN_INT;
-    }
 
   switch (token)
     {
@@ -446,10 +431,8 @@ json_parse_value (JsonParser   *parser,
       {
         gint64 value = json_scanner_get_int64_value (scanner);
 
-        JSON_NOTE (PARSER, "abs(node): %" G_GINT64_FORMAT " (sign: %s)",
-                   value,
-                   is_negative ? "negative" : "positive");
-        *node = json_node_init_int (json_node_alloc (), is_negative ? value * -1 : value);
+        JSON_NOTE (PARSER, "node: %" G_GINT64_FORMAT, value);
+        *node = json_node_init_int (json_node_alloc (), value);
       }
       break;
 
@@ -457,11 +440,8 @@ json_parse_value (JsonParser   *parser,
       {
         double value = json_scanner_get_float_value (scanner);
 
-        JSON_NOTE (PARSER, "abs(node): %.6f (sign: %s)",
-                   value,
-                   is_negative ? "negative" : "positive");
-
-        *node = json_node_init_double (json_node_alloc (), is_negative ? value * -1.0 : value);
+        JSON_NOTE (PARSER, "abs(node): %.6f", value);
+        *node = json_node_init_double (json_node_alloc (), value);
       }
       break;
 
