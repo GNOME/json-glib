@@ -26,11 +26,11 @@ show_index_summary = true
 show_class_hierarchy = true
 
 [source-location]
-base_url = "https://gitlab.gnome.org/GNOME/json-glib/-/blob/master/"
+base_url = "https://gitlab.gnome.org/GNOME/json-glib/-/blob/main/"
 
 [extra]
 urlmap_file = "urlmap.js"
-content_base_url = "https://gitlab.gnome.org/GNOME/json-glib/-/blob/master/doc/"
+content_base_url = "https://gitlab.gnome.org/GNOME/json-glib/-/blob/main/doc/"
 content_files = [
   'json-gboxed.md',
   'json-gobject.md',
