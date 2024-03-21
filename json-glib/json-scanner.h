@@ -47,8 +47,6 @@ typedef enum
 {
   JSON_TOKEN_EOF		=   0,
 
-  JSON_TOKEN_LEFT_PAREN		= '(',
-  JSON_TOKEN_RIGHT_PARE		= ')',
   JSON_TOKEN_LEFT_CURLY		= '{',
   JSON_TOKEN_RIGHT_CURLY	= '}',
   JSON_TOKEN_LEFT_BRACE		= '[',
