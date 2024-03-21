@@ -1,7 +1,7 @@
 JSON-GLib
 ===============================================================================
 
-[![Build Status](https://gitlab.gnome.org/GNOME/json-glib/badges/master/build.svg)](https://gitlab.gnome.org/GNOME/json-glib/pipelines)
+[![Build Status](https://gitlab.gnome.org/GNOME/json-glib/badges/main/build.svg)](https://gitlab.gnome.org/GNOME/json-glib/pipelines)
 
 JSON-GLib implements a full suite of JSON-related tools using GLib and GObject.
 
