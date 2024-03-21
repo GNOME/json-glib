@@ -148,7 +148,12 @@ json_parser_clear (JsonParser *parser)
 static inline void
 json_parser_emit_array_start (JsonParser *parser)
 {
-  g_signal_emit (parser, parser_signals[ARRAY_START], 0);
+  JsonParserClass *klass = JSON_PARSER_GET_CLASS (parser);
+
+  if (g_signal_has_handler_pending (parser, parser_signals[ARRAY_START], 0, FALSE))
+    g_signal_emit (parser, parser_signals[ARRAY_START], 0);
+  else if (klass->array_start != NULL)
+    klass->array_start (parser);
 }
 
 static inline void
@@ -156,22 +161,35 @@ json_parser_emit_array_element (JsonParser *parser,
                                 JsonArray  *array,
                                 guint       idx)
 {
-  g_signal_emit (parser, parser_signals[ARRAY_ELEMENT], 0,
-                 array,
-                 idx);
+  JsonParserClass *klass = JSON_PARSER_GET_CLASS (parser);
+
+  if (g_signal_has_handler_pending (parser, parser_signals[ARRAY_ELEMENT], 0, FALSE))
+    g_signal_emit (parser, parser_signals[ARRAY_ELEMENT], 0, array, idx);
+  else if (klass->array_element != NULL)
+    klass->array_element (parser, array, idx);
 }
 
 static inline void
 json_parser_emit_array_end (JsonParser *parser,
                             JsonArray  *array)
 {
-  g_signal_emit (parser, parser_signals[ARRAY_END], 0, array);
+  JsonParserClass *klass = JSON_PARSER_GET_CLASS (parser);
+
+  if (g_signal_has_handler_pending (parser, parser_signals[ARRAY_END], 0, FALSE))
+    g_signal_emit (parser, parser_signals[ARRAY_END], 0, array);
+  else if (klass->array_end != NULL)
+    klass->array_end (parser, array);
 }
 
 static inline void
 json_parser_emit_object_start (JsonParser *parser)
 {
-  g_signal_emit (parser, parser_signals[OBJECT_START], 0);
+  JsonParserClass *klass = JSON_PARSER_GET_CLASS (parser);
+
+  if (g_signal_has_handler_pending (parser, parser_signals[OBJECT_START], 0, FALSE))
+    g_signal_emit (parser, parser_signals[OBJECT_START], 0);
+  else if (klass->object_start != NULL)
+    klass->object_start (parser);
 }
 
 static inline void
@@ -179,36 +197,58 @@ json_parser_emit_object_member (JsonParser *parser,
                                 JsonObject *object,
                                 const char *name)
 {
-  g_signal_emit (parser, parser_signals[OBJECT_MEMBER], 0,
-                 object,
-                 name);
+  JsonParserClass *klass = JSON_PARSER_GET_CLASS (parser);
+
+  if (g_signal_has_handler_pending (parser, parser_signals[OBJECT_MEMBER], 0, FALSE))
+    g_signal_emit (parser, parser_signals[OBJECT_MEMBER], 0, object, name);
+  else if (klass->object_member != NULL)
+    klass->object_member (parser, object, name);
 }
 
 static inline void
 json_parser_emit_object_end (JsonParser *parser,
                              JsonObject *object)
 {
-  g_signal_emit (parser, parser_signals[OBJECT_END], 0,
-                 object);
+  JsonParserClass *klass = JSON_PARSER_GET_CLASS (parser);
+
+  if (g_signal_has_handler_pending (parser, parser_signals[OBJECT_END], 0, FALSE))
+    g_signal_emit (parser, parser_signals[OBJECT_END], 0, object);
+  else if (klass->object_end != NULL)
+    klass->object_end (parser, object);
 }
 
 static inline void
 json_parser_emit_error (JsonParser *parser,
                         GError     *error)
 {
-  g_signal_emit (parser, parser_signals[ERROR], 0, error);
+  JsonParserClass *klass = JSON_PARSER_GET_CLASS (parser);
+
+  if (g_signal_has_handler_pending (parser, parser_signals[ERROR], 0, FALSE))
+    g_signal_emit (parser, parser_signals[ERROR], 0, error);
+  else if (klass->error != NULL)
+    klass->error (parser, error);
 }
 
 static inline void
 json_parser_emit_parse_start (JsonParser *parser)
 {
-  g_signal_emit (parser, parser_signals[PARSE_START], 0);
+  JsonParserClass *klass = JSON_PARSER_GET_CLASS (parser);
+
+  if (g_signal_has_handler_pending (parser, parser_signals[PARSE_START], 0, FALSE))
+    g_signal_emit (parser, parser_signals[PARSE_START], 0);
+  else if (klass->parse_start != NULL)
+    klass->parse_start (parser);
 }
 
 static inline void
 json_parser_emit_parse_end (JsonParser *parser)
 {
-  g_signal_emit (parser, parser_signals[PARSE_END], 0);
+  JsonParserClass *klass = JSON_PARSER_GET_CLASS (parser);
+
+  if (g_signal_has_handler_pending (parser, parser_signals[PARSE_END], 0, FALSE))
+    g_signal_emit (parser, parser_signals[PARSE_END], 0);
+  else if (klass->parse_end != NULL)
+    klass->parse_end (parser);
 }
 
 static void
