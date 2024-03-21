@@ -1,3 +1,12 @@
+Overview of changes for 1.10
+==============================
+• Improve the JSON tokenizer
+• Improve conformance of the JSON parser
+• Add conformance test suite from https://github.com/nst/JSONTestSuite
+• Add JsonParser:strict to enable strict parsing
+• Add `--strict` to json-glib-validate to enable strict parsing
+• Deprecate the signals on JsonParser
+
 Overview of changes for 1.8
 ==============================
 • Build fixes [!55]
