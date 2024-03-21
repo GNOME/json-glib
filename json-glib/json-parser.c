@@ -57,7 +57,7 @@
  * ```
  *
  * By default, the entire process of loading the data and parsing it is
- * synchronous; the [method@Json.Parser.load_from_stream_async()] API will
+ * synchronous; the [method@Json.Parser.load_from_stream_async] API will
  * load the data asynchronously, but parse it in the main context as the
  * signals of the parser must be emitted in the same thread. If you do
  * not use signals, and you wish to also parse the JSON data without blocking,
