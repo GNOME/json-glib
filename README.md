@@ -1,8 +1,6 @@
 JSON-GLib
 ===============================================================================
 
-[![Build Status](https://gitlab.gnome.org/GNOME/json-glib/badges/main/build.svg)](https://gitlab.gnome.org/GNOME/json-glib/pipelines)
-
 JSON-GLib implements a full suite of JSON-related tools using GLib and GObject.
 
 Use JSON-GLib it is possible to parse and generate valid JSON data
@@ -34,18 +32,19 @@ In order to build JSON-GLib you will need:
  * [ninja](http://ninja-build.org)
  * [meson](http://mesonbuild.com)
  * pkg-config
- * GLib, GIO ≥ 2.54
- * GObject-Introspection ≥ 1.54 (optional)
+ * [GLib](https://gitlab.gnome.org/GNOME/glib)
+ * [GObject-Introspection](https://gitlab.gnome.org/GNOME/gobject-introspection)
 
 Build and installation
 --------------------------------------------------------------------------------
-To build JSON-GLib just run:
+
+To build JSON-GLib, run:
 
 ```sh
-  $ meson setup _build .
-  $ meson compile -C _build
-  $ meson test -C _build
-  $ meson install -C _build
+$ meson setup _build .
+$ meson compile -C _build
+$ meson test -C _build
+$ meson install -C _build
 ```
 
 See the [Meson documentation](http://mesonbuild.com) for more information.
@@ -70,12 +69,12 @@ either version 2.1 or (at your option) any later version.
 See the file COPYING for details.
 
 Copyright 2007, 2008  OpenedHand Ltd
+
 Copyright 2009, 2010, 2011, 2012  Intel Corp.
+
 Copyright 2013  Emmanuele Bassi
 
 [json]: https://www.json.org "JSON"
-[glib]: https://www.gtk.org "GTK"
+[glib]: https://gitlab.gnome.org/GNOME/glib "GLib"
 [json-glib]: https://gnome.pages.gitlab.gnome.org/json-glib/
 [gnome]: https://www.gnome.org "GNOME"
-[gitlab-issues]: https://gitlab.gnome.org/GNOME/json-glib/issues
-[gtk-coding-style]: https://gitlab.gnome.org/GNOME/gtk/-/blob/HEAD/docs/CODING-STYLE.md
