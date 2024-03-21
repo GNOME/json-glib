@@ -366,6 +366,9 @@ json_parser_class_init (JsonParserClass *klass)
    * @parser: the parser that emitted the signal
    * 
    * This signal is emitted when a parser starts parsing a JSON data stream.
+   *
+   * Deprecated: 1.10: Derive your own parser type from `JsonParser` and
+   *   override the [vfunc@Json.Parser.parse_start] virtual function
    */
   parser_signals[PARSE_START] =
     g_signal_new ("parse-start",
@@ -380,7 +383,10 @@ json_parser_class_init (JsonParserClass *klass)
    * @parser: the parser that emitted the signal
    *
    * This signal is emitted when a parser successfully finished parsing a
-   * JSON data stream
+   * JSON data stream.
+   *
+   * Deprecated: 1.10: Derive your own parser type from `JsonParser` and
+   *   override the [vfunc@Json.Parser.parse_end] virtual function
    */
   parser_signals[PARSE_END] =
     g_signal_new ("parse-end",
@@ -394,6 +400,9 @@ json_parser_class_init (JsonParserClass *klass)
    * @parser: the parser that emitted the signal
    *
    * This signal is emitted each time a parser starts parsing a JSON object.
+   *
+   * Deprecated: 1.10: Derive your own parser type from `JsonParser` and
+   *   override the [vfunc@Json.Parser.object_start] virtual function
    */
   parser_signals[OBJECT_START] =
     g_signal_new ("object-start",
@@ -409,7 +418,10 @@ json_parser_class_init (JsonParserClass *klass)
    * @member_name: the name of the newly parsed member
    *
    * The `::object-member` signal is emitted each time a parser
-   * has successfully parsed a single member of a JSON object
+   * has successfully parsed a single member of a JSON object.
+   *
+   * Deprecated: 1.10: Derive your own parser type from `JsonParser` and
+   *   override the [vfunc@Json.Parser.object_member] virtual function
    */
   parser_signals[OBJECT_MEMBER] =
     g_signal_new ("object-member",
@@ -427,6 +439,9 @@ json_parser_class_init (JsonParserClass *klass)
    *
    * The `::object-end` signal is emitted each time a parser
    * has successfully parsed an entire JSON object.
+   *
+   * Deprecated: 1.10: Derive your own parser type from `JsonParser` and
+   *   override the [vfunc@Json.Parser.object_end] virtual function
    */
   parser_signals[OBJECT_END] =
     g_signal_new ("object-end",
@@ -442,6 +457,9 @@ json_parser_class_init (JsonParserClass *klass)
    *
    * The `::array-start` signal is emitted each time a parser
    * starts parsing a JSON array.
+   *
+   * Deprecated: 1.10: Derive your own parser type from `JsonParser` and
+   *   override the [vfunc@Json.Parser.array_start] virtual function
    */
   parser_signals[ARRAY_START] =
     g_signal_new ("array-start",
@@ -458,6 +476,9 @@ json_parser_class_init (JsonParserClass *klass)
    *
    * The `::array-element` signal is emitted each time a parser
    * has successfully parsed a single element of a JSON array.
+   *
+   * Deprecated: 1.10: Derive your own parser type from `JsonParser` and
+   *   override the [vfunc@Json.Parser.array_element] virtual function
    */
   parser_signals[ARRAY_ELEMENT] =
     g_signal_new ("array-element",
@@ -475,6 +496,9 @@ json_parser_class_init (JsonParserClass *klass)
    *
    * The `::array-end` signal is emitted each time a parser
    * has successfully parsed an entire JSON array.
+   *
+   * Deprecated: 1.10: Derive your own parser type from `JsonParser` and
+   *   override the [vfunc@Json.Parser.array_end] virtual function
    */
   parser_signals[ARRAY_END] =
     g_signal_new ("array-end",
@@ -491,6 +515,9 @@ json_parser_class_init (JsonParserClass *klass)
    *
    * The `::error` signal is emitted each time a parser encounters
    * an error in a JSON stream.
+   *
+   * Deprecated: 1.10: Derive your own parser type from `JsonParser` and
+   *   override the [vfunc@Json.Parser.error] virtual function
    */
   parser_signals[ERROR] =
     g_signal_new ("error",
