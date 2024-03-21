@@ -145,6 +145,72 @@ json_parser_clear (JsonParser *parser)
   g_clear_pointer (&priv->root, json_node_unref);
 }
 
+static inline void
+json_parser_emit_array_start (JsonParser *parser)
+{
+  g_signal_emit (parser, parser_signals[ARRAY_START], 0);
+}
+
+static inline void
+json_parser_emit_array_element (JsonParser *parser,
+                                JsonArray  *array,
+                                guint       idx)
+{
+  g_signal_emit (parser, parser_signals[ARRAY_ELEMENT], 0,
+                 array,
+                 idx);
+}
+
+static inline void
+json_parser_emit_array_end (JsonParser *parser,
+                            JsonArray  *array)
+{
+  g_signal_emit (parser, parser_signals[ARRAY_END], 0, array);
+}
+
+static inline void
+json_parser_emit_object_start (JsonParser *parser)
+{
+  g_signal_emit (parser, parser_signals[OBJECT_START], 0);
+}
+
+static inline void
+json_parser_emit_object_member (JsonParser *parser,
+                                JsonObject *object,
+                                const char *name)
+{
+  g_signal_emit (parser, parser_signals[OBJECT_MEMBER], 0,
+                 object,
+                 name);
+}
+
+static inline void
+json_parser_emit_object_end (JsonParser *parser,
+                             JsonObject *object)
+{
+  g_signal_emit (parser, parser_signals[OBJECT_END], 0,
+                 object);
+}
+
+static inline void
+json_parser_emit_error (JsonParser *parser,
+                        GError     *error)
+{
+  g_signal_emit (parser, parser_signals[ERROR], 0, error);
+}
+
+static inline void
+json_parser_emit_parse_start (JsonParser *parser)
+{
+  g_signal_emit (parser, parser_signals[PARSE_START], 0);
+}
+
+static inline void
+json_parser_emit_parse_end (JsonParser *parser)
+{
+  g_signal_emit (parser, parser_signals[PARSE_END], 0);
+}
+
 static void
 json_parser_dispose (GObject *gobject)
 {
@@ -532,7 +598,7 @@ json_parse_array (JsonParser    *parser,
   token = json_scanner_get_next_token (scanner);
   g_assert (token == JSON_TOKEN_LEFT_BRACE);
 
-  g_signal_emit (parser, parser_signals[ARRAY_START], 0);
+  json_parser_emit_array_start (parser);
 
   idx = 0;
   while (token != JSON_TOKEN_RIGHT_BRACE)
@@ -612,9 +678,7 @@ json_parse_array (JsonParser    *parser,
         json_node_seal (element);
       json_array_add_element (array, element);
 
-      g_signal_emit (parser, parser_signals[ARRAY_ELEMENT], 0,
-                     array,
-                     idx);
+      json_parser_emit_array_element (parser, array, idx);
 
       idx += 1;
       token = next_token;
@@ -631,7 +695,7 @@ array_done:
     json_node_seal (priv->current_node);
   json_node_set_parent (priv->current_node, old_current);
 
-  g_signal_emit (parser, parser_signals[ARRAY_END], 0, array);
+  json_parser_emit_array_end (parser, array);
 
   if (node != NULL && *node == NULL)
     *node = priv->current_node;
@@ -666,7 +730,7 @@ json_parse_object (JsonParser    *parser,
   token = json_scanner_get_next_token (scanner);
   g_assert (token == JSON_TOKEN_LEFT_CURLY);
 
-  g_signal_emit (parser, parser_signals[OBJECT_START], 0);
+  json_parser_emit_object_start (parser);
 
   while (token != JSON_TOKEN_RIGHT_CURLY)
     {
@@ -803,9 +867,7 @@ json_parse_object (JsonParser    *parser,
         json_node_seal (member);
       json_object_set_member (object, name, member);
 
-      g_signal_emit (parser, parser_signals[OBJECT_MEMBER], 0,
-                     object,
-                     name);
+      json_parser_emit_object_member (parser, object, name);
 
       g_free (name);
 
@@ -822,7 +884,7 @@ json_parse_object (JsonParser    *parser,
     json_node_seal (priv->current_node);
   json_node_set_parent (priv->current_node, old_current);
 
-  g_signal_emit (parser, parser_signals[OBJECT_END], 0, object);
+  json_parser_emit_object_end (parser, object);
 
   if (node != NULL && *node == NULL)
     *node = priv->current_node;
@@ -974,7 +1036,8 @@ json_scanner_msg_handler (JsonScanner *scanner,
                message);
       
   parser->priv->last_error = error;
-  g_signal_emit (parser, parser_signals[ERROR], 0, error);
+
+  json_parser_emit_error (parser, error);
 }
 
 static JsonScanner *
@@ -1037,7 +1100,7 @@ json_parser_load (JsonParser   *parser,
       g_set_error_literal (error, JSON_PARSER_ERROR,
                            JSON_PARSER_ERROR_INVALID_DATA,
                            "JSON data must not be empty");
-      g_signal_emit (parser, parser_signals[ERROR], 0, *error);
+      json_parser_emit_error (parser, *error);
       return FALSE;
     }
 
@@ -1048,7 +1111,7 @@ json_parser_load (JsonParser   *parser,
       g_set_error_literal (error, JSON_PARSER_ERROR,
                            JSON_PARSER_ERROR_INVALID_DATA,
                            _("JSON data must be UTF-8 encoded"));
-      g_signal_emit (parser, parser_signals[ERROR], 0, *error);
+      json_parser_emit_error (parser, *error);
       return FALSE;
     }
 
@@ -1069,7 +1132,7 @@ json_parser_load (JsonParser   *parser,
            g_set_error_literal (error, JSON_PARSER_ERROR,
                                 JSON_PARSER_ERROR_INVALID_DATA,
                                 "JSON data must not be empty after BOM character");
-           g_signal_emit (parser, parser_signals[ERROR], 0, *error);
+           json_parser_emit_error (parser, *error);
            return FALSE;
          }
     }
@@ -1090,7 +1153,7 @@ json_parser_load (JsonParser   *parser,
           g_set_error_literal (error, JSON_PARSER_ERROR,
                                JSON_PARSER_ERROR_INVALID_DATA,
                                "JSON data must not be empty after leading whitespace");
-          g_signal_emit (parser, parser_signals[ERROR], 0, *error);
+          json_parser_emit_error (parser, *error);
           return FALSE;
         }
     }
@@ -1100,7 +1163,7 @@ json_parser_load (JsonParser   *parser,
 
   priv->scanner = scanner;
 
-  g_signal_emit (parser, parser_signals[PARSE_START], 0);
+  json_parser_emit_parse_start (parser);
 
   done = FALSE;
   while (!done)
@@ -1135,7 +1198,7 @@ json_parser_load (JsonParser   *parser,
         }
     }
 
-  g_signal_emit (parser, parser_signals[PARSE_END], 0);
+  json_parser_emit_parse_end (parser);
 
   /* remove the scanner */
   json_scanner_destroy (scanner);
