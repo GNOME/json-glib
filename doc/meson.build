@@ -33,7 +33,7 @@ if build_doc
       '--content-dir=@0@'.format(meson.current_source_dir()),
       '@INPUT@',
     ],
-    depend_files: [ json_toml, json_content_files ],
+    depend_files: [ json_toml, json_content_files, 'urlmap.js' ],
     build_by_default: true,
     install: true,
     install_dir: json_docdir,
