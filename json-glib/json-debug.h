@@ -1,3 +1,11 @@
+/* json-debug.h: Logging utilities
+ *
+ * This file is part of JSON-GLib.
+ *
+ * SPDX-FileCopyrightText: 2010 Emmanuele Bassi
+ * SPDX-License-Identifier: LGPL-2.1-or-later
+ */
+
 #ifndef __JSON_DEBUG_H__
 #define __JSON_DEBUG_H__
 

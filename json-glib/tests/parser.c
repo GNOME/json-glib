@@ -1,3 +1,13 @@
+// SPDX-FileCopyrightText: 2008 OpenedHand Ltd.
+// SPDX-FileCopyrightText: 2009 Intel Ltd.
+// SPDX-FileCopyrightText: 2009 Mathias Hasselmann
+// SPDX-FileCopyrightText: 2012 Emmanuele Bassi
+// SPDX-FileCopyrightText: 2017 Dr. David Alan Gilbert
+// SPDX-FileCopyrightText: 2020 Endless
+// SPDX-FileCopyrightText: 2022 Frederic Martinsons
+//
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include "json-test-utils.h"
 #include <stdlib.h>
 

@@ -1,8 +1,12 @@
 /* json-scanner.c: Tokenizer for JSON
- * Copyright (C) 2008 OpenedHand
+ *
+ * SPDX-FileCopyrightText: 1997 Tim Janik
+ * SPDX-FileCopyrightText: 1997-2000 The GLib Team and others
+ * SPDX-FileCopyrightText: 2008 OpenedHand Ltd.
+ * SPDX-FileCopyrightText: 2024 Emmanuele Bassi
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  *
  * Based on JsonScanner: Flexible lexical scanner for general purpose.
- * Copyright (C) 1997, 1998 Tim Janik
  *
  * Modified by Emmanuele Bassi <ebassi@openedhand.com>
  *

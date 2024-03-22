@@ -1,3 +1,13 @@
+// SPDX-FileCopyrightText: 2010 Igalia S.L.
+// SPDX-FileCopyrightText: 2011 Intel Corp.
+// SPDX-FileCopyrightText: 2012 Emmanuele Bassi
+// SPDX-FileCopyrightText: 2013 Joseph Artsimovich
+// SPDX-FileCopyrightText: 2014 Stef Walter
+// SPDX-FileCopyrightText: 2015 djcb
+// SPDX-FileCopyrightText: 2022 Frederic Martinsons
+//
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <glib.h>
 #include <json-glib/json-glib.h>
 #include <string.h>

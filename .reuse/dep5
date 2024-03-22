@@ -1,0 +1,71 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: json-glib
+Upstream-Contact: Emmanuele Bassi <ebassi@gnome.org>
+Source: https://gitlab.gnome.org/GNOME/json-glib
+
+# Sample paragraph, commented out:
+#
+# Files: src/*
+# Copyright: $YEAR $NAME <$CONTACT>
+# License: ...
+
+Files: .gitignore
+Copyright: 2007 OpenedHand Ltd
+License: CC0-1.0
+
+Files: .gitattributes
+Copyright: 2017 Emmanuele Bassi
+License: CC0-1.0
+
+Files: .gitlab-ci.yml
+Copyright: 2017 Javier Jardón
+           2018 Emmanuele Bassi
+License: CC0-1.0
+
+Files: CONTRIBUTING.md
+Copyright: 2021 Emmanuele Bassi
+License: CC0-1.0
+
+Files: NEWS
+Copyright: 2007 OpenedHand Ltd
+           2009 Intel Corp
+           2014 Emmanuele Bassi
+License: CC0-1.0
+
+Files: json-glib.doap
+Copyright: 2009 Emmanuele Bassi
+License: CC0-1.0
+
+Files: doc/*.md
+Copyright: 2021 Emmanuele Bassi
+License: LGPL-2.1-or-later
+
+Files: doc/*.rst
+Copyright: 2024 Emmanuele Bassi
+License: LGPL-2.1-or-later
+
+Files: json-glib/tests/*.json
+Copyright: 2010 Emmanuele Bassi
+           2020 Philip Withnall
+           2024 Jan-Michael Brummer
+License: CC0-1.0
+
+Files: json-glib/tests/conformance/*.json
+Copyright: 2016 Nicolas Seriot
+License: MIT
+
+Files: po/*.po
+Copyright: Translator team
+License: LGPL-2.1-or-later
+
+Files: po/LINGUAS
+Copyright: 2017 Emmanuele Bassi
+License: CC0-1.0
+
+Files: po/POTFILES.in
+Copyright: 2011 Intel Corp
+License: CC0-1.0
+
+Files: subprojects/*.wrap
+Copyright: Meson Wrap Database (wrapdb) contributors
+License: CC0-1.0

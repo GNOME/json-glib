@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# SPDX-FileCopyrightText: 2021 Emmanuele Bassi
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 import os
 import shutil
 

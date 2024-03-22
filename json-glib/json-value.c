@@ -1,8 +1,10 @@
 /* json-value.c - JSON value container
  * 
  * This file is part of JSON-GLib
- * Copyright (C) 2012  Emmanuele Bassi <ebassi@gnome.org>
- * Copyright (C) 2015 Collabora Ltd.
+ *
+ * SPDX-FileCopyrightText: 2012  Emmanuele Bassi
+ * SPDX-FileCopyrightText: 2015 Collabora Ltd.
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

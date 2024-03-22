@@ -1,3 +1,9 @@
+// SPDX-FileCopyrightText: 2009 Intel Corp.
+// SPDX-FileCopyrightText: 2012 Emmanuele Bassi
+// SPDX-FileCopyrightText: 2022 Frederic Martinsons
+//
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

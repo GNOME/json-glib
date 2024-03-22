@@ -1,3 +1,10 @@
+# SPDX-FileCopyrightText: 2016 Samsung
+# SPDX-FileCopyrightText: 2017 Emmanuele Bassi
+# SPDX-FileCopyrightText: 2018 Collabora Ltd
+# SPDX-FileCopyrightText: 2020 Collabora Ltd
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 project('json-glib', 'c',
   version: '1.9.1',
   license: 'LGPL-2.1-or-later',

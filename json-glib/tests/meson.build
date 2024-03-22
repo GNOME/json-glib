@@ -1,3 +1,10 @@
+# SPDX-FileCopyrightText: 2016 Thibault Saunier
+# SPDX-FileCopyrightText: 2017 Emmanuele Bassi
+# SPDX-FileCopyrightText: 2020 Endless
+# SPDX-FileCopyrightText: 2020 Jan-Michael Brummer
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 tests = [
   'array',
   'boxed',

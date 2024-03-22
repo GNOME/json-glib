@@ -1,3 +1,12 @@
+// SPDX-FileCopyrightText: 2010 Intel Ltd.
+// SPDX-FileCopyrightText: 2014 Bastien Nocera
+// SPDX-FileCopyrightText: 2014 Philip Withnall
+// SPDX-FileCopyrightText: 2017 Endless
+// SPDX-FileCopyrightText: 2020 Jan-Michael Brummer
+// SPDX-FileCopyrightText: 2022 Frederic Martinsons
+//
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include "json-test-utils.h"
 
 static const gchar *test_base_array_data =
