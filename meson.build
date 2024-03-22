@@ -31,11 +31,11 @@ libversion = '@0@.@1@.@2@'.format(soversion, json_binary_age - json_interface_ag
 darwin_versions = [ current + 1, '@0@.@1@'.format(current + 1, revision) ]
 
 # Paths
-json_includedir = join_paths(get_option('prefix'), get_option('includedir'))
-json_datadir = join_paths(get_option('prefix'), get_option('datadir'))
-json_mandir = join_paths(get_option('prefix'), get_option('mandir'))
-json_localedir = join_paths(get_option('prefix'), get_option('localedir'))
-json_libexecdir = join_paths(get_option('prefix'), get_option('libexecdir'))
+json_includedir = get_option('prefix') / get_option('includedir')
+json_datadir = get_option('prefix') / get_option('datadir')
+json_mandir = get_option('prefix') / get_option('mandir')
+json_localedir = get_option('prefix') / get_option('localedir')
+json_libexecdir = get_option('prefix') / get_option('libexecdir')
 
 # Dependencies
 glib_req_version = '>= 2.72.0'

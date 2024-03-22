@@ -21,8 +21,8 @@ test_data = [
   'stream-load.json',
 ]
 
-installed_test_bindir = join_paths(json_libexecdir, 'installed-tests', json_api_name)
-installed_test_datadir = join_paths(json_datadir, 'installed-tests', json_api_name)
+installed_test_bindir = json_libexecdir / 'installed-tests' / json_api_name
+installed_test_datadir = json_datadir / 'installed-tests' / json_api_name
 
 install_data(test_data, install_dir: installed_test_bindir)
 
