@@ -159,7 +159,7 @@ gen_installed_test = files('build-aux/gen-installed-test.py')
 subdir('json-glib')
 
 # xgettext is optional (on Windows for instance)
-if find_program('xgettext', required : get_option('nls')).found()
+if find_program('xgettext', required: get_option('nls')).found()
   subdir('po')
 endif
 
@@ -179,10 +179,12 @@ summary({
 )
 
 summary({
+    'Localization': get_option('nls'),
     'Introspection': build_gir,
     'Documentation': build_doc,
     'Manual pages': get_option('man'),
     'Tests': get_option('tests'),
+    'Conformance tests': get_option('conformance'),
   },
   section: 'Build',
   bool_yn: true,
