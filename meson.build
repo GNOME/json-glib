@@ -123,12 +123,8 @@ if get_option('default_library') != 'static'
   if host_system == 'windows'
     cdata.set('DLL_EXPORT', true)
     cdata.set('_JSON_EXTERN', '__declspec(dllexport) extern')
-    if cc.get_id() != 'msvc'
-      test_cflags += '-fvisibility=hidden'
-    endif
   else
     cdata.set('_JSON_EXTERN', '__attribute__((visibility("default"))) extern')
-    test_cflags += '-fvisibility=hidden'
   endif
 endif
 
