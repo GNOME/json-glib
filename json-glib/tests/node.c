@@ -5,7 +5,9 @@
 //
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#include "json-test-utils.h"
+#include <float.h>
+#include <string.h>
+#include <json-glib/json-glib.h>
 
 static void
 test_init_int (void)
@@ -24,7 +26,7 @@ test_init_double (void)
   JsonNode *node = json_node_new (JSON_NODE_VALUE);
 
   json_node_set_double (node, 3.14159);
-  json_assert_fuzzy_equals (json_node_get_double (node), 3.14159, 0.00001);
+  g_assert_cmpfloat_with_epsilon (json_node_get_double (node), 3.14159, 0.00001);
 
   json_node_free (node);
 }
@@ -140,13 +142,13 @@ test_get_int (void)
 
   json_node_set_int (node, 0);
   g_assert_cmpint (json_node_get_int (node), ==, 0);
-  json_assert_almost_equals (json_node_get_double (node), 0.0);
+  g_assert_cmpfloat_with_epsilon (json_node_get_double (node), 0.0, DBL_EPSILON);
   g_assert_false (json_node_get_boolean (node));
   g_assert_false (json_node_is_null (node));
 
   json_node_set_int (node, 42);
   g_assert_cmpint (json_node_get_int (node), ==, 42);
-  json_assert_almost_equals (json_node_get_double (node), 42.0);
+  g_assert_cmpfloat_with_epsilon (json_node_get_double (node), 42.0, DBL_EPSILON);
   g_assert_true (json_node_get_boolean (node));
   g_assert_false (json_node_is_null (node));
 
@@ -159,7 +161,7 @@ test_get_double (void)
   JsonNode *node = json_node_new (JSON_NODE_VALUE);
 
   json_node_set_double (node, 3.14);
-  json_assert_fuzzy_equals (json_node_get_double (node), 3.14, 0.001);
+  g_assert_cmpfloat_with_epsilon (json_node_get_double (node), 3.14, 0.001);
   g_assert_cmpint (json_node_get_int (node), ==, 3);
   g_assert_true (json_node_get_boolean (node));
 
@@ -247,9 +249,11 @@ test_gvalue_autopromotion (void)
   g_test_message ("Expecting a gdouble, got a '%s'", g_type_name (G_VALUE_TYPE (&check))); 
 
   g_assert_cmpint (G_VALUE_TYPE (&check), ==, G_TYPE_DOUBLE);
-  json_assert_fuzzy_equals (g_value_get_double (&check), 3.14159, 0.00001);
+  g_assert_cmpfloat_with_epsilon (g_value_get_double (&check), 3.14159, 0.00001);
   g_assert_cmpint (G_VALUE_TYPE (&value), !=, G_VALUE_TYPE (&check));
-  json_assert_almost_equals (g_value_get_float (&value), g_value_get_double (&check));
+  g_assert_cmpfloat_with_epsilon (g_value_get_float (&value),
+                                  g_value_get_double (&check),
+                                  DBL_EPSILON);
 
   g_value_unset (&value);
   g_value_unset (&check);
