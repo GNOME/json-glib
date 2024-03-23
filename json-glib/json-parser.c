@@ -48,7 +48,7 @@
  *       return FALSE;
  *     }
  *
- *   g_autoptr(JsonNode) root = json_parser_get_root (parser);
+ *   JsonNode *root = json_parser_get_root (parser);
  *
  *   // manipulate the object tree from the root node
  *
