@@ -1,3 +1,9 @@
+# SPDX-FileCopyrightText: 2024 Emmanuele Bassi
+# SPDX-License-Identifier: CC0-1.0
+# Format:
+#   Result,file
+# P: expect pass
+# X: expect fail
 P,i_number_double_huge_neg_exp.json
 P,i_number_huge_exp.json
 P,i_number_neg_int_huge_exp.json

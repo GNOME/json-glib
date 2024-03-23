@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+
+# SPDX-FileCopyrightText: 2017 Emmanuele Bassi
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 import sys
 import os
 import argparse

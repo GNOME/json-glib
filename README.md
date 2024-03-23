@@ -1,3 +1,11 @@
+<!--
+SPDX-FileCopyrightText: 2007 OpenedHand
+SPDX-FileCopyrightText: 2009 Intel Corp
+SPDX-FileCopyrightText: 2012 Emmanuele Bassi
+
+SPDX-License-Identifier: LGPL-2.1-or-later
+-->
+
 JSON-GLib
 ===============================================================================
 

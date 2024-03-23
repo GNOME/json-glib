@@ -1,4 +1,14 @@
-#include "json-test-utils.h"
+// SPDX-FileCopyrightText: 2010 Intel Ltd.
+// SPDX-FileCopyrightText: 2014 Bastien Nocera
+// SPDX-FileCopyrightText: 2014 Philip Withnall
+// SPDX-FileCopyrightText: 2017 Endless
+// SPDX-FileCopyrightText: 2020 Jan-Michael Brummer
+// SPDX-FileCopyrightText: 2022 Frederic Martinsons
+//
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+#include <string.h>
+#include <json-glib/json-glib.h>
 
 static const gchar *test_base_array_data =
 "[ 0, true, null, \"foo\", 3.14, [ false ], { \"bar\" : 42 } ]";
@@ -76,7 +86,7 @@ test_base_object (void)
   g_assert_no_error (json_reader_get_error (reader));
 
   json_reader_read_member (reader, "double");
-  json_assert_fuzzy_equals (json_reader_get_double_value (reader), 42.47, 0.01);
+  g_assert_cmpfloat_with_epsilon (json_reader_get_double_value (reader), 42.47, 0.01);
   json_reader_end_element (reader);
 
   g_object_unref (reader);

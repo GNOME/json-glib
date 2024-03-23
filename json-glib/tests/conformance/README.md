@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2024 Emmanuele Bassi
+
+SPDX-License-Identifier: LGPL-2.1-or-later
+-->
+
 Conformance tests
 =================
 

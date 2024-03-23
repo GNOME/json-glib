@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2017 Emmanuele Bassi
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 if build_doc
   gidocgen = find_program('gi-docgen', required: get_option('documentation'), native: true)
 

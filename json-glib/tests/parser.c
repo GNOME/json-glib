@@ -1,5 +1,16 @@
-#include "json-test-utils.h"
+// SPDX-FileCopyrightText: 2008 OpenedHand Ltd.
+// SPDX-FileCopyrightText: 2009 Intel Ltd.
+// SPDX-FileCopyrightText: 2009 Mathias Hasselmann
+// SPDX-FileCopyrightText: 2012 Emmanuele Bassi
+// SPDX-FileCopyrightText: 2017 Dr. David Alan Gilbert
+// SPDX-FileCopyrightText: 2020 Endless
+// SPDX-FileCopyrightText: 2022 Frederic Martinsons
+//
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <stdlib.h>
+#include <string.h>
+#include <json-glib/json-glib.h>
 
 static const gchar *test_empty_string = "";
 static const gchar *test_empty_array_string = "[ ]";
@@ -32,13 +43,13 @@ verify_string_value (JsonNode *node)
 static void
 verify_double_value (JsonNode *node)
 {
-  json_assert_fuzzy_equals (10.2e3, json_node_get_double (node), 0.1);
+  g_assert_cmpfloat_with_epsilon (10.2e3, json_node_get_double (node), 0.1);
 }
 
 static void
 verify_negative_double_value (JsonNode *node)
 {
-  json_assert_fuzzy_equals (-3.14, json_node_get_double (node), 0.01);
+  g_assert_cmpfloat_with_epsilon (-3.14, json_node_get_double (node), 0.01);
 }
 
 static const struct {

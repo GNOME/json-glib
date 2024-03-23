@@ -1,4 +1,12 @@
-#include "json-test-utils.h"
+// SPDX-FileCopyrightText: 2008 OpenedHand Ltd.
+// SPDX-FileCopyrightText: 2009 Intel Corp.
+// SPDX-FileCopyrightText: 2012 Emmanuele Bassi
+// SPDX-FileCopyrightText: 2022 Frederic Martinsons
+//
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+#include <string.h>
+#include <json-glib/json-glib.h>
 
 static void
 test_empty_array (void)
@@ -32,7 +40,7 @@ test_add_element (void)
 
   json_array_add_double_element (array, 3.14);
   g_assert_cmpint (json_array_get_length (array), ==, 3);
-  json_assert_fuzzy_equals (json_array_get_double_element (array, 2), 3.14, 0.001);
+  g_assert_cmpfloat_with_epsilon (json_array_get_double_element (array, 2), 3.14, 0.001);
 
   json_array_add_boolean_element (array, TRUE);
   g_assert_cmpint (json_array_get_length (array), ==, 4);

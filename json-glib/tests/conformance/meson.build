@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 Emmanuele Bassi
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 implementation_tests = meson.current_source_dir() / 'impl.tests'
 valid_tests = meson.current_source_dir() / 'valid.tests'
 invalid_tests = meson.current_source_dir() / 'invalid.tests'

@@ -1,7 +1,9 @@
 /* json-path.h - JSONPath implementation
  *
  * This file is part of JSON-GLib
- * Copyright © 2011  Intel Corp.
+ *
+ * SPDX-FileCopyrightText: 2011  Intel Corp.
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

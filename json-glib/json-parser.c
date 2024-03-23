@@ -2,9 +2,10 @@
  * 
  * This file is part of JSON-GLib
  *
- * Copyright © 2007, 2008, 2009 OpenedHand Ltd
- * Copyright © 2009, 2010 Intel Corp.
- * Copyright © 2015 Collabora Ltd.
+ * SPDX-FileCopyrightText: 2007, 2008, 2009 OpenedHand Ltd
+ * SPDX-FileCopyrightText: 2009, 2010 Intel Corp.
+ * SPDX-FileCopyrightText: 2015 Collabora Ltd.
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

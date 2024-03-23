@@ -1,6 +1,7 @@
 image: fedora:39
 
 stages:
+  - check
   - build
   - docs
   - deploy
@@ -43,6 +44,16 @@ stages:
     paths:
       - ${CI_PROJECT_NAME}-docs.tar
 
+reuse:
+  stage: check
+  needs: []
+  before_script:
+    - dnf install -y python3 python3-pip
+    - pip3 install --user reuse
+    - export PATH="$PATH:$HOME/.local/bin"
+  script:
+    - reuse --suppress-deprecation lint
+
 fedora-x86_64:
   extends: .build-default
   stage: build
@@ -60,7 +71,7 @@ fedora-x86_64:
       python3-pip
       python3-wheel
       redhat-rpm-config
-    MESON_VERSION: "0.63"
+    MESON_VERSION: "1.2.0"
     MESON_EXTRA_FLAGS: "--buildtype=debug --default-library=both -Dwerror=true -Dglib:werror=false -Dintrospection=enabled -Ddocumentation=disabled"
 
 reference:
@@ -74,7 +85,7 @@ reference:
       git
       glib2-devel
       python3-docutils
-    MESON_VERSION: "0.63"
+    MESON_VERSION: "1.2.0"
     MESON_EXTRA_FLAGS: "-Dman=true -Dintrospection=enabled"
     DOCS_FLAGS: -Ddocumentation=enabled
     DOCS_PATH: doc/json-glib-1.0

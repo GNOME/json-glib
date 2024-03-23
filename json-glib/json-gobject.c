@@ -1,7 +1,9 @@
 /* json-gobject.c - JSON GObject integration
  * 
  * This file is part of JSON-GLib
- * Copyright (C) 2007  OpenedHand Ltd.
+ *
+ * SPDX-FileCopyrightText: 2007  OpenedHand Ltd.
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

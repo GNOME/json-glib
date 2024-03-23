@@ -1,3 +1,10 @@
+# SPDX-FileCopyrightText: 2016 Samsung
+# SPDX-FileCopyrightText: 2017 Emmanuele Bassi
+# SPDX-FileCopyrightText: 2018 Collabora Ltd
+# SPDX-FileCopyrightText: 2020 Collabora Ltd
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 project('json-glib', 'c',
   version: '1.9.1',
   license: 'LGPL-2.1-or-later',
@@ -6,7 +13,7 @@ project('json-glib', 'c',
     'buildtype=debugoptimized',
     'c_std=gnu99',
   ],
-  meson_version: '>= 0.63.0',
+  meson_version: '>= 1.2.0',
 )
 
 # Versioning
@@ -31,11 +38,11 @@ libversion = '@0@.@1@.@2@'.format(soversion, json_binary_age - json_interface_ag
 darwin_versions = [ current + 1, '@0@.@1@'.format(current + 1, revision) ]
 
 # Paths
-json_includedir = join_paths(get_option('prefix'), get_option('includedir'))
-json_datadir = join_paths(get_option('prefix'), get_option('datadir'))
-json_mandir = join_paths(get_option('prefix'), get_option('mandir'))
-json_localedir = join_paths(get_option('prefix'), get_option('localedir'))
-json_libexecdir = join_paths(get_option('prefix'), get_option('libexecdir'))
+json_includedir = get_option('prefix') / get_option('includedir')
+json_datadir = get_option('prefix') / get_option('datadir')
+json_mandir = get_option('prefix') / get_option('mandir')
+json_localedir = get_option('prefix') / get_option('localedir')
+json_libexecdir = get_option('prefix') / get_option('libexecdir')
 
 # Dependencies
 glib_req_version = '>= 2.72.0'
@@ -123,12 +130,8 @@ if get_option('default_library') != 'static'
   if host_system == 'windows'
     cdata.set('DLL_EXPORT', true)
     cdata.set('_JSON_EXTERN', '__declspec(dllexport) extern')
-    if cc.get_id() != 'msvc'
-      test_cflags += '-fvisibility=hidden'
-    endif
   else
     cdata.set('_JSON_EXTERN', '__attribute__((visibility("default"))) extern')
-    test_cflags += '-fvisibility=hidden'
   endif
 endif
 
@@ -163,7 +166,7 @@ gen_installed_test = files('build-aux/gen-installed-test.py')
 subdir('json-glib')
 
 # xgettext is optional (on Windows for instance)
-if find_program('xgettext', required : get_option('nls')).found()
+if find_program('xgettext', required: get_option('nls')).found()
   subdir('po')
 endif
 
@@ -183,10 +186,12 @@ summary({
 )
 
 summary({
+    'Localization': get_option('nls'),
     'Introspection': build_gir,
     'Documentation': build_doc,
     'Manual pages': get_option('man'),
     'Tests': get_option('tests'),
+    'Conformance tests': get_option('conformance'),
   },
   section: 'Build',
   bool_yn: true,

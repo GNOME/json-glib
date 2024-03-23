@@ -1,3 +1,11 @@
+// SPDX-FileCopyrightText: 2007 OpenedHand Ltd.
+// SPDX-FileCopyrightText: 2009 Intel Ltd.
+// SPDX-FileCopyrightText: 2012 Emmanuele Bassi
+// SPDX-FileCopyrightText: 2017 Endless
+// SPDX-FileCopyrightText: 2022 Frederic Martinsons
+//
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

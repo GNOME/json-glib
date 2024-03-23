@@ -1,7 +1,11 @@
 /* json-scanner.h: Tokenizer for JSON
  *
  * This file is part of JSON-GLib
- * Copyright (C) 2008 OpenedHand
+ *
+ * SPDX-FileCopyrightText: 1997-2000 The GLib Team and others
+ * SPDX-FileCopyrightText: 2008 OpenedHand Ltd.
+ * SPDX-FileCopyrightText: 2024 Emmanuele Bassi
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

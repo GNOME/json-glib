@@ -1,8 +1,10 @@
 /* json-generator.c - JSON tree builder
  *
  * This file is part of JSON-GLib
- * Copyright (C) 2010  Luca Bruno <lethalman88@gmail.com>
- * Copyright (C) 2015  Collabora Ltd.
+ *
+ * SPDX-FileCopyrightText: 2010  Luca Bruno <lethalman88@gmail.com>
+ * SPDX-FileCopyrightText: 2015  Collabora Ltd.
+ * SPDX-License-Identifier: LGPL-2.1-or-later
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

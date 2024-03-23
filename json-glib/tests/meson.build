@@ -1,3 +1,10 @@
+# SPDX-FileCopyrightText: 2016 Thibault Saunier
+# SPDX-FileCopyrightText: 2017 Emmanuele Bassi
+# SPDX-FileCopyrightText: 2020 Endless
+# SPDX-FileCopyrightText: 2020 Jan-Michael Brummer
+#
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 tests = [
   'array',
   'boxed',
@@ -21,8 +28,8 @@ test_data = [
   'stream-load.json',
 ]
 
-installed_test_bindir = join_paths(json_libexecdir, 'installed-tests', json_api_name)
-installed_test_datadir = join_paths(json_datadir, 'installed-tests', json_api_name)
+installed_test_bindir = json_libexecdir / 'installed-tests' / json_api_name
+installed_test_datadir = json_datadir / 'installed-tests' / json_api_name
 
 install_data(test_data, install_dir: installed_test_bindir)
 

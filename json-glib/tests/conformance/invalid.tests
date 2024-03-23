@@ -1,3 +1,9 @@
+# SPDX-FileCopyrightText: 2024 Emmanuele Bassi
+# SPDX-License-Identifier: CC0-1.0
+# Format:
+#   Result,file
+# P: expect pass
+# X: expect fail
 X,n_array_1_true_without_comma.json
 X,n_array_a_invalid_utf8.json
 X,n_array_colon_instead_of_comma.json

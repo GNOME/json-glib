@@ -1,3 +1,10 @@
+// SPDX-FileCopyrightText: 2012 Emmanuele Bassi
+// SPDX-FileCopyrightText: 2017 Dr. David Alan Gilbert
+// SPDX-FileCopyrightText: 2022 Frederic Martinsons
+// SPDX-FileCopyrightText: 2020 James Westman
+//
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include "config.h"
 
 #include <stdlib.h>

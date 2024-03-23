@@ -1,3 +1,11 @@
+// SPDX-FileCopyrightText: 2010 Luca Bruno
+// SPDX-FileCopyrightText: 2011 Intel Corp.
+// SPDX-FileCopyrightText: 2012 Emmanuele Bassi
+// SPDX-FileCopyrightText: 2017 Dr. David Alan Gilbert
+// SPDX-FileCopyrightText: 2022 Frederic Martinsons
+//
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

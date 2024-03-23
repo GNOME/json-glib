@@ -1,3 +1,9 @@
+# SPDX-FileCopyrightText: 2024 Emmanuele Bassi
+# SPDX-License-Identifier: CC0-1.0
+# Format:
+#   Result,file
+# P: expect pass
+# X: expect fail
 P,y_array_arraysWithSpaces.json
 P,y_array_empty-string.json
 P,y_array_empty.json
