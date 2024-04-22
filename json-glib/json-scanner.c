@@ -777,7 +777,7 @@ json_scanner_get_token_i (JsonScanner    *scanner,
       break;
 
     case JSON_TOKEN_SYMBOL:
-      *token_p = GPOINTER_TO_INT (value_p->v_symbol);
+      *token_p = GPOINTER_TO_UINT (value_p->v_symbol);
       break;
 
     default:
@@ -1306,7 +1306,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
             {
               g_free (value.v_identifier);
               token = JSON_TOKEN_SYMBOL;
-              value.v_symbol = json_symbols[i].token;
+              value.v_symbol = GUINT_TO_POINTER (json_symbols[i].token);
               break;
             }
         }
