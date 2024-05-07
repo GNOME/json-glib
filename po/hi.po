@@ -3,158 +3,276 @@
 # This file is distributed under the same license as the json-glib package.
 #
 # chandankumar <chandankumar.093047@gmail.com>, 2012.
+# Scrambled777 <weblate.scrambled777@simplelogin.com>, 2024.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: json-glib master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=json-"
-"glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-18 16:29+0000\n"
-"PO-Revision-Date: 2012-09-20 10:33+0530\n"
-"Last-Translator: chandankumar <chandankumar.093047@gmail.com>\n"
-"Language-Team: Hindi <kde-i18n-doc@kde.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues/\n"
+"POT-Creation-Date: 2024-03-21 16:59+0000\n"
+"PO-Revision-Date: 2024-04-17 18:36+0530\n"
+"Last-Translator: Scrambled777 <weblate.scrambled777@simplelogin.com>\n"
+"Language-Team: Hindi\n"
 "Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Lokalize 1.4\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Gtranslator 46.0\n"
 
-#: ../json-glib/json-gobject.c:934
+#: json-glib/json-glib-format.c:58
+msgid "Prettify output"
+msgstr "आउटपुट को सुंदर बनाएं"
+
+#: json-glib/json-glib-format.c:59
+msgid "Indentation spaces"
+msgstr "खरोज स्थान"
+
+#: json-glib/json-glib-format.c:59
+msgid "SPACES"
+msgstr "स्थान"
+
+#: json-glib/json-glib-format.c:60
+msgid "Output file"
+msgstr "आउटपुट फाइल"
+
+#: json-glib/json-glib-format.c:60 json-glib/json-glib-validate.c:117
+msgid "FILE"
+msgstr "फाइल"
+
+#: json-glib/json-glib-format.c:61
+msgid "FILE…"
+msgstr "फाइल…"
+
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-format.c:87 json-glib/json-glib-format.c:123
+#: json-glib/json-glib-validate.c:65
 #, c-format
-msgid "Expecting a JSON object, but the root node is of type `%s'"
-msgstr "एक JSON वस्तु की उम्मीद है, लेकिन रूट नोड प्रकार `%s' हैं "
+msgid "%s: %s: error opening file: %s\n"
+msgstr "%s: %s: फ़ाइल खोलने में त्रुटि: %s\n"
 
-#: ../json-glib/json-gvariant.c:539
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-format.c:101 json-glib/json-glib-validate.c:77
 #, c-format
-msgid "Unexpected type '%s' in JSON node"
-msgstr "अनपेक्षित प्रकार '%s' JSON नोड में"
+msgid "%s: %s: error parsing file: %s\n"
+msgstr "%s: %s: फ़ाइल विश्लेषण में त्रुटि: %s\n"
 
-#: ../json-glib/json-gvariant.c:609
+#. Translators: the first %s is the program name, the
+#. * second one is the URI of the file.
+#.
+#: json-glib/json-glib-format.c:143
+#, c-format
+msgid "%s: %s: error writing to stdout"
+msgstr "%s: %s: stdout में लिखने में त्रुटि"
+
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-format.c:167 json-glib/json-glib-validate.c:89
+#, c-format
+msgid "%s: %s: error closing: %s\n"
+msgstr "%s: %s: बंद करने में त्रुटि: %s\n"
+
+#. Translators: this message will appear after the usage string
+#. and before the list of options.
+#: json-glib/json-glib-format.c:203
+msgid "Format JSON files."
+msgstr "JSON फ़ाइलें स्वरूपित करें।"
+
+#: json-glib/json-glib-format.c:204
+msgid "json-glib-format formats JSON resources."
+msgstr "json-glib-format JSON संसाधनों को प्रारूपित करता है।"
+
+#. Translators: the %s is the program name. This error message
+#. * means the user is calling json-glib-validate without any
+#. * argument.
+#.
+#: json-glib/json-glib-format.c:219 json-glib/json-glib-validate.c:138
+#, c-format
+msgid "Error parsing commandline options: %s\n"
+msgstr "कमांडलाइन विकल्प विश्लेषण कमें त्रुटि: %s\n"
+
+#: json-glib/json-glib-format.c:221 json-glib/json-glib-format.c:235
+#: json-glib/json-glib-validate.c:140 json-glib/json-glib-validate.c:154
+#, c-format
+msgid "Try “%s --help” for more information."
+msgstr "अधिक जानकारी के लिए “%s --help” आज़माएं।"
+
+#. Translators: the %s is the program name. This error message
+#. * means the user is calling json-glib-validate without any
+#. * argument.
+#.
+#: json-glib/json-glib-format.c:233 json-glib/json-glib-validate.c:152
+#, c-format
+msgid "%s: missing files"
+msgstr "%s: अनुपलब्ध फ़ाइलें"
+
+#. Translators: this message will appear after the usage string
+#. and before the list of options.
+#: json-glib/json-glib-validate.c:120
+msgid "Validate JSON files."
+msgstr "JSON फ़ाइलें सत्यापित करें।"
+
+#: json-glib/json-glib-validate.c:121
+msgid "json-glib-validate validates JSON data at the given URI."
+msgstr "json-glib-validate दिए गए URI पर JSON डेटा को सत्यापित करता है।"
+
+#. translators: the %s is the name of the data structure
+#: json-glib/json-gobject.c:928
+#, c-format
+msgid "Expecting a JSON object, but the root node is of type “%s”"
+msgstr "एक JSON वस्तु की उम्मीद है, लेकिन रूट नोड प्रकार “%s” हैं "
+
+#. translators: the '%s' is the type name
+#: json-glib/json-gvariant.c:482
+#, c-format
+msgid "Unexpected type “%s” in JSON node"
+msgstr "JSON नोड में अनपेक्षित प्रकार “%s”"
+
+#: json-glib/json-gvariant.c:555
 msgid "Missing elements in JSON array to conform to a tuple"
-msgstr "एक टपल अनुरूप करने के लिए JSON सरणी में गुम तत्वों "
+msgstr "एक टपल अनुरूप करने के लिए JSON सरणी में गुम तत्व"
 
-#: ../json-glib/json-gvariant.c:637
-msgid "Missing closing symbol ')' in the GVariant tuple type"
-msgstr " GVariant टपल प्रकार में समापन प्रतीक ')' गुम"
+#: json-glib/json-gvariant.c:584
+msgid "Missing closing symbol “)” in the GVariant tuple type"
+msgstr "GVariant टपल प्रकार में समापन प्रतीक “)” गुम है"
 
-#: ../json-glib/json-gvariant.c:645
+#: json-glib/json-gvariant.c:592
 msgid "Unexpected extra elements in JSON array"
-msgstr "JSON सरणी में अप्रत्याशित अतिरिक्त तत्वों"
+msgstr "JSON सारणी में अप्रत्याशित अतिरिक्त तत्व"
 
-#: ../json-glib/json-gvariant.c:924
+#: json-glib/json-gvariant.c:894
 msgid "Invalid string value converting to GVariant"
-msgstr "GVariant को करने के लिए परिवर्तित अवैध स्ट्रिंग मान "
+msgstr "अमान्य स्ट्रिंग मान GVariant में परिवर्तित हो रहा है"
 
-#: ../json-glib/json-gvariant.c:980
+#: json-glib/json-gvariant.c:949
 msgid ""
 "A GVariant dictionary entry expects a JSON object with exactly one member"
-msgstr ""
-"GVariant शब्दकोश प्रविष्टि को वास्तव में एक सदस्य के साथ एक JSON वस्तु की "
-"उम्मीद है"
+msgstr "GVariant शब्दकोश प्रविष्टि बिल्कुल एक सदस्य के साथ JSON वस्तु की अपेक्षा करती है"
 
-#: ../json-glib/json-gvariant.c:1236
+#: json-glib/json-gvariant.c:1227
 #, c-format
-msgid "GVariant class '%c' not supported"
-msgstr "GVariant वर्ग '%c' समर्थित नहीं है"
+msgid "GVariant class “%c” not supported"
+msgstr "GVarGVariant वर्ग “%c” समर्थित नहीं है"
 
-#: ../json-glib/json-gvariant.c:1281
+#: json-glib/json-gvariant.c:1281
 msgid "Invalid GVariant signature"
 msgstr "अवैध GVariant हस्ताक्षर"
 
-#: ../json-glib/json-gvariant.c:1326
+#: json-glib/json-gvariant.c:1335
 msgid "JSON data is empty"
 msgstr "JSON डेटा खाली है"
 
-#: ../json-glib/json-parser.c:818
+#. translators: %s: is the file name, the first %d is the line
+#. * number, the second %d is the position on the line, and %s is
+#. * the error message
+#.
+#: json-glib/json-parser.c:970
 #, c-format
-msgid "%s:%d: Parse error: %s"
-msgstr "%s:%d: व्याख्या त्रुटि: %s"
+msgid "%s:%d:%d: Parse error: %s"
+msgstr "%s:%d:%d: विश्लेषण त्रुटि: %s"
 
-#: ../json-glib/json-path.c:375
+#: json-glib/json-parser.c:1050
+msgid "JSON data must be UTF-8 encoded"
+msgstr "JSON डेटा UTF-8 एन्कोडेड होना चाहिए"
+
+#: json-glib/json-path.c:389
 msgid "Only one root node is allowed in a JSONPath expression"
 msgstr "एक JSONPath अभिव्यक्ति में केवल एक रूट नोड की अनुमति दी है"
 
-#: ../json-glib/json-path.c:384
+#. translators: the %c is the invalid character
+#: json-glib/json-path.c:398
 #, c-format
-msgid "Root node followed by invalid character '%c'"
-msgstr "अवैध अक्षर '%c' के बाद रूट नोड "
+msgid "Root node followed by invalid character “%c”"
+msgstr "रूट नोड के बाद अमान्य वर्ण “%c”"
 
-#: ../json-glib/json-path.c:490
+#: json-glib/json-path.c:438
+msgid "Missing member name or wildcard after . character"
+msgstr ". वर्ण के बाद सदस्य का नाम या वाइल्डकार्ड गायब है"
+
+#: json-glib/json-path.c:512
 #, c-format
-msgid "Malformed slice expression '%*s'"
-msgstr "विकृत स्लाइस अभिव्यक्ति '%*s'"
+msgid "Malformed slice expression “%*s”"
+msgstr "विकृत स्लाइस अभिव्यक्ति “%*s”"
 
-#: ../json-glib/json-path.c:534
+#: json-glib/json-path.c:556
 #, c-format
-msgid "Invalid set definition '%*s'"
-msgstr "अमान्य सेट परिभाषा '%*s'"
+msgid "Invalid set definition “%*s”"
+msgstr "अमान्य निर्धारित परिभाषा “%*s”"
 
-#: ../json-glib/json-path.c:587
+#: json-glib/json-path.c:609
 #, c-format
-msgid "Invalid slice definition '%*s'"
-msgstr "अवैध स्लाइस परिभाषा '%*s'"
+msgid "Invalid slice definition “%*s”"
+msgstr "अमान्य स्लाइस परिभाषा “%*s”"
 
-#: ../json-glib/json-path.c:615
+#: json-glib/json-path.c:637
 #, c-format
-msgid "Invalid array index definition '%*s'"
-msgstr "अवैध सरणी सूचकांक परिभाषा '%*s'"
+msgid "Invalid array index definition “%*s”"
+msgstr "अमान्य सरणी अनुक्रमणिका परिभाषा “%*s”"
 
-#: ../json-glib/json-reader.c:463
+#: json-glib/json-path.c:656
+#, c-format
+msgid "Invalid first character “%c”"
+msgstr "अमान्य प्रथम वर्ण “%c”"
+
+#: json-glib/json-reader.c:504
 #, c-format
 msgid ""
-"The current node is of type '%s', but an array or an object was expected."
-msgstr ""
-"वर्तमान नोड प्रकार '%s' में से एक है, लेकिन एक सरणी या एक वस्तु की उम्मीद थी."
+"The current node is of type “%s”, but an array or an object was expected."
+msgstr "वर्तमान नोड “%s” प्रकार का है, लेकिन एक सरणी या वस्तु अपेक्षित था।"
 
-#: ../json-glib/json-reader.c:475
+#: json-glib/json-reader.c:516
 #, c-format
 msgid ""
-"The index '%d' is greater than the size of the array at the current position."
-msgstr "सूचकांक '%d' वर्तमान स्थिति में सरणी के आकार की तुलना में अधिक है."
+"The index “%d” is greater than the size of the array at the current position."
+msgstr "सूचकांक “%d” वर्तमान स्थिति में सरणी के आकार से बड़ा है।"
 
-#: ../json-glib/json-reader.c:492
+#: json-glib/json-reader.c:533
 #, c-format
 msgid ""
-"The index '%d' is greater than the size of the object at the current "
+"The index “%d” is greater than the size of the object at the current "
 "position."
-msgstr "सूचकांक '%d' वर्तमान स्थिति में वस्तु के आकार की तुलना में अधिक है."
+msgstr "सूचकांक “%d” वर्तमान स्थिति में वस्तु के आकार से बड़ा है।"
 
-#: ../json-glib/json-reader.c:576 ../json-glib/json-reader.c:729
-#: ../json-glib/json-reader.c:780 ../json-glib/json-reader.c:818
-#: ../json-glib/json-reader.c:856 ../json-glib/json-reader.c:894
-#: ../json-glib/json-reader.c:932 ../json-glib/json-reader.c:977
-#: ../json-glib/json-reader.c:1013 ../json-glib/json-reader.c:1039
+#: json-glib/json-reader.c:616 json-glib/json-reader.c:789
+#: json-glib/json-reader.c:838 json-glib/json-reader.c:877
+#: json-glib/json-reader.c:917 json-glib/json-reader.c:957
+#: json-glib/json-reader.c:997 json-glib/json-reader.c:1044
+#: json-glib/json-reader.c:1082 json-glib/json-reader.c:1110
 msgid "No node available at the current position"
-msgstr "वर्तमान स्थिति में कोई नोड उपलब्ध नहीं  "
+msgstr "वर्तमान स्थिति में कोई नोड उपलब्ध नहीं है"
 
-#: ../json-glib/json-reader.c:583
+#: json-glib/json-reader.c:623
 #, c-format
-msgid "The current position holds a '%s' and not an array"
-msgstr "मौजूदा स्थिति के पास '%s' हैं और सरणी नहीं है."
+msgid "The current position holds a “%s” and not an array"
+msgstr "वर्तमान स्थिति में “%s” है न कि कोई सरणी"
 
-#: ../json-glib/json-reader.c:646
+#: json-glib/json-reader.c:705
 #, c-format
-msgid "The current node is of type '%s', but an object was expected."
-msgstr "वर्तमान नोड प्रकार '%s' में से एक है, लेकिन एक वस्तु की उम्मीद थी."
+msgid "The current node is of type “%s”, but an object was expected."
+msgstr "वर्तमान नोड “%s” प्रकार का है, लेकिन एक वस्तु अपेक्षित था।"
 
-#: ../json-glib/json-reader.c:653
+#: json-glib/json-reader.c:712
 #, c-format
-msgid "The member '%s' is not defined in the object at the current position."
-msgstr "सदस्य '%s' वर्तमान स्थिति में वस्तु में परिभाषित नहीं है."
+msgid "The member “%s” is not defined in the object at the current position."
+msgstr "सदस्य “%s” को वर्तमान स्थिति में वस्तु में परिभाषित नहीं किया गया है।"
 
-#: ../json-glib/json-reader.c:736 ../json-glib/json-reader.c:787
+#: json-glib/json-reader.c:796 json-glib/json-reader.c:845
 #, c-format
-msgid "The current position holds a '%s' and not an object"
-msgstr "वर्तमान स्थिति के लिए '%s' और कोई ऑब्जेक्ट आयोजित नहीं है"
+msgid "The current position holds a “%s” and not an object"
+msgstr "वर्तमान स्थिति में “%s” है न कि कोई वस्तु"
 
-#: ../json-glib/json-reader.c:827 ../json-glib/json-reader.c:865
-#: ../json-glib/json-reader.c:903 ../json-glib/json-reader.c:941
-#: ../json-glib/json-reader.c:986
+#: json-glib/json-reader.c:886 json-glib/json-reader.c:926
+#: json-glib/json-reader.c:966 json-glib/json-reader.c:1006
+#: json-glib/json-reader.c:1053
 #, c-format
-msgid "The current position holds a '%s' and not a value"
-msgstr "वर्तमान स्थिति के लिए '%s' और कोई मान आयोजित नहीं है"
+msgid "The current position holds a “%s” and not a value"
+msgstr "वर्तमान स्थिति में “%s”s है न कि कोई मान"
 
-#: ../json-glib/json-reader.c:949
+#: json-glib/json-reader.c:1014
 msgid "The current position does not hold a string type"
-msgstr "वर्तमान स्थिति के लिए स्ट्रिंग प्रकार नहीं है"
-
+msgstr "वर्तमान स्थिति में कोई स्ट्रिंग प्रकार नहीं है"
