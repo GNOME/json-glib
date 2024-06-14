@@ -29,6 +29,14 @@
  *
  * It is similar, in spirit, to the XML Reader API.
  *
+ * The cursor is moved by the `json_reader_read_*` and the `json_reader_end_*`
+ * functions. You can enter a JSON object using [method@Json.Reader.read_member]
+ * with the name of the object member, access the value at that position, and
+ * move the cursor back one level using [method@Json.Reader.end_member]; arrays
+ * work in a similar way, using [method@Json.Reader.read_element] with the
+ * index of the element, and using [method@Json.Reader.end_element] to move
+ * the cursor back.
+ *
  * ## Using `JsonReader`
  *
  * ```c
@@ -40,16 +48,23 @@
  *
  * g_autoptr(JsonReader) reader = json_reader_new (json_parser_get_root (parser));
  *
+ * // Enter the "url" member of the object
  * json_reader_read_member (reader, "url");
  *   const char *url = json_reader_get_string_value (reader);
+ *   // url now contains "http://www.gnome.org/img/flash/two-thirty.png"
  *   json_reader_end_member (reader);
  *
+ * // Enter the "size" member of the object
  * json_reader_read_member (reader, "size");
+ *   // Enter the first element of the array
  *   json_reader_read_element (reader, 0);
  *     int width = json_reader_get_int_value (reader);
+ *     // width now contains 652
  *     json_reader_end_element (reader);
+ *   // Enter the second element of the array
  *   json_reader_read_element (reader, 1);
  *     int height = json_reader_get_int_value (reader);
+ *     // height now contains 242
  *     json_reader_end_element (reader);
  *   json_reader_end_member (reader);
  * ```
