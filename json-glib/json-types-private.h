@@ -51,7 +51,8 @@ struct _JsonNode
   /*< private >*/
   JsonNodeType type;
 
-  volatile gint ref_count;
+  gatomicrefcount ref_count;
+
   gboolean immutable : 1;
   gboolean allocated : 1;
 
@@ -79,7 +80,7 @@ struct _JsonValue
 {
   JsonValueType type;
 
-  volatile gint ref_count;
+  grefcount ref_count;
   gboolean immutable : 1;
 
   union {
@@ -94,8 +95,9 @@ struct _JsonArray
 {
   GPtrArray *elements;
 
+  grefcount ref_count;
+
   guint immutable_hash;  /* valid iff immutable */
-  volatile gint ref_count;
   gboolean immutable : 1;
 };
 
@@ -103,11 +105,12 @@ struct _JsonObject
 {
   GHashTable *members;
 
+  grefcount ref_count;
+
   GQueue members_ordered;
 
   int age;
   guint immutable_hash;  /* valid iff immutable */
-  volatile gint ref_count;
   gboolean immutable : 1;
 };
 
