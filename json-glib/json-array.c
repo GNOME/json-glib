@@ -62,7 +62,7 @@ json_array_new (void)
 {
   JsonArray *array;
 
-  array = g_slice_new0 (JsonArray);
+  array = g_new0 (JsonArray, 1);
 
   g_ref_count_init (&array->ref_count);
   array->elements = g_ptr_array_new ();
@@ -83,7 +83,7 @@ json_array_sized_new (guint n_elements)
 {
   JsonArray *array;
 
-  array = g_slice_new0 (JsonArray);
+  array = g_new0 (JsonArray, 1);
 
   g_ref_count_init (&array->ref_count);
   array->elements = g_ptr_array_sized_new (n_elements);
@@ -132,7 +132,7 @@ json_array_unref (JsonArray *array)
       g_ptr_array_free (array->elements, TRUE);
       array->elements = NULL;
 
-      g_slice_free (JsonArray, array);
+      g_free (array);
     }
 }
 

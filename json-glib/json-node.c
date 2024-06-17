@@ -129,7 +129,7 @@ json_node_alloc (void)
 {
   JsonNode *node = NULL;
 
-  node = g_slice_new0 (JsonNode);
+  node = g_new0 (JsonNode, 1);
   g_atomic_ref_count_init (&node->ref_count);
 
   node->allocated = TRUE;
@@ -498,7 +498,7 @@ json_node_unref (JsonNode *node)
        */
       json_node_unset (node);
       if (node->allocated)
-        g_slice_free (JsonNode, node);
+        g_free (node);
     }
 }
 
@@ -854,7 +854,7 @@ json_node_free (JsonNode *node)
         g_warning ("Freeing a JsonNode %p owned by other code.", node);
 
       json_node_unset (node);
-      g_slice_free (JsonNode, node);
+      g_free (node);
     }
 }
 

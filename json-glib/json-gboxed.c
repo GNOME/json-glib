@@ -113,7 +113,7 @@ json_boxed_register_serialize_func (GType                  gboxed_type,
   t = lookup_boxed_transform (boxed_serialize, gboxed_type, node_type);
   if (t == NULL)
     {
-      t = g_slice_new (BoxedTransform);
+      t = g_new (BoxedTransform, 1);
 
       t->boxed_type = gboxed_type;
       t->node_type = node_type;
@@ -157,7 +157,7 @@ json_boxed_register_deserialize_func (GType                    gboxed_type,
   t = lookup_boxed_transform (boxed_deserialize, gboxed_type, node_type);
   if (t == NULL)
     {
-      t = g_slice_new (BoxedTransform);
+      t = g_new (BoxedTransform, 1);
 
       t->boxed_type = gboxed_type;
       t->node_type = node_type;

@@ -87,7 +87,7 @@ json_value_type (const JsonValue *value)
 JsonValue *
 json_value_alloc (void)
 {
-  JsonValue *res = g_slice_new0 (JsonValue);
+  JsonValue *res = g_new0 (JsonValue, 1);
 
   g_ref_count_init (&res->ref_count);
 
@@ -165,7 +165,7 @@ json_value_free (JsonValue *value)
   if (G_LIKELY (value != NULL))
     {
       json_value_unset (value);
-      g_slice_free (JsonValue, value);
+      g_free (value);
     }
 }
 

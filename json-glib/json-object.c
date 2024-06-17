@@ -67,7 +67,7 @@ json_object_new (void)
 {
   JsonObject *object;
 
-  object = g_slice_new0 (JsonObject);
+  object = g_new0 (JsonObject, 1);
 
   g_ref_count_init (&object->ref_count);
 
@@ -119,7 +119,7 @@ json_object_unref (JsonObject *object)
       g_hash_table_destroy (object->members);
       object->members = NULL;
 
-      g_slice_free (JsonObject, object);
+      g_free (object);
     }
 }
 
