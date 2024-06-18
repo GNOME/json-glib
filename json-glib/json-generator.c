@@ -647,6 +647,36 @@ json_generator_set_root (JsonGenerator *generator,
 }
 
 /**
+ * json_generator_take_root:
+ * @generator: a generator
+ * @node: (transfer full) (nullable): the root node
+ *
+ * Sets the root of the JSON data stream to be serialized by
+ * the given generator.
+ *
+ * The ownership of the passed `node` is transferred to the generator object.
+ *
+ * Since: 1.10
+ */
+void
+json_generator_take_root (JsonGenerator *generator,
+                          JsonNode      *node)
+{
+  JsonGeneratorPrivate *priv = json_generator_get_instance_private (generator);
+
+  g_return_if_fail (JSON_IS_GENERATOR (generator));
+
+  if (generator->priv->root == node)
+    return;
+
+  g_clear_pointer (&priv->root, json_node_unref);
+  if (node != NULL)
+    priv->root = node;
+
+  g_object_notify_by_pspec (G_OBJECT (generator), generator_props[PROP_ROOT]);
+}
+
+/**
  * json_generator_get_root: (attributes org.gtk.Method.get_property=root)
  * @generator: a generator
  *
