@@ -50,14 +50,14 @@ GType test_object_get_type (void);
 static gpointer
 test_boxed_copy (gpointer src)
 {
-  return g_slice_dup (TestBoxed, src);
+  return g_memdup2 (src, sizeof (TestBoxed));
 }
 
 static void
 test_boxed_free (gpointer boxed)
 {
   if (G_LIKELY (boxed != NULL))
-    g_slice_free (TestBoxed, boxed);
+    g_free (boxed);
 }
 
 static JsonNode *
@@ -96,7 +96,7 @@ test_boxed_deserialize (JsonNode *node)
 
   object = json_node_get_object (node);
 
-  test = g_slice_new (TestBoxed);
+  test = g_new (TestBoxed, 1);
   test->foo = json_object_get_int_member (object, "foo");
   test->bar = json_object_get_boolean_member (object, "bar");
 

@@ -62,9 +62,9 @@ json_array_new (void)
 {
   JsonArray *array;
 
-  array = g_slice_new0 (JsonArray);
+  array = g_new0 (JsonArray, 1);
 
-  array->ref_count = 1;
+  g_ref_count_init (&array->ref_count);
   array->elements = g_ptr_array_new ();
 
   return array;
@@ -83,9 +83,9 @@ json_array_sized_new (guint n_elements)
 {
   JsonArray *array;
 
-  array = g_slice_new0 (JsonArray);
-  
-  array->ref_count = 1;
+  array = g_new0 (JsonArray, 1);
+
+  g_ref_count_init (&array->ref_count);
   array->elements = g_ptr_array_sized_new (n_elements);
 
   return array;
@@ -104,9 +104,8 @@ JsonArray *
 json_array_ref (JsonArray *array)
 {
   g_return_val_if_fail (array != NULL, NULL);
-  g_return_val_if_fail (array->ref_count > 0, NULL);
 
-  array->ref_count++;
+  g_ref_count_inc (&array->ref_count);
 
   return array;
 }
@@ -124,19 +123,16 @@ void
 json_array_unref (JsonArray *array)
 {
   g_return_if_fail (array != NULL);
-  g_return_if_fail (array->ref_count > 0);
 
-  if (--array->ref_count == 0)
+  if (g_ref_count_dec (&array->ref_count))
     {
-      guint i;
-
-      for (i = 0; i < array->elements->len; i++)
+      for (guint i = 0; i < array->elements->len; i++)
         json_node_unref (g_ptr_array_index (array->elements, i));
 
       g_ptr_array_free (array->elements, TRUE);
       array->elements = NULL;
 
-      g_slice_free (JsonArray, array);
+      g_free (array);
     }
 }
 
@@ -155,16 +151,13 @@ json_array_unref (JsonArray *array)
 void
 json_array_seal (JsonArray *array)
 {
-  guint i;
-
   g_return_if_fail (array != NULL);
-  g_return_if_fail (array->ref_count > 0);
 
   if (array->immutable)
     return;
 
   /* Propagate to all members. */
-  for (i = 0; i < array->elements->len; i++)
+  for (guint i = 0; i < array->elements->len; i++)
     json_node_seal (g_ptr_array_index (array->elements, i));
 
   array->immutable_hash = json_array_hash (array);
@@ -185,7 +178,6 @@ gboolean
 json_array_is_immutable (JsonArray *array)
 {
   g_return_val_if_fail (array != NULL, FALSE);
-  g_return_val_if_fail (array->ref_count > 0, FALSE);
 
   return array->immutable;
 }

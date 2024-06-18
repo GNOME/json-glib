@@ -129,8 +129,9 @@ json_node_alloc (void)
 {
   JsonNode *node = NULL;
 
-  node = g_slice_new0 (JsonNode);
-  node->ref_count = 1;
+  node = g_new0 (JsonNode, 1);
+  g_atomic_ref_count_init (&node->ref_count);
+
   node->allocated = TRUE;
 
   return node;
@@ -182,7 +183,7 @@ json_node_init (JsonNode *node,
 {
   g_return_val_if_fail (type >= JSON_NODE_OBJECT &&
                         type <= JSON_NODE_NULL, NULL);
-  g_return_val_if_fail (node->ref_count == 1, NULL);
+  g_return_val_if_fail (g_atomic_ref_count_compare (&node->ref_count, 1), NULL);
 
   json_node_unset (node);
 
@@ -470,7 +471,7 @@ json_node_ref (JsonNode *node)
 {
   g_return_val_if_fail (JSON_NODE_IS_VALID (node), NULL);
 
-  g_atomic_int_inc (&node->ref_count);
+  g_atomic_ref_count_inc (&node->ref_count);
 
   return node;
 }
@@ -490,11 +491,14 @@ json_node_unref (JsonNode *node)
 {
   g_return_if_fail (JSON_NODE_IS_VALID (node));
 
-  if (g_atomic_int_dec_and_test (&node->ref_count))
+  if (g_atomic_ref_count_dec (&node->ref_count))
     {
+      /* We do not call json_node_free() because json_node_free() will
+       * check the reference count for other reference holders
+       */
       json_node_unset (node);
       if (node->allocated)
-        g_slice_free (JsonNode, node);
+        g_free (node);
     }
 }
 
@@ -846,11 +850,11 @@ json_node_free (JsonNode *node)
 
   if (G_LIKELY (node))
     {
-      if (node->ref_count > 1)
+      if (!g_atomic_ref_count_compare (&node->ref_count, 1))
         g_warning ("Freeing a JsonNode %p owned by other code.", node);
 
       json_node_unset (node);
-      g_slice_free (JsonNode, node);
+      g_free (node);
     }
 }
 

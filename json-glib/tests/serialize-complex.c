@@ -56,7 +56,7 @@ GType test_object_get_type (void);
 static TestBoxed *
 test_boxed_copy (const TestBoxed *src)
 {
-  TestBoxed *copy = g_slice_new (TestBoxed);
+  TestBoxed *copy = g_new (TestBoxed, 1);
 
   *copy = *src;
 
@@ -67,9 +67,7 @@ static void
 test_boxed_free (TestBoxed *boxed)
 {
   if (G_LIKELY (boxed))
-    {
-      g_slice_free (TestBoxed, boxed);
-    }
+    g_free (boxed);
 }
 
 GType

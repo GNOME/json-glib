@@ -87,9 +87,9 @@ json_value_type (const JsonValue *value)
 JsonValue *
 json_value_alloc (void)
 {
-  JsonValue *res = g_slice_new0 (JsonValue);
+  JsonValue *res = g_new0 (JsonValue, 1);
 
-  res->ref_count = 1;
+  g_ref_count_init (&res->ref_count);
 
   return res;
 }
@@ -113,7 +113,7 @@ json_value_ref (JsonValue *value)
 {
   g_return_val_if_fail (value != NULL, NULL);
 
-  value->ref_count++;
+  g_ref_count_inc (&value->ref_count);
 
   return value;
 }
@@ -123,7 +123,7 @@ json_value_unref (JsonValue *value)
 {
   g_return_if_fail (value != NULL);
 
-  if (--value->ref_count == 0)
+  if (g_ref_count_dec (&value->ref_count))
     json_value_free (value);
 }
 
@@ -165,7 +165,7 @@ json_value_free (JsonValue *value)
   if (G_LIKELY (value != NULL))
     {
       json_value_unset (value);
-      g_slice_free (JsonValue, value);
+      g_free (value);
     }
 }
 
@@ -181,7 +181,6 @@ void
 json_value_seal (JsonValue *value)
 {
   g_return_if_fail (JSON_VALUE_IS_VALID (value));
-  g_return_if_fail (value->ref_count > 0);
 
   value->immutable = TRUE;
 }

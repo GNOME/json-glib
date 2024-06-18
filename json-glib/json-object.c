@@ -67,10 +67,11 @@ json_object_new (void)
 {
   JsonObject *object;
 
-  object = g_slice_new0 (JsonObject);
+  object = g_new0 (JsonObject, 1);
+
+  g_ref_count_init (&object->ref_count);
 
   object->age = 0;
-  object->ref_count = 1;
   object->members = g_hash_table_new_full (g_str_hash, g_str_equal,
                                            g_free,
                                            (GDestroyNotify) json_node_unref);
@@ -92,9 +93,8 @@ JsonObject *
 json_object_ref (JsonObject *object)
 {
   g_return_val_if_fail (object != NULL, NULL);
-  g_return_val_if_fail (object->ref_count > 0, NULL);
 
-  object->ref_count++;
+  g_ref_count_inc (&object->ref_count);
 
   return object;
 }
@@ -112,15 +112,14 @@ void
 json_object_unref (JsonObject *object)
 {
   g_return_if_fail (object != NULL);
-  g_return_if_fail (object->ref_count > 0);
 
-  if (--object->ref_count == 0)
+  if (g_ref_count_dec (&object->ref_count))
     {
       g_queue_clear (&object->members_ordered);
       g_hash_table_destroy (object->members);
       object->members = NULL;
 
-      g_slice_free (JsonObject, object);
+      g_free (object);
     }
 }
 
@@ -143,7 +142,6 @@ json_object_seal (JsonObject *object)
   JsonNode *node;
 
   g_return_if_fail (object != NULL);
-  g_return_if_fail (object->ref_count > 0);
 
   if (object->immutable)
     return;
@@ -172,7 +170,6 @@ gboolean
 json_object_is_immutable (JsonObject *object)
 {
   g_return_val_if_fail (object != NULL, FALSE);
-  g_return_val_if_fail (object->ref_count > 0, FALSE);
 
   return object->immutable;
 }
@@ -1111,7 +1108,6 @@ json_object_iter_init (JsonObjectIter  *iter,
 
   g_return_if_fail (iter != NULL);
   g_return_if_fail (object != NULL);
-  g_return_if_fail (object->ref_count > 0);
 
   iter_real->object = object;
   g_hash_table_iter_init (&iter_real->members_iter, object->members);
@@ -1155,7 +1151,6 @@ json_object_iter_next (JsonObjectIter  *iter,
 
   g_return_val_if_fail (iter != NULL, FALSE);
   g_return_val_if_fail (iter_real->object != NULL, FALSE);
-  g_return_val_if_fail (iter_real->object->ref_count > 0, FALSE);
 
   return g_hash_table_iter_next (&iter_real->members_iter,
                                  (gpointer *) member_name,
@@ -1193,7 +1188,6 @@ json_object_iter_init_ordered (JsonObjectIter  *iter,
 
   g_return_if_fail (iter != NULL);
   g_return_if_fail (object != NULL);
-  g_return_if_fail (object->ref_count > 0);
 
   iter_real->object = object;
   iter_real->cur_member = NULL;
@@ -1239,7 +1233,6 @@ json_object_iter_next_ordered (JsonObjectIter  *iter,
 
   g_return_val_if_fail (iter != NULL, FALSE);
   g_return_val_if_fail (iter_real->object != NULL, FALSE);
-  g_return_val_if_fail (iter_real->object->ref_count > 0, FALSE);
   g_return_val_if_fail (iter_real->age == iter_real->object->age, FALSE);
 
   if (iter_real->cur_member == NULL)
