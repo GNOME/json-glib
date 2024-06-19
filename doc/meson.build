@@ -1,10 +1,54 @@
 # SPDX-FileCopyrightText: 2017 Emmanuele Bassi
 #
 # SPDX-License-Identifier: LGPL-2.1-or-later
+rst_files = [
+  {
+    'name': 'json-glib-format',
+    'section': '1',
+  },
+  {
+    'name': 'json-glib-validate',
+    'section': '1',
+  },
+]
+
+rst2man_flags = [
+  '--syntax-highlight=none',
+]
+
+rst2man = find_program('rst2man', 'rst2man.py', required: get_option('man'))
+rst2html5 = find_program('rst2html5', 'rst2html5.py', required: get_option('documentation'))
+
+gidocgen = find_program('gi-docgen', required: get_option('documentation'), native: true)
+gidocgen_flags = [
+  '--quiet',
+  '--no-namespace-dir',
+]
+
+if get_option('werror')
+  gidocgen_flags += ['--fatal-warnings']
+endif
+
+if get_option('man') and rst2man.found()
+  foreach rst: rst_files
+    name = rst.get('name')
+    section = rst.get('section', '1')
+    custom_target('man-@0@'.format(name),
+      input: '@0@.rst'.format(name),
+      output: '@0@.@1@'.format(name, section),
+      command: [
+        rst2man,
+        rst2man_flags,
+        '@INPUT@',
+      ],
+      capture: true,
+      install: true,
+      install_dir: get_option('mandir') / 'man@0@'.format(section),
+    )
+  endforeach
+endif
 
 if build_doc
-  gidocgen = find_program('gi-docgen', required: get_option('documentation'), native: true)
-
   json_docdir = json_datadir / 'doc'
 
   toml_conf = configuration_data()
@@ -28,19 +72,18 @@ if build_doc
     command: [
       gidocgen,
       'generate',
-      '--quiet',
-      '--fatal-warnings',
-      '--add-include-path=@0@'.format(meson.current_build_dir() / '../json-glib'),
+      gidocgen_flags,
       '--config', json_toml,
-      '--output-dir=@OUTPUT@',
-      '--no-namespace-dir',
       '--content-dir=@0@'.format(meson.current_source_dir()),
+      '--add-include-path=@0@'.format(meson.current_build_dir() / '../json-glib'),
+      '--output-dir=@OUTPUT@',
       '@INPUT@',
     ],
     depend_files: [ json_toml, json_content_files, 'urlmap.js' ],
     build_by_default: true,
     install: true,
     install_dir: json_docdir,
+    install_tag: 'doc'
   )
 
   if get_option('tests')
@@ -57,40 +100,19 @@ if build_doc
     )
   endif
 
-endif
-
-rst2man = find_program('rst2man', 'rst2man.py', required: get_option('man'))
-
-if get_option('man') and rst2man.found()
-  rst_files = [
-    {
-      'name': 'json-glib-format',
-      'section': '1',
-    },
-    {
-      'name': 'json-glib-validate',
-      'section': '1',
-    },
-  ]
-
-  rst2man_flags = [
-    '--syntax-highlight=none',
-  ]
-
   foreach rst: rst_files
     name = rst.get('name')
-    section = rst.get('section', '1')
-    custom_target('man-@0@'.format(name),
+    custom_target('html-@0@'.format(name),
       input: '@0@.rst'.format(name),
-      output: '@0@.@1@'.format(name, section),
+      output: '@0@.html'.format(name),
       command: [
-        rst2man,
-        rst2man_flags,
+        rst2html5,
         '@INPUT@',
       ],
       capture: true,
       install: true,
-      install_dir: get_option('mandir') / 'man@0@'.format(section),
+      install_dir: json_docdir / 'json-glib-1.0',
+      install_tag: 'doc',
     )
   endforeach
 endif
