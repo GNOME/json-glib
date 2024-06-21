@@ -1145,7 +1145,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
             {
               endptr = NULL;
               if (token == JSON_TOKEN_FLOAT)
-                value.v_float = g_strtod (gstring->str, &endptr);
+                value.v_float = g_ascii_strtod (gstring->str, &endptr);
               else if (token == JSON_TOKEN_INT)
                 value.v_int64 = g_ascii_strtoll (gstring->str, &endptr, 10);
 
