@@ -114,15 +114,6 @@ struct _JsonScanner
   gpointer user_data;
 };
 
-#define	to_lower(c) ( \
-  (guchar) ( \
-    ( (((guchar)(c))>='A' && ((guchar)(c))<='Z') * ('a'-'A') ) | \
-    ( (((guchar)(c))>=192 && ((guchar)(c))<=214) * (224-192) ) | \
-    ( (((guchar)(c))>=216 && ((guchar)(c))<=222) * (248-216) ) | \
-    ((guchar)(c)) \
-  ) \
-)
-
 static const gchar json_symbol_names[] =
   "true\0"
   "false\0"
@@ -131,8 +122,8 @@ static const gchar json_symbol_names[] =
 
 static const struct
 {
-  guint name_offset;
-  guint token;
+  unsigned int name_offset;
+  unsigned int token;
 } json_symbols[] = {
   {  0, JSON_TOKEN_TRUE  },
   {  5, JSON_TOKEN_FALSE },
@@ -140,47 +131,28 @@ static const struct
   { 16, JSON_TOKEN_VAR   }
 };
 
-static void     json_scanner_get_token_ll    (JsonScanner    *scanner,
-                                              unsigned int   *token_p,
-                                              JsonTokenValue *value_p,
-                                              guint          *line_p,
-                                              guint          *position_p);
-static void	json_scanner_get_token_i     (JsonScanner    *scanner,
-                                              unsigned int   *token_p,
-                                              JsonTokenValue *value_p,
-                                              guint          *line_p,
-                                              guint          *position_p);
+static void          json_scanner_get_token_ll   (JsonScanner    *scanner,
+                                                   unsigned int   *token_p,
+                                                  JsonTokenValue *value_p,
+                                                  unsigned int   *line_p,
+                                                  unsigned int   *position_p);
+static void	     json_scanner_get_token_i    (JsonScanner    *scanner,
+                                                  unsigned int   *token_p,
+                                                  JsonTokenValue *value_p,
+                                                  unsigned int   *line_p,
+                                                  unsigned int   *position_p);
 
-static guchar   json_scanner_peek_next_char  (JsonScanner *scanner);
-static guchar   json_scanner_get_char        (JsonScanner *scanner,
-                                              guint       *line_p,
-                                              guint       *position_p);
-static bool     json_scanner_get_unichar     (JsonScanner *scanner,
-                                              gunichar    *ucs,
-                                              guint       *line_p,
-                                              guint       *position_p);
-static void     json_scanner_error           (JsonScanner *scanner,
-                                              const char  *format,
-                                              ...) G_GNUC_PRINTF (2,3);
-
-static inline gint
-json_scanner_char_2_num (guchar c,
-                         guchar base)
-{
-  if (c >= '0' && c <= '9')
-    c -= '0';
-  else if (c >= 'A' && c <= 'Z')
-    c -= 'A' - 10;
-  else if (c >= 'a' && c <= 'z')
-    c -= 'a' - 10;
-  else
-    return -1;
-  
-  if (c < base)
-    return c;
-  
-  return -1;
-}
+static unsigned char json_scanner_peek_next_char (JsonScanner    *scanner);
+static unsigned char json_scanner_get_char       (JsonScanner    *scanner,
+                                                  unsigned int   *line_p,
+                                                  unsigned int   *position_p);
+static bool          json_scanner_get_unichar    (JsonScanner    *scanner,
+                                                  gunichar       *ucs,
+                                                  unsigned int   *line_p,
+                                                  unsigned int   *position_p);
+static void          json_scanner_error          (JsonScanner    *scanner,
+                                                  const char     *format,
+                                                  ...) G_GNUC_PRINTF (2,3);
 
 JsonScanner *
 json_scanner_new (bool strict)
@@ -881,9 +853,6 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 		      ch = json_scanner_get_char (scanner, line_p, position_p);
 		      switch (ch)
 			{
-			  guint	i;
-			  guint	fchar;
-			  
 			case 0:
 			  break;
 
@@ -920,7 +889,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 			  break;
 
                         case 'u':
-                          fchar = json_scanner_peek_next_char (scanner);
+                          guint fchar = json_scanner_peek_next_char (scanner);
                           if (is_hex_digit (fchar))
                             {
                               gunichar ucs;
@@ -1026,30 +995,6 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
                             }
                           break;
 			  
-			case '0':
-			case '1':
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			  i = ch - '0';
-			  fchar = json_scanner_peek_next_char (scanner);
-			  if (fchar >= '0' && fchar <= '7')
-			    {
-			      ch = json_scanner_get_char (scanner, line_p, position_p);
-			      i = i * 8 + ch - '0';
-			      fchar = json_scanner_peek_next_char (scanner);
-			      if (fchar >= '0' && fchar <= '7')
-				{
-				  ch = json_scanner_get_char (scanner, line_p, position_p);
-				  i = i * 8 + ch - '0';
-				}
-			    }
-			  gstring = g_string_append_c (gstring, i);
-			  break;
-
 			default:
                           token = JSON_TOKEN_ERROR;
                           value.v_error = JSON_ERROR_TYPE_UNESCAPED_CTRL;
@@ -1119,7 +1064,8 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 
 	      ch = json_scanner_peek_next_char (scanner);
 
-	      if (json_scanner_char_2_num (ch, 36) >= 0 ||
+	      if ((ch >= '0' && ch <= '9') ||
+                  (ch == 'e' || ch == 'E') ||
 		  ch == '.' ||
 		  (is_E && (ch == '+' || ch == '-')))
 		{
