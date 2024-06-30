@@ -1,11 +1,17 @@
 Overview of changes for 1.10
 ==============================
-• Improve the JSON tokenizer
+• Improve the performance and reliability of the JSON tokenizer
 • Improve conformance of the JSON parser
 • Add conformance test suite from https://github.com/nst/JSONTestSuite
-• Add JsonParser:strict to enable strict parsing
+• Add JsonParser:strict to enable strict parsing [#15]
 • Add `--strict` to json-glib-validate to enable strict parsing
 • Deprecate the signals on JsonParser
+• Port tools man pages from DocBook to reStructureText
+• Add "documentation" configuration option, and deprecate "gtk_doc"
+• Add JsonGenerator.take_root() [#51]
+• Documentation improvements for JsonReader [!72]
+• Raise parser error for malformed Unicode [#10]
+• Build fixes and performance improvements
 
 Overview of changes for 1.8
 ==============================

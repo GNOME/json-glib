@@ -6,7 +6,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 project('json-glib', 'c',
-  version: '1.9.1',
+  version: '1.9.3',
   license: 'LGPL-2.1-or-later',
   default_options: [
     'warning_level=2',
