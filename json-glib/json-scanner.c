@@ -835,217 +835,219 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	  ch = 0;
 	  break;
 
-	case '"':
-	  token = JSON_TOKEN_STRING;
-	  in_string_dq = true;
-	  gstring = g_string_new (NULL);
-	  while ((ch = json_scanner_get_char (scanner, line_p, position_p)) != 0)
-	    {
-	      if (ch == '"' || token == JSON_TOKEN_ERROR)
-		{
-		  in_string_dq = false;
-		  break;
-		}
-	      else
-		{
-		  if (ch == '\\')
-		    {
-		      ch = json_scanner_get_char (scanner, line_p, position_p);
-		      switch (ch)
-			{
-			case 0:
-			  break;
+  case '"':
+    token = JSON_TOKEN_STRING;
+    in_string_dq = true;
+    gstring = g_string_new(NULL);
+    while ((ch = json_scanner_get_char(scanner, line_p, position_p)) != 0)
+    {
+      if (ch == '"' || token == JSON_TOKEN_ERROR)
+      {
+        in_string_dq = false;
+        break;
+      }
+      else
+      {
+        if (ch == '\\')
+        {
+          ch = json_scanner_get_char(scanner, line_p, position_p);
+          switch (ch)
+          {
+          case 0:
+            break;
 
-                        case '"':
-                          gstring = g_string_append_c (gstring, '"');
-                          break;
-			  
-			case '\\':
-			  gstring = g_string_append_c (gstring, '\\');
-			  break;
+          case '"':
+            gstring = g_string_append_c(gstring, '"');
+            break;
 
-                        case '/':
-                          gstring = g_string_append_c (gstring, '/');
-                          break;
-			  
-			case 'n':
-			  gstring = g_string_append_c (gstring, '\n');
-			  break;
-			  
-			case 't':
-			  gstring = g_string_append_c (gstring, '\t');
-			  break;
-			  
-			case 'r':
-			  gstring = g_string_append_c (gstring, '\r');
-			  break;
-			  
-			case 'b':
-			  gstring = g_string_append_c (gstring, '\b');
-			  break;
-			  
-			case 'f':
-			  gstring = g_string_append_c (gstring, '\f');
-			  break;
+          case '\\':
+            gstring = g_string_append_c(gstring, '\\');
+            break;
 
-                        case 'u':
-                          guint fchar = json_scanner_peek_next_char (scanner);
-                          if (is_hex_digit (fchar))
-                            {
-                              gunichar ucs;
+          case '/':
+            gstring = g_string_append_c(gstring, '/');
+            break;
 
-                              if (!json_scanner_get_unichar (scanner, &ucs, line_p, position_p))
-                                {
-                                  token = JSON_TOKEN_ERROR;
-                                  value.v_error = JSON_ERROR_TYPE_MALFORMED_UNICODE;
-                                  g_string_free (gstring, TRUE);
-                                  gstring = NULL;
-                                  break;
-                                }
+          case 'n':
+            gstring = g_string_append_c(gstring, '\n');
+            break;
 
-                              /* resolve UTF-16 surrogates for Unicode characters not in the BMP,
-                               * as per ECMA 404, § 9, "String"
-                               */
-                              if (g_unichar_type (ucs) == G_UNICODE_SURROGATE)
-                                {
-                                  unsigned int next_ch;
+          case 't':
+            gstring = g_string_append_c(gstring, '\t');
+            break;
 
-                                  next_ch = json_scanner_peek_next_char (scanner);
-                                  if (next_ch != '\\')
-                                    {
-                                      token = JSON_TOKEN_ERROR;
-                                      value.v_error = JSON_ERROR_TYPE_MALFORMED_SURROGATE_PAIR;
-                                      g_string_free (gstring, TRUE);
-                                      gstring = NULL;
-                                      break;
-                                    }
-                                  else
-                                    ch = json_scanner_get_char (scanner, line_p, position_p);
+          case 'r':
+            gstring = g_string_append_c(gstring, '\r');
+            break;
 
-                                  next_ch = json_scanner_peek_next_char (scanner);
-                                  if (next_ch != 'u')
-                                    {
-                                      token = JSON_TOKEN_ERROR;
-                                      value.v_error = JSON_ERROR_TYPE_MALFORMED_SURROGATE_PAIR;
-                                      g_string_free (gstring, TRUE);
-                                      gstring = NULL;
-                                      break;
-                                    }
-                                  else
-                                    ch = json_scanner_get_char (scanner, line_p, position_p);
+          case 'b':
+            gstring = g_string_append_c(gstring, '\b');
+            break;
 
-                                  /* read next surrogate */
-                                  gunichar units[2];
+          case 'f':
+            gstring = g_string_append_c(gstring, '\f');
+            break;
 
-                                  units[0] = ucs;
+          case 'u':
+          {
+            guint fchar = json_scanner_peek_next_char(scanner);
+            if (is_hex_digit(fchar))
+            {
+              gunichar ucs;
 
-                                  if (!json_scanner_get_unichar (scanner, &ucs, line_p, position_p))
-                                    {
-                                      token = JSON_TOKEN_ERROR;
-                                      value.v_error = JSON_ERROR_TYPE_MALFORMED_UNICODE;
-                                      g_string_free (gstring, TRUE);
-                                      gstring = NULL;
-                                      break;
-                                    }
+              if (!json_scanner_get_unichar(scanner, &ucs, line_p, position_p))
+              {
+                token = JSON_TOKEN_ERROR;
+                value.v_error = JSON_ERROR_TYPE_MALFORMED_UNICODE;
+                g_string_free(gstring, TRUE);
+                gstring = NULL;
+                break;
+              }
 
-                                  units[1] = ucs;
+              /* resolve UTF-16 surrogates for Unicode characters not in the BMP,
+               * as per ECMA 404, § 9, "String"
+               */
+              if (g_unichar_type(ucs) == G_UNICODE_SURROGATE)
+              {
+                unsigned int next_ch;
 
-                                  if (0xdc00 <= units[1] && units[1] <= 0xdfff &&
-                                      0xd800 <= units[0] && units[0] <= 0xdbff)
-                                    {
-                                      ucs = decode_utf16_surrogate_pair (units);
-                                      if (!g_unichar_validate (ucs))
-                                        {
-                                          token = JSON_TOKEN_ERROR;
-                                          value.v_error = JSON_ERROR_TYPE_MALFORMED_UNICODE;
-                                          g_string_free (gstring, TRUE);
-                                          gstring = NULL;
-                                          break;
-                                        }
-                                    }
-                                  else
-                                    {
-                                      token = JSON_TOKEN_ERROR;
-                                      value.v_error = JSON_ERROR_TYPE_MALFORMED_SURROGATE_PAIR;
-                                      g_string_free (gstring, TRUE);
-                                      gstring = NULL;
-                                      break;
-                                    }
-                                }
-                              else
-                                {
-                                  if (!g_unichar_validate (ucs))
-                                    {
-                                      token = JSON_TOKEN_ERROR;
-                                      value.v_error = JSON_ERROR_TYPE_MALFORMED_UNICODE;
-                                      g_string_free (gstring, TRUE);
-                                      gstring = NULL;
-                                      break;
-                                    }
-                                }
+                next_ch = json_scanner_peek_next_char(scanner);
+                if (next_ch != '\\')
+                {
+                  token = JSON_TOKEN_ERROR;
+                  value.v_error = JSON_ERROR_TYPE_MALFORMED_SURROGATE_PAIR;
+                  g_string_free(gstring, TRUE);
+                  gstring = NULL;
+                  break;
+                }
+                else
+                  ch = json_scanner_get_char(scanner, line_p, position_p);
 
-                              gstring = g_string_append_unichar (gstring, ucs);
-                            }
-                          else
-                            {
-                              token = JSON_TOKEN_ERROR;
-                              value.v_error = JSON_ERROR_TYPE_MALFORMED_UNICODE;
-                              g_string_free (gstring, TRUE);
-                              gstring = NULL;
-                            }
-                          break;
-			  
-			default:
-                          token = JSON_TOKEN_ERROR;
-                          value.v_error = JSON_ERROR_TYPE_UNESCAPED_CTRL;
-                          g_string_free (gstring, TRUE);
-                          gstring = NULL;
-			  break;
-			}
-		    }
-                  else if (ch == '\n' || ch == '\t' || ch == '\r' || ch == '\f' || ch == '\b')
-                    {
-                      token = JSON_TOKEN_ERROR;
-                      value.v_error = JSON_ERROR_TYPE_UNESCAPED_CTRL;
-                      g_string_free (gstring, TRUE);
-                      gstring = NULL;
-                      break;
-                    }
-		  else
-		    gstring = g_string_append_c (gstring, ch);
-		}
-	    }
-	  ch = 0;
-	  break;
+                next_ch = json_scanner_peek_next_char(scanner);
+                if (next_ch != 'u')
+                {
+                  token = JSON_TOKEN_ERROR;
+                  value.v_error = JSON_ERROR_TYPE_MALFORMED_SURROGATE_PAIR;
+                  g_string_free(gstring, TRUE);
+                  gstring = NULL;
+                  break;
+                }
+                else
+                  ch = json_scanner_get_char(scanner, line_p, position_p);
 
-        /* {{{ number parsing */
-        case '-':
-          if (!g_ascii_isdigit (json_scanner_peek_next_char (scanner)))
+                /* read next surrogate */
+                gunichar units[2];
+
+                units[0] = ucs;
+
+                if (!json_scanner_get_unichar(scanner, &ucs, line_p, position_p))
+                {
+                  token = JSON_TOKEN_ERROR;
+                  value.v_error = JSON_ERROR_TYPE_MALFORMED_UNICODE;
+                  g_string_free(gstring, TRUE);
+                  gstring = NULL;
+                  break;
+                }
+
+                units[1] = ucs;
+
+                if (0xdc00 <= units[1] && units[1] <= 0xdfff &&
+                    0xd800 <= units[0] && units[0] <= 0xdbff)
+                {
+                  ucs = decode_utf16_surrogate_pair(units);
+                  if (!g_unichar_validate(ucs))
+                  {
+                    token = JSON_TOKEN_ERROR;
+                    value.v_error = JSON_ERROR_TYPE_MALFORMED_UNICODE;
+                    g_string_free(gstring, TRUE);
+                    gstring = NULL;
+                    break;
+                  }
+                }
+                else
+                {
+                  token = JSON_TOKEN_ERROR;
+                  value.v_error = JSON_ERROR_TYPE_MALFORMED_SURROGATE_PAIR;
+                  g_string_free(gstring, TRUE);
+                  gstring = NULL;
+                  break;
+                }
+              }
+              else
+              {
+                if (!g_unichar_validate(ucs))
+                {
+                  token = JSON_TOKEN_ERROR;
+                  value.v_error = JSON_ERROR_TYPE_MALFORMED_UNICODE;
+                  g_string_free(gstring, TRUE);
+                  gstring = NULL;
+                  break;
+                }
+              }
+
+              gstring = g_string_append_unichar(gstring, ucs);
+            }
+            else
             {
               token = JSON_TOKEN_ERROR;
-              value.v_error = JSON_ERROR_TYPE_NON_DIGIT_IN_CONST;
-              ch = 0;
-              break;
+              value.v_error = JSON_ERROR_TYPE_MALFORMED_UNICODE;
+              g_string_free(gstring, TRUE);
+              gstring = NULL;
             }
-            G_GNUC_FALLTHROUGH;
+            break;
+          }
 
-	case '0':
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-	case '5':
-	case '6':
-	case '7':
-	case '8':
-	case '9':
-	{
-          bool in_number = true;
-          bool leading_sign = ch == '-';
-          bool leading_zero = ch == '0';
-	  char *endptr;
-	  
-	  if (token == JSON_TOKEN_NONE)
+          default:
+            token = JSON_TOKEN_ERROR;
+            value.v_error = JSON_ERROR_TYPE_UNESCAPED_CTRL;
+            g_string_free(gstring, TRUE);
+            gstring = NULL;
+            break;
+          }
+        }
+        else if (ch == '\n' || ch == '\t' || ch == '\r' || ch == '\f' || ch == '\b')
+        {
+          token = JSON_TOKEN_ERROR;
+          value.v_error = JSON_ERROR_TYPE_UNESCAPED_CTRL;
+          g_string_free(gstring, TRUE);
+          gstring = NULL;
+          break;
+        }
+        else
+          gstring = g_string_append_c(gstring, ch);
+      }
+    }
+    ch = 0;
+    break;
+
+  /* {{{ number parsing */
+  case '-':
+    if (!g_ascii_isdigit(json_scanner_peek_next_char(scanner)))
+    {
+      token = JSON_TOKEN_ERROR;
+      value.v_error = JSON_ERROR_TYPE_NON_DIGIT_IN_CONST;
+      ch = 0;
+      break;
+    }
+    G_GNUC_FALLTHROUGH;
+
+  case '0':
+  case '1':
+  case '2':
+  case '3':
+  case '4':
+  case '5':
+  case '6':
+  case '7':
+  case '8':
+  case '9':
+  {
+    bool in_number = true;
+    bool leading_sign = ch == '-';
+    bool leading_zero = ch == '0';
+    char *endptr;
+
+    if (token == JSON_TOKEN_NONE)
 	    token = JSON_TOKEN_INT;
 	  
 	  gstring = g_string_new ("");
@@ -1161,8 +1163,8 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	  g_string_free (gstring, TRUE);
 	  gstring = NULL;
 	  ch = 0;
-	}
-	break; /* number parsing }}} */
+  }
+  break; /* number parsing }}} */
 
 	default:
 	default_case:
