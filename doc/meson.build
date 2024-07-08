@@ -48,7 +48,7 @@ if get_option('man') and rst2man.found()
   endforeach
 endif
 
-if build_doc
+if build_doc and gidocgen.found()
   json_docdir = json_datadir / 'doc'
 
   toml_conf = configuration_data()
