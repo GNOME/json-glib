@@ -1249,7 +1249,7 @@ json_object_iter_next_ordered (JsonObjectIter  *iter,
       if (name != NULL)
         *member_node = g_hash_table_lookup (iter_real->object->members, name);
       else
-        *member_name = NULL;
+        *member_node = NULL;
     }
 
   return iter_real->cur_member != NULL;
