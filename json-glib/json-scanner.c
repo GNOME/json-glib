@@ -921,7 +921,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
                                       break;
                                     }
                                   else
-                                    ch = json_scanner_get_char (scanner, line_p, position_p);
+                                    json_scanner_get_char (scanner, line_p, position_p);
 
                                   next_ch = json_scanner_peek_next_char (scanner);
                                   if (next_ch != 'u')
@@ -933,7 +933,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
                                       break;
                                     }
                                   else
-                                    ch = json_scanner_get_char (scanner, line_p, position_p);
+                                    json_scanner_get_char (scanner, line_p, position_p);
 
                                   /* read next surrogate */
                                   gunichar units[2];
