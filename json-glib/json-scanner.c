@@ -889,6 +889,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 			  break;
 
                         case 'u':
+                        {
                           guint fchar = json_scanner_peek_next_char (scanner);
                           if (is_hex_digit (fchar))
                             {
@@ -994,7 +995,8 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
                               gstring = NULL;
                             }
                           break;
-			  
+                        }
+
 			default:
                           token = JSON_TOKEN_ERROR;
                           value.v_error = JSON_ERROR_TYPE_UNESCAPED_CTRL;
