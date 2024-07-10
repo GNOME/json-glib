@@ -613,6 +613,7 @@ test_mapped_file_error (void)
 
   g_assert_null (json_parser_get_root (parser));
 
+  g_clear_error (&error);
   g_object_unref (parser);
 }
 
@@ -631,6 +632,7 @@ test_mapped_json_error (void)
 
   g_assert_null (json_parser_get_root (parser));
 
+  g_clear_error (&error);
   g_object_unref (parser);
   g_free (path);
 }
