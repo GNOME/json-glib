@@ -122,7 +122,7 @@ typedef enum {
  * @object: the iterated JSON object
  * @member_name: the name of the member
  * @member_node: the value of the member
- * @user_data: data passed to the function
+ * @user_data: (closure): data passed to the function
  *
  * The function to be passed to [method@Json.Object.foreach_member].
  *
@@ -143,7 +143,7 @@ typedef void (* JsonObjectForeach) (JsonObject  *object,
  * @array: the iterated JSON array
  * @index_: the index of the element
  * @element_node: the value of the element at the given @index_
- * @user_data: data passed to the function
+ * @user_data: (closure): data passed to the function
  *
  * The function to be passed to [method@Json.Array.foreach_element].
  *

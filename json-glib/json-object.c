@@ -939,8 +939,8 @@ json_object_remove_member (JsonObject  *object,
 /**
  * json_object_foreach_member:
  * @object: a JSON object
- * @func: (scope call): the function to be called on each member
- * @data: (closure): data to be passed to the function
+ * @func: (scope call) (closure data): the function to be called on each member
+ * @data: data to be passed to the function
  *
  * Iterates over all members of @object and calls @func on
  * each one of them.
