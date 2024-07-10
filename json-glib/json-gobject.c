@@ -242,7 +242,7 @@ json_gobject_new (GType       gtype,
   retval = g_object_new_with_properties (gtype,
                                          construct_names->len,
                                          (const char **) construct_names->pdata,
-                                         (GValue *) construct_values->data);
+                                         (GValue *) ((gpointer) construct_values->data));
 
   g_ptr_array_unref (construct_names);
   g_array_unref (construct_values);

@@ -567,7 +567,7 @@ json_path_compile (JsonPath    *path,
                     node = g_new0 (PathNode, 1);
                     node->node_type = JSON_PATH_NODE_ELEMENT_SET;
                     node->data.set.n_indices =  indices->len;
-                    node->data.set.indices = (int *) g_array_free (indices, FALSE);
+                    node->data.set.indices = (int *) ((gpointer) g_array_free (indices, FALSE));
                     nodes = g_list_prepend (nodes, node);
                     p = end_p;
                     break;
