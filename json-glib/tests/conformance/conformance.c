@@ -14,7 +14,7 @@ static GOptionEntry opt_entries[] = {
   { "prefix", 'p', 0, G_OPTION_ARG_STRING, &opt_prefix, "Test prefix", "PREFIX" },
   { "type", 't', 0, G_OPTION_ARG_STRING, &opt_type, "Test type", "TYPE" },
   { "input", 'f', 0, G_OPTION_ARG_FILENAME, &opt_input, "Input file", "FILE" },
-  { NULL },
+  { NULL, 0, 0, 0, NULL, NULL, NULL },
 };
 
 typedef struct {
@@ -70,8 +70,6 @@ main (int argc, char *argv[])
       return EXIT_FAILURE;
     }
 
-  char *dirname = g_path_get_dirname (opt_input);
-
   g_test_message ("type:   %s", opt_type);
   g_test_message ("prefix: %s", opt_prefix);
   g_test_message ("input:  %s", opt_input);
@@ -84,6 +82,8 @@ main (int argc, char *argv[])
       g_error_free (error);
       return EXIT_FAILURE;
     }
+
+  char *dirname = g_path_get_dirname (opt_input);
 
   char **lines = g_strsplit (input_data, "\n", -1);
   for (unsigned int i = 0; lines[i] != NULL && lines[i][0] != 0; i++)
@@ -104,8 +104,12 @@ main (int argc, char *argv[])
       g_test_add_data_func_full (test_path, f, parse_file, fixture_free);
 
       g_free (test_path);
+      g_strfreev (l);
     }
+
   g_strfreev (lines);
+  g_free (input_data);
+  g_free (dirname);
 
   return g_test_run ();
 }

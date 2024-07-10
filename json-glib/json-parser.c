@@ -724,9 +724,10 @@ json_parse_array (JsonParser    *parser,
       /* look for trailing commas */
       if (next_token == JSON_TOKEN_COMMA)
         {
-          token = json_scanner_get_next_token (scanner);
-          next_token = json_scanner_peek_next_token (scanner);
+          /* advance the cursor */
+          json_scanner_get_next_token (scanner);
 
+          next_token = json_scanner_peek_next_token (scanner);
           if (next_token == JSON_TOKEN_RIGHT_BRACE)
             {
               priv->error_code = JSON_PARSER_ERROR_TRAILING_COMMA;
@@ -827,7 +828,8 @@ json_parse_object (JsonParser    *parser,
         }
 
       /* member name */
-      token = json_scanner_get_next_token (scanner);
+      json_scanner_get_next_token (scanner);
+
       name = json_scanner_dup_string_value (scanner);
       if (name == NULL)
         {
@@ -899,10 +901,10 @@ json_parse_object (JsonParser    *parser,
       next_token = json_scanner_peek_next_token (scanner);
       if (next_token == JSON_TOKEN_COMMA)
         {
-          token = json_scanner_get_next_token (scanner);
-          next_token = json_scanner_peek_next_token (scanner);
+          json_scanner_get_next_token (scanner);
 
           /* look for trailing commas */
+          next_token = json_scanner_peek_next_token (scanner);
           if (next_token == JSON_TOKEN_RIGHT_CURLY)
             {
               priv->error_code = JSON_PARSER_ERROR_TRAILING_COMMA;
@@ -1014,7 +1016,7 @@ json_parse_statement (JsonParser  *parser,
           }
 
         /* swallow the 'var' token... */
-        token = json_scanner_get_next_token (scanner);
+        json_scanner_get_next_token (scanner);
 
         /* ... swallow the variable name... */
         next_token = json_scanner_get_next_token (scanner);
@@ -1046,7 +1048,7 @@ json_parse_statement (JsonParser  *parser,
         next_token = json_scanner_peek_next_token (scanner);
         if (next_token == ';')
           {
-            token = json_scanner_get_next_token (scanner);
+            json_scanner_get_next_token (scanner);
             return JSON_TOKEN_NONE;
           }
 
