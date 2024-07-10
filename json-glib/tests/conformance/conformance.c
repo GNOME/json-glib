@@ -104,6 +104,7 @@ main (int argc, char *argv[])
       g_test_add_data_func_full (test_path, f, parse_file, fixture_free);
 
       g_free (test_path);
+      g_strfreev (l);
     }
 
   g_strfreev (lines);
