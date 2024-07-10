@@ -53,8 +53,8 @@ struct _JsonNode
 
   gatomicrefcount ref_count;
 
-  gboolean immutable : 1;
-  gboolean allocated : 1;
+  gboolean immutable;
+  gboolean allocated;
 
   union {
     JsonObject *object;
@@ -81,7 +81,7 @@ struct _JsonValue
   JsonValueType type;
 
   grefcount ref_count;
-  gboolean immutable : 1;
+  gboolean immutable;
 
   union {
     gint64 v_int;
@@ -98,7 +98,7 @@ struct _JsonArray
   grefcount ref_count;
 
   guint immutable_hash;  /* valid iff immutable */
-  gboolean immutable : 1;
+  gboolean immutable;
 };
 
 struct _JsonObject
@@ -111,7 +111,7 @@ struct _JsonObject
 
   int age;
   guint immutable_hash;  /* valid iff immutable */
-  gboolean immutable : 1;
+  gboolean immutable;
 };
 
 typedef struct
