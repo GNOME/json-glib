@@ -14,7 +14,7 @@ static GOptionEntry opt_entries[] = {
   { "prefix", 'p', 0, G_OPTION_ARG_STRING, &opt_prefix, "Test prefix", "PREFIX" },
   { "type", 't', 0, G_OPTION_ARG_STRING, &opt_type, "Test type", "TYPE" },
   { "input", 'f', 0, G_OPTION_ARG_FILENAME, &opt_input, "Input file", "FILE" },
-  { NULL },
+  { NULL, 0, 0, 0, NULL, NULL, NULL },
 };
 
 typedef struct {

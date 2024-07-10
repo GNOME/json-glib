@@ -42,7 +42,7 @@ static gboolean opt_strict;
 static GOptionEntry entries[] = {
   { "strict", 's', 0, G_OPTION_ARG_NONE, &opt_strict, NULL, NULL },
   { G_OPTION_REMAINING, 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &opt_files, NULL, NULL },
-  { NULL },
+  { NULL, 0, 0, 0, NULL, NULL, NULL },
 };
 
 static gboolean
