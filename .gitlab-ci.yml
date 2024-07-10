@@ -35,7 +35,7 @@ stages:
 
 .build-asan:
   script:
-    - meson setup ${MESON_EXTRA_FLAGS} -Db_sanitize=address -Db_lundef=false --prefix /usr _asan_build .
+    - meson setup ${MESON_EXTRA_FLAGS} -Db_sanitize=address,undefined -Db_lundef=false --prefix /usr _asan_build .
     - meson compile -C _asan_build
     - meson test -C _asan_build
   artifacts:
@@ -176,6 +176,7 @@ asan-debug-build:
       git
       glib2-devel
       libasan
+      libubsan
       ninja-build
       python3
       python3-docutils
