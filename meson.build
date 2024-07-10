@@ -191,6 +191,7 @@ summary({
     'Documentation': build_doc,
     'Manual pages': get_option('man'),
     'Tests': get_option('tests'),
+    'Installed tests': get_option('installed_tests'),
     'Conformance tests': get_option('conformance'),
   },
   section: 'Build',

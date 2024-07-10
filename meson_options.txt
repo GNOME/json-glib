@@ -27,3 +27,6 @@ option('conformance',
 option('nls',
        type: 'feature', value: 'auto', yield: true,
        description: 'Enable native language support (translations)')
+option('installed_tests',
+       type: 'boolean', value: true,
+       description: 'Enable installed tests')
