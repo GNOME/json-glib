@@ -319,7 +319,7 @@ json_scanner_input_text (JsonScanner *scanner,
   scanner->next_token = JSON_TOKEN_NONE;
 
   scanner->text = text;
-  scanner->text_end = text + text_len;
+  scanner->text_end = text != NULL ? text + text_len : 0;
 
   g_clear_pointer (&scanner->buffer, g_free);
 }
