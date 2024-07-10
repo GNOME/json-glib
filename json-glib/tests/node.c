@@ -551,7 +551,7 @@ test_immutable_parent (void)
       json_node_seal (parent_immutable);
 
       /* Can we reparent the immutable node? */
-      json_object_set_member (object_mutable, "test", node);
+      json_object_set_member (object_mutable, "test", json_node_ref (node));
       json_node_set_parent (node, parent_mutable);
 
       json_object_remove_member (object_mutable, "test");
@@ -559,6 +559,8 @@ test_immutable_parent (void)
 
       /* Boom. */
       json_node_set_parent (node, parent_immutable);
+
+      json_node_unref (node);
     }
 
   g_test_trap_subprocess (NULL, 0, 0);
