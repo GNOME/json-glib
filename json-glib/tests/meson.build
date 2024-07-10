@@ -31,7 +31,9 @@ test_data = [
 installed_test_bindir = json_libexecdir / 'installed-tests' / json_api_name
 installed_test_datadir = json_datadir / 'installed-tests' / json_api_name
 
-install_data(test_data, install_dir: installed_test_bindir)
+if get_option('installed_tests')
+  install_data(test_data, install_dir: installed_test_bindir)
+endif
 
 foreach t: tests
   installed_test = '@0@.test'.format(t)
@@ -46,14 +48,14 @@ foreach t: tests
       '--outdir=@OUTDIR@',
       '--outfile=@0@'.format(installed_test),
     ],
-    install: true,
+    install: get_option('installed_tests'),
     install_dir: installed_test_datadir,
   )
 
   exe = executable(
     t, '@0@.c'.format(t),
     c_args: json_c_args,
-    install: true,
+    install: get_option('installed_tests'),
     install_dir: installed_test_bindir,
     dependencies: [ json_glib_dep, ],
   )
