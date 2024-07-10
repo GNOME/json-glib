@@ -106,6 +106,7 @@ main (int argc, char *argv[])
       g_free (test_path);
     }
   g_strfreev (lines);
+  g_free (input_data);
 
   return g_test_run ();
 }
