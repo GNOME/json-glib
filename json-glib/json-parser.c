@@ -91,6 +91,8 @@ struct _JsonParserPrivate
   gchar *variable_name;
   gchar *filename;
 
+  bool multi_root;
+
   guint has_assignment : 1;
   guint is_filename    : 1;
   guint is_immutable   : 1;
@@ -144,6 +146,8 @@ json_parser_clear (JsonParser *parser)
   g_clear_pointer (&priv->variable_name, g_free);
   g_clear_pointer (&priv->last_error, g_error_free);
   g_clear_pointer (&priv->root, json_node_unref);
+
+  priv->multi_root = false;
 }
 
 static inline void
@@ -982,8 +986,45 @@ json_parse_statement (JsonParser  *parser,
           priv->error_code = JSON_PARSER_ERROR_INVALID_STRUCTURE;
           return JSON_TOKEN_EOF;
         }
-      JSON_NOTE (PARSER, "Statement is object declaration");
-      return json_parse_object (parser, scanner, &priv->root, 0);
+      else if (priv->root != NULL)
+        {
+          JsonArray *array;
+
+          if (!priv->multi_root)
+            {
+              JSON_NOTE (PARSER, "Replacing new root with an array");
+
+              JsonNode *old_root = g_steal_pointer (&priv->root);
+              priv->root = json_node_new (JSON_NODE_ARRAY);
+
+              array = json_array_new ();
+              json_array_add_element (array, old_root);
+              json_node_set_parent (old_root, priv->root);
+
+              json_node_take_array (priv->root, array);
+
+              priv->multi_root = true;
+            }
+          else
+            {
+              g_assert (JSON_NODE_HOLDS_ARRAY (priv->root));
+              array = json_node_get_array (priv->root);
+            }
+
+          JsonNode *node = NULL;
+          guint res;
+
+          res = json_parse_object (parser, scanner, &node, 0);
+          if (node != NULL)
+            json_array_add_element (array, node);
+          return res;
+        }
+      else
+        {
+          JSON_NOTE (PARSER, "Statement is object declaration");
+          return json_parse_object (parser, scanner, &priv->root, 0);
+        }
+      break;
 
     case JSON_TOKEN_LEFT_BRACE:
       if (priv->is_strict && priv->root != NULL)
@@ -993,8 +1034,45 @@ json_parse_statement (JsonParser  *parser,
           priv->error_code = JSON_PARSER_ERROR_INVALID_STRUCTURE;
           return JSON_TOKEN_EOF;
         }
-      JSON_NOTE (PARSER, "Statement is array declaration");
-      return json_parse_array (parser, scanner, &priv->root, 0);
+      else if (priv->root != NULL)
+        {
+          JsonArray *array;
+
+          if (!priv->multi_root)
+            {
+              JSON_NOTE (PARSER, "Replacing new root with an array");
+
+              JsonNode *old_root = g_steal_pointer (&priv->root);
+              priv->root = json_node_new (JSON_NODE_ARRAY);
+
+              array = json_array_new ();
+              json_array_add_element (array, old_root);
+              json_node_set_parent (old_root, priv->root);
+
+              json_node_take_array (priv->root, array);
+
+              priv->multi_root = true;
+            }
+          else
+            {
+              g_assert (JSON_NODE_HOLDS_ARRAY (priv->root));
+              array = json_node_get_array (priv->root);
+            }
+
+          JsonNode *node = NULL;
+          guint res;
+
+          res = json_parse_array (parser, scanner, &node, 0);
+          if (node != NULL)
+            json_array_add_element (array, node);
+          return res;
+        }
+      else
+        {
+          JSON_NOTE (PARSER, "Statement is array declaration");
+          return json_parse_array (parser, scanner, &priv->root, 0);
+        }
+      break;
 
     /* some web APIs are not only passing the data structures: they are
      * also passing an assigment, which makes parsing horribly complicated
