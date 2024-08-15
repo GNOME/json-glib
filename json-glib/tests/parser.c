@@ -147,6 +147,15 @@ static const struct
   { "{ \"test\" : \"foo \\u00e8\" }", "test", "foo è" }
 };
 
+static const struct
+{
+  const char *str;
+  int length;
+} test_multi_root[] = {
+  { "[][]{}{}", 4 },
+  { "{ \"foo\": false }[ 42 ]{ \"bar\": true }", 3 },
+};
+
 static guint n_test_base_values    = G_N_ELEMENTS (test_base_values);
 static guint n_test_simple_arrays  = G_N_ELEMENTS (test_simple_arrays);
 static guint n_test_nested_arrays  = G_N_ELEMENTS (test_nested_arrays);
@@ -154,6 +163,7 @@ static guint n_test_simple_objects = G_N_ELEMENTS (test_simple_objects);
 static guint n_test_nested_objects = G_N_ELEMENTS (test_nested_objects);
 static guint n_test_assignments    = G_N_ELEMENTS (test_assignments);
 static guint n_test_unicode        = G_N_ELEMENTS (test_unicode);
+static guint n_test_multi_root     = G_N_ELEMENTS (test_multi_root);
 
 static void
 test_empty_with_parser (JsonParser *parser)
@@ -637,6 +647,29 @@ test_mapped_json_error (void)
   g_free (path);
 }
 
+static void
+test_multiple_roots (void)
+{
+  JsonParser *parser = json_parser_new ();
+
+  for (guint i = 0; i < n_test_multi_root; i++)
+    {
+      GError *error = NULL;
+
+      json_parser_load_from_data (parser, test_multi_root[i].str, -1, &error);
+      g_assert_no_error (error);
+
+      JsonNode *root = json_parser_steal_root (parser);
+      g_assert_nonnull (root);
+      g_assert_true (json_node_get_node_type (root) == JSON_NODE_ARRAY);
+      g_assert_cmpint (json_array_get_length (json_node_get_array (root)), ==, test_multi_root[i].length);
+
+      json_node_unref (root);
+    }
+
+  g_object_unref (parser);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -655,6 +688,7 @@ main (int   argc,
   g_test_add_func ("/parser/unicode-escape", test_unicode_escape);
   g_test_add_func ("/parser/stream-sync", test_stream_sync);
   g_test_add_func ("/parser/stream-async", test_stream_async);
+  g_test_add_func ("/parser/multiple-roots", test_multiple_roots);
   g_test_add_func ("/parser/mapped", test_mapped);
   g_test_add_func ("/parser/mapped/file-error", test_mapped_file_error);
   g_test_add_func ("/parser/mapped/json-error", test_mapped_json_error);
