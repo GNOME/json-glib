@@ -23,11 +23,12 @@ source_h = [
   'json-version-macros.h'
 ]
 
-json_glib_enums = gnome.mkenums(
+json_glib_enums = gnome.mkenums_simple(
   'json-enum-types',
   sources: source_h,
-  h_template: 'json-enum-types.h.in',
-  c_template: 'json-enum-types.c.in',
+  header_prefix: '#include <json-glib/json-version-macros.h>',
+  body_prefix: '#include "config.h"',
+  decorator: 'JSON_AVAILABLE_IN_1_0',
   install_header: true,
   install_dir: install_header_dir,
 )
