@@ -457,7 +457,8 @@ json_scanner_unexp_token (JsonScanner  *scanner,
 	    g_snprintf (token_string, token_string_len, "character `\\%o'", scanner->token);
 	  break;
 	}
-      /* fall through */
+      G_GNUC_FALLTHROUGH;
+
     case JSON_TOKEN_SYMBOL:
       if (expected_token == JSON_TOKEN_SYMBOL || expected_token > JSON_TOKEN_LAST)
 	print_unexp = false;
@@ -593,7 +594,8 @@ json_scanner_unexp_token (JsonScanner  *scanner,
 	    g_snprintf (expected_string, expected_string_len, "character `\\%o'", expected_token);
 	  break;
 	}
-      /* fall through */
+      G_GNUC_FALLTHROUGH;
+
     case JSON_TOKEN_SYMBOL:
       {
         bool need_valid = (scanner->token == JSON_TOKEN_SYMBOL || scanner->token > JSON_TOKEN_LAST);
@@ -1029,7 +1031,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
               ch = 0;
               break;
             }
-            G_GNUC_FALLTHROUGH;
+          G_GNUC_FALLTHROUGH;
 
 	case '0':
 	case '1':
