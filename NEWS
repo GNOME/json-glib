@@ -12,6 +12,9 @@ Overview of changes for 1.10
 • Documentation improvements for JsonReader [!72]
 • Raise parser error for malformed Unicode [#10]
 • Build fixes and performance improvements
+• Allow disabling installed tests [#72]
+• Support parsing multiple root statements in non-strict mode [#74]
+• Allow loading files >4GB with json-glib-validate
 
 Overview of changes for 1.8
 ==============================
