@@ -6,47 +6,46 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues\n"
-"POT-Creation-Date: 2022-09-18 08:04+0000\n"
-"PO-Revision-Date: 2022-09-23 19:37+0200\n"
-"Last-Translator: Temuri Doghonadze <temuri.doghonadze@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues/\n"
+"POT-Creation-Date: 2024-09-03 21:07+0000\n"
+"PO-Revision-Date: 2024-09-08 04:53+0200\n"
+"Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: \n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.3.2\n"
 
-#: json-glib/json-glib-format.c:58
+#: json-glib/json-glib-format.c:59
 msgid "Prettify output"
 msgstr "გამოტანის გალამაზება"
 
-#: json-glib/json-glib-format.c:59
+#: json-glib/json-glib-format.c:60
 msgid "Indentation spaces"
 msgstr "სწორების გამოტოვებები"
 
-#: json-glib/json-glib-format.c:59
+#: json-glib/json-glib-format.c:60
 msgid "SPACES"
 msgstr "SPACES"
 
-#: json-glib/json-glib-format.c:60
+#: json-glib/json-glib-format.c:61
 msgid "Output file"
 msgstr "გამოტანის ფაილი"
 
-#: json-glib/json-glib-format.c:60 json-glib/json-glib-validate.c:115
+#: json-glib/json-glib-format.c:61 json-glib/json-glib-validate.c:108
 msgid "FILE"
 msgstr "FILE"
 
-#: json-glib/json-glib-format.c:61
+#: json-glib/json-glib-format.c:62
 msgid "FILE…"
 msgstr "FILE…"
 
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:87 json-glib/json-glib-format.c:123
-#: json-glib/json-glib-validate.c:63
+#: json-glib/json-glib-format.c:88 json-glib/json-glib-format.c:124
 #, c-format
 msgid "%s: %s: error opening file: %s\n"
 msgstr "%s: %s: ფაილის გახსნის შეცდომა: %s\n"
@@ -54,7 +53,7 @@ msgstr "%s: %s: ფაილის გახსნის შეცდომა: 
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:101 json-glib/json-glib-validate.c:75
+#: json-glib/json-glib-format.c:102 json-glib/json-glib-validate.c:79
 #, c-format
 msgid "%s: %s: error parsing file: %s\n"
 msgstr "%s: %s: ფაილის დამუშავების შეცდომა: %s\n"
@@ -62,7 +61,7 @@ msgstr "%s: %s: ფაილის დამუშავების შეც�
 #. Translators: the first %s is the program name, the
 #. * second one is the URI of the file.
 #.
-#: json-glib/json-glib-format.c:143
+#: json-glib/json-glib-format.c:144
 #, c-format
 msgid "%s: %s: error writing to stdout"
 msgstr "%s: %s: სტანდარტულ გამოტანაზე ჩაწერის შეცდომა"
@@ -70,18 +69,18 @@ msgstr "%s: %s: სტანდარტულ გამოტანაზე �
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:167 json-glib/json-glib-validate.c:87
+#: json-glib/json-glib-format.c:168
 #, c-format
 msgid "%s: %s: error closing: %s\n"
 msgstr "%s: %s: დახურვის შეცდომა: %s\n"
 
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
-#: json-glib/json-glib-format.c:203
+#: json-glib/json-glib-format.c:204
 msgid "Format JSON files."
 msgstr "JSON ფაილების დაფორმატება."
 
-#: json-glib/json-glib-format.c:204
+#: json-glib/json-glib-format.c:205
 msgid "json-glib-format formats JSON resources."
 msgstr "json-glib-format აფორმატებს JSON რესურსებს."
 
@@ -89,13 +88,13 @@ msgstr "json-glib-format აფორმატებს JSON რესურს�
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: json-glib/json-glib-format.c:219 json-glib/json-glib-validate.c:136
+#: json-glib/json-glib-format.c:220 json-glib/json-glib-validate.c:129
 #, c-format
 msgid "Error parsing commandline options: %s\n"
 msgstr "ბრძანების სტრიქონის პარამეტრების დამუშავების შეცდომა: %s\n"
 
-#: json-glib/json-glib-format.c:221 json-glib/json-glib-format.c:235
-#: json-glib/json-glib-validate.c:138 json-glib/json-glib-validate.c:152
+#: json-glib/json-glib-format.c:222 json-glib/json-glib-format.c:236
+#: json-glib/json-glib-validate.c:131 json-glib/json-glib-validate.c:145
 #, c-format
 msgid "Try “%s --help” for more information."
 msgstr "მეტი ინფორმაციისთვის სცადეთ '%s --help'."
@@ -104,64 +103,72 @@ msgstr "მეტი ინფორმაციისთვის სცად�
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: json-glib/json-glib-format.c:233 json-glib/json-glib-validate.c:150
+#: json-glib/json-glib-format.c:234 json-glib/json-glib-validate.c:143
 #, c-format
 msgid "%s: missing files"
 msgstr "%s: ფაილები აკლია"
 
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-validate.c:64
+#, c-format
+msgid "%s: %s: error reading file: %s\n"
+msgstr "%s: %s: ფაილის წაკითხვის შეცდომა: %s\n"
+
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
-#: json-glib/json-glib-validate.c:118
+#: json-glib/json-glib-validate.c:111
 msgid "Validate JSON files."
 msgstr "JSON ფაილების დადასტურება."
 
-#: json-glib/json-glib-validate.c:119
+#: json-glib/json-glib-validate.c:112
 msgid "json-glib-validate validates JSON data at the given URI."
 msgstr "json-glib-validate გადაამოწმებს JSON მონაცემებს მითითებულ URI-ზე."
 
 #. translators: the %s is the name of the data structure
-#: json-glib/json-gobject.c:924
+#: json-glib/json-gobject.c:930
 #, c-format
 msgid "Expecting a JSON object, but the root node is of type “%s”"
 msgstr "მოველოდი JSON ობიექტს, მაგრამ ძირითადი კვანძის ტიპია %s"
 
 #. translators: the '%s' is the type name
-#: json-glib/json-gvariant.c:482
+#: json-glib/json-gvariant.c:484
 #, c-format
 msgid "Unexpected type “%s” in JSON node"
 msgstr "JSON-ის კვანძის მოულოდნელი ტიპი: %s"
 
-#: json-glib/json-gvariant.c:552
+#: json-glib/json-gvariant.c:557
 msgid "Missing elements in JSON array to conform to a tuple"
 msgstr "JSON მასივს კორტეჟთან შესათანხმებლად ელემენტები აკლია"
 
-#: json-glib/json-gvariant.c:580
+#: json-glib/json-gvariant.c:586
 msgid "Missing closing symbol “)” in the GVariant tuple type"
 msgstr "GVariant-ის კორტეჟის ტიპში დამხურავი \")\" აკლია"
 
-#: json-glib/json-gvariant.c:588
+#: json-glib/json-gvariant.c:594
 msgid "Unexpected extra elements in JSON array"
 msgstr "JSON მასივის მოულოდნელი დამატებითი ელემენტები"
 
-#: json-glib/json-gvariant.c:889
+#: json-glib/json-gvariant.c:896
 msgid "Invalid string value converting to GVariant"
 msgstr "სტრიქონიდან GVariant-ში გადასაყვანად მითითებული მნიშვნელბა არასწორია"
 
-#: json-glib/json-gvariant.c:944
+#: json-glib/json-gvariant.c:951
 msgid ""
 "A GVariant dictionary entry expects a JSON object with exactly one member"
 msgstr "GVariant-ის ლექსიკონი მხოლოდ JSON ობიექტს ელოდება, მხოლოდ ერთი წევრით"
 
-#: json-glib/json-gvariant.c:1222
+#: json-glib/json-gvariant.c:1229
 #, c-format
 msgid "GVariant class “%c” not supported"
 msgstr "GVariant -ის კლასი “%c” მხარდაუჭერელია"
 
-#: json-glib/json-gvariant.c:1276
+#: json-glib/json-gvariant.c:1283
 msgid "Invalid GVariant signature"
 msgstr "GVariant -ის არასწორი ხელმოწერა"
 
-#: json-glib/json-gvariant.c:1327
+#: json-glib/json-gvariant.c:1337
 msgid "JSON data is empty"
 msgstr "JSON მონაცემები ცარიელია"
 
@@ -169,108 +176,108 @@ msgstr "JSON მონაცემები ცარიელია"
 #. * number, the second %d is the position on the line, and %s is
 #. * the error message
 #.
-#: json-glib/json-parser.c:939
+#: json-glib/json-parser.c:1180
 #, c-format
 msgid "%s:%d:%d: Parse error: %s"
 msgstr "%s:%d:%d: დამუშავების შეცდმა: %s"
 
-#: json-glib/json-parser.c:1023
+#: json-glib/json-parser.c:1261
 msgid "JSON data must be UTF-8 encoded"
 msgstr "JSON მონაცემების კოდირება UTF-8 უნდა იყოს"
 
-#: json-glib/json-path.c:389
+#: json-glib/json-path.c:391
 msgid "Only one root node is allowed in a JSONPath expression"
 msgstr "JSONPath გამოსახულებაში მხოლოდ ძირითადი კვანძია დაშვებული"
 
 #. translators: the %c is the invalid character
-#: json-glib/json-path.c:398
+#: json-glib/json-path.c:400
 #, c-format
 msgid "Root node followed by invalid character “%c”"
 msgstr "ძირითადი კვანძის არასწორი სიმბოლო \"%c\" მოყვება"
 
-#: json-glib/json-path.c:438
+#: json-glib/json-path.c:440
 msgid "Missing member name or wildcard after . character"
 msgstr ". სიმბოლოს შემდეგ აკლია წევრის სახელი ან *"
 
-#: json-glib/json-path.c:512
+#: json-glib/json-path.c:514
 #, c-format
 msgid "Malformed slice expression “%*s”"
 msgstr "სლაისის არასწორი გამოსახულება “%*s”"
 
-#: json-glib/json-path.c:556
+#: json-glib/json-path.c:558
 #, c-format
 msgid "Invalid set definition “%*s”"
 msgstr "სეტის აღწერის შეცდომა “%*s”"
 
-#: json-glib/json-path.c:609
+#: json-glib/json-path.c:611
 #, c-format
 msgid "Invalid slice definition “%*s”"
 msgstr "სლაისის აღწერის შეცდომა “%*s”"
 
-#: json-glib/json-path.c:637
+#: json-glib/json-path.c:639
 #, c-format
 msgid "Invalid array index definition “%*s”"
 msgstr "მასივის ინდექსის აღწერის შეცდმა “%*s”"
 
-#: json-glib/json-path.c:656
+#: json-glib/json-path.c:658
 #, c-format
 msgid "Invalid first character “%c”"
 msgstr "არასწორი პირველი სიმბოლო “%c\""
 
-#: json-glib/json-reader.c:504
+#: json-glib/json-reader.c:522
 #, c-format
 msgid ""
 "The current node is of type “%s”, but an array or an object was expected."
 msgstr "მიმდინარე კვანძის ტიპია \"%s\", მაგრამ მოველოდი მასივს ან ობიექტს."
 
-#: json-glib/json-reader.c:516
+#: json-glib/json-reader.c:534
 #, c-format
 msgid ""
 "The index “%d” is greater than the size of the array at the current position."
 msgstr "ინდექსი \"%d\" მიმდინარე პოზიციაზე მასივის ზომაზე უფრო დიდია."
 
-#: json-glib/json-reader.c:533
+#: json-glib/json-reader.c:551
 #, c-format
 msgid ""
 "The index “%d” is greater than the size of the object at the current "
 "position."
 msgstr "ინდექსი \"%d\" მიმდინარე პოზიციაზე ობიექტის ზომაზე უფრო დიდია."
 
-#: json-glib/json-reader.c:616 json-glib/json-reader.c:789
-#: json-glib/json-reader.c:838 json-glib/json-reader.c:877
-#: json-glib/json-reader.c:917 json-glib/json-reader.c:957
-#: json-glib/json-reader.c:997 json-glib/json-reader.c:1044
-#: json-glib/json-reader.c:1082 json-glib/json-reader.c:1110
+#: json-glib/json-reader.c:634 json-glib/json-reader.c:807
+#: json-glib/json-reader.c:856 json-glib/json-reader.c:895
+#: json-glib/json-reader.c:935 json-glib/json-reader.c:975
+#: json-glib/json-reader.c:1015 json-glib/json-reader.c:1062
+#: json-glib/json-reader.c:1100 json-glib/json-reader.c:1128
 msgid "No node available at the current position"
 msgstr "მიმდინარე პოზიციაზე კვანძი მიუწვდომელია"
 
-#: json-glib/json-reader.c:623
+#: json-glib/json-reader.c:641
 #, c-format
 msgid "The current position holds a “%s” and not an array"
 msgstr "მიმდინარე პოზიცია შეიცავს \"%s\"-ს და არა მასივს"
 
-#: json-glib/json-reader.c:705
+#: json-glib/json-reader.c:723
 #, c-format
 msgid "The current node is of type “%s”, but an object was expected."
 msgstr "მიმდინარე კვანძის ტიპია \"%s\", მაგრამ ობიექტს მოველოდი."
 
-#: json-glib/json-reader.c:712
+#: json-glib/json-reader.c:730
 #, c-format
 msgid "The member “%s” is not defined in the object at the current position."
 msgstr "წევრი \"%s\" ობიექტში მიმდინარე პოზიციაზე აღწერილი არაა."
 
-#: json-glib/json-reader.c:796 json-glib/json-reader.c:845
+#: json-glib/json-reader.c:814 json-glib/json-reader.c:863
 #, c-format
 msgid "The current position holds a “%s” and not an object"
 msgstr "მიმდინარე პოზიცია შეიცავს \"%s\"-ს და არა ობიექტს"
 
-#: json-glib/json-reader.c:886 json-glib/json-reader.c:926
-#: json-glib/json-reader.c:966 json-glib/json-reader.c:1006
-#: json-glib/json-reader.c:1053
+#: json-glib/json-reader.c:904 json-glib/json-reader.c:944
+#: json-glib/json-reader.c:984 json-glib/json-reader.c:1024
+#: json-glib/json-reader.c:1071
 #, c-format
 msgid "The current position holds a “%s” and not a value"
 msgstr "მიმდინარე პოზიცია შეიცავს \"%s\"-ს და არა მნიშვნელობას"
 
-#: json-glib/json-reader.c:1014
+#: json-glib/json-reader.c:1032
 msgid "The current position does not hold a string type"
 msgstr "მიმდინარე პოზიცია სტრიქონის ტიპს არ შეიცავს"
