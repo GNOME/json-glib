@@ -837,6 +837,27 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 	  ch = 0;
 	  break;
 
+        case '\'':
+          if (config->strict)
+            goto default_case;
+          token = JSON_TOKEN_STRING;
+          in_string_sq = true;
+          gstring = g_string_new (NULL);
+          while ((ch = json_scanner_get_char (scanner, line_p, position_p)) != 0)
+            {
+              if (ch == '\'' || token == JSON_TOKEN_ERROR)
+                {
+                  in_string_sq = false;
+                  break;
+                }
+              else
+                {
+                  g_string_append_c (gstring, ch);
+                }
+            }
+          ch = 0;
+          break;
+
 	case '"':
 	  token = JSON_TOKEN_STRING;
 	  in_string_dq = true;
