@@ -156,6 +156,15 @@ static const struct
   { "{ \"foo\": false }[ 42 ]{ \"bar\": true }", 3 },
 };
 
+static const struct
+{
+  const char *str;
+  const char *ext;
+} test_extensions[] = {
+  { "{ /* test */ }", "comment" },
+  { "{ 'foo': true }", "single quotes" },
+};
+
 static guint n_test_base_values    = G_N_ELEMENTS (test_base_values);
 static guint n_test_simple_arrays  = G_N_ELEMENTS (test_simple_arrays);
 static guint n_test_nested_arrays  = G_N_ELEMENTS (test_nested_arrays);
@@ -164,6 +173,7 @@ static guint n_test_nested_objects = G_N_ELEMENTS (test_nested_objects);
 static guint n_test_assignments    = G_N_ELEMENTS (test_assignments);
 static guint n_test_unicode        = G_N_ELEMENTS (test_unicode);
 static guint n_test_multi_root     = G_N_ELEMENTS (test_multi_root);
+static guint n_test_extensions     = G_N_ELEMENTS (test_extensions);
 
 static void
 test_empty_with_parser (JsonParser *parser)
@@ -670,6 +680,24 @@ test_multiple_roots (void)
   g_object_unref (parser);
 }
 
+static void
+test_parser_extensions (void)
+{
+  JsonParser *parser = json_parser_new ();
+
+  for (guint i = 0; i < n_test_extensions; i++)
+    {
+      GError *error = NULL;
+
+      g_test_message ("extension: %s, data: %s", test_extensions[i].ext, test_extensions[i].str);
+
+      json_parser_load_from_data (parser, test_extensions[i].str, -1, &error);
+      g_assert_no_error (error);
+    }
+
+  g_object_unref (parser);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -689,6 +717,7 @@ main (int   argc,
   g_test_add_func ("/parser/stream-sync", test_stream_sync);
   g_test_add_func ("/parser/stream-async", test_stream_async);
   g_test_add_func ("/parser/multiple-roots", test_multiple_roots);
+  g_test_add_func ("/parser/extensions", test_parser_extensions);
   g_test_add_func ("/parser/mapped", test_mapped);
   g_test_add_func ("/parser/mapped/file-error", test_mapped_file_error);
   g_test_add_func ("/parser/mapped/json-error", test_mapped_json_error);
