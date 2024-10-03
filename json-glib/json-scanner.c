@@ -108,7 +108,6 @@ struct _JsonScanner
   /* to be considered private */
   const char *text;
   const char *text_end;
-  char *buffer;
 
   /* handler function for _warn and _error */
   JsonScannerMsgFunc msg_handler;
@@ -220,7 +219,6 @@ json_scanner_destroy (JsonScanner *scanner)
   json_scanner_free_value (&scanner->token, &scanner->value);
   json_scanner_free_value (&scanner->next_token, &scanner->next_value);
 
-  g_free (scanner->buffer);
   g_free (scanner);
 }
 
@@ -321,8 +319,6 @@ json_scanner_input_text (JsonScanner *scanner,
 
   scanner->text = text;
   scanner->text_end = text != NULL ? text + text_len : 0;
-
-  g_clear_pointer (&scanner->buffer, g_free);
 }
 
 static guchar
