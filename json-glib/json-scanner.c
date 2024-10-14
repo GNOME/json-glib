@@ -517,7 +517,7 @@ json_scanner_unexp_token (JsonScanner  *scanner,
           break;
 
         case JSON_ERROR_TYPE_UNESCAPED_CTRL:
-          g_snprintf (token_string, token_string_len, "scanner: unescaped control charater");
+          g_snprintf (token_string, token_string_len, "scanner: unescaped control character");
           break;
 
         case JSON_ERROR_TYPE_MALFORMED_UNICODE:
