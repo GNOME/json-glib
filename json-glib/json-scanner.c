@@ -55,6 +55,7 @@ typedef enum
   JSON_ERROR_TYPE_MALFORMED_SURROGATE_PAIR,
   JSON_ERROR_TYPE_LEADING_ZERO,
   JSON_ERROR_TYPE_UNESCAPED_CTRL,
+  JSON_ERROR_TYPE_UNKNOWN_ESCAPE,
   JSON_ERROR_TYPE_MALFORMED_UNICODE
 } JsonErrorType;
 
@@ -518,6 +519,10 @@ json_scanner_unexp_token (JsonScanner  *scanner,
 
         case JSON_ERROR_TYPE_UNESCAPED_CTRL:
           g_snprintf (token_string, token_string_len, "scanner: unescaped control character");
+          break;
+
+        case JSON_ERROR_TYPE_UNKNOWN_ESCAPE:
+          g_snprintf (token_string, token_string_len, "scanner: unknown backslash escape sequence");
           break;
 
         case JSON_ERROR_TYPE_MALFORMED_UNICODE:
@@ -1022,7 +1027,7 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
 
 			default:
                           token = JSON_TOKEN_ERROR;
-                          value.v_error = JSON_ERROR_TYPE_UNESCAPED_CTRL;
+                          value.v_error = JSON_ERROR_TYPE_UNKNOWN_ESCAPE;
                           g_string_free (gstring, TRUE);
                           gstring = NULL;
 			  break;
