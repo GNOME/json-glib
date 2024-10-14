@@ -1067,10 +1067,17 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
                           break;
 
 			default:
-                          token = JSON_TOKEN_ERROR;
-                          value.v_error = JSON_ERROR_TYPE_UNKNOWN_ESCAPE;
-                          g_string_free (gstring, TRUE);
-                          gstring = NULL;
+                          if (config->strict)
+                            {
+                              token = JSON_TOKEN_ERROR;
+                              value.v_error = JSON_ERROR_TYPE_UNKNOWN_ESCAPE;
+                              g_string_free (gstring, TRUE);
+                              gstring = NULL;
+                            }
+                          else
+                            {
+                              gstring = g_string_append_c (gstring, ch);
+                            }
 			  break;
 			}
 		    }

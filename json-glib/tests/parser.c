@@ -174,6 +174,8 @@ static const struct
   { "'foo'", "foo", JSON_PARSER_ERROR_INVALID_BAREWORD },
   /* TODO: Is this really the right error? */
   { "\"\\012\"", "\012", JSON_PARSER_ERROR_INVALID_BAREWORD },
+  { "\"\\a\"", "a", JSON_PARSER_ERROR_INVALID_BAREWORD },
+  { "\"\\$\"", "$", JSON_PARSER_ERROR_INVALID_BAREWORD },
 };
 
 static guint n_test_base_values    = G_N_ELEMENTS (test_base_values);
