@@ -172,6 +172,8 @@ static const struct
   JsonParserError expected_error;
 } test_str_extensions[] = {
   { "'foo'", "foo", JSON_PARSER_ERROR_INVALID_BAREWORD },
+  /* TODO: Is this really the right error? */
+  { "\"\\012\"", "\012", JSON_PARSER_ERROR_INVALID_BAREWORD },
 };
 
 static guint n_test_base_values    = G_N_ELEMENTS (test_base_values);

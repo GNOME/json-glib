@@ -359,6 +359,7 @@ json_scanner_get_char (JsonScanner *scanner,
   return fchar;
 }
 
+#define is_oct_digit(c)         ((c) >= '0' && (c) <= '7')
 #define is_hex_digit(c)         (((c) >= '0' && (c) <= '9') || \
                                  ((c) >= 'a' && (c) <= 'f') || \
                                  ((c) >= 'A' && (c) <= 'F'))
@@ -1024,6 +1025,46 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
                             }
                           break;
                         }
+
+                        case '0':
+                        case '1':
+                        case '2':
+                        case '3':
+                        case '4':
+                        case '5':
+                        case '6':
+                        case '7':
+                          if (config->strict)
+                            {
+                              token = JSON_TOKEN_ERROR;
+                              value.v_error = JSON_ERROR_TYPE_UNKNOWN_ESCAPE;
+                              g_string_free (gstring, TRUE);
+                              gstring = NULL;
+                            }
+                          else
+                            {
+                              gunichar ucs = (ch - '0');
+                              guchar next_ch;
+                              unsigned i;
+
+                              for (i = 0; i < 2; i++)
+                                {
+                                  next_ch = json_scanner_peek_next_char (scanner);
+
+                                  if (is_oct_digit (next_ch))
+                                    {
+                                      ucs = ucs * 8 + (next_ch - '0');
+                                      json_scanner_get_char (scanner, line_p, position_p);
+                                    }
+                                  else
+                                    {
+                                      break;
+                                    }
+                                }
+
+                              gstring = g_string_append_unichar (gstring, ucs);
+                            }
+                          break;
 
 			default:
                           token = JSON_TOKEN_ERROR;
