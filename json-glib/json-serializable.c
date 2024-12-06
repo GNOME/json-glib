@@ -49,7 +49,7 @@
  * Asks a `JsonSerializable` implementation to serialize an object
  * property into a JSON node.
  *
- * Return value: (transfer full): a node containing the serialized property
+ * Return value: (transfer full) (nullable): a node containing the serialized property
  */
 JsonNode *
 json_serializable_serialize_property (JsonSerializable *serializable,
