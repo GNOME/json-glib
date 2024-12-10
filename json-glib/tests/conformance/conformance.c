@@ -19,6 +19,7 @@ static GOptionEntry opt_entries[] = {
 
 typedef struct {
   char *filename;
+  bool strict;
   bool xfail;
 } Fixture;
 
@@ -38,7 +39,7 @@ parse_file (gconstpointer data)
 
   GError *error = NULL;
   JsonParser *parser = json_parser_new ();
-  json_parser_set_strict (parser, TRUE);
+  json_parser_set_strict (parser, f->strict);
   json_parser_load_from_file (parser, f->filename, &error);
 
   if (f->xfail)
@@ -98,12 +99,28 @@ main (int argc, char *argv[])
 
       Fixture *f = g_new (Fixture, 1);
       f->filename = filename;
-      f->xfail = g_strcmp0 (l[0], "X") == 0;
+      f->strict = TRUE;
+      f->xfail = g_strcmp0 (l[0], "P") != 0;
 
       g_test_message ("test: %s (file: %s)", test_path, filename);
       g_test_add_data_func_full (test_path, f, parse_file, fixture_free);
 
       g_free (test_path);
+
+      if (g_strcmp0 (l[0], "S") == 0)
+        {
+          test_path = g_strconcat ("/conformance/", opt_type, "/", l[1], "/permissive", NULL);
+          f = g_new (Fixture, 1);
+          f->filename = g_strdup (filename);
+          f->strict = FALSE;
+          f->xfail = FALSE;
+
+          g_test_message ("test: %s (file: %s)", test_path, filename);
+          g_test_add_data_func_full (test_path, f, parse_file, fixture_free);
+
+          g_free (test_path);
+        }
+
       g_strfreev (l);
     }
 

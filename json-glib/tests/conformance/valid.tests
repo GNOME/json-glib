@@ -4,6 +4,7 @@
 #   Result,file
 # P: expect pass
 # X: expect fail
+# S: expect fail if strict, pass if not
 P,y_array_arraysWithSpaces.json
 P,y_array_empty-string.json
 P,y_array_empty.json

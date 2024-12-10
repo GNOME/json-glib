@@ -165,6 +165,19 @@ static const struct
   { "{ 'foo': true }", "single quotes" },
 };
 
+static const struct
+{
+  const char *str;
+  const char *expected;
+  JsonParserError expected_error;
+} test_str_extensions[] = {
+  { "'foo'", "foo", JSON_PARSER_ERROR_INVALID_BAREWORD },
+  /* TODO: Is this really the right error? */
+  { "\"\\012\"", "\012", JSON_PARSER_ERROR_INVALID_BAREWORD },
+  { "\"\\a\"", "a", JSON_PARSER_ERROR_INVALID_BAREWORD },
+  { "\"\\$\"", "$", JSON_PARSER_ERROR_INVALID_BAREWORD },
+};
+
 static guint n_test_base_values    = G_N_ELEMENTS (test_base_values);
 static guint n_test_simple_arrays  = G_N_ELEMENTS (test_simple_arrays);
 static guint n_test_nested_arrays  = G_N_ELEMENTS (test_nested_arrays);
@@ -174,6 +187,7 @@ static guint n_test_assignments    = G_N_ELEMENTS (test_assignments);
 static guint n_test_unicode        = G_N_ELEMENTS (test_unicode);
 static guint n_test_multi_root     = G_N_ELEMENTS (test_multi_root);
 static guint n_test_extensions     = G_N_ELEMENTS (test_extensions);
+static guint n_test_str_extensions = G_N_ELEMENTS (test_str_extensions);
 
 static void
 test_empty_with_parser (JsonParser *parser)
@@ -698,6 +712,36 @@ test_parser_extensions (void)
   g_object_unref (parser);
 }
 
+static void
+test_parser_string_extensions (void)
+{
+  JsonParser *parser = json_parser_new ();
+
+  for (guint i = 0; i < n_test_str_extensions; i++)
+    {
+      GError *error = NULL;
+
+      g_test_message ("data: %s", test_str_extensions[i].str);
+
+      json_parser_set_strict (parser, TRUE);
+      json_parser_load_from_data (parser, test_str_extensions[i].str, -1, &error);
+      g_assert_error (error, JSON_PARSER_ERROR, (int) test_str_extensions[i].expected_error);
+      g_clear_error (&error);
+
+      json_parser_set_strict (parser, FALSE);
+      json_parser_load_from_data (parser, test_str_extensions[i].str, -1, &error);
+      g_assert_no_error (error);
+
+      JsonNode *root = json_parser_steal_root (parser);
+      g_assert_cmpint (JSON_NODE_TYPE (root), ==, JSON_NODE_VALUE);
+      g_assert_cmpint (json_node_get_value_type (root), ==, G_TYPE_STRING);
+      g_assert_cmpstr (json_node_get_string (root), ==, test_str_extensions[i].expected);
+      json_node_unref (root);
+    }
+
+  g_object_unref (parser);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -718,6 +762,7 @@ main (int   argc,
   g_test_add_func ("/parser/stream-async", test_stream_async);
   g_test_add_func ("/parser/multiple-roots", test_multiple_roots);
   g_test_add_func ("/parser/extensions", test_parser_extensions);
+  g_test_add_func ("/parser/string-extensions", test_parser_string_extensions);
   g_test_add_func ("/parser/mapped", test_mapped);
   g_test_add_func ("/parser/mapped/file-error", test_mapped_file_error);
   g_test_add_func ("/parser/mapped/json-error", test_mapped_json_error);
