@@ -15,6 +15,9 @@ Overview of changes for 1.10
 • Allow disabling installed tests [#72]
 • Support parsing multiple root statements in non-strict mode [#74]
 • Allow loading files >4GB with json-glib-validate
+• Allow single quoted strings when running in non-strict mode [#76]
+• Allow escaped characters when running in non-strict mode [#77]
+• Add missing nullable annotation [!88]
 
 Overview of changes for 1.8
 ==============================
