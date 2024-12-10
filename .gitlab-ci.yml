@@ -168,6 +168,7 @@ static-scan:
       python3
       python3-docutils
       python3-pip
+      python3-setuptools
       python3-wheel
       redhat-rpm-config
     MESON_VERSION: "1.2.0"
@@ -196,6 +197,7 @@ asan-debug-build:
       python3
       python3-docutils
       python3-pip
+      python3-setuptools
       python3-wheel
       redhat-rpm-config
     MESON_VERSION: "1.2.0"
