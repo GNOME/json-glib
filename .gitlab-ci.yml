@@ -181,7 +181,6 @@ static-scan:
     MESON_VERSION: "1.2.0"
     MESON_EXTRA_FLAGS: "--buildtype=debug -Dintrospection=disabled -Ddocumentation=disabled"
     CC: clang
-  allow_failure: true
  
 # Run tests with the address sanitizer. We need to turn off introspection,
 # since it is incompatible with asan
@@ -210,7 +209,6 @@ asan-debug-build:
     MESON_VERSION: "1.2.0"
     MESON_EXTRA_FLAGS: "--buildtype=debug -Dintrospection=disabled -Ddocumentation=disabled"
     CC: clang
-  allow_failure: true
 
 dist-build:
   extends:
