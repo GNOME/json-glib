@@ -1,6 +1,9 @@
 include:
-  - project: 'Infrastructure/gnome-release-service-ci-templates'
-    file: 'release-module.yml'
+  - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
+    inputs:
+      job-stage: "deploy"
+      dist-job-name: "dist-build"
+      tarball-artifact-path: "_build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz"
 
 stages:
   - check
@@ -178,7 +181,6 @@ static-scan:
     MESON_VERSION: "1.2.0"
     MESON_EXTRA_FLAGS: "--buildtype=debug -Dintrospection=disabled -Ddocumentation=disabled"
     CC: clang
-  allow_failure: true
  
 # Run tests with the address sanitizer. We need to turn off introspection,
 # since it is incompatible with asan
@@ -207,7 +209,6 @@ asan-debug-build:
     MESON_VERSION: "1.2.0"
     MESON_EXTRA_FLAGS: "--buildtype=debug -Dintrospection=disabled -Ddocumentation=disabled"
     CC: clang
-  allow_failure: true
 
 dist-build:
   extends:
@@ -266,14 +267,3 @@ pages:
       - public
   only:
     - main
-
-release-dist:
-  stage: deploy
-  needs:
-    - job: "dist-build"
-      artifacts: true
-  variables:
-    TARBALL_ARTIFACT_PATH: _build/meson-dist/${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.tar.xz
-  extends: .release-module
-  rules:
-    - if: $CI_COMMIT_TAG
