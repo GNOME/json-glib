@@ -6,6 +6,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <float.h>
+#include <math.h>
 #include <string.h>
 #include <json-glib/json-glib.h>
 
@@ -568,6 +569,40 @@ test_immutable_parent (void)
   g_test_trap_assert_stderr ("*Json-CRITICAL **: json_node_set_parent: *");
 }
 
+static void
+test_init_double_infinite (void)
+{
+  if (g_test_subprocess ())
+    {
+      JsonNode *node G_GNUC_UNUSED;
+
+      /* Boom. */
+      node = json_node_init_double (json_node_alloc (), INFINITY);
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*Json-CRITICAL **: json_node_init_double: "
+                             "assertion 'isfinite (value) != 0' failed*");
+}
+
+static void
+test_init_double_nan (void)
+{
+  if (g_test_subprocess ())
+    {
+      JsonNode *node G_GNUC_UNUSED;
+
+      /* Boom. */
+      node = json_node_init_double (json_node_alloc (), NAN);
+    }
+
+  g_test_trap_subprocess (NULL, 0, 0);
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*Json-CRITICAL **: json_node_init_double: "
+                             "assertion 'isfinite (value) != 0' failed*");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -576,6 +611,8 @@ main (int   argc,
 
   g_test_add_func ("/nodes/init/int", test_init_int);
   g_test_add_func ("/nodes/init/double", test_init_double);
+  g_test_add_func ("/nodes/init/double/infinite", test_init_double_infinite);
+  g_test_add_func ("/nodes/init/double/NaN", test_init_double_nan);
   g_test_add_func ("/nodes/init/boolean", test_init_boolean);
   g_test_add_func ("/nodes/init/string", test_init_string);
   g_test_add_func ("/nodes/init/null", test_null);

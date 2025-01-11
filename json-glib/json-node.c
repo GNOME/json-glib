@@ -27,11 +27,12 @@
 
 #include "config.h"
 
-#include <glib.h>
-
 #include "json-types.h"
 #include "json-types-private.h"
 #include "json-debug.h"
+
+#include <glib.h>
+#include <math.h>
 
 /**
  * JsonNode:
@@ -293,6 +294,7 @@ json_node_init_double (JsonNode *node,
                        gdouble   value)
 {
   g_return_val_if_fail (node != NULL, NULL);
+  g_return_val_if_fail (isfinite (value) != 0, NULL);
 
   json_node_init (node, JSON_NODE_VALUE);
   json_node_set_double (node, value);
@@ -1169,6 +1171,7 @@ json_node_set_double (JsonNode *node,
   g_return_if_fail (JSON_NODE_IS_VALID (node));
   g_return_if_fail (JSON_NODE_TYPE (node) == JSON_NODE_VALUE);
   g_return_if_fail (!node->immutable);
+  g_return_if_fail (isfinite (value) != 0);
 
   if (node->data.value == NULL)
     node->data.value = json_value_init (json_value_alloc (), JSON_VALUE_DOUBLE);
