@@ -57,7 +57,7 @@ foreach t: tests
     c_args: json_c_args,
     install: get_option('installed_tests'),
     install_dir: installed_test_bindir,
-    dependencies: [ json_glib_dep, ],
+    dependencies: [ json_glib_dep ],
   )
 
   test(

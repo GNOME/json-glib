@@ -29,6 +29,7 @@
 #include "json-scanner.h"
 
 #include <errno.h>
+#include <math.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -1234,6 +1235,12 @@ json_scanner_get_token_ll (JsonScanner    *scanner,
                     value.v_error = JSON_ERROR_TYPE_NON_DIGIT_IN_CONST;
                   else
                     value.v_error = JSON_ERROR_TYPE_DIGIT_RADIX;
+                }
+
+              if (token == JSON_TOKEN_FLOAT && isfinite (value.v_float) == 0)
+                {
+                  token = JSON_TOKEN_ERROR;
+                  value.v_error = JSON_ERROR_TYPE_FLOAT_MALFORMED;
                 }
             }
 	  g_string_free (gstring, TRUE);

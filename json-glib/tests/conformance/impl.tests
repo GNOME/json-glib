@@ -6,11 +6,11 @@
 # X: expect fail
 # S: expect fail if strict, pass if not
 P,i_number_double_huge_neg_exp.json
-P,i_number_huge_exp.json
-P,i_number_neg_int_huge_exp.json
-P,i_number_pos_double_huge_exp.json
-P,i_number_real_neg_overflow.json
-P,i_number_real_pos_overflow.json
+X,i_number_huge_exp.json
+X,i_number_neg_int_huge_exp.json
+X,i_number_pos_double_huge_exp.json
+X,i_number_real_neg_overflow.json
+X,i_number_real_pos_overflow.json
 P,i_number_real_underflow.json
 P,i_number_too_big_neg_int.json
 P,i_number_too_big_pos_int.json

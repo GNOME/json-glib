@@ -44,13 +44,14 @@ json_mandir = get_option('prefix') / get_option('mandir')
 json_localedir = get_option('prefix') / get_option('localedir')
 json_libexecdir = get_option('prefix') / get_option('libexecdir')
 
-# Dependencies
-glib_req_version = '>= 2.72.0'
-gio_dep = dependency('gio-2.0', version: glib_req_version)
-
 # Configurations
 cc = meson.get_compiler('c')
 host_system = host_machine.system()
+
+# Dependencies
+glib_req_version = '>= 2.72.0'
+gio_dep = dependency('gio-2.0', version: glib_req_version)
+math_dep = cc.find_library('m', required: false)
 
 cdata = configuration_data()
 check_headers = [

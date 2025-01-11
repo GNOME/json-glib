@@ -83,7 +83,7 @@ json_lib = library(
   version: libversion,
   soversion: soversion,
   include_directories: root_dir,
-  dependencies: [gio_dep],
+  dependencies: [gio_dep, math_dep],
   c_args: json_c_args + common_cflags,
   link_args: common_ldflags,
   gnu_symbol_visibility: 'hidden',
