@@ -4,6 +4,9 @@ include:
       job-stage: "deploy"
       dist-job-name: "dist-build"
       tarball-artifact-path: "_build/meson-dist/$CI_PROJECT_NAME-$CI_COMMIT_TAG.tar.xz"
+  - component: "gitlab.gnome.org/GNOME/citemplates/basic-deploy-docs@master"
+    inputs:
+      docs-job-name: "reference"
 
 stages:
   - check
@@ -91,17 +94,13 @@ stages:
   script:
     - meson setup ${MESON_EXTRA_FLAGS} ${DOCS_FLAGS} _docs .
     - meson compile -C _docs
-    - |
-      pushd "_docs/${DOCS_PATH}" > /dev/null
-      tar cf ${CI_PROJECT_NAME}-docs.tar .
-      popd > /dev/null
-    - mv _docs/${DOCS_PATH}/${CI_PROJECT_NAME}-docs.tar .
+    - tar --auto-compress --create --file "$CI_PROJECT_DIR/${CI_PROJECT_NAME}-docs.tar.gz" --directory "_docs/${DOCS_PATH}" .
   artifacts:
     when: always
     name: 'Documentation'
     expose_as: 'Download the API reference'
     paths:
-      - ${CI_PROJECT_NAME}-docs.tar
+      - "${CI_PROJECT_NAME}-docs.tar.gz"
 
 reuse:
   image: fedora:latest
@@ -255,15 +254,3 @@ reference:
     MESON_VERSION: "1.2.0"
     MESON_EXTRA_FLAGS: "-Dman=true -Dintrospection=enabled -Ddocumentation=enabled"
     DOCS_PATH: doc/json-glib-1.0
-
-pages:
-  stage: deploy
-  needs: ['reference']
-  script:
-    - mkdir public && cd public
-    - tar xf ../${CI_PROJECT_NAME}-docs.tar
-  artifacts:
-    paths:
-      - public
-  only:
-    - main
