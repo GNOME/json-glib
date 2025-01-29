@@ -45,8 +45,15 @@ json_localedir = get_option('prefix') / get_option('localedir')
 json_libexecdir = get_option('prefix') / get_option('libexecdir')
 
 # Dependencies
-glib_req_version = '>= 2.72.0'
+glib_req_major = '2'
+glib_req_minor = '72'
+glib_req_version = '>= @0@.@1@.0'.format(glib_req_major, glib_req_minor)
 gio_dep = dependency('gio-2.0', version: glib_req_version)
+add_project_arguments([
+    '-DGLIB_VERSION_MIN_REQUIRED=G_ENCODE_VERSION(@0@, @1@)'.format(glib_req_major, glib_req_minor),
+    '-DGLIB_VERSION_MAX_ALLOWED=G_ENCODE_VERSION(@0@, @1@)'.format(glib_req_major, glib_req_minor),
+  ], language: 'c',
+)
 
 # Configurations
 cc = meson.get_compiler('c')
