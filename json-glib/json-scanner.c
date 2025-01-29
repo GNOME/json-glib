@@ -192,7 +192,7 @@ json_scanner_new (bool strict)
 }
 
 static inline void
-json_scanner_free_value (JsonTokenType  *token_p,
+json_scanner_clear_value (JsonTokenType  *token_p,
                          JsonTokenValue *value_p)
 {
   switch (*token_p)
@@ -216,8 +216,8 @@ json_scanner_destroy (JsonScanner *scanner)
 {
   g_return_if_fail (scanner != NULL);
   
-  json_scanner_free_value (&scanner->token, &scanner->value);
-  json_scanner_free_value (&scanner->next_token, &scanner->next_value);
+  json_scanner_clear_value (&scanner->token, &scanner->value);
+  json_scanner_clear_value (&scanner->next_token, &scanner->next_value);
 
   g_free (scanner);
 }
@@ -282,7 +282,7 @@ json_scanner_get_next_token (JsonScanner *scanner)
 
   if (scanner->next_token != JSON_TOKEN_NONE)
     {
-      json_scanner_free_value (&scanner->token, &scanner->value);
+      json_scanner_clear_value (&scanner->token, &scanner->value);
 
       scanner->token = scanner->next_token;
       scanner->value = scanner->next_value;
@@ -743,7 +743,7 @@ json_scanner_get_token_i (JsonScanner    *scanner,
 {
   do
     {
-      json_scanner_free_value (token_p, value_p);
+      json_scanner_clear_value (token_p, value_p);
       json_scanner_get_token_ll (scanner, token_p, value_p, line_p, position_p);
     }
   while (((*token_p > 0 && *token_p < 256) &&
