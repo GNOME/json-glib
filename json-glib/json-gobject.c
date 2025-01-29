@@ -903,6 +903,7 @@ json_gobject_from_data (GType         gtype,
   JsonNode *root;
   GError *parse_error;
   GObject *retval;
+  GBytes *bytes;
 
   g_return_val_if_fail (gtype != G_TYPE_INVALID, NULL);
   g_return_val_if_fail (data != NULL, NULL);
@@ -911,15 +912,18 @@ json_gobject_from_data (GType         gtype,
     length = strlen (data);
 
   parser = json_parser_new ();
-
+  bytes = g_bytes_new (data, length);
   parse_error = NULL;
-  json_parser_load_from_data (parser, data, length, &parse_error);
+  json_parser_load_from_bytes (parser, bytes, &parse_error);
   if (parse_error)
     {
       g_propagate_error (error, parse_error);
+      g_bytes_unref (bytes);
       g_object_unref (parser);
       return NULL;
     }
+
+  g_bytes_unref (bytes);
 
   root = json_parser_get_root (parser);
   if (root == NULL || JSON_NODE_TYPE (root) != JSON_NODE_OBJECT)

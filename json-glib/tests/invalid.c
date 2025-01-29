@@ -27,7 +27,7 @@ test_invalid_bareword (gconstpointer user_data)
 
   g_test_message ("invalid data: '%s'...", json);
 
-  res = json_parser_load_from_data (parser, json, -1, &error);
+  res = json_parser_load_from_string (parser, json, &error);
   g_assert_false (res);
   g_assert_error (error, JSON_PARSER_ERROR, JSON_PARSER_ERROR_INVALID_BAREWORD);
 
@@ -49,7 +49,7 @@ test_invalid_assignment (gconstpointer user_data)
 
   g_test_message ("invalid data: '%s'...", json);
 
-  res = json_parser_load_from_data (parser, json, -1, &error);
+  res = json_parser_load_from_string (parser, json, &error);
 
   g_assert_false (res);
   g_assert_nonnull (error);
@@ -73,7 +73,7 @@ test_invalid_value (gconstpointer user_data)
 
   g_test_message ("invalid data: '%s'...", json);
 
-  res = json_parser_load_from_data (parser, json, -1, &error);
+  res = json_parser_load_from_string (parser, json, &error);
 
   g_assert_false (res);
   g_assert_nonnull (error);
@@ -97,7 +97,7 @@ test_invalid_array (gconstpointer user_data)
 
   g_test_message ("invalid data: '%s'...", json);
 
-  res = json_parser_load_from_data (parser, json, -1, &error);
+  res = json_parser_load_from_string (parser, json, &error);
 
   g_assert_false (res);
   g_assert_nonnull (error);
@@ -121,7 +121,7 @@ test_invalid_object (gconstpointer user_data)
 
   g_test_message ("invalid data: '%s'...", json);
 
-  res = json_parser_load_from_data (parser, json, -1, &error);
+  res = json_parser_load_from_string (parser, json, &error);
 
   g_assert_false (res);
   g_assert_nonnull (error);
@@ -145,7 +145,7 @@ test_missing_comma (gconstpointer user_data)
 
   g_test_message ("invalid data: '%s'...", json);
 
-  res = json_parser_load_from_data (parser, json, -1, &error);
+  res = json_parser_load_from_string (parser, json, &error);
 
   g_assert_false (res);
   g_assert_error (error, JSON_PARSER_ERROR, JSON_PARSER_ERROR_MISSING_COMMA);
@@ -168,7 +168,7 @@ test_trailing_comma (gconstpointer user_data)
 
   g_test_message ("invalid data: '%s'...", json);
 
-  res = json_parser_load_from_data (parser, json, -1, &error);
+  res = json_parser_load_from_string (parser, json, &error);
 
   g_assert_false (res);
   g_assert_error (error, JSON_PARSER_ERROR, JSON_PARSER_ERROR_TRAILING_COMMA);

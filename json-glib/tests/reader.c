@@ -42,7 +42,7 @@ test_base_object (void)
   gchar **members;
   gsize n_members, i;
 
-  json_parser_load_from_data (parser, test_base_object_data, -1, &error);
+  json_parser_load_from_string (parser, test_base_object_data, &error);
   g_assert_no_error (error);
 
   json_reader_set_root (reader, json_parser_get_root (parser));
@@ -100,7 +100,7 @@ test_base_array (void)
   JsonReader *reader = json_reader_new (NULL);
   GError *error = NULL;
 
-  json_parser_load_from_data (parser, test_base_array_data, -1, &error);
+  json_parser_load_from_string (parser, test_base_array_data, &error);
   g_assert_no_error (error);
 
   json_reader_set_root (reader, json_parser_get_root (parser));
@@ -159,7 +159,7 @@ test_reader_level (void)
   GError *error = NULL;
   char **members;
 
-  json_parser_load_from_data (parser, test_reader_level_data, -1, &error);
+  json_parser_load_from_string (parser, test_reader_level_data, &error);
   g_assert_no_error (error);
 
   json_reader_set_root (reader, json_parser_get_root (parser));
@@ -212,7 +212,7 @@ test_reader_null_value (void)
 
   g_test_bug ("758580");
 
-  json_parser_load_from_data (parser, test_reader_null_value_data, -1, &error);
+  json_parser_load_from_string (parser, test_reader_null_value_data, &error);
   g_assert_no_error (error);
 
   json_reader_set_root (reader, json_parser_get_root (parser));
@@ -264,7 +264,7 @@ test_reader_current_node (void)
 
   g_assert_null (json_reader_get_current_node (reader));
 
-  json_parser_load_from_data (parser, test_reader_current_node_data, -1, &error);
+  json_parser_load_from_string (parser, test_reader_current_node_data, &error);
   g_assert_no_error (error);
 
   json_reader_set_root (reader, json_parser_get_root (parser));

@@ -44,7 +44,7 @@
  *
  * // str is defined elsewhere and contains:
  * // { "url" : "http://www.gnome.org/img/flash/two-thirty.png", "size" : [ 652, 242 ] }
- * json_parser_load_from_data (parser, str, -1, NULL);
+ * json_parser_load_from_string (parser, str, NULL);
  *
  * g_autoptr(JsonReader) reader = json_reader_new (json_parser_get_root (parser));
  *

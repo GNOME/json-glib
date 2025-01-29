@@ -51,7 +51,7 @@ json_from_string (const char  *str,
   g_return_val_if_fail (str != NULL, NULL);
 
   parser = json_parser_new ();
-  if (!json_parser_load_from_data (parser, str, -1, error))
+  if (!json_parser_load_from_string (parser, str, error))
     {
       g_object_unref (parser);
       return NULL;

@@ -194,7 +194,7 @@ test_empty_with_parser (JsonParser *parser)
 {
   GError *error = NULL;
 
-  json_parser_load_from_data (parser, test_empty_string, -1, &error);
+  json_parser_load_from_string (parser, test_empty_string, &error);
   g_assert_no_error (error);
   g_assert_null (json_parser_get_root (parser));
 }
@@ -229,7 +229,7 @@ test_base_value (void)
     {
       GError *error = NULL;
 
-      json_parser_load_from_data (parser, test_base_values[i].str, -1, &error);
+      json_parser_load_from_string (parser, test_base_values[i].str, &error);
       g_assert_no_error (error);
 
       JsonNode *root = json_parser_get_root (parser);
@@ -258,7 +258,7 @@ test_empty_array (void)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  json_parser_load_from_data (parser, test_empty_array_string, -1, &error);
+  json_parser_load_from_string (parser, test_empty_array_string, &error);
 
   g_assert_no_error (error);
 
@@ -289,7 +289,7 @@ test_simple_array (void)
 
       g_test_message ("Parsing: '%s'", test_simple_arrays[i].str);
 
-      json_parser_load_from_data (parser, test_simple_arrays[i].str, -1, &error);
+      json_parser_load_from_string (parser, test_simple_arrays[i].str, &error);
 
       JsonNode *root = json_parser_get_root (parser);
       g_assert_nonnull (root);
@@ -328,7 +328,7 @@ test_nested_array (void)
     {
       GError *error = NULL;
 
-      json_parser_load_from_data (parser, test_nested_arrays[i], -1, &error);
+      json_parser_load_from_string (parser, test_nested_arrays[i], &error);
       g_assert_no_error (error);
 
       JsonNode *root = json_parser_get_root (parser);
@@ -353,7 +353,7 @@ test_empty_object (void)
   parser = json_parser_new ();
   g_assert_true (JSON_IS_PARSER (parser));
 
-  json_parser_load_from_data (parser, test_empty_object_string, -1, &error);
+  json_parser_load_from_string (parser, test_empty_object_string, &error);
   g_assert_no_error (error);
 
   JsonNode *root = json_parser_get_root (parser);
@@ -380,7 +380,7 @@ test_simple_object (void)
     {
       GError *error = NULL;
 
-      json_parser_load_from_data (parser, test_simple_objects[i].str, -1, &error);
+      json_parser_load_from_string (parser, test_simple_objects[i].str, &error);
       g_assert_no_error (error);
 
       JsonNode *root = json_parser_get_root (parser);
@@ -422,7 +422,7 @@ test_nested_object (void)
     {
       GError *error = NULL;
 
-      json_parser_load_from_data (parser, test_nested_objects[i], -1, &error);
+      json_parser_load_from_string (parser, test_nested_objects[i], &error);
       g_assert_no_error (error);
 
       JsonNode *root = json_parser_get_root (parser);
@@ -454,7 +454,7 @@ test_assignment (void)
     {
       GError *error = NULL;
 
-      json_parser_load_from_data (parser, test_assignments[i].str, -1, &error);
+      json_parser_load_from_string (parser, test_assignments[i].str, &error);
       g_assert_no_error (error);
 
       g_test_message ("checking variable '%s' is assigned...",
@@ -486,7 +486,7 @@ test_unicode_escape (void)
     {
       GError *error = NULL;
 
-      json_parser_load_from_data (parser, test_unicode[i].str, -1, &error);
+      json_parser_load_from_string (parser, test_unicode[i].str, &error);
       g_assert_no_error (error);
 
       g_test_message ("checking root node is an object...");
@@ -680,7 +680,7 @@ test_multiple_roots (void)
     {
       GError *error = NULL;
 
-      json_parser_load_from_data (parser, test_multi_root[i].str, -1, &error);
+      json_parser_load_from_string (parser, test_multi_root[i].str, &error);
       g_assert_no_error (error);
 
       JsonNode *root = json_parser_steal_root (parser);
@@ -705,7 +705,7 @@ test_parser_extensions (void)
 
       g_test_message ("extension: %s, data: %s", test_extensions[i].ext, test_extensions[i].str);
 
-      json_parser_load_from_data (parser, test_extensions[i].str, -1, &error);
+      json_parser_load_from_string (parser, test_extensions[i].str, &error);
       g_assert_no_error (error);
     }
 
@@ -724,12 +724,12 @@ test_parser_string_extensions (void)
       g_test_message ("data: %s", test_str_extensions[i].str);
 
       json_parser_set_strict (parser, TRUE);
-      json_parser_load_from_data (parser, test_str_extensions[i].str, -1, &error);
+      json_parser_load_from_string (parser, test_str_extensions[i].str, &error);
       g_assert_error (error, JSON_PARSER_ERROR, (int) test_str_extensions[i].expected_error);
       g_clear_error (&error);
 
       json_parser_set_strict (parser, FALSE);
-      json_parser_load_from_data (parser, test_str_extensions[i].str, -1, &error);
+      json_parser_load_from_string (parser, test_str_extensions[i].str, &error);
       g_assert_no_error (error);
 
       JsonNode *root = json_parser_steal_root (parser);

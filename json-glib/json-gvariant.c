@@ -1320,10 +1320,15 @@ json_gvariant_deserialize_data (const gchar  *json,
   GVariant *variant = NULL;
   JsonNode *root;
 
+  if (length < 0)
+    length = strlen (json);
+
   parser = json_parser_new ();
 
-  if (! json_parser_load_from_data (parser, json, length, error))
+  GBytes *bytes = g_bytes_new (json, length);
+  if (! json_parser_load_from_bytes (parser, bytes, error))
     {
+      g_bytes_unref (bytes);
       g_object_unref (parser);
       return NULL;
     }
@@ -1342,6 +1347,7 @@ json_gvariant_deserialize_data (const gchar  *json,
         json_gvariant_deserialize (json_parser_get_root (parser), signature, error);
     }
 
+  g_bytes_unref (bytes);
   g_object_unref (parser);
 
   return variant;

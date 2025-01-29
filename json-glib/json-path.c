@@ -123,7 +123,7 @@
  *
  * ```c
  * JsonParser *parser = json_parser_new ();
- * json_parser_load_from_data (parser, json_data, -1, NULL);
+ * json_parser_load_from_string (parser, json_data, NULL);
  * ```
  *
  * If we run the following code:

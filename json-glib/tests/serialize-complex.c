@@ -282,7 +282,7 @@ test_serialize (void)
   g_test_message ("TestObject: %s", data);
 
   parser = json_parser_new ();
-  json_parser_load_from_data (parser, data, -1, &error);
+  json_parser_load_from_string (parser, data, &error);
   g_assert_null (error);
 
   node = json_parser_get_root (parser);

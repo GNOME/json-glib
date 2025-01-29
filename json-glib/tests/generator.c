@@ -395,7 +395,7 @@ test_pretty (void)
       char *data;
       gsize len;
 
-      g_assert_true (json_parser_load_from_data (parser, pretty_examples[i], -1, NULL));
+      g_assert_true (json_parser_load_from_string (parser, pretty_examples[i], NULL));
 
       root = json_parser_get_root (parser);
       g_assert_nonnull (root);

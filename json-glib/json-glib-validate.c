@@ -67,10 +67,7 @@ validate (JsonParser *parser,
       return FALSE;
     }
 
-  res = json_parser_load_from_data (parser,
-                                    g_bytes_get_data (bytes, NULL),
-                                    g_bytes_get_size (bytes),
-                                    &error);
+  res = json_parser_load_from_bytes (parser, bytes, &error);
   if (!res)
     {
       /* Translators: the first %s is the program name, the second one

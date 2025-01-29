@@ -250,7 +250,7 @@ path_match (gconstpointer data)
   JsonNode *matches;
   char *str;
 
-  json_parser_load_from_data (parser, test_json, -1, NULL);
+  json_parser_load_from_string (parser, test_json, NULL);
   root = json_parser_get_root (parser);
 
   g_assert_true (json_path_compile (path, expr, NULL));
