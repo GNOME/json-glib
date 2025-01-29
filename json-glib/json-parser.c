@@ -1391,7 +1391,8 @@ json_parser_load_from_file (JsonParser   *parser,
       return FALSE;
     }
 
-  g_set_str (&priv->filename, filename);
+  g_clear_pointer (&priv->filename, g_free);
+  priv->filename = g_strdup (filename);
   priv->is_filename = TRUE;
 
   GBytes *bytes = g_bytes_new_take (data, length);
@@ -1442,7 +1443,8 @@ json_parser_load_from_mapped_file (JsonParser   *parser,
       return FALSE;
     }
 
-  g_set_str (&priv->filename, filename);
+  g_clear_pointer (&priv->filename, g_free);
+  priv->filename = g_strdup (filename);
   priv->is_filename = TRUE;
 
   gboolean retval = TRUE;
