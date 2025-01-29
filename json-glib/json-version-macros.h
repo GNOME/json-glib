@@ -96,6 +96,15 @@
  */
 #define JSON_VERSION_1_10       (G_ENCODE_VERSION (1, 10))
 
+/**
+ * JSON_VERSION_1_12:
+ *
+ * The encoded representation of JSON-GLib version "1.12".
+ *
+ * Since: 1.12
+ */
+#define JSON_VERSION_1_12       (G_ENCODE_VERSION (1, 12))
+
 /* evaluates to the current stable version; for development cycles,
  * this means the next stable target
  */
@@ -260,4 +269,19 @@
 # define JSON_AVAILABLE_IN_1_10                JSON_UNAVAILABLE(1, 10)
 #else
 # define JSON_AVAILABLE_IN_1_10                _JSON_EXTERN
+#endif
+
+/* 1.12 */
+#if JSON_VERSION_MIN_REQUIRED >= JSON_VERSION_1_12
+# define JSON_DEPRECATED_IN_1_12               JSON_DEPRECATED
+# define JSON_DEPRECATED_IN_1_12_FOR(f)        JSON_DEPRECATED_FOR(f)
+#else
+# define JSON_DEPRECATED_IN_1_12               _JSON_EXTERN
+# define JSON_DEPRECATED_IN_1_12_FOR(f)        _JSON_EXTERN
+#endif
+
+#if JSON_VERSION_MAX_ALLOWED < JSON_VERSION_1_12
+# define JSON_AVAILABLE_IN_1_12                JSON_UNAVAILABLE(1, 12)
+#else
+# define JSON_AVAILABLE_IN_1_12                _JSON_EXTERN
 #endif
