@@ -1233,15 +1233,15 @@ json_parser_new_immutable (void)
 
 static gboolean
 json_parser_load (JsonParser   *parser,
-                  const gchar  *input_data,
-                  gsize         length,
+                  GBytes       *input_data,
                   GError      **error)
 {
   JsonParserPrivate *priv = parser->priv;
   JsonScanner *scanner;
   gboolean done;
   gboolean retval = TRUE;
-  const char *data = input_data;
+  gsize length;
+  const char *data = g_bytes_get_data (input_data, &length);
 
   if (priv->is_strict && (length == 0 || data == NULL || *data == '\0'))
     {
@@ -1368,7 +1368,7 @@ json_parser_load (JsonParser   *parser,
  * [method@Json.Parser.load_from_mapped_file] may be a more efficient
  * way to load it.
  *
- * See also: [method@Json.Parser.load_from_data]
+ * See also: [method@Json.Parser.load_from_string], [method@Json.Parser.load_from_bytes]
  *
  * Returns: `TRUE` if the file was successfully loaded and parsed.
  */
@@ -1377,36 +1377,32 @@ json_parser_load_from_file (JsonParser   *parser,
                             const gchar  *filename,
                             GError      **error)
 {
-  JsonParserPrivate *priv;
-  GError *internal_error;
-  gchar *data;
-  gsize length;
-  gboolean retval = TRUE;
+  JsonParserPrivate *priv = json_parser_get_instance_private (parser);
+  GError *internal_error = NULL;
 
   g_return_val_if_fail (JSON_IS_PARSER (parser), FALSE);
   g_return_val_if_fail (filename != NULL, FALSE);
 
-  priv = parser->priv;
-
-  internal_error = NULL;
+  char *data;
+  gsize length;
   if (!g_file_get_contents (filename, &data, &length, &internal_error))
     {
       g_propagate_error (error, internal_error);
       return FALSE;
     }
 
-  g_free (priv->filename);
-
+  g_set_str (&priv->filename, filename);
   priv->is_filename = TRUE;
-  priv->filename = g_strdup (filename);
 
-  if (!json_parser_load (parser, data, length, &internal_error))
+  GBytes *bytes = g_bytes_new_take (data, length);
+  gboolean retval = TRUE;
+  if (!json_parser_load (parser, bytes, &internal_error))
     {
       g_propagate_error (error, internal_error);
       retval = FALSE;
     }
 
-  g_free (data);
+  g_bytes_unref (bytes);
 
   return retval;
 }
@@ -1433,30 +1429,24 @@ json_parser_load_from_mapped_file (JsonParser   *parser,
                                    const gchar  *filename,
                                    GError      **error)
 {
-  JsonParserPrivate *priv;
+  JsonParserPrivate *priv = json_parser_get_instance_private (parser);
   GError *internal_error = NULL;
-  gboolean retval = TRUE;
-  GMappedFile *mapped_file = NULL;
 
   g_return_val_if_fail (JSON_IS_PARSER (parser), FALSE);
   g_return_val_if_fail (filename != NULL, FALSE);
 
-  priv = parser->priv;
-
-  mapped_file = g_mapped_file_new (filename, FALSE, &internal_error);
+  GMappedFile *mapped_file = g_mapped_file_new (filename, FALSE, &internal_error);
   if (mapped_file == NULL)
     {
       g_propagate_error (error, internal_error);
       return FALSE;
     }
 
-  g_free (priv->filename);
-
+  g_set_str (&priv->filename, filename);
   priv->is_filename = TRUE;
-  priv->filename = g_strdup (filename);
 
-  if (!json_parser_load (parser, g_mapped_file_get_contents (mapped_file),
-                         g_mapped_file_get_length (mapped_file), &internal_error))
+  gboolean retval = TRUE;
+  if (!json_parser_load (parser, g_mapped_file_get_bytes (mapped_file), &internal_error))
     {
       g_propagate_error (error, internal_error);
       retval = FALSE;
@@ -1480,6 +1470,10 @@ json_parser_load_from_mapped_file (JsonParser   *parser,
  * contents of the parser will be destroyed each time.
  *
  * Returns: `TRUE` if the buffer was succesfully parsed
+ *
+ * Deprecated: 1.12: Use [method@Json.Parser.load_from_bytes] for a byte
+ *   buffer, or [method@Json.Parser.load_from_string] for a `NUL`-terminated
+ *   UTF-8 string
  */
 gboolean
 json_parser_load_from_data (JsonParser   *parser,
@@ -1487,28 +1481,107 @@ json_parser_load_from_data (JsonParser   *parser,
                             gssize        length,
                             GError      **error)
 {
-  JsonParserPrivate *priv;
-  GError *internal_error;
-  gboolean retval = TRUE;
+  JsonParserPrivate *priv = json_parser_get_instance_private (parser);
 
   g_return_val_if_fail (JSON_IS_PARSER (parser), FALSE);
   g_return_val_if_fail (data != NULL, FALSE);
 
-  priv = parser->priv;
-
   if (length < 0)
     length = strlen (data);
 
+  g_clear_pointer (&priv->filename, g_free);
   priv->is_filename = FALSE;
-  g_free (priv->filename);
-  priv->filename = NULL;
 
-  internal_error = NULL;
-  if (!json_parser_load (parser, data, length, &internal_error))
+  GBytes *buffer = g_bytes_new (data, length);
+  gboolean retval = TRUE;
+  GError *internal_error = NULL;
+  if (!json_parser_load (parser, buffer, &internal_error))
     {
       g_propagate_error (error, internal_error);
       retval = FALSE;
     }
+
+  g_bytes_unref (buffer);
+
+  return retval;
+}
+
+/**
+ * json_parser_load_from_bytes:
+ * @parser: a parser
+ * @data: the buffer to parse
+ * @error: return location for a #GError
+ *
+ * Loads a JSON stream from a buffer and parses it.
+ *
+ * You can call this function multiple times with the same parser, but the
+ * contents of the parser will be destroyed each time.
+ *
+ * Returns: `TRUE` if the buffer was succesfully parsed
+ *
+ * Since: 1.12
+ */
+gboolean
+json_parser_load_from_bytes (JsonParser  *parser,
+                             GBytes      *data,
+                             GError     **error)
+{
+  JsonParserPrivate *priv = json_parser_get_instance_private (parser);
+
+  g_return_val_if_fail (JSON_IS_PARSER (parser), FALSE);
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  g_clear_pointer (&priv->filename, g_free);
+  priv->is_filename = FALSE;
+
+  GError *internal_error = NULL;
+  if (!json_parser_load (parser, data, &internal_error))
+    {
+      g_propagate_error (error, internal_error);
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+/**
+ * json_parser_load_from_string:
+ * @parser: a parser
+ * @data: the buffer to parse, as a `NUL`-terminated UTF-8 string
+ * @error: return location for a #GError
+ *
+ * Loads a JSON stream from a buffer and parses it.
+ *
+ * You can call this function multiple times with the same parser, but the
+ * contents of the parser will be destroyed each time.
+ *
+ * Returns: `TRUE` if the buffer was succesfully parsed
+ *
+ * Since: 1.12
+ */
+gboolean
+json_parser_load_from_string (JsonParser  *parser,
+                              const char  *data,
+                              GError     **error)
+{
+  JsonParserPrivate *priv = json_parser_get_instance_private (parser);
+
+  g_return_val_if_fail (JSON_IS_PARSER (parser), FALSE);
+  g_return_val_if_fail (data != NULL, FALSE);
+
+  g_clear_pointer (&priv->filename, g_free);
+  priv->is_filename = FALSE;
+
+  GBytes *buffer = g_bytes_new (data, strlen (data));
+  GError *internal_error = NULL;
+  gboolean retval = TRUE;
+  if (!json_parser_load (parser, buffer, &internal_error))
+    {
+      g_propagate_error (error, internal_error);
+      retval = FALSE;
+    }
+
+  g_bytes_unref (buffer);
 
   return retval;
 }
@@ -1679,10 +1752,7 @@ json_parser_load_from_stream (JsonParser    *parser,
                               GError       **error)
 {
   GByteArray *content;
-  gsize pos;
-  gssize res;
-  gboolean retval = FALSE;
-  GError *internal_error;
+  GError *internal_error = NULL;
 
   g_return_val_if_fail (JSON_IS_PARSER (parser), FALSE);
   g_return_val_if_fail (G_IS_INPUT_STREAM (stream), FALSE);
@@ -1692,12 +1762,14 @@ json_parser_load_from_stream (JsonParser    *parser,
     return FALSE;
 
   content = g_byte_array_new ();
-  pos = 0;
+  gsize pos = 0;
 
   g_byte_array_set_size (content, pos + GET_DATA_BLOCK_SIZE + 1);
+
+  gssize res;
   while ((res = g_input_stream_read (stream, content->data + pos,
                                      GET_DATA_BLOCK_SIZE,
-                                     cancellable, error)) > 0)
+                                     cancellable, &internal_error)) > 0)
     {
       pos += res;
       g_byte_array_set_size (content, pos + GET_DATA_BLOCK_SIZE + 1);
@@ -1705,22 +1777,23 @@ json_parser_load_from_stream (JsonParser    *parser,
 
   if (res < 0)
     {
-      /* error has already been set */
-      retval = FALSE;
-      goto out;
+      g_propagate_error (error, internal_error);
+      g_byte_array_free (content, TRUE);
+      return FALSE;
     }
 
   /* zero-terminate the content; we allocated an extra byte for this */
   content->data[pos] = 0;
 
-  internal_error = NULL;
-  retval = json_parser_load (parser, (const gchar *) content->data, pos, &internal_error);
+  GBytes *bytes = g_bytes_new (content->data, pos);
+  gboolean retval =
+    json_parser_load (parser, bytes, &internal_error);
 
   if (internal_error != NULL)
     g_propagate_error (error, internal_error);
 
-out:
-  g_byte_array_free (content, TRUE);
+  g_byte_array_unref (content);
+  g_bytes_unref (bytes);
 
   return retval;
 }
@@ -1728,6 +1801,7 @@ out:
 typedef struct {
   GInputStream *stream;
   GByteArray *content;
+  GBytes *bytes;
   gsize pos;
 } LoadData;
 
@@ -1739,7 +1813,10 @@ load_data_free (gpointer data_)
       LoadData *data = data_;
 
       g_object_unref (data->stream);
-      g_byte_array_unref (data->content);
+      if (data->content != NULL)
+        g_byte_array_unref (data->content);
+      if (data->bytes != NULL)
+        g_bytes_unref (data->bytes);
       g_free (data);
     }
 }
@@ -1780,7 +1857,7 @@ json_parser_load_from_stream_finish (JsonParser    *parser,
        * called in the right context, even if it means making the finish() function
        * necessary to complete the async operation.
        */
-      res = json_parser_load (parser, (const gchar *) data->content->data, data->pos, &internal_error);
+      res = json_parser_load (parser, data->bytes, &internal_error);
       if (internal_error != NULL)
         g_propagate_error (error, internal_error);
     }
@@ -1817,6 +1894,11 @@ read_from_stream (GTask *task,
 
   /* zero-terminate the content; we allocated an extra byte for this */
   data->content->data[data->pos] = 0;
+
+  /* turn the array into an immutable buffer */
+  data->bytes = g_bytes_new (data->content->data, data->pos);
+  g_clear_pointer (&data->content, g_byte_array_unref);
+
   g_task_return_boolean (task, TRUE);
 }
 
@@ -1856,6 +1938,7 @@ json_parser_load_from_stream_async (JsonParser          *parser,
   data = g_new (LoadData, 1);
   data->stream = g_object_ref (stream);
   data->content = g_byte_array_new ();
+  data->bytes = NULL;
   data->pos = 0;
 
   task = g_task_new (parser, cancellable, callback, user_data);

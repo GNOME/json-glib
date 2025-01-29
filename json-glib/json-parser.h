@@ -205,10 +205,18 @@ JSON_AVAILABLE_IN_1_6
 gboolean    json_parser_load_from_mapped_file   (JsonParser           *parser,
                                                  const gchar          *filename,
                                                  GError              **error);
-JSON_AVAILABLE_IN_1_0
+JSON_DEPRECATED_IN_1_12_FOR(json_parser_load_from_bytes or json_parser_load_from_string)
 gboolean    json_parser_load_from_data          (JsonParser           *parser,
                                                  const gchar          *data,
                                                  gssize                length,
+                                                 GError              **error);
+JSON_AVAILABLE_IN_1_12
+gboolean    json_parser_load_from_bytes         (JsonParser           *parser,
+                                                 GBytes               *data,
+                                                 GError              **error);
+JSON_AVAILABLE_IN_1_12
+gboolean    json_parser_load_from_string        (JsonParser           *parser,
+                                                 const char           *data,
                                                  GError              **error);
 JSON_AVAILABLE_IN_1_0
 gboolean    json_parser_load_from_stream        (JsonParser           *parser,
