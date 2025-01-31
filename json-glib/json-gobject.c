@@ -892,6 +892,8 @@ json_construct_gobject (GType         gtype,
  * Return value: (transfer full) (nullable): a new object instance of the given type
  *
  * Since: 0.10
+ *
+ * Deprecated: 1.12: Use [func@Json.gobject_from_string] or [func@Json.gobject_from_bytes]
  */
 GObject *
 json_gobject_from_data (GType         gtype,
@@ -899,27 +901,125 @@ json_gobject_from_data (GType         gtype,
                         gssize        length,
                         GError      **error)
 {
-  JsonParser *parser;
-  JsonNode *root;
-  GError *parse_error;
-  GObject *retval;
   GBytes *bytes;
+  GObject *res;
 
   g_return_val_if_fail (gtype != G_TYPE_INVALID, NULL);
   g_return_val_if_fail (data != NULL, NULL);
 
-  if (length < 0)
-    length = strlen (data);
+  bytes = g_bytes_new (data, length < 0 ? strlen (data) : (gsize) length);
+  res = json_gobject_from_bytes (gtype, bytes, error);
+  g_bytes_unref (bytes);
+
+  return res;
+}
+
+/**
+ * json_gobject_from_bytes:
+ * @gtype: the type of the object to construct
+ * @data: a JSON data stream
+ * @error: return location for a #GError, or %NULL
+ *
+ * Deserializes a JSON data stream and creates an instance of the
+ * given type.
+ *
+ * If the type implements the [iface@Json.Serializable] interface, it will
+ * be asked to deserialize all the JSON members into their respective properties;
+ * otherwise, the default implementation will be used to translate the
+ * compatible JSON native types.
+ *
+ * **Note**: the JSON data stream must be an object
+ *
+ * Return value: (transfer full) (nullable): a new object instance of the given type
+ *
+ * Since: 1.12
+ */
+GObject *
+json_gobject_from_bytes (GType    gtype,
+                         GBytes  *data,
+                         GError **error)
+{
+  JsonParser *parser;
+  JsonNode *root;
+  GError *parse_error;
+  GObject *retval;
+
+  g_return_val_if_fail (gtype != G_TYPE_INVALID, NULL);
+  g_return_val_if_fail (data != NULL, NULL);
 
   parser = json_parser_new ();
-  bytes = g_bytes_new (data, length);
+  parse_error = NULL;
+  json_parser_load_from_bytes (parser, data, &parse_error);
+  if (parse_error)
+    {
+      g_propagate_error (error, parse_error);
+      g_object_unref (parser);
+      return NULL;
+    }
+
+  root = json_parser_get_root (parser);
+  if (root == NULL || JSON_NODE_TYPE (root) != JSON_NODE_OBJECT)
+    {
+      g_set_error (error, JSON_PARSER_ERROR,
+                   JSON_PARSER_ERROR_PARSE,
+                   /* translators: the %s is the name of the data structure */
+                   _("Expecting a JSON object, but the root node is of type “%s”"),
+                   json_node_type_name (root));
+      g_object_unref (parser);
+      return NULL;
+    }
+
+  retval = json_gobject_deserialize (gtype, root);
+
+  g_object_unref (parser);
+
+  return retval;
+}
+
+/**
+ * json_gobject_from_string:
+ * @gtype: the type of the object to construct
+ * @data: a JSON data stream
+ * @error: return location for a #GError, or %NULL
+ *
+ * Deserializes a JSON data stream and creates an instance of the
+ * given type.
+ *
+ * If the type implements the [iface@Json.Serializable] interface, it will
+ * be asked to deserialize all the JSON members into their respective properties;
+ * otherwise, the default implementation will be used to translate the
+ * compatible JSON native types.
+ *
+ * **Note**: the JSON data stream must be an object
+ *
+ * Return value: (transfer full) (nullable): a new object instance of the given type
+ *
+ * Since: 1.12
+ */
+GObject *
+json_gobject_from_string (GType        gtype,
+                          const char  *data,
+                          GError     **error)
+{
+  JsonParser *parser;
+  JsonNode *root;
+  GError *parse_error;
+  GBytes *bytes;
+  GObject *retval;
+
+  g_return_val_if_fail (gtype != G_TYPE_INVALID, NULL);
+  g_return_val_if_fail (data != NULL, NULL);
+
+  bytes = g_bytes_new (data, strlen (data));
+
+  parser = json_parser_new ();
   parse_error = NULL;
   json_parser_load_from_bytes (parser, bytes, &parse_error);
   if (parse_error)
     {
       g_propagate_error (error, parse_error);
-      g_bytes_unref (bytes);
       g_object_unref (parser);
+      g_bytes_unref (bytes);
       return NULL;
     }
 

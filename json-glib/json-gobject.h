@@ -227,6 +227,14 @@ JSON_AVAILABLE_IN_1_0
 GObject * json_gobject_deserialize             (GType                    gtype,
                                                 JsonNode                *node);
 
+JSON_AVAILABLE_IN_1_12
+GObject * json_gobject_from_string             (GType                    gtype,
+                                                const char              *data,
+                                                GError                 **error);
+JSON_AVAILABLE_IN_1_12
+GObject * json_gobject_from_bytes              (GType                    gtype,
+                                                GBytes                  *data,
+                                                GError                 **error);
 JSON_AVAILABLE_IN_1_0
 GObject * json_gobject_from_data               (GType                    gtype,
                                                 const gchar             *data,
