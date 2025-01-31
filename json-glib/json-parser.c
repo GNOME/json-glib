@@ -1448,12 +1448,14 @@ json_parser_load_from_mapped_file (JsonParser   *parser,
   priv->is_filename = TRUE;
 
   gboolean retval = TRUE;
-  if (!json_parser_load (parser, g_mapped_file_get_bytes (mapped_file), &internal_error))
+  GBytes *bytes = g_mapped_file_get_bytes (mapped_file);
+  if (!json_parser_load (parser, bytes, &internal_error))
     {
       g_propagate_error (error, internal_error);
       retval = FALSE;
     }
 
+  g_clear_pointer (&bytes, g_bytes_unref);
   g_clear_pointer (&mapped_file, g_mapped_file_unref);
 
   return retval;
