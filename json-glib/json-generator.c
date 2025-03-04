@@ -95,7 +95,7 @@ json_strescape (GString     *output,
           g_string_append_c (output, '\\');
           g_string_append_c (output, *p);
         }
-      else if ((*p > 0 && *p < 0x1f) || *p == 0x7f)
+      else if ((*p > 0 && *p <= 0x1f) || *p == 0x7f)
         {
           switch (*p)
             {
