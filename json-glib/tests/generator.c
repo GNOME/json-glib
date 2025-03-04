@@ -430,6 +430,7 @@ static const FixtureString string_fixtures[] = {
   { "a\nxc", "\"a\\nxc\"" },
   { "a\\xc", "\"a\\\\xc\"" },
   { "Barney B\303\244r", "\"Barney B\303\244r\"" },
+  { "a\x01\x1f\x20z", "\"a\\u0001\\u001f z\"" },
 };
 
 static void
