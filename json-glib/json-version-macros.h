@@ -27,9 +27,24 @@
 
 #include "json-version.h"
 
-#ifndef _JSON_EXTERN
-#define _JSON_EXTERN extern
+#if (defined(_WIN32) || defined(__CYGWIN__)) && !defined(JSON_STATIC_BUILD)
+# define _JSON_EXPORT __declspec(dllexport)
+# define _JSON_IMPORT __declspec(dllimport)
+#elif defined(__GNUC__) && (__GNUC__ >= 4)
+# define _JSON_EXPORT __attribute__((__visibility__("default")))
+# define _JSON_IMPORT
+#else
+# define _JSON_EXPORT
+# define _JSON_IMPORT
 #endif
+
+#ifdef JSON_COMPILATION
+# define _JSON_API _JSON_EXPORT
+#else
+# define _JSON_API _JSON_IMPORT
+#endif
+
+#define _JSON_EXTERN _JSON_API extern
 
 #ifdef JSON_DISABLE_DEPRECATION_WARNINGS
 #define JSON_DEPRECATED _JSON_EXTERN
