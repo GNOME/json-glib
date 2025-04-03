@@ -65,6 +65,14 @@ endforeach
 
 cdata.set_quoted('GETTEXT_PACKAGE', json_gettext_domain)
 
+if get_option('default_library') == 'static'
+  cdata.set('JSON_STATIC_BUILD', true)
+endif
+
+if get_option('debug')
+  cdata.set('JSON_ENABLE_DEBUG', true)
+endif
+
 if cc.get_id() == 'msvc'
   # Compiler options taken from msvc_recommended_pragmas.h
   # in GLib, based on _Win32_Programming_ by Rector and Newcomer
@@ -126,20 +134,7 @@ else
   test_cflags = []
 endif
 
-if get_option('default_library') != 'static'
-  if host_system == 'windows'
-    cdata.set('DLL_EXPORT', true)
-    cdata.set('_JSON_EXTERN', '__declspec(dllexport) extern')
-  else
-    cdata.set('_JSON_EXTERN', '__attribute__((visibility("default"))) extern')
-  endif
-endif
-
 common_cflags = cc.get_supported_arguments(test_cflags)
-
-if get_option('debug')
-  cdata.set('JSON_ENABLE_DEBUG', true)
-endif
 
 common_ldflags = cc.get_supported_link_arguments([
   '-Wl,-Bsymbolic',
