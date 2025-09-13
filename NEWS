@@ -18,6 +18,8 @@ Overview of changes for 1.10
 • Allow single quoted strings when running in non-strict mode [#76]
 • Allow escaped characters when running in non-strict mode [#77]
 • Add missing nullable annotation [!88]
+• Add missing escape [#79]
+• Fix static builds [#80]
 
 Overview of changes for 1.8
 ==============================
