@@ -6,148 +6,270 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: json-glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=json-glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-01-20 02:49+0000\n"
-"PO-Revision-Date: 2013-01-26 09:43+0900\n"
-"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues/\n"
+"POT-Creation-Date: 2025-09-10 20:57+0000\n"
+"PO-Revision-Date: 2025-09-17 18:32-0400\n"
+"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.7\n"
 
-#: ../json-glib/json-gobject.c:925
+#: json-glib/json-glib-format.c:59
+msgid "Prettify output"
+msgstr "گۈزەللەشتۈرۈپ چىقىرىش"
+
+#: json-glib/json-glib-format.c:60
+msgid "Indentation spaces"
+msgstr "تارايتىش بوشلۇقى"
+
+#: json-glib/json-glib-format.c:60
+msgid "SPACES"
+msgstr "بوشلۇق"
+
+#: json-glib/json-glib-format.c:61
+msgid "Output file"
+msgstr "چىقىرىش ھۆججىتى"
+
+#: json-glib/json-glib-format.c:61 json-glib/json-glib-validate.c:108
+msgid "FILE"
+msgstr "ھۆججەت"
+
+#: json-glib/json-glib-format.c:62
+msgid "FILE…"
+msgstr "ھۆججەت…"
+
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-format.c:88 json-glib/json-glib-format.c:124
 #, c-format
-msgid "Expecting a JSON object, but the root node is of type `%s'"
+msgid "%s: %s: error opening file: %s\n"
+msgstr "%s: %s: ھۆججەت ئېچىش خاتالىقى: %s\n"
+
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-format.c:102 json-glib/json-glib-validate.c:79
+#, c-format
+msgid "%s: %s: error parsing file: %s\n"
+msgstr "%s: %s: ھۆججەت يېشىش خاتالىقى: %s\n"
+
+#. Translators: the first %s is the program name, the
+#. * second one is the URI of the file.
+#.
+#: json-glib/json-glib-format.c:144
+#, c-format
+msgid "%s: %s: error writing to stdout"
+msgstr "%s: %s: stdout قا يېزىۋاتقاندا خاتالىق كۆرۈلدى"
+
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-format.c:168
+#, c-format
+msgid "%s: %s: error closing: %s\n"
+msgstr "%s: %s: يېپىش خاتالىقى: %s\n"
+
+#. Translators: this message will appear after the usage string
+#. and before the list of options.
+#: json-glib/json-glib-format.c:204
+msgid "Format JSON files."
+msgstr "JSON ھۆججەت پىچىمى."
+
+#: json-glib/json-glib-format.c:205
+msgid "json-glib-format formats JSON resources."
+msgstr "JSON مەنبەسىنىڭ پىچىمىنى json-glib-format بەلگىلەيدۇ."
+
+#. Translators: the %s is the program name. This error message
+#. * means the user is calling json-glib-validate without any
+#. * argument.
+#.
+#: json-glib/json-glib-format.c:220 json-glib/json-glib-validate.c:129
+#, c-format
+msgid "Error parsing commandline options: %s\n"
+msgstr "بۇيرۇق قۇرى تاللانمىنى يېشىشتە خاتالىق كۆرۈلدى: %s\n"
+
+#: json-glib/json-glib-format.c:222 json-glib/json-glib-format.c:236
+#: json-glib/json-glib-validate.c:131 json-glib/json-glib-validate.c:145
+#, c-format
+msgid "Try “%s --help” for more information."
+msgstr "تېخىمۇ كۆپ ئۇچۇرغا ‪«%s --help»‬ نى سىناڭ."
+
+#. Translators: the %s is the program name. This error message
+#. * means the user is calling json-glib-validate without any
+#. * argument.
+#.
+#: json-glib/json-glib-format.c:234 json-glib/json-glib-validate.c:143
+#, c-format
+msgid "%s: missing files"
+msgstr "%s: ھۆججەت يوقالغان"
+
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-validate.c:64
+#, c-format
+msgid "%s: %s: error reading file: %s\n"
+msgstr "%s: %s: ھۆججەت ئوقۇش خاتالىقى: %s\n"
+
+#. Translators: this message will appear after the usage string
+#. and before the list of options.
+#: json-glib/json-glib-validate.c:111
+msgid "Validate JSON files."
+msgstr "JSON ھۆججەتنى دەلىللەيدۇ."
+
+#: json-glib/json-glib-validate.c:112
+msgid "json-glib-validate validates JSON data at the given URI."
+msgstr "بېرىلگەن URI نىڭ JSON سانلىق مەلۇماتىنى json-glib-validate دەلىللەيدۇ."
+
+#. translators: the %s is the name of the data structure
+#: json-glib/json-gobject.c:930
+#, c-format
+msgid "Expecting a JSON object, but the root node is of type “%s”"
 msgstr "ئەسلى JSON نەڭى بولۇشقا تېگىشلىك ئىدى، بىراق غول تۈگۈننىڭ تىپى «%s» ئىكەن"
 
-#: ../json-glib/json-gvariant.c:539
+#. translators: the '%s' is the type name
+#: json-glib/json-gvariant.c:484
 #, c-format
-msgid "Unexpected type '%s' in JSON node"
-msgstr "ھازىر JSON تۈگۈننىڭ تىپى ‹%s› بولۇپ قېلىپتۇ"
+msgid "Unexpected type “%s” in JSON node"
+msgstr "ھازىر JSON تۈگۈننىڭ تىپى «‎%s‎‏» بولۇپ قاپتۇ"
 
-#: ../json-glib/json-gvariant.c:609
+#: json-glib/json-gvariant.c:557
 msgid "Missing elements in JSON array to conform to a tuple"
-msgstr ""
+msgstr "JSON سانلار قاتارىدا tuple نى شەكىللەندۈرىدىغان ئېلېمېنت كەم"
 
-#: ../json-glib/json-gvariant.c:637
-msgid "Missing closing symbol ')' in the GVariant tuple type"
-msgstr ""
+#: json-glib/json-gvariant.c:586
+msgid "Missing closing symbol “)” in the GVariant tuple type"
+msgstr "GVariant ئېلېمېنت گۇرۇپپا تۈرىدە يېپىلغان «)» كەم"
 
-#: ../json-glib/json-gvariant.c:645
+#: json-glib/json-gvariant.c:594
 msgid "Unexpected extra elements in JSON array"
 msgstr "ھازىر JSON تىزىقىدا ئارتۇقچە ئېلېمېنت بار ئىكەن"
 
-#: ../json-glib/json-gvariant.c:924
+#: json-glib/json-gvariant.c:896
 msgid "Invalid string value converting to GVariant"
 msgstr "تېكىستنىڭ قىممىتىنى GVariant قا ئايلاندۇرغىلى بولمايدىكەن"
 
-#: ../json-glib/json-gvariant.c:980
-msgid ""
-"A GVariant dictionary entry expects a JSON object with exactly one member"
+#: json-glib/json-gvariant.c:951
+msgid "A GVariant dictionary entry expects a JSON object with exactly one member"
 msgstr "ئادەتتە GVariant لۇغەت ئېلېمېنتى چوقۇم بىرلا ئەزايى بار بولغان JSON نەڭى بولۇشى كېرەك"
 
-#: ../json-glib/json-gvariant.c:1236
+#: json-glib/json-gvariant.c:1229
 #, c-format
-msgid "GVariant class '%c' not supported"
-msgstr "GVariant تىپ ‹%c› نى قوللىمايدۇ"
+msgid "GVariant class “%c” not supported"
+msgstr "GVariant تىپ «%c» نى قوللىمايدۇ"
 
-#: ../json-glib/json-gvariant.c:1281
+#: json-glib/json-gvariant.c:1283
 msgid "Invalid GVariant signature"
 msgstr "ئىناۋەتسىز GVariant ئىمزاسى"
 
-#: ../json-glib/json-gvariant.c:1326
+#: json-glib/json-gvariant.c:1337
 msgid "JSON data is empty"
-msgstr "JSON سانلىق-مەلۇماتى قۇرۇق"
+msgstr "JSON سانلىق مەلۇماتى قۇرۇق"
 
-#: ../json-glib/json-parser.c:825
+#. translators: %s: is the file name, the first %d is the line
+#. * number, the second %d is the position on the line, and %s is
+#. * the error message
+#.
+#: json-glib/json-parser.c:1180
 #, c-format
 msgid "%s:%d:%d: Parse error: %s"
 msgstr "%s:%d:%d: پارچىلاشتا خاتالىق كۆرۈلدى: %s"
 
-#: ../json-glib/json-path.c:375
+#: json-glib/json-parser.c:1261
+msgid "JSON data must be UTF-8 encoded"
+msgstr "JSON سانلىق مەلۇماتى چوقۇم ‪UTF-8 ‬دە كودلىنىشى كېرەك"
+
+#: json-glib/json-path.c:391
 msgid "Only one root node is allowed in a JSONPath expression"
 msgstr "ئادەتتە JSONPath ئىپادىسىدە پەقەت بىرلا غول ئېلېمېنتقا ئىجازەت بېرىلگەن"
 
-#: ../json-glib/json-path.c:384
+#. translators: the %c is the invalid character
+#: json-glib/json-path.c:400
 #, c-format
-msgid "Root node followed by invalid character '%c'"
-msgstr "پەقەت بىرلا غول ئېلېمېنت كەينىدە ‹%c› دېگەن ھەرپ بار ئىكەن"
+msgid "Root node followed by invalid character “%c”"
+msgstr "غول تۈگۈن كەينىدە «‎%c‎‏» ئىناۋەتسىز ھەرپ بار ئىكەن"
 
-#: ../json-glib/json-path.c:490
+#: json-glib/json-path.c:440
+msgid "Missing member name or wildcard after . character"
+msgstr "چېكىت . ھەرپىنىڭ كەينىدە ئەزا ئاتى ياكى ئورتاق بەلگە كەم"
+
+#: json-glib/json-path.c:514
 #, c-format
-msgid "Malformed slice expression '%*s'"
-msgstr "بولمىغۇر كەسمە ئىپادىسى ‹%*s›"
+msgid "Malformed slice expression “%*s”"
+msgstr "بولمىغۇر كەسمە ئىپادىسى ‪«%*s»‬"
 
-#: ../json-glib/json-path.c:534
+#: json-glib/json-path.c:558
 #, c-format
-msgid "Invalid set definition '%*s'"
-msgstr "توپلام ئېنىقلىمىسى ئىناۋەتسىز ‹%*s›"
+msgid "Invalid set definition “%*s”"
+msgstr "توپلام ئېنىقلىمىسى ئىناۋەتسىز ‪«%*s»‬"
 
-#: ../json-glib/json-path.c:587
+#: json-glib/json-path.c:611
 #, c-format
-msgid "Invalid slice definition '%*s'"
-msgstr "كەسمە(slice) ئېنىقلىمىسى ئىناۋەتسىز ‹%*s›"
+msgid "Invalid slice definition “%*s”"
+msgstr "كەسمە(slice) ئېنىقلىمىسى ئىناۋەتسىز ‪«%*s»‬"
 
-#: ../json-glib/json-path.c:615
+#: json-glib/json-path.c:639
 #, c-format
-msgid "Invalid array index definition '%*s'"
-msgstr "تىزىق ئىندېكس ئېنىقلىمىسى ئىناۋەتسىز ‹%*s›"
+msgid "Invalid array index definition “%*s”"
+msgstr "تىزىق ئىندېكس ئېنىقلىمىسى ئىناۋەتسىز ‪«%*s»‬"
 
-#: ../json-glib/json-reader.c:464
+#: json-glib/json-path.c:658
 #, c-format
-msgid ""
-"The current node is of type '%s', but an array or an object was expected."
-msgstr "نۆۋەتتىكى تۈگۈننىڭ تىپى ‹%s›، بىراق بۇ يەرگە تىزىق ياكى بىر نەڭ كەلسە بولاتتى"
+msgid "Invalid first character “%c”"
+msgstr "بىرىنچى ھەرپ «%c» ئىناۋەتسىز"
 
-#: ../json-glib/json-reader.c:476
+#: json-glib/json-reader.c:522
 #, c-format
-msgid ""
-"The index '%d' is greater than the size of the array at the current position."
-msgstr "ئىندېكس ‹%d› ، نۆۋەتتىكى ئورۇندىكى تىزىقنىڭ چوڭلۇقىدىن چوڭ."
+msgid "The current node is of type “%s”, but an array or an object was expected."
+msgstr "نۆۋەتتىكى تۈگۈننىڭ تۈرى «%s»، بىراق بۇ يەرگە تىزىق ياكى بىر نەڭ كەلسە بولاتتى."
 
-#: ../json-glib/json-reader.c:493
+#: json-glib/json-reader.c:534
 #, c-format
-msgid ""
-"The index '%d' is greater than the size of the object at the current "
-"position."
-msgstr "ئىندېكس ‹%d› ، نۆۋەتتىكى ئورۇندىكى نەڭنىڭ چوڭلۇقىدىن چوڭ."
+msgid "The index “%d” is greater than the size of the array at the current position."
+msgstr "ئىندېكس «‎%d‎‏»، نۆۋەتتىكى ئورۇندىكى سانلار قاتارىنىڭ چوڭلۇقىدىن چوڭ."
 
-#: ../json-glib/json-reader.c:577 ../json-glib/json-reader.c:730
-#: ../json-glib/json-reader.c:781 ../json-glib/json-reader.c:819
-#: ../json-glib/json-reader.c:857 ../json-glib/json-reader.c:895
-#: ../json-glib/json-reader.c:933 ../json-glib/json-reader.c:978
-#: ../json-glib/json-reader.c:1014 ../json-glib/json-reader.c:1040
+#: json-glib/json-reader.c:551
+#, c-format
+msgid "The index “%d” is greater than the size of the object at the current position."
+msgstr "ئىندېكس «‎%d‎‏»، نۆۋەتتىكى ئورۇندىكى نەڭنىڭ چوڭلۇقىدىن چوڭ."
+
+#: json-glib/json-reader.c:634 json-glib/json-reader.c:807 json-glib/json-reader.c:856
+#: json-glib/json-reader.c:895 json-glib/json-reader.c:935 json-glib/json-reader.c:975
+#: json-glib/json-reader.c:1015 json-glib/json-reader.c:1062 json-glib/json-reader.c:1100
+#: json-glib/json-reader.c:1128
 msgid "No node available at the current position"
 msgstr "نۆۋەتتىكى ئورۇندا تۈگۈن يوق"
 
-#: ../json-glib/json-reader.c:584
+#: json-glib/json-reader.c:641
 #, c-format
-msgid "The current position holds a '%s' and not an array"
-msgstr "نۆۋەتتىكى ئورۇندىكىسى ‹%s› بولۇپ، تىزىق ئەمەس"
+msgid "The current position holds a “%s” and not an array"
+msgstr "نۆۋەتتىكى ئورۇندىكىسى «‎%s‎‏» بولۇپ، سانلار قاتارى ئەمەس"
 
-#: ../json-glib/json-reader.c:647
+#: json-glib/json-reader.c:723
 #, c-format
-msgid "The current node is of type '%s', but an object was expected."
-msgstr "نۆۋەتتىكى ئورۇندىكى تۈگۈننىڭ تىپى ‹%s›، بىراق نەڭ كەلسە بولاتتى."
+msgid "The current node is of type “%s”, but an object was expected."
+msgstr "نۆۋەتتىكى ئورۇندىكى تۈگۈننىڭ تىپى «‎%s‎‏»، بىراق نەڭ كەلسە بولاتتى."
 
-#: ../json-glib/json-reader.c:654
+#: json-glib/json-reader.c:730
 #, c-format
-msgid "The member '%s' is not defined in the object at the current position."
-msgstr "نۆۋەتتىكى ئورۇندىكى نەڭدە ‹%s› دېگەن ئەزا ئېنىقلانمىغان."
+msgid "The member “%s” is not defined in the object at the current position."
+msgstr "نۆۋەتتىكى ئورۇندىكى نەڭدە «%s» دېگەن ئەزا ئېنىقلانمىغان."
 
-#: ../json-glib/json-reader.c:737 ../json-glib/json-reader.c:788
+#: json-glib/json-reader.c:814 json-glib/json-reader.c:863
 #, c-format
-msgid "The current position holds a '%s' and not an object"
-msgstr "نۆۋەتتىكى ئورۇندىكىسى ‹%s› بولۇپ، نەڭ ئەمەس"
+msgid "The current position holds a “%s” and not an object"
+msgstr "نۆۋەتتىكى ئورۇندىكىسى «%s» بولۇپ، نەڭ ئەمەس"
 
-#: ../json-glib/json-reader.c:828 ../json-glib/json-reader.c:866
-#: ../json-glib/json-reader.c:904 ../json-glib/json-reader.c:942
-#: ../json-glib/json-reader.c:987
+#: json-glib/json-reader.c:904 json-glib/json-reader.c:944 json-glib/json-reader.c:984
+#: json-glib/json-reader.c:1024 json-glib/json-reader.c:1071
 #, c-format
-msgid "The current position holds a '%s' and not a value"
-msgstr "نۆۋەتتىكى ئورۇندىكىسى ‹%s› بولۇپ، قىممەت ئەمەس"
+msgid "The current position holds a “%s” and not a value"
+msgstr "نۆۋەتتىكى ئورۇندىكىسى «‎%s‎‏» بولۇپ، قىممەت ئەمەس"
 
-#: ../json-glib/json-reader.c:950
+#: json-glib/json-reader.c:1032
 msgid "The current position does not hold a string type"
 msgstr "نۆۋەتتىكى ئورۇندىكىسىنىڭ تىپى تېكىست ئەمەس"
