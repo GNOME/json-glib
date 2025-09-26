@@ -134,6 +134,8 @@ json_glib_dep = declare_dependency(
   sources: [ json_enum_types_h, json_glib_gir ],
 )
 
+meson.override_dependency(json_api_name, json_glib_dep)
+
 tools = [
   [ 'json-glib-validate', [ 'json-glib-validate.c', ] ],
   [ 'json-glib-format', [ 'json-glib-format.c', ] ],
@@ -143,10 +145,11 @@ foreach t: tools
   bin_name = t[0]
   bin_sources = t[1]
 
-  executable(bin_name, bin_sources,
+  bin_exe = executable(bin_name, bin_sources,
              c_args: json_c_args,
              dependencies: json_glib_dep,
              install: true)
+  meson.override_find_program(bin_name, bin_exe)
 endforeach
 
 if get_option('tests')
