@@ -1,0 +1,88 @@
+version = 1
+SPDX-PackageName = "json-glib"
+SPDX-PackageSupplier = "Emmanuele Bassi <ebassi@gnome.org>"
+SPDX-PackageDownloadLocation = "https://gitlab.gnome.org/GNOME/json-glib"
+
+[[annotations]]
+path = ".gitignore"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2007 OpenedHand Ltd"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ".gitattributes"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2017 Emmanuele Bassi"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = ".gitlab-ci.yml"
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2017 Javier Jardón", "2018 Emmanuele Bassi"]
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "CONTRIBUTING.md"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 Emmanuele Bassi"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "NEWS"
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2007 OpenedHand Ltd", "2009 Intel Corp", "2014 Emmanuele Bassi"]
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "json-glib.doap"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2009 Emmanuele Bassi"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "doc/**.md"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2021 Emmanuele Bassi"
+SPDX-License-Identifier = "LGPL-2.1-or-later"
+
+[[annotations]]
+path = "doc/**.rst"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2024 Emmanuele Bassi"
+SPDX-License-Identifier = "LGPL-2.1-or-later"
+
+[[annotations]]
+path = "json-glib/tests/**.json"
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2010 Emmanuele Bassi", "2020 Philip Withnall", "2024 Jan-Michael Brummer"]
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "json-glib/tests/conformance/**.json"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2016 Nicolas Seriot"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = "po/**.po"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Translator team"
+SPDX-License-Identifier = "LGPL-2.1-or-later"
+
+[[annotations]]
+path = "po/LINGUAS"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2017 Emmanuele Bassi"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "po/POTFILES.in"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2011 Intel Corp"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "subprojects/**.wrap"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "Meson Wrap Database (wrapdb) contributors"
+SPDX-License-Identifier = "CC0-1.0"
