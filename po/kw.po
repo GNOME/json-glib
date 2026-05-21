@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: json-glib main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues/\n"
 "POT-Creation-Date: 2025-10-21 23:33+0000\n"
-"PO-Revision-Date: 2026-01-27 14:32+0000\n"
+"PO-Revision-Date: 2026-05-21 17:13+0100\n"
 "Last-Translator: Flynn Peck <cirilla@tuta.io>\n"
 "Language-Team: kw\n"
 "Language: kw\n"
@@ -23,11 +23,11 @@ msgstr ""
 "X-DL-Domain: po\n"
 "X-DL-State: Translating\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 49.0\n"
+"X-Generator: Gtranslator 50.0\n"
 
 #: json-glib/json-glib-format.c:59
 msgid "Prettify output"
-msgstr "Teghe eskorrans"
+msgstr "Tekhe eskorrans"
 
 #: json-glib/json-glib-format.c:60
 msgid "Indentation spaces"
@@ -79,7 +79,7 @@ msgstr "%s: %s: error dres ow skrifa dhe stdout"
 #: json-glib/json-glib-format.c:168
 #, c-format
 msgid "%s: %s: error closing: %s\n"
-msgstr "%s: %s: error ow degea: %s\n"
+msgstr "%s: %s: error ow tegea: %s\n"
 
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
@@ -89,7 +89,7 @@ msgstr "Furvasa restrennow JSON."
 
 #: json-glib/json-glib-format.c:205
 msgid "json-glib-format formats JSON resources."
-msgstr "json-glib-format furvasa asnodhow JSON."
+msgstr "json-glib-format a furvas asnodhow JSON."
 
 #. Translators: the %s is the program name. This error message
 #. * means the user is calling json-glib-validate without any
@@ -104,7 +104,7 @@ msgstr "Error dres ow redya dewisyow arghadow-linen: %s\n"
 #: json-glib/json-glib-validate.c:131 json-glib/json-glib-validate.c:145
 #, c-format
 msgid "Try “%s --help” for more information."
-msgstr "Assaya “%s --help” rag kedhlow moy."
+msgstr "Assayewgh “%s --help” rag moy kedhlow."
 
 #. Translators: the %s is the program name. This error message
 #. * means the user is calling json-glib-validate without any
@@ -131,13 +131,13 @@ msgstr "Komposa restrennow JSON."
 
 #: json-glib/json-glib-validate.c:112
 msgid "json-glib-validate validates JSON data at the given URI."
-msgstr "json-glib-validate komposa data JSON orth an URI provys."
+msgstr "json-glib-validate a gompos data JSON orth an URI provys."
 
 #. translators: the %s is the name of the data structure
 #: json-glib/json-gobject.c:930
 #, c-format
 msgid "Expecting a JSON object, but the root node is of type “%s”"
-msgstr "Gwaytys unn tra JSON, mes an poynt gwreydhen yw a eghen “%s”"
+msgstr "Ow kwaytya tra JSON, mes an poynt gwreydhen yw a eghen “%s”"
 
 #. translators: the '%s' is the type name
 #: json-glib/json-gvariant.c:484
@@ -147,11 +147,11 @@ msgstr "Eghen angwaytys “%s” yn poynt JSON"
 
 #: json-glib/json-gvariant.c:557
 msgid "Missing elements in JSON array to conform to a tuple"
-msgstr "Elvennow fyllis yn aray JSON rag kesfurvya dhe unn tuple"
+msgstr "Elvennow fyllis yn aray JSON rag kesfurvya dhe duple"
 
 #: json-glib/json-gvariant.c:586
 msgid "Missing closing symbol “)” in the GVariant tuple type"
-msgstr "Arwodh diwedh fyllis “)” y'n eghen tuple GVariant"
+msgstr "Arwodh diwedh fyllis “)” y'n eghen duple GVariant"
 
 #: json-glib/json-gvariant.c:594
 msgid "Unexpected extra elements in JSON array"
@@ -159,18 +159,17 @@ msgstr "Elvennow moy angwaytys yn aray JSON"
 
 #: json-glib/json-gvariant.c:896
 msgid "Invalid string value converting to GVariant"
-msgstr "Dalgh tekst anewn dres ow treylya dhe GVariant"
+msgstr "Synsas tekst anewn dres ow treylya dhe GVariant"
 
 #: json-glib/json-gvariant.c:951
 msgid ""
 "A GVariant dictionary entry expects a JSON object with exactly one member"
-msgstr ""
-"Unn enworrans gerlyver GVariant gwaytyas unn tra JSON gans unn esel poran"
+msgstr "Enworrans gerlyver GVariant a waytya tra JSON gans  esel poran"
 
 #: json-glib/json-gvariant.c:1229
 #, c-format
 msgid "GVariant class “%c” not supported"
-msgstr "Klass GVarient “%c” anskoodhys"
+msgstr "Klass GVarient “%c” nag yw skoodhys"
 
 #: json-glib/json-gvariant.c:1283
 msgid "Invalid GVariant signature"
@@ -191,11 +190,11 @@ msgstr "%s:%d:%d: Error redyans: %s"
 
 #: json-glib/json-parser.c:1261
 msgid "JSON data must be UTF-8 encoded"
-msgstr "Data JSON a res kodennys yn UTF-8"
+msgstr "Res yw dhe dhata JSON bos kodennys yn UTF-8"
 
 #: json-glib/json-path.c:391
 msgid "Only one root node is allowed in a JSONPath expression"
-msgstr "Unn poynt gwreydhen hepken yw gasys yn unn menegyn JSONPath"
+msgstr "Unn poynt gwreydhen hepken yw gesys yn menegyn JSONPath"
 
 #. translators: the %c is the invalid character
 #: json-glib/json-path.c:400
@@ -236,20 +235,20 @@ msgstr "Lytheren kynsa anewn “%c”"
 #, c-format
 msgid ""
 "The current node is of type “%s”, but an array or an object was expected."
-msgstr "An poynt a-lemmyn yw a eghen “%s”, mes unn aray po tra yw gwaytys."
+msgstr "An poynt a-lemmyn yw a eghen “%s”, mes aray po tra o gwaytys."
 
 #: json-glib/json-reader.c:534
 #, c-format
 msgid ""
 "The index “%d” is greater than the size of the array at the current position."
-msgstr "An menegen “%d” yw brassa es an braster a'n aray y'n le a-lemmyn."
+msgstr "An venegen “%d” yw brassa es an braster a'n aray y'n le a-lemmyn."
 
 #: json-glib/json-reader.c:551
 #, c-format
 msgid ""
 "The index “%d” is greater than the size of the object at the current "
 "position."
-msgstr "An menegen “%d” yw brassa es an braster a'n tra y'n le a-lemmyn."
+msgstr "An venegen “%d” yw brassa es an braster a'n dra y'n le a-lemmyn."
 
 #: json-glib/json-reader.c:634 json-glib/json-reader.c:807
 #: json-glib/json-reader.c:856 json-glib/json-reader.c:895
@@ -257,35 +256,35 @@ msgstr "An menegen “%d” yw brassa es an braster a'n tra y'n le a-lemmyn."
 #: json-glib/json-reader.c:1015 json-glib/json-reader.c:1062
 #: json-glib/json-reader.c:1100 json-glib/json-reader.c:1128
 msgid "No node available at the current position"
-msgstr "Poynt kavadow vyth y'n le a-lemmyn"
+msgstr "Nyns eus poynt kavadow y'n le a-lemmyn"
 
 #: json-glib/json-reader.c:641
 #, c-format
 msgid "The current position holds a “%s” and not an array"
-msgstr "An le a-lemmyn synsi unn “%s” ha ny unn aray"
+msgstr "An le a-lemmyn a syns “%s” ha nag aray"
 
 #: json-glib/json-reader.c:723
 #, c-format
 msgid "The current node is of type “%s”, but an object was expected."
-msgstr "An poynt a-lemmyn yw a eghen “%s”, mes unn tra yw gwaytys."
+msgstr "An poynt a-lemmyn yw a eghen “%s”, mes tra o gwaytys."
 
 #: json-glib/json-reader.c:730
 #, c-format
 msgid "The member “%s” is not defined in the object at the current position."
-msgstr "An esel “%s” ny styrys y'n tra y'n le a-lemmyn."
+msgstr "An esel “%s” nag yw styrys y'n dra y'n le a-lemmyn."
 
 #: json-glib/json-reader.c:814 json-glib/json-reader.c:863
 #, c-format
 msgid "The current position holds a “%s” and not an object"
-msgstr "An le a-lemmyn synsi unn “%s” ha ny unn tra"
+msgstr "An le a-lemmyn a syns “%s” ha nag yw tra"
 
 #: json-glib/json-reader.c:904 json-glib/json-reader.c:944
 #: json-glib/json-reader.c:984 json-glib/json-reader.c:1024
 #: json-glib/json-reader.c:1071
 #, c-format
 msgid "The current position holds a “%s” and not a value"
-msgstr "An le a-lemmyn synsi unn “%s” ha ny unn niver"
+msgstr "An le a-lemmyn a syns “%s” ha nag yw niver"
 
 #: json-glib/json-reader.c:1032
 msgid "The current position does not hold a string type"
-msgstr "An le a-lemmyn ny synsi unn eghen tekst"
+msgstr "An le a-lemmyn ny synsi eghen dekst"
