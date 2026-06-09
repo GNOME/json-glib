@@ -7,47 +7,46 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: json-glib\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues\n"
-"POT-Creation-Date: 2018-06-30 18:31+0000\n"
-"PO-Revision-Date: 2018-08-07 10:12+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/json-glib/issues/\n"
+"POT-Creation-Date: 2025-10-21 23:33+0000\n"
+"PO-Revision-Date: 2026-06-08 10:52+0200\n"
 "Last-Translator: Milo Casagrande <milo@milo.name>\n"
-"Language-Team: Italian <tp@lists.linux.it>\n"
+"Language-Team: Italian <gnome-it-list@gnome.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Generator: Poedit 2.0.6\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 50.0\n"
 
-#: json-glib/json-glib-format.c:58
+#: json-glib/json-glib-format.c:59
 msgid "Prettify output"
 msgstr "Output abbellito"
 
-#: json-glib/json-glib-format.c:59
+#: json-glib/json-glib-format.c:60
 msgid "Indentation spaces"
 msgstr "Spazi di rientro"
 
-#: json-glib/json-glib-format.c:59
+#: json-glib/json-glib-format.c:60
 msgid "SPACES"
 msgstr "SPAZI"
 
-#: json-glib/json-glib-format.c:60
+#: json-glib/json-glib-format.c:61
 msgid "Output file"
 msgstr "File di output"
 
-#: json-glib/json-glib-format.c:60 json-glib/json-glib-validate.c:115
+#: json-glib/json-glib-format.c:61 json-glib/json-glib-validate.c:108
 msgid "FILE"
 msgstr "FILE"
 
-#: json-glib/json-glib-format.c:61
+#: json-glib/json-glib-format.c:62
 msgid "FILE…"
 msgstr "FILE…"
 
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:87 json-glib/json-glib-format.c:120
-#: json-glib/json-glib-validate.c:63
+#: json-glib/json-glib-format.c:88 json-glib/json-glib-format.c:124
 #, c-format
 msgid "%s: %s: error opening file: %s\n"
 msgstr "%s: %s: errore nell'aprire il file: %s\n"
@@ -55,7 +54,7 @@ msgstr "%s: %s: errore nell'aprire il file: %s\n"
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:99 json-glib/json-glib-validate.c:75
+#: json-glib/json-glib-format.c:102 json-glib/json-glib-validate.c:79
 #, c-format
 msgid "%s: %s: error parsing file: %s\n"
 msgstr "%s: %s: errore nell'analizzare il file: %s\n"
@@ -63,7 +62,7 @@ msgstr "%s: %s: errore nell'analizzare il file: %s\n"
 #. Translators: the first %s is the program name, the
 #. * second one is the URI of the file.
 #.
-#: json-glib/json-glib-format.c:138
+#: json-glib/json-glib-format.c:144
 #, c-format
 msgid "%s: %s: error writing to stdout"
 msgstr "%s: %s: errore nello scrivere su stdout"
@@ -71,18 +70,18 @@ msgstr "%s: %s: errore nello scrivere su stdout"
 #. Translators: the first %s is the program name, the second one
 #. * is the URI of the file, the third is the error message.
 #.
-#: json-glib/json-glib-format.c:159 json-glib/json-glib-validate.c:87
+#: json-glib/json-glib-format.c:168
 #, c-format
 msgid "%s: %s: error closing: %s\n"
 msgstr "%s: %s: errore nel chiudere: %s\n"
 
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
-#: json-glib/json-glib-format.c:192
+#: json-glib/json-glib-format.c:204
 msgid "Format JSON files."
 msgstr "Formatta i file JSON."
 
-#: json-glib/json-glib-format.c:193
+#: json-glib/json-glib-format.c:205
 msgid "json-glib-format formats JSON resources."
 msgstr "json-glib-format formatta le risorse JSON."
 
@@ -90,13 +89,13 @@ msgstr "json-glib-format formatta le risorse JSON."
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: json-glib/json-glib-format.c:208 json-glib/json-glib-validate.c:136
+#: json-glib/json-glib-format.c:220 json-glib/json-glib-validate.c:129
 #, c-format
 msgid "Error parsing commandline options: %s\n"
 msgstr "Errore nell'analizzare le opzioni a riga di comando: %s\n"
 
-#: json-glib/json-glib-format.c:210 json-glib/json-glib-format.c:224
-#: json-glib/json-glib-validate.c:138 json-glib/json-glib-validate.c:152
+#: json-glib/json-glib-format.c:222 json-glib/json-glib-format.c:236
+#: json-glib/json-glib-validate.c:131 json-glib/json-glib-validate.c:145
 #, c-format
 msgid "Try “%s --help” for more information."
 msgstr "Per maggiori informazioni, usare «%s --help»."
@@ -105,66 +104,74 @@ msgstr "Per maggiori informazioni, usare «%s --help»."
 #. * means the user is calling json-glib-validate without any
 #. * argument.
 #.
-#: json-glib/json-glib-format.c:222 json-glib/json-glib-validate.c:150
+#: json-glib/json-glib-format.c:234 json-glib/json-glib-validate.c:143
 #, c-format
 msgid "%s: missing files"
 msgstr "%s: mancano dei file"
 
+#. Translators: the first %s is the program name, the second one
+#. * is the URI of the file, the third is the error message.
+#.
+#: json-glib/json-glib-validate.c:64
+#, c-format
+msgid "%s: %s: error reading file: %s\n"
+msgstr "%s: %s: errore nella lettura del file: %s\n"
+
 #. Translators: this message will appear after the usage string
 #. and before the list of options.
-#: json-glib/json-glib-validate.c:118
+#: json-glib/json-glib-validate.c:111
 msgid "Validate JSON files."
 msgstr "Convalida i file JSON."
 
-#: json-glib/json-glib-validate.c:119
+#: json-glib/json-glib-validate.c:112
 msgid "json-glib-validate validates JSON data at the given URI."
 msgstr "json-glib-validate convalida i dati JSON trovati all'URI fornito."
 
 #. translators: the %s is the name of the data structure
-#: json-glib/json-gobject.c:940
+#: json-glib/json-gobject.c:930
 #, c-format
 msgid "Expecting a JSON object, but the root node is of type “%s”"
 msgstr "Atteso un oggetto JSON, ma il nodo radice è del tipo «%s»"
 
 #. translators: the '%s' is the type name
-#: json-glib/json-gvariant.c:524
+#: json-glib/json-gvariant.c:484
 #, c-format
 msgid "Unexpected type “%s” in JSON node"
 msgstr "Tipo «%s» inatteso nel nodo JSON"
 
-#: json-glib/json-gvariant.c:594
+#: json-glib/json-gvariant.c:557
 msgid "Missing elements in JSON array to conform to a tuple"
 msgstr "Elementi mancanti nell'array JSON per conformità a una tupla"
 
-#: json-glib/json-gvariant.c:622
+#: json-glib/json-gvariant.c:586
 msgid "Missing closing symbol “)” in the GVariant tuple type"
 msgstr "Simbolo «)» di chiusura mancante nel tipo tupla GVariant"
 
-#: json-glib/json-gvariant.c:630
+#: json-glib/json-gvariant.c:594
 msgid "Unexpected extra elements in JSON array"
 msgstr "Elementi aggiuntivi inattesi nell'array JSON"
 
-#: json-glib/json-gvariant.c:909
+#: json-glib/json-gvariant.c:896
 msgid "Invalid string value converting to GVariant"
 msgstr "Valore di stringa non valido nella conversione a JSON"
 
-#: json-glib/json-gvariant.c:964
+#: json-glib/json-gvariant.c:951
 msgid ""
 "A GVariant dictionary entry expects a JSON object with exactly one member"
 msgstr ""
 "Una voce di dizionario GVariant richiese un oggetto JSON con esattamente un "
 "membro"
 
-#: json-glib/json-gvariant.c:1242
+#: json-glib/json-gvariant.c:1229
 #, c-format
 msgid "GVariant class “%c” not supported"
 msgstr "Classe GVariant «%c» non supportata"
 
-#: json-glib/json-gvariant.c:1290
+#: json-glib/json-gvariant.c:1283
 msgid "Invalid GVariant signature"
 msgstr "Firma GVariant non valida"
 
-#: json-glib/json-gvariant.c:1338
+#: json-glib/json-gvariant.c:1337
 msgid "JSON data is empty"
 msgstr "I dati JSON sono vuoti"
 
@@ -172,68 +179,68 @@ msgstr "I dati JSON sono vuoti"
 #. * number, the second %d is the position on the line, and %s is
 #. * the error message
 #.
-#: json-glib/json-parser.c:909
+#: json-glib/json-parser.c:1180
 #, c-format
 msgid "%s:%d:%d: Parse error: %s"
 msgstr "%s:%d:%d: errore di analisi: %s"
 
-#: json-glib/json-parser.c:992
+#: json-glib/json-parser.c:1261
 msgid "JSON data must be UTF-8 encoded"
 msgstr "I dati JSON devono essere codificati in UTF-8"
 
-#: json-glib/json-path.c:389
+#: json-glib/json-path.c:391
 msgid "Only one root node is allowed in a JSONPath expression"
 msgstr "È consentito un solo nodo radice in una espressione JSON"
 
 #. translators: the %c is the invalid character
-#: json-glib/json-path.c:398
+#: json-glib/json-path.c:400
 #, c-format
 msgid "Root node followed by invalid character “%c”"
 msgstr "Nodo radice seguito dal carattere non valido «%c»"
 
-#: json-glib/json-path.c:438
+#: json-glib/json-path.c:440
 msgid "Missing member name or wildcard after . character"
 msgstr "Manca il nome del membro o un carattere speciale dopo il carattere «.»"
 
-#: json-glib/json-path.c:512
+#: json-glib/json-path.c:514
 #, c-format
 msgid "Malformed slice expression “%*s”"
 msgstr "Espressione slice «%*s» malformata"
 
-#: json-glib/json-path.c:556
+#: json-glib/json-path.c:558
 #, c-format
 msgid "Invalid set definition “%*s”"
 msgstr "Definizione di set «%*s» non valida"
 
-#: json-glib/json-path.c:609
+#: json-glib/json-path.c:611
 #, c-format
 msgid "Invalid slice definition “%*s”"
 msgstr "Definizione di slice «%*s» non valida"
 
-#: json-glib/json-path.c:637
+#: json-glib/json-path.c:639
 #, c-format
 msgid "Invalid array index definition “%*s”"
 msgstr "Definizione di indice array «%*s» non valida"
 
-#: json-glib/json-path.c:656
+#: json-glib/json-path.c:658
 #, c-format
 msgid "Invalid first character “%c”"
 msgstr "Primo carattere «%c» non valido"
 
-#: json-glib/json-reader.c:474
+#: json-glib/json-reader.c:522
 #, c-format
 msgid ""
 "The current node is of type “%s”, but an array or an object was expected."
 msgstr "Il tipo del nodo corrente è «%s», ma era atteso un array o un oggetto."
 
-#: json-glib/json-reader.c:486
+#: json-glib/json-reader.c:534
 #, c-format
 msgid ""
 "The index “%d” is greater than the size of the array at the current position."
 msgstr ""
 "L'indice «%d» è maggiore della dimensione dell'array alla posizione corrente."
 
-#: json-glib/json-reader.c:503
+#: json-glib/json-reader.c:551
 #, c-format
 msgid ""
 "The index “%d” is greater than the size of the object at the current "
@@ -242,41 +249,41 @@ msgstr ""
 "L'indice «%d» è maggiore della dimensione dell'oggetto alla posizione "
 "corrente."
 
-#: json-glib/json-reader.c:585 json-glib/json-reader.c:751
-#: json-glib/json-reader.c:799 json-glib/json-reader.c:837
-#: json-glib/json-reader.c:875 json-glib/json-reader.c:913
-#: json-glib/json-reader.c:951 json-glib/json-reader.c:996
-#: json-glib/json-reader.c:1032 json-glib/json-reader.c:1058
+#: json-glib/json-reader.c:634 json-glib/json-reader.c:807
+#: json-glib/json-reader.c:856 json-glib/json-reader.c:895
+#: json-glib/json-reader.c:935 json-glib/json-reader.c:975
+#: json-glib/json-reader.c:1015 json-glib/json-reader.c:1062
+#: json-glib/json-reader.c:1100 json-glib/json-reader.c:1128
 msgid "No node available at the current position"
 msgstr "Nessun nodo disponibile alla posizione corrente"
 
-#: json-glib/json-reader.c:592
+#: json-glib/json-reader.c:641
 #, c-format
 msgid "The current position holds a “%s” and not an array"
 msgstr "La posizione corrente contiene un «%s» e non un array"
 
-#: json-glib/json-reader.c:668
+#: json-glib/json-reader.c:723
 #, c-format
 msgid "The current node is of type “%s”, but an object was expected."
 msgstr "Il tipo del nodo corrente è «%s», ma era atteso un oggetto."
 
-#: json-glib/json-reader.c:675
+#: json-glib/json-reader.c:730
 #, c-format
 msgid "The member “%s” is not defined in the object at the current position."
 msgstr "Non è definito il membro «%s» nell'oggetto alla posizione corrente."
 
-#: json-glib/json-reader.c:758 json-glib/json-reader.c:806
+#: json-glib/json-reader.c:814 json-glib/json-reader.c:863
 #, c-format
 msgid "The current position holds a “%s” and not an object"
 msgstr "La posizione corrente contiene un «%s» e non un oggetto"
 
-#: json-glib/json-reader.c:846 json-glib/json-reader.c:884
-#: json-glib/json-reader.c:922 json-glib/json-reader.c:960
-#: json-glib/json-reader.c:1005
+#: json-glib/json-reader.c:904 json-glib/json-reader.c:944
+#: json-glib/json-reader.c:984 json-glib/json-reader.c:1024
+#: json-glib/json-reader.c:1071
 #, c-format
 msgid "The current position holds a “%s” and not a value"
 msgstr "La posizione corrente contiene un «%s» e non un valore"
 
-#: json-glib/json-reader.c:968
+#: json-glib/json-reader.c:1032
 msgid "The current position does not hold a string type"
 msgstr "La posizione corrente non contiene un tipo stringa"
